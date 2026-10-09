@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 394" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Parameters and arguments</title>
+  <desc>Step 1 called displaySum(6, 20). The arguments 6 and 20 went into the parameters num1 and num2, in order. In step 2, JavaScript read 6 from num1 and 20 from num2, so num1 + num2 became 6 + 20, which is 26. JavaScript stored 26 in a box named total. Step 3 printed Total: 26 in the console.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="540" height="394" rx="18" fill="#0f1b2d" />
+  <rect width="540" height="394" rx="18" fill="url(#grid)" />
+
+  <!-- The call. Each piece has its own x so the arrows line up with 6 and 20 in any monospace font. -->
+  <rect x="60" y="24" width="292" height="56" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="2" />
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" style="font-variant-ligatures: none">
+    <text x="234.4" y="61" text-anchor="end">displaySum(</text>
+    <text x="241.6" y="61" text-anchor="middle" fill="#facc15">6</text>
+    <text x="248.8" y="61">,</text>
+    <text x="292" y="61" text-anchor="middle" fill="#facc15">20</text>
+    <text x="306.4" y="61">);</text>
+  </g>
+
+  <!-- Parameters and the total are boxes: name in the header, value (yellow) in the body -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="128" y="130" width="120" height="92" rx="10" />
+    <rect x="288" y="130" width="120" height="92" rx="10" />
+    <rect x="208" y="278" width="120" height="92" rx="10" />
+    <rect x="392" y="278" width="128" height="92" rx="10" />
+  </g>
+  <g fill="#334155" stroke="#64748b" stroke-width="2">
+    <path d="M128 164 V140 a10 10 0 0 1 10 -10 H238 a10 10 0 0 1 10 10 V164 z" />
+    <path d="M288 164 V140 a10 10 0 0 1 10 -10 H398 a10 10 0 0 1 10 10 V164 z" />
+    <path d="M208 312 V288 a10 10 0 0 1 10 -10 H318 a10 10 0 0 1 10 10 V312 z" />
+    <path d="M392 312 V288 a10 10 0 0 1 10 -10 H510 a10 10 0 0 1 10 10 V312 z" />
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-weight="bold" text-anchor="middle">
+    <text x="188" y="154" font-size="18" fill="#e2e8f0">num1</text>
+    <text x="348" y="154" font-size="18" fill="#e2e8f0">num2</text>
+    <text x="268" y="302" font-size="18" fill="#e2e8f0">total</text>
+    <text x="188" y="205" font-size="30" fill="#facc15">6</text>
+    <text x="348" y="205" font-size="30" fill="#facc15">20</text>
+    <text x="268" y="353" font-size="30" fill="#facc15">26</text>
+  </g>
+
+  <!-- The console, where the message shows up -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#e2e8f0">
+    <text x="406" y="302" font-size="18" font-weight="bold">Console</text>
+    <text x="402" y="350" font-size="20">Total: 26</text>
+  </g>
+
+  <!-- The two words from the slide. Arguments are yellow like the values; parameters are box names. -->
+  <g font-size="18" font-weight="bold">
+    <text x="368" y="58" fill="#facc15">arguments</text>
+    <text x="422" y="182" fill="#e2e8f0">parameters</text>
+  </g>
+
+  <!-- Arrows: arguments go into parameters in order, both parameters feed total, and the message goes to the console -->
+  <g stroke="#38bdf8" stroke-width="4" marker-end="url(#head)">
+    <line x1="241.6" y1="88" x2="202" y2="118" />
+    <line x1="292" y1="88" x2="334" y2="118" />
+    <line x1="188" y1="230" x2="246" y2="266" />
+    <line x1="348" y1="230" x2="290" y2="266" />
+    <line x1="338" y1="332" x2="380" y2="332" />
+  </g>
+
+  <!-- Step numbers, one per line of code that ran -->
+  <g fill="#38bdf8">
+    <circle cx="36" cy="52" r="15" />
+    <circle cx="36" cy="291" r="15" />
+    <circle cx="359" cy="306" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="36" y="59">1</text>
+    <text x="36" y="298">2</text>
+    <text x="359" y="313">3</text>
+  </g>
+
+  <!-- Step 2 shows num1 + num2 turning into 6 + 20, then 26 (values in yellow) -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#e2e8f0" text-anchor="end" style="font-variant-ligatures: none">
+    <text x="192" y="298">num1 + num2</text>
+    <text x="192" y="324"><tspan fill="#facc15">6</tspan> + <tspan fill="#facc15">20</tspan></text>
+    <text x="192" y="350" fill="#facc15">26</text>
+  </g>
+</svg>

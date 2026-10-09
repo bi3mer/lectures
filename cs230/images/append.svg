@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 350" role="img" aria-label="names starts as an empty list. append adds &quot;Ada&quot; to the end, then append adds &quot;Grace&quot; after it.">
+  <!-- Colors: Sanzo Wada combination 151 (see themes/cs230-theme.css) -->
+  <rect x="1" y="1" width="538" height="348" rx="16" fill="#032837" stroke="#38728b" stroke-width="2"/>
+
+  <g font-family="SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace">
+    <!-- step 1: empty list -->
+    <text x="24" y="44" font-size="22" fill="#a8c1cc">names = []</text>
+    <rect x="24" y="58" width="110" height="56" fill="none" stroke="#a8c1cc" stroke-width="3" stroke-dasharray="8 6"/>
+    <text x="79" y="93" font-size="20" fill="#a8c1cc" text-anchor="middle" font-style="italic">empty</text>
+
+    <!-- step 2: append "Ada" -->
+    <text x="24" y="150" font-size="22" fill="#a8c1cc">names.append("Ada")</text>
+    <rect x="24" y="164" width="130" height="56" fill="#064f6e" stroke="#f99d1b" stroke-width="3"/>
+    <text x="89" y="201" font-size="26" fill="#f5ecc2" text-anchor="middle">"Ada"</text>
+    <text x="170" y="199" font-size="20" fill="#f99d1b">← added</text>
+
+    <!-- step 3: append "Grace" -->
+    <text x="24" y="256" font-size="22" fill="#a8c1cc">names.append("Grace")</text>
+    <rect x="24" y="270" width="130" height="56" fill="#064f6e" stroke="#a8c1cc" stroke-width="3"/>
+    <rect x="154" y="270" width="150" height="56" fill="#064f6e" stroke="#f99d1b" stroke-width="3"/>
+    <text x="89" y="307" font-size="26" fill="#f5ecc2" text-anchor="middle">"Ada"</text>
+    <text x="229" y="307" font-size="26" fill="#f5ecc2" text-anchor="middle">"Grace"</text>
+    <text x="320" y="305" font-size="20" fill="#f99d1b">← added</text>
+  </g>
+</svg>

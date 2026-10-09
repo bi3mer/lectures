@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 300" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Camel case</title>
+  <desc>Step 1 wrote the name as the words number, of, shares, and held, with spaces between them. Step 2 removed the spaces, which gave numberofsharesheld. Step 3 capitalized each word after the first, which gave numberOfSharesHeld.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1180" height="300" rx="18" fill="#0f1b2d" />
+  <rect width="1180" height="300" rx="18" fill="url(#grid)" />
+
+  <!-- Cards: four word cards in the top row, one name card in each row below -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="600" y="24" width="136" height="56" rx="10" />
+    <rect x="772" y="24" width="64" height="56" rx="10" />
+    <rect x="872" y="24" width="136" height="56" rx="10" />
+    <rect x="1044" y="24" width="96" height="56" rx="10" />
+    <rect x="600" y="122" width="540" height="56" rx="10" />
+    <rect x="600" y="220" width="540" height="56" rx="10" />
+  </g>
+
+  <!-- The spaces between the words, marked in red -->
+  <g fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M744 56 V64 H764 V56" />
+    <path d="M844 56 V64 H864 V56" />
+    <path d="M1016 56 V64 H1036 V56" />
+  </g>
+
+  <!-- The name at each step. In the last row, the capital letters are yellow. -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="32" fill="#e2e8f0" text-anchor="middle" style="font-variant-ligatures: none">
+    <text x="668" y="63">number</text>
+    <text x="804" y="63">of</text>
+    <text x="940" y="63">shares</text>
+    <text x="1092" y="63">held</text>
+    <text x="870" y="161">numberofsharesheld</text>
+    <text x="870" y="259">number<tspan fill="#facc15" font-weight="bold">O</tspan>f<tspan fill="#facc15" font-weight="bold">S</tspan>hares<tspan fill="#facc15" font-weight="bold">H</tspan>eld</text>
+  </g>
+
+  <!-- Arrows from each step to the next -->
+  <line x1="870" y1="88" x2="870" y2="110" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <line x1="870" y1="186" x2="870" y2="208" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+
+  <!-- Step numbers and labels -->
+  <g fill="#38bdf8">
+    <circle cx="50" cy="52" r="17" />
+    <circle cx="50" cy="150" r="17" />
+    <circle cx="50" cy="248" r="17" />
+  </g>
+  <g font-size="20" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="50" y="59">1</text>
+    <text x="50" y="157">2</text>
+    <text x="50" y="255">3</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="22" fill="#7dd3fc">
+    <text x="80" y="59">wrote the name as words</text>
+    <text x="80" y="157">removed the spaces</text>
+    <text x="80" y="255">capitalized each word after the first</text>
+  </g>
+</svg>

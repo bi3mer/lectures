@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Colan's Coffee Blog</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+      }
+      th {
+        background-color: rgb(43, 26, 14);
+        color: rgb(246, 231, 210);
+        text-align: left;
+      }
+      tr:nth-child(even) {
+        background-color: rgb(251, 243, 232);
+      }
+      tr:hover {
+        background-color: rgb(246, 231, 210);
+      }
+      .rating {
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Ratings</h2>
+
+    <table>
+      <tr>
+        <th>Shop</th>
+        <th>Drink</th>
+        <th>Rating</th>
+      </tr>
+      <tr>
+        <td>Recreo</td>
+        <td>Cortado</td>
+        <td class="rating">5</td>
+      </tr>
+      <tr>
+        <td>Nero</td>
+        <td>Latte</td>
+        <td class="rating">3</td>
+      </tr>
+      <tr>
+        <td>Starbucks</td>
+        <td>Drip</td>
+        <td class="rating">2</td>
+      </tr>
+    </table>
+  </body>
+</html>

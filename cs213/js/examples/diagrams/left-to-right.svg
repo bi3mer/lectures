@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 332" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Left to right</title>
+  <desc>Step 1 had 5 + 3 + "5". JavaScript went left to right, so 5 + 3 ran first. In step 2, 5 and 3 were both numbers, so + added them, which gave 8 + "5". In step 3, "5" was a string, so + glued 8 and "5" together, which gave "85".</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="540" height="332" rx="18" fill="#0f1b2d" />
+  <rect width="540" height="332" rx="18" fill="url(#grid)" />
+
+  <!-- Cards: the expression at each step -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="60" y="48" width="190" height="48" rx="10" />
+    <rect x="60" y="156" width="130" height="48" rx="10" />
+    <rect x="60" y="264" width="90" height="48" rx="10" />
+  </g>
+
+  <!-- Values that came out of a step are yellow -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" style="font-variant-ligatures: none; white-space: pre">
+    <text x="76" y="80">5 + 3 + "5"</text>
+    <text x="76" y="188"><tspan fill="#facc15">8</tspan> + "5"</text>
+    <text x="76" y="296" fill="#facc15">"85"</text>
+  </g>
+
+  <!-- Blue underline: the part that ran next -->
+  <g stroke="#38bdf8" stroke-width="3" stroke-linecap="round">
+    <line x1="76" y1="88" x2="148" y2="88" />
+    <line x1="76" y1="196" x2="177" y2="196" />
+  </g>
+
+  <!-- Step numbers and labels -->
+  <g fill="#38bdf8">
+    <circle cx="36" cy="32" r="15" />
+    <circle cx="36" cy="140" r="15" />
+    <circle cx="36" cy="248" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="36" y="39">1</text>
+    <text x="36" y="147">2</text>
+    <text x="36" y="255">3</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc" style="font-variant-ligatures: none">
+    <text x="62" y="39">went left to right, 5 + 3 first</text>
+    <text x="62" y="147">two numbers, so + added them</text>
+    <text x="62" y="255">"5" was a string, so + glued</text>
+  </g>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 272" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Remainder</title>
+  <desc>Step 1 gave 3 cookies to each of 5 people, which used 15 of the 17 cookies. In step 2, 2 cookies were left over. 17 % 5 gave that leftover count, 2.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+    <!-- One cookie: an amber circle with three chips -->
+    <g id="cookie">
+      <circle r="11" fill="#f59e0b" />
+      <circle cx="-4" cy="-3" r="2" fill="#78350f" />
+      <circle cx="4" cy="1" r="2" fill="#78350f" />
+      <circle cx="-1" cy="5" r="1.8" fill="#78350f" />
+    </g>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="540" height="272" rx="18" fill="#0f1b2d" />
+  <rect width="540" height="272" rx="18" fill="url(#grid)" />
+
+  <!-- One card per person, plus the expression card -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="30" y="56" width="88" height="64" rx="10" />
+    <rect x="128" y="56" width="88" height="64" rx="10" />
+    <rect x="226" y="56" width="88" height="64" rx="10" />
+    <rect x="324" y="56" width="88" height="64" rx="10" />
+    <rect x="422" y="56" width="88" height="64" rx="10" />
+    <rect x="200" y="188" width="118" height="56" rx="10" />
+  </g>
+
+  <!-- The leftover cookies and the answer, both outlined in red -->
+  <g fill="#1e293b" stroke="#f87171" stroke-width="2.5">
+    <rect x="30" y="184" width="88" height="64" rx="10" />
+    <rect x="392" y="188" width="48" height="56" rx="10" />
+  </g>
+
+  <!-- 3 cookies for each person -->
+  <use href="#cookie" x="48" y="88" />
+  <use href="#cookie" x="74" y="88" />
+  <use href="#cookie" x="100" y="88" />
+  <use href="#cookie" x="146" y="88" />
+  <use href="#cookie" x="172" y="88" />
+  <use href="#cookie" x="198" y="88" />
+  <use href="#cookie" x="244" y="88" />
+  <use href="#cookie" x="270" y="88" />
+  <use href="#cookie" x="296" y="88" />
+  <use href="#cookie" x="342" y="88" />
+  <use href="#cookie" x="368" y="88" />
+  <use href="#cookie" x="394" y="88" />
+  <use href="#cookie" x="440" y="88" />
+  <use href="#cookie" x="466" y="88" />
+  <use href="#cookie" x="492" y="88" />
+
+  <!-- The 2 left over -->
+  <use href="#cookie" x="61" y="216" />
+  <use href="#cookie" x="87" y="216" />
+
+  <!-- 17 % 5 gave the leftover count -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" text-anchor="middle" style="font-variant-ligatures: none">
+    <text x="259" y="225">17 % 5</text>
+    <text x="416" y="225" fill="#facc15">2</text>
+  </g>
+  <line x1="330" y1="216" x2="380" y2="216" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+
+  <!-- Step numbers and labels -->
+  <g fill="#38bdf8">
+    <circle cx="36" cy="32" r="15" />
+    <circle cx="36" cy="160" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="36" y="39">1</text>
+    <text x="36" y="167">2</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc">
+    <text x="62" y="39">each of 5 people got 3</text>
+    <text x="62" y="167">2 were left over</text>
+  </g>
+</svg>

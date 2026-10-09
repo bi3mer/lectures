@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gutter Sizes</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <style>
+      /* Our colors, so the columns are visible. Bootstrap does not ship these. */
+      .box {
+        background-color: rgb(230, 201, 168);
+        border: 2px solid rgb(138, 75, 31);
+        padding: 12px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p class="mb-1"><code>class="row g-0"</code></p>
+      <div class="row g-0">
+        <div class="col-4">
+          <div class="box">1</div>
+        </div>
+        <div class="col-4">
+          <div class="box">2</div>
+        </div>
+        <div class="col-4">
+          <div class="box">3</div>
+        </div>
+      </div>
+      <p class="mb-1 mt-3"><code>class="row g-2"</code></p>
+      <div class="row g-2">
+        <div class="col-4">
+          <div class="box">1</div>
+        </div>
+        <div class="col-4">
+          <div class="box">2</div>
+        </div>
+        <div class="col-4">
+          <div class="box">3</div>
+        </div>
+      </div>
+      <p class="mb-1 mt-3"><code>class="row"</code> (the default, the same as <code>g-4</code> across)</p>
+      <div class="row">
+        <div class="col-4">
+          <div class="box">1</div>
+        </div>
+        <div class="col-4">
+          <div class="box">2</div>
+        </div>
+        <div class="col-4">
+          <div class="box">3</div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

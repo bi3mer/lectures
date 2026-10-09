@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 246" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Template literal</title>
+  <desc>Step 1 had one template literal, Hello, ${name}! in backticks, with a space after the comma. In step 2, ${name} dropped in "Colan", the value of name, which gave "Hello, Colan!". The space stayed where it was typed.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="540" height="246" rx="18" fill="#0f1b2d" />
+  <rect width="540" height="246" rx="18" fill="url(#grid)" />
+
+  <!-- Cards: the template literal in step 1, the finished string in step 2 -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="60" y="54" width="272" height="56" rx="10" />
+    <rect x="60" y="168" width="252" height="56" rx="10" />
+  </g>
+
+  <!-- ${name} is blue in step 1. The value it dropped in is yellow in step 2. -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" text-anchor="middle" style="font-variant-ligatures: none; white-space: pre">
+    <text x="196" y="91">`Hello, <tspan fill="#38bdf8" font-weight="bold">${name}</tspan>!`</text>
+    <text x="186" y="205">"Hello, <tspan fill="#facc15">Colan</tspan>!"</text>
+  </g>
+
+  <!-- The space after "Hello," marked in red at each step -->
+  <g fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 96 V103 H188 V96" />
+    <path d="M179 210 V217 H192 V210" />
+  </g>
+
+  <!-- Step numbers and labels -->
+  <g fill="#38bdf8">
+    <circle cx="36" cy="32" r="15" />
+    <circle cx="36" cy="146" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="36" y="39">1</text>
+    <text x="36" y="153">2</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc" style="font-variant-ligatures: none">
+    <text x="62" y="39">one template literal</text>
+    <text x="62" y="153">${name} dropped in "Colan"</text>
+  </g>
+</svg>

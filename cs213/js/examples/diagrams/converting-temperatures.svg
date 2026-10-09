@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 394" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Converting temperatures</title>
+  <desc>Top row: fahrenheit held 212. In step 1, toCelsius got 212, worked out (212 - 32) * 5 / 9, and returned 100, which went into celsius. In step 2, toFahrenheit got 100, worked out 100 * 9 / 5 + 32, and returned 212, which went into backAgain. Bottom row: in one line, toFahrenheit(toCelsius(fahrenheit)) became toFahrenheit(toCelsius(212)). The inner call, toCelsius, ran first and gave back 100, which gave toFahrenheit(100). The outer call ran next and gave back 212.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1180" height="394" rx="18" fill="#0f1b2d" />
+  <rect width="1180" height="394" rx="18" fill="url(#grid)" />
+
+  <!-- Top row: each variable is a box (name in the header, value in yellow) -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="40" y="64" width="180" height="92" rx="10" />
+    <rect x="500" y="64" width="180" height="92" rx="10" />
+    <rect x="960" y="64" width="180" height="92" rx="10" />
+  </g>
+  <g fill="#334155" stroke="#64748b" stroke-width="2">
+    <path d="M40 98 V74 a10 10 0 0 1 10 -10 H210 a10 10 0 0 1 10 10 V98 z" />
+    <path d="M500 98 V74 a10 10 0 0 1 10 -10 H670 a10 10 0 0 1 10 10 V98 z" />
+    <path d="M960 98 V74 a10 10 0 0 1 10 -10 H1130 a10 10 0 0 1 10 10 V98 z" />
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-weight="bold" text-anchor="middle">
+    <text x="130" y="88" font-size="18" fill="#e2e8f0">fahrenheit</text>
+    <text x="590" y="88" font-size="18" fill="#e2e8f0">celsius</text>
+    <text x="1050" y="88" font-size="18" fill="#e2e8f0">backAgain</text>
+    <text x="130" y="139" font-size="30" fill="#facc15">212</text>
+    <text x="590" y="139" font-size="30" fill="#facc15">100</text>
+    <text x="1050" y="139" font-size="30" fill="#facc15">212</text>
+  </g>
+
+  <!-- Function cards between the boxes, with the math each one did underneath -->
+  <g fill="#1e293b" stroke="#38bdf8" stroke-width="2">
+    <rect x="280" y="86" width="160" height="48" rx="10" />
+    <rect x="736" y="86" width="168" height="48" rx="10" />
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#e2e8f0" text-anchor="middle" style="font-variant-ligatures: none">
+    <text x="360" y="117" font-size="22">toCelsius</text>
+    <text x="820" y="117" font-size="22">toFahrenheit</text>
+    <text x="360" y="166" font-size="18">(<tspan fill="#facc15">212</tspan> - 32) * 5 / 9</text>
+    <text x="820" y="166" font-size="18"><tspan fill="#facc15">100</tspan> * 9 / 5 + 32</text>
+  </g>
+
+  <!-- Arrows: each value goes in as an argument, and the returned value goes into the next box -->
+  <g stroke="#38bdf8" stroke-width="4" marker-end="url(#head)">
+    <line x1="228" y1="110" x2="268" y2="110" />
+    <line x1="448" y1="110" x2="488" y2="110" />
+    <line x1="688" y1="110" x2="724" y2="110" />
+    <line x1="912" y1="110" x2="948" y2="110" />
+  </g>
+
+  <!-- Bottom row: the same work in one line -->
+  <line x1="40" y1="196" x2="1140" y2="196" stroke="#334155" stroke-width="2" />
+  <text x="40" y="224" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="18" font-weight="bold" fill="#94a3b8">in one line</text>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" style="font-variant-ligatures: none">
+    <text x="60" y="262">toFahrenheit(toCelsius(fahrenheit))</text>
+    <text x="60" y="300">toFahrenheit(toCelsius(<tspan fill="#facc15">212</tspan>))</text>
+    <text x="60" y="338">toFahrenheit(<tspan fill="#facc15">100</tspan>)</text>
+    <text x="60" y="376" fill="#facc15">212</text>
+  </g>
+
+  <!-- Blue underline: the call that ran next -->
+  <g stroke="#38bdf8" stroke-width="3" stroke-linecap="round">
+    <line x1="247" y1="308" x2="449" y2="308" />
+    <line x1="60" y1="346" x2="305" y2="346" />
+  </g>
+
+  <!-- Step numbers: 1 is toCelsius and 2 is toFahrenheit, in both rows -->
+  <g fill="#38bdf8">
+    <circle cx="360" cy="36" r="15" />
+    <circle cx="820" cy="36" r="15" />
+    <circle cx="620" cy="292" r="15" />
+    <circle cx="620" cy="330" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="360" y="43">1</text>
+    <text x="820" y="43">2</text>
+    <text x="620" y="299">1</text>
+    <text x="620" y="337">2</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc">
+    <text x="382" y="43">returned 100</text>
+    <text x="842" y="43">returned 212</text>
+    <text x="642" y="299">inner call ran first, gave back 100</text>
+    <text x="642" y="337">outer call ran next, gave back 212</text>
+  </g>
+</svg>

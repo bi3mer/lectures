@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Colan's Coffee Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      /* Colors so the boxes are visible. Not layout. */
+      body {
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      .head {
+        background-color: rgb(43, 26, 14);
+        color: rgb(246, 231, 210);
+      }
+      .side {
+        background-color: rgb(230, 201, 168);
+      }
+      .main {
+        background-color: rgb(251, 243, 232);
+      }
+
+      /* The layout: a table whose cells are the regions of the page. */
+      body {
+        margin: 0;
+      }
+      table {
+        height: 100vh;
+        width: 100%;
+        border-collapse: collapse;
+      }
+      td {
+        vertical-align: top;
+        padding: 8px 12px;
+      }
+      .side {
+        width: 20%;
+      }
+      .middle {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td colspan="3" class="head">
+          <h1>Colan's Coffee Blog</h1>
+        </td>
+      </tr>
+      <tr class="middle">
+        <td class="side">
+          <ul>
+            <li><a href="#visited">Visited</a></li>
+            <li><a href="#wishlist">Wishlist</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+        </td>
+        <td class="main">
+          <h2 id="visited">Visited</h2>
+          <p>Here is some text about the purpose of my made-up blog.</p>
+          <ul>
+            <li>Recreo - Dynamite</li>
+            <li>Nero - at least it looks nice.</li>
+            <li>Starbucks - it's fine.</li>
+          </ul>
+        </td>
+        <td class="side">
+          <h2>Favorite</h2>
+          <p>Recreo</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" class="head">Copyright 2026</td>
+      </tr>
+    </table>
+  </body>
+</html>

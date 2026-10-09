@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 316" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Subtracting from a variable</title>
+  <desc>Step 1 stored 10 in a box named number. In step 2, JavaScript read 10 from number, so number - 3 became 10 - 3, which is 7. JavaScript stored 7 in a box named result. Step 3 printed 7 in the console.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="540" height="316" rx="18" fill="#0f1b2d" />
+  <rect width="540" height="316" rx="18" fill="url(#grid)" />
+
+  <!-- Each variable is a box: its name in the header, its value (yellow) in the body -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-weight="bold" text-anchor="middle">
+    <rect x="30" y="24" width="140" height="92" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="2" />
+    <path d="M30 58 V34 a10 10 0 0 1 10 -10 H160 a10 10 0 0 1 10 10 V58 z" fill="#334155" stroke="#64748b" stroke-width="2" />
+    <text x="100" y="48" font-size="18" fill="#e2e8f0">number</text>
+    <text x="100" y="99" font-size="30" fill="#facc15">10</text>
+
+    <rect x="30" y="204" width="140" height="92" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="2" />
+    <path d="M30 238 V214 a10 10 0 0 1 10 -10 H160 a10 10 0 0 1 10 10 V238 z" fill="#334155" stroke="#64748b" stroke-width="2" />
+    <text x="100" y="228" font-size="18" fill="#e2e8f0">result</text>
+    <text x="100" y="279" font-size="30" fill="#facc15">7</text>
+  </g>
+
+  <!-- The console, where the value of result shows up -->
+  <rect x="356" y="204" width="160" height="92" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="2" />
+  <path d="M356 238 V214 a10 10 0 0 1 10 -10 H506 a10 10 0 0 1 10 10 V238 z" fill="#334155" stroke="#64748b" stroke-width="2" />
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#e2e8f0">
+    <text x="372" y="228" font-size="18" font-weight="bold">Console</text>
+    <text x="374" y="278" font-size="24">7</text>
+  </g>
+
+  <!-- Arrows: number feeds result, and result goes to the console -->
+  <line x1="100" y1="126" x2="100" y2="192" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <line x1="180" y1="267" x2="344" y2="267" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+
+  <!-- Step numbers, one per line of code -->
+  <g fill="#38bdf8">
+    <circle cx="204" cy="70" r="15" />
+    <circle cx="134" cy="140" r="15" />
+    <circle cx="198" cy="240" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="204" y="77">1</text>
+    <text x="134" y="147">2</text>
+    <text x="198" y="247">3</text>
+  </g>
+
+  <!-- Step labels. Step 2 shows number - 3 turning into 10 - 3, then 7 (values in yellow). -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc">
+    <text x="228" y="77">stored 10 in number</text>
+    <text x="220" y="247">printed 7</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#e2e8f0" text-anchor="end" style="font-variant-ligatures: none">
+    <text x="294" y="147">number - 3</text>
+    <text x="294" y="172"><tspan fill="#facc15">10</tspan> - 3</text>
+    <text x="294" y="197" fill="#facc15">7</text>
+  </g>
+</svg>

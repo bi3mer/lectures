@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JavaScript Exercises</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"
+    />
+    <style>
+      /* Colors from the slide theme (themes/webdev.css in the course repo). */
+      :root {
+        --bg: #064f6e;
+        --text: #f5ecc2;
+        --accent: #f99d1b;
+        --secondary: #a8c1cc;
+        --rule: #38728b;
+        --code-bg: #032837;
+        --stripe: #175b78;
+        --pass: #9fd9b4;
+        --fail: #ffb4a8;
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 17px/1.5 system-ui, sans-serif;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      code {
+        background: rgba(245, 236, 194, 0.15);
+        border-radius: 4px;
+        padding: 0 4px;
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 0.9em;
+      }
+
+      header {
+        border-bottom: 4px solid var(--accent);
+        padding: 12px 16px;
+      }
+
+      header a {
+        color: var(--text);
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      main {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 1.8em;
+      }
+
+      .topic {
+        color: var(--secondary);
+        font-size: 0.9em;
+        margin: 0;
+      }
+
+      #exercise-list li {
+        margin: 8px 0;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+
+      @media (max-width: 900px) {
+        .workspace {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      #instructions ol {
+        padding-left: 24px;
+      }
+
+      #instructions li {
+        margin: 4px 0;
+      }
+
+      textarea#code,
+      .CodeMirror {
+        width: 100%;
+        height: 360px;
+        border: 1px solid var(--rule);
+        border-radius: 6px;
+        font: 16px/1.5 ui-monospace, Menlo, Consolas, monospace;
+      }
+
+      textarea#code {
+        background: var(--code-bg);
+        color: var(--text);
+        padding: 8px;
+        resize: vertical;
+      }
+
+      /* CodeMirror colors to match the slides' code boxes. */
+      .cm-s-webdev.CodeMirror {
+        background: var(--code-bg);
+        color: var(--text);
+      }
+      .cm-s-webdev .CodeMirror-gutters {
+        background: var(--code-bg);
+        border-right: 1px solid var(--rule);
+      }
+      .cm-s-webdev .CodeMirror-linenumber {
+        color: var(--secondary);
+      }
+      .cm-s-webdev .CodeMirror-cursor {
+        border-left-color: var(--text);
+      }
+      .cm-s-webdev .CodeMirror-selected,
+      .cm-s-webdev.CodeMirror-focused .CodeMirror-selected {
+        background: var(--stripe);
+      }
+      .cm-s-webdev .cm-keyword {
+        color: var(--accent);
+      }
+      .cm-s-webdev .cm-string,
+      .cm-s-webdev .cm-string-2 {
+        color: var(--pass);
+      }
+      .cm-s-webdev .cm-number,
+      .cm-s-webdev .cm-atom {
+        color: #8ecae6;
+      }
+      .cm-s-webdev .cm-comment {
+        color: var(--secondary);
+        font-style: italic;
+      }
+      .cm-s-webdev .cm-def {
+        color: #ffd479;
+      }
+      .cm-s-webdev .cm-variable,
+      .cm-s-webdev .cm-variable-2,
+      .cm-s-webdev .cm-property,
+      .cm-s-webdev .cm-operator {
+        color: var(--text);
+      }
+      .cm-s-webdev .CodeMirror-matchingbracket {
+        color: var(--accent) !important;
+        text-decoration: underline;
+      }
+
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 6px;
+        padding: 8px 20px;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      #run {
+        background: var(--accent);
+        color: var(--code-bg);
+        font-weight: bold;
+      }
+
+      #run:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+
+      #reset {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--rule);
+      }
+
+      #shortcut {
+        color: var(--secondary);
+        font-size: 0.9em;
+      }
+
+      .label {
+        margin: 0 0 6px;
+        color: var(--secondary);
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      #stage {
+        width: 100%;
+        height: 420px;
+        border: 0;
+        border-radius: 6px;
+        background: #fff;
+        resize: vertical;
+      }
+
+      #summary {
+        font-weight: bold;
+        margin: 16px 0 8px;
+      }
+
+      #checks {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      #checks li {
+        padding: 8px 12px;
+        border-top: 1px solid var(--rule);
+      }
+
+      #checks .icon {
+        display: inline-block;
+        width: 1.5em;
+        font-weight: bold;
+      }
+
+      #checks .pass .icon {
+        color: var(--pass);
+      }
+
+      #checks .fail .icon {
+        color: var(--fail);
+      }
+
+      #checks .note {
+        margin: 4px 0 0 1.5em;
+        color: var(--fail);
+        white-space: pre-wrap;
+      }
+
+      .pager {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 24px;
+      }
+
+      #hidden-frames {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="../../">CS 213</a> · <a href="#">JavaScript Exercises</a>
+    </header>
+
+    <main>
+      <section id="home" hidden>
+        <h1>JavaScript Exercises</h1>
+        <p>Pick an exercise. The browser keeps your code for each one.</p>
+        <ol id="exercise-list"></ol>
+      </section>
+
+      <section id="workspace" hidden>
+        <div class="workspace">
+          <div>
+            <p class="topic" id="topic"></p>
+            <h1 id="title"></h1>
+            <div id="instructions"></div>
+            <textarea id="code" spellcheck="false" aria-label="Your code"></textarea>
+            <div class="buttons">
+              <button id="run" type="button">Run</button>
+              <button id="reset" type="button">Start Over</button>
+              <span id="shortcut"></span>
+            </div>
+          </div>
+
+          <div>
+            <p class="label">Your page</p>
+            <iframe id="stage" title="Your page"></iframe>
+            <p id="summary"></p>
+            <ul id="checks"></ul>
+          </div>
+        </div>
+
+        <nav class="pager">
+          <a id="previous" href="#">← Previous</a>
+          <a id="next" href="#">Next →</a>
+        </nav>
+      </section>
+    </main>
+
+    <div id="hidden-frames"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+    <script src="exercises.js"></script>
+    <script src="runner.js"></script>
+  </body>
+</html>

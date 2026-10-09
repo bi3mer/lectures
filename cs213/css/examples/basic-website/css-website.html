@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Colan's Coffee Blog</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Georgia, "Times New Roman", serif;
+        background: linear-gradient(135deg, #3b2314, #6b4226);
+        color: #2b1a0e;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* every top-level element becomes one strip of a 620px-wide card */
+      body > * {
+        width: 620px;
+        box-sizing: border-box;
+        background: #fbf3e8;
+        margin: 0;
+      }
+
+      body > :last-child {
+        padding-bottom: 28px;
+        border-radius: 0 0 16px 16px;
+      }
+
+      h1 {
+        background: #2b1a0e;
+        color: #f6e7d2;
+        padding: 24px 32px;
+        font-size: 34px;
+        letter-spacing: 1px;
+        border-radius: 16px 16px 0 0;
+      }
+
+      h2 {
+        color: #8a4b1f;
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 24px 32px 6px;
+      }
+
+      h2::after {
+        content: "";
+        display: block;
+        border-bottom: 2px solid #e6c9a8;
+        margin-top: 6px;
+      }
+
+      p {
+        padding: 20px 32px 0;
+        line-height: 1.6;
+        font-size: 18px;
+      }
+
+      ul {
+        list-style: none;
+        padding: 8px 32px 0;
+      }
+
+      li {
+        background: #fff4e6;
+        border-left: 6px solid #c97b3a;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        font-size: 17px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Colan's Coffee Blog</h1>
+
+    <p>Here is some text about the purpose of my made-up blog.</p>
+
+    <h2>Visited</h2>
+
+    <ul>
+      <li>Recreo - Dynamite</li>
+      <li>Nero - at least it looks nice.</li>
+      <li>Starbucks - it's fine.</li>
+    </ul>
+  </body>
+</html>

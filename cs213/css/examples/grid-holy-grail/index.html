@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <title>Holy Grail</title>
+  <meta charset="utf8" />
+  <style>
+    body {
+      display: grid;
+      grid-template-columns: 10% 4fr 1fr;
+      grid-template-rows: 50px 1fr 5vh;
+      grid-template-areas:
+        "header header header"
+        "nav article ad"
+        "footer footer footer";
+      gap: 10px;
+      height: 98vh;
+    }
+
+    header,
+    nav,
+    #ad,
+    article,
+    footer {
+      padding: 20px;
+      background-color: gold;
+    }
+
+    header {
+      grid-area: header;
+    }
+    nav {
+      grid-area: nav;
+    }
+    article {
+      grid-area: article;
+    }
+    #ad {
+      grid-area: ad;
+    }
+    footer {
+      grid-area: footer;
+    }
+  </style>
+</head>
+<body>
+  <header>Head</header>
+  <nav>Nav</nav>
+  <article>Lots of text here.</article>
+  <div id="ad">Ad</div>
+  <footer>Footer</footer>
+</body>
+</html>

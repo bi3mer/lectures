@@ -1,0 +1,183 @@
+/* @theme lecture */
+
+/*
+ * Lecture slide theme for CS213 and CS230: Marp's default theme, recolored with combination 151
+ * from Sanzo Wada's "A Dictionary of Color Combinations, Vol. 1".
+ *
+ *   Vandar Poel's Blue   #064f6e   background
+ *   Sulpher Yellow       #f5ecc2   text, headings              7.5:1 on the background
+ *   Yellow Orange        #f99d1b   accent bar, links, key terms  4.2:1
+ *
+ * The combination has three colors, so the rest are shades of the blue:
+ *   #a8c1cc (mixed with white) for secondary text and page numbers, 4.7:1
+ *   #032837 (mixed with black) for code boxes and table headers
+ *   #175b78 and #38728b (mixed with white) for table stripes and rules
+ *
+ * Use it with `theme: lecture` in a deck's front matter. Marp CLI loads it
+ * through each course's `.marprc.yml`.
+ */
+
+@import 'default';
+
+section {
+  /* Switches the default theme's code colors to their dark versions. */
+  color-scheme: dark;
+
+  --bg: #064f6e;
+  --text: #f5ecc2;
+  --heading: #f5ecc2;
+  --accent: #f99d1b;
+  --secondary: #a8c1cc;
+  --rule: #38728b;
+  --code-bg: #032837;
+  --inline-code-bg: rgba(245, 236, 194, 0.15);
+  --table-stripe: #175b78;
+
+  --h1-color: var(--heading);
+  --heading-strong-color: var(--accent);
+  --paginate-color: var(--secondary);
+
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* Headings. The bar sits on top of the existing bottom border, so it does
+   not move anything on the slide. */
+section h1 {
+  border-bottom-color: var(--rule);
+}
+
+section h1 + p {
+  color: var(--secondary);
+}
+
+section h2 {
+  position: relative;
+  color: var(--heading);
+  border-bottom-color: var(--rule);
+}
+
+section h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2.5px;
+  width: 2.5em;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+section h3 {
+  color: var(--secondary);
+}
+
+/* Text */
+section strong {
+  color: var(--accent);
+}
+
+section a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+section blockquote {
+  color: var(--secondary);
+  border-left-color: var(--accent);
+}
+
+/* Code */
+section pre {
+  color: var(--text);
+  background-color: var(--code-bg);
+  box-shadow: inset 4px 0 0 var(--accent);
+}
+
+section code {
+  background-color: var(--inline-code-bg);
+}
+
+/* Tables */
+section table th {
+  background-color: var(--code-bg);
+}
+
+section table tr {
+  background-color: var(--bg);
+  border-top-color: var(--rule);
+}
+
+section table tr:nth-child(2n) {
+  background-color: var(--table-stripe);
+}
+
+section table td,
+section table th {
+  border-color: var(--rule);
+}
+
+/* Layout helpers shared by every deck */
+section .cols {
+  display: flex;
+  gap: 1em;
+}
+
+section .cols > div {
+  flex: 1;
+}
+
+section .footnote {
+  position: absolute;
+  bottom: 40px;
+  left: 78.5px;
+  font-size: 0.6em;
+  color: var(--secondary);
+}
+
+/* Demos. The CSS decks draw live examples of what the browser shows, in a .demo (and, in
+   layout.md and bootstrap.md, a .plain page, .boxes, .sketch, or .twelve). Each sits on a
+   white panel with black text, like a page in a browser, so its colors look the way they
+   would on a real page. The spread shadow widens the panel without changing the demo's
+   size, so the slides keep the layout they had on the default theme's white background. */
+section .demo,
+section .plain,
+section .boxes,
+section .sketch,
+section .twelve {
+  background-color: white;
+  color: black;
+  border-radius: 2px;
+  box-shadow: 0 0 0 12px white;
+}
+
+/* A colored word inside a sentence, like "make it red": a small chip instead of a panel. */
+section span.demo {
+  padding: 0 0.2em;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* Inside a demo, go back to the browser's look instead of the slide theme's. Decks that
+   style these themselves still win, since their rules come later. */
+section .demo h1,
+section .demo h2,
+section .demo h3,
+section .demo h1 + p,
+section .demo strong {
+  color: inherit;
+}
+
+section .demo h2::after {
+  display: none;
+}
+
+section .demo a,
+section .plain a {
+  color: rgb(0, 0, 238);
+}
+
+section .demo th {
+  background-color: transparent;
+}

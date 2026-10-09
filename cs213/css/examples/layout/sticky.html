@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Colan's Coffee Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      /* Colors so the boxes are visible. Not layout. */
+      body {
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      header,
+      footer {
+        background-color: rgb(43, 26, 14);
+        color: rgb(246, 231, 210);
+      }
+      nav,
+      aside {
+        background-color: rgb(230, 201, 168);
+      }
+      article {
+        background-color: rgb(251, 243, 232);
+      }
+
+      /* Layout with grid. */
+      body {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        gap: 10px;
+        grid-template-areas:
+          "header header header"
+          "nav    article aside"
+          "footer footer footer";
+      }
+      header {
+        grid-area: header;
+      }
+      nav {
+        grid-area: nav;
+      }
+      article {
+        grid-area: article;
+      }
+      aside {
+        grid-area: aside;
+      }
+      footer {
+        grid-area: footer;
+      }
+      header,
+      nav,
+      article,
+      aside,
+      footer {
+        padding: 10px;
+      }
+
+      /* The ad stays on screen while the reviews scroll past. The aside
+         stays stretched, so its background fills the column; the div inside
+         it is what sticks. Change "aside div" to "aside" to see the first
+         try: the stretched aside scrolls away. */
+      aside div {
+        position: sticky;
+        top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Colan's Coffee Blog</h1>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="#visited">Visited</a></li>
+        <li><a href="#wishlist">Wishlist</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+
+    <article>
+      <h2 id="visited">Visited</h2>
+      <p>Here is some text about the purpose of my made-up blog.</p>
+      <ul>
+        <li>Recreo - Dynamite</li>
+        <li>Nero - at least it looks nice.</li>
+        <li>Starbucks - it's fine.</li>
+        <li>Blue Bottle - worth the line.</li>
+        <li>Peet's - strong.</li>
+        <li>Dunkin - it was open.</li>
+        <li>Tim Hortons - fine.</li>
+        <li>La Colombe - the draft latte.</li>
+        <li>Intelligentsia - bright.</li>
+        <li>Stumptown - cold brew.</li>
+        <li>Joe - a good cortado.</li>
+        <li>Gregorys - loud.</li>
+        <li>Blank Street - quick.</li>
+        <li>Birch - quiet upstairs.</li>
+        <li>Think - good for work.</li>
+        <li>Ninth Street - espresso.</li>
+        <li>Devoción - the beans.</li>
+        <li>Sey - light roasts.</li>
+      </ul>
+      <p>
+        Every review is one shop, one drink, and one rating out of five. The
+        list grows each time I find a new place, and the ratings change each
+        time I go back. Some shops are close to campus and some are a train
+        ride away. I go back to the good ones more than I should.
+      </p>
+      <p>
+        Scroll down and watch the ad on the right: it stays at the top of the
+        window until the footer comes up.
+      </p>
+    </article>
+
+    <aside>
+      <div>Ad</div>
+    </aside>
+
+    <footer>Copyright 2026</footer>
+  </body>
+</html>

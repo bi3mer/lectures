@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 240" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>prompt gives back a string</title>
+  <desc>In step 1, a + b became "4" + "3". Both were strings, so + glued them into "43". In step 2, Number(a) + Number(b) became Number("4") + Number("3"). Number turned each string into a number, so 4 + 3 added up to 7.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1180" height="240" rx="18" fill="#0f1b2d" />
+  <rect width="1180" height="240" rx="18" fill="url(#grid)" />
+
+  <!-- Cards: a + b in the top row, Number(a) + Number(b) in the bottom row, each turning into its result -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="60" y="48" width="104" height="56" rx="10" />
+    <rect x="238" y="48" width="162" height="56" rx="10" />
+    <rect x="474" y="48" width="90" height="56" rx="10" />
+
+    <rect x="60" y="160" width="334" height="56" rx="10" />
+    <rect x="468" y="160" width="392" height="56" rx="10" />
+    <rect x="934" y="160" width="104" height="56" rx="10" />
+    <rect x="1112" y="160" width="48" height="56" rx="10" />
+  </g>
+
+  <!-- The text in each card. Values from a and b, and the results, are yellow. Strings keep their quotes. -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" text-anchor="middle" style="font-variant-ligatures: none; white-space: pre">
+    <text x="112" y="85">a + b</text>
+    <text x="319" y="85"><tspan fill="#facc15">"4"</tspan> + <tspan fill="#facc15">"3"</tspan></text>
+    <text x="519" y="85" fill="#facc15">"43"</text>
+
+    <text x="227" y="197">Number(a) + Number(b)</text>
+    <text x="664" y="197">Number(<tspan fill="#facc15">"4"</tspan>) + Number(<tspan fill="#facc15">"3"</tspan>)</text>
+    <text x="986" y="197"><tspan fill="#facc15">4</tspan> + <tspan fill="#facc15">3</tspan></text>
+    <text x="1136" y="197" fill="#facc15">7</text>
+  </g>
+
+  <!-- Arrows from each card to the next -->
+  <g stroke="#38bdf8" stroke-width="4" marker-end="url(#head)">
+    <line x1="176" y1="76" x2="226" y2="76" />
+    <line x1="412" y1="76" x2="462" y2="76" />
+    <line x1="406" y1="188" x2="456" y2="188" />
+    <line x1="872" y1="188" x2="922" y2="188" />
+    <line x1="1050" y1="188" x2="1100" y2="188" />
+  </g>
+
+  <!-- Step numbers and labels, one per console.log line -->
+  <g fill="#38bdf8">
+    <circle cx="36" cy="26" r="15" />
+    <circle cx="36" cy="138" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="36" y="33">1</text>
+    <text x="36" y="145">2</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc" style="font-variant-ligatures: none">
+    <text x="62" y="33">two strings, so + glued them</text>
+    <text x="62" y="145">Number() made two numbers, so + added them</text>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+/* Our look on top of Bootstrap. Link this file after bootstrap.min.css. */
+:root {
+  --bs-body-bg: rgb(251, 243, 232);
+  --bs-body-color: rgb(43, 26, 14);
+  --bs-body-font-family: Georgia, "Times New Roman", serif;
+  --bs-primary-rgb: 138, 75, 31;
+}
+
+.btn-primary {
+  --bs-btn-bg: rgb(138, 75, 31);
+  --bs-btn-border-color: rgb(138, 75, 31);
+  --bs-btn-hover-bg: rgb(107, 58, 24);
+  --bs-btn-hover-border-color: rgb(107, 58, 24);
+  --bs-btn-active-bg: rgb(43, 26, 14);
+  --bs-btn-active-border-color: rgb(43, 26, 14);
+}

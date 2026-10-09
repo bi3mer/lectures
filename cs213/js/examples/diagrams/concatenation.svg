@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 360" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Concatenation</title>
+  <desc>Step 1 had three pieces joined by plus signs: the string "Hello, " with a space at the end, the variable name, and the string "!". In step 2, JavaScript read "Colan" from name. In step 3, plus glued the pieces together in order, which gave "Hello, Colan!".</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="540" height="360" rx="18" fill="#0f1b2d" />
+  <rect width="540" height="360" rx="18" fill="url(#grid)" />
+
+  <!-- Cards: three pieces in step 1, three pieces in step 2, one string in step 3 -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="60" y="54" width="156" height="56" rx="10" />
+    <rect x="246" y="54" width="96" height="56" rx="10" />
+    <rect x="372" y="54" width="72" height="56" rx="10" />
+
+    <rect x="60" y="168" width="156" height="56" rx="10" />
+    <rect x="246" y="168" width="128" height="56" rx="10" />
+    <rect x="404" y="168" width="72" height="56" rx="10" />
+
+    <rect x="60" y="282" width="252" height="56" rx="10" />
+  </g>
+
+  <!-- The text in each card. Values read from name are yellow. -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" text-anchor="middle" style="font-variant-ligatures: none; white-space: pre">
+    <text x="138" y="91">"Hello, "</text>
+    <text x="294" y="91">name</text>
+    <text x="408" y="91">"!"</text>
+
+    <text x="138" y="205">"Hello, "</text>
+    <text x="310" y="205" fill="#facc15">"Colan"</text>
+    <text x="440" y="205">"!"</text>
+
+    <text x="186" y="319">"Hello, <tspan fill="#facc15">Colan</tspan>!"</text>
+  </g>
+
+  <!-- The + signs between the pieces -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="28" font-weight="bold" fill="#38bdf8" text-anchor="middle">
+    <text x="231" y="91">+</text>
+    <text x="357" y="91">+</text>
+    <text x="231" y="205">+</text>
+    <text x="389" y="205">+</text>
+  </g>
+
+  <!-- The space after "Hello," marked in red at each step -->
+  <g fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 96 V103 H188 V96" />
+    <path d="M175 210 V217 H188 V210" />
+    <path d="M179 324 V331 H192 V324" />
+  </g>
+
+  <!-- Step numbers and labels -->
+  <g fill="#38bdf8">
+    <circle cx="36" cy="32" r="15" />
+    <circle cx="36" cy="146" r="15" />
+    <circle cx="36" cy="260" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="36" y="39">1</text>
+    <text x="36" y="153">2</text>
+    <text x="36" y="267">3</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc" style="font-variant-ligatures: none">
+    <text x="62" y="39">three pieces joined by +</text>
+    <text x="62" y="153">read "Colan" from name</text>
+    <text x="62" y="267">+ glued them in order</text>
+  </g>
+</svg>

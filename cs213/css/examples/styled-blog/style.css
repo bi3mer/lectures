@@ -1,0 +1,31 @@
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background-color: #fbf3e8;
+  color: #2b1a0e;
+  line-height: 1.6;
+}
+
+#header {
+  background-color: #2b1a0e;
+  color: #f6e7d2;
+  text-align: center;
+}
+
+h2 {
+  color: #8a4b1f;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.favorite {
+  font-weight: bold;
+}
+
+a {
+  color: #c97b3a;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

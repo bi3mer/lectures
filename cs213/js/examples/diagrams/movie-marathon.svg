@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 346" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Hours and minutes</title>
+  <desc>total held 345 minutes, which split into five blocks of 60 minutes and 45 minutes left over. In step 1, total % 60 became 345 % 60, which is 45, and JavaScript stored 45 in minutes. In step 2, (total - minutes) / 60 became (345 - 45) / 60, then 300 / 60, which is 5, and JavaScript stored 5 in hours.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1180" height="346" rx="18" fill="#0f1b2d" />
+  <rect width="1180" height="346" rx="18" fill="url(#grid)" />
+
+  <!-- The whole bar is total: 3 px per minute, so each hour is 180 px wide -->
+  <text x="590" y="40" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="22" fill="#e2e8f0" text-anchor="middle">total held <tspan fill="#facc15">345</tspan> minutes</text>
+  <path d="M72 66 V56 H1107 V66" fill="none" stroke="#64748b" stroke-width="2" />
+
+  <!-- Five full hours of 60 minutes -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="74" y="78" width="176" height="60" rx="8" />
+    <rect x="254" y="78" width="176" height="60" rx="8" />
+    <rect x="434" y="78" width="176" height="60" rx="8" />
+    <rect x="614" y="78" width="176" height="60" rx="8" />
+    <rect x="794" y="78" width="176" height="60" rx="8" />
+  </g>
+  <!-- The 45 minutes left over, outlined in red -->
+  <rect x="974" y="78" width="131" height="60" rx="8" fill="#1e293b" stroke="#f87171" stroke-width="2.5" />
+
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" text-anchor="middle">
+    <text x="162" y="117">60</text>
+    <text x="342" y="117">60</text>
+    <text x="522" y="117">60</text>
+    <text x="702" y="117">60</text>
+    <text x="882" y="117">60</text>
+    <text x="1040" y="117" fill="#facc15">45</text>
+  </g>
+
+  <!-- Brackets under the full hours and under the leftover -->
+  <path d="M74 150 V160 H970 V150" fill="none" stroke="#64748b" stroke-width="2" />
+  <path d="M976 150 V160 H1105 V150" fill="none" stroke="#f87171" stroke-width="2.5" />
+
+  <!-- Step 1 under the leftover, step 2 under the full hours. Values in yellow. -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="22" fill="#e2e8f0" text-anchor="middle" style="font-variant-ligatures: none">
+    <text x="1040" y="240">total % 60</text>
+    <text x="1040" y="268"><tspan fill="#facc15">345</tspan> % 60</text>
+    <text x="1040" y="296" fill="#facc15">45</text>
+
+    <text x="522" y="240">(total - minutes) / 60</text>
+    <text x="522" y="268">(<tspan fill="#facc15">345</tspan> - <tspan fill="#facc15">45</tspan>) / 60</text>
+    <text x="522" y="296"><tspan fill="#facc15">300</tspan> / 60</text>
+    <text x="522" y="324" fill="#facc15">5</text>
+  </g>
+
+  <!-- Step numbers and labels, one per line of code -->
+  <g fill="#38bdf8">
+    <circle cx="880" cy="196" r="15" />
+    <circle cx="412" cy="196" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="880" y="203">1</text>
+    <text x="412" y="203">2</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc">
+    <text x="902" y="203">stored 45 in minutes</text>
+    <text x="434" y="203">stored 5 in hours</text>
+  </g>
+</svg>

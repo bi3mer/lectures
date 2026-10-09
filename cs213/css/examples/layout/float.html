@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Colan's Coffee Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      /* Colors so the boxes are visible. Not layout. */
+      body {
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      header,
+      footer {
+        background-color: rgb(43, 26, 14);
+        color: rgb(246, 231, 210);
+      }
+      nav,
+      aside {
+        background-color: rgb(230, 201, 168);
+      }
+      article {
+        background-color: rgb(251, 243, 232);
+      }
+
+      /* Layout with floats, and every fix the floats needed. */
+      * {
+        box-sizing: border-box; /* width now includes padding and border */
+      }
+      nav {
+        float: left;
+        width: 20%;
+      }
+      article {
+        float: left;
+        width: 60%;
+      }
+      aside {
+        float: left;
+        width: 20%;
+      }
+      footer {
+        clear: both; /* drop below the floats instead of beside them */
+      }
+      header,
+      nav,
+      article,
+      aside,
+      footer {
+        padding: 10px;
+      }
+      /* The nav and aside still stop where their content stops.
+         Floats have no way to make the three columns the same height. */
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Colan's Coffee Blog</h1>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="#visited">Visited</a></li>
+        <li><a href="#wishlist">Wishlist</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+
+    <article>
+      <h2 id="visited">Visited</h2>
+      <p>Here is some text about the purpose of my made-up blog.</p>
+      <ul>
+        <li>Recreo - Dynamite</li>
+        <li>Nero - at least it looks nice.</li>
+        <li>Starbucks - it's fine.</li>
+      </ul>
+    </article>
+
+    <aside>
+      <h2>Favorite</h2>
+      <p>Recreo</p>
+    </aside>
+
+    <footer>Copyright 2026</footer>
+  </body>
+</html>

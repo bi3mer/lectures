@@ -1,0 +1,3 @@
+# Marp CLI reads this when it runs from this directory,
+# e.g. `npx @marp-team/marp-cli --server .`
+themeSet: ../themes

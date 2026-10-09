@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 432" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Using the result</title>
+  <desc>Step 1 called addTax(10), so price held 10 inside addTax. In step 2, price * 1.0625 became 10 * 1.0625, which is 10.625, and addTax printed 10.625 in the console. In step 3, addTax ended and gave back nothing, so total held undefined. In step 4, total * 2 became undefined * 2, which is NaN, and NaN printed in the console.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="540" height="432" rx="18" fill="#0f1b2d" />
+  <rect width="540" height="432" rx="18" fill="url(#grid)" />
+
+  <!-- Dashed outline: everything that happened inside addTax -->
+  <rect x="24" y="56" width="226" height="226" rx="14" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="8 6" />
+  <text x="40" y="82" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="16" font-weight="bold" fill="#94a3b8">inside addTax</text>
+
+  <!-- Variables are boxes: name in the header, value (yellow) in the body. The console runs along the bottom. -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="77" y="92" width="120" height="92" rx="10" />
+    <rect x="310" y="92" width="200" height="92" rx="10" />
+    <rect x="24" y="318" width="492" height="94" rx="10" />
+  </g>
+  <g fill="#334155" stroke="#64748b" stroke-width="2">
+    <path d="M77 126 V102 a10 10 0 0 1 10 -10 H187 a10 10 0 0 1 10 10 V126 z" />
+    <path d="M310 126 V102 a10 10 0 0 1 10 -10 H500 a10 10 0 0 1 10 10 V126 z" />
+    <path d="M24 352 V328 a10 10 0 0 1 10 -10 H506 a10 10 0 0 1 10 10 V352 z" />
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-weight="bold" text-anchor="middle">
+    <text x="137" y="116" font-size="18" fill="#e2e8f0">price</text>
+    <text x="410" y="116" font-size="18" fill="#e2e8f0">total</text>
+    <text x="137" y="171" font-size="30" fill="#facc15">10</text>
+    <text x="410" y="171" font-size="30" fill="#facc15">undefined</text>
+  </g>
+
+  <!-- What the console showed, in order -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#e2e8f0">
+    <text x="40" y="342" font-size="18" font-weight="bold">Console</text>
+    <text x="42" y="377" font-size="20">10.625</text>
+    <text x="42" y="402" font-size="20">NaN</text>
+  </g>
+
+  <!-- Step 2 inside addTax: price * 1.0625 turned into 10 * 1.0625, then 10.625 (values in yellow) -->
+  <!-- Step 4 outside: total * 2 turned into undefined * 2, then NaN -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#e2e8f0" text-anchor="middle" style="font-variant-ligatures: none">
+    <text x="137" y="214">price * 1.0625</text>
+    <text x="137" y="240"><tspan fill="#facc15">10</tspan> * 1.0625</text>
+    <text x="137" y="266" fill="#facc15">10.625</text>
+    <text x="410" y="214">total * 2</text>
+    <text x="410" y="240"><tspan fill="#facc15">undefined</tspan> * 2</text>
+    <text x="410" y="266" fill="#facc15">NaN</text>
+  </g>
+
+  <!-- Arrows: addTax handed nothing to total, and both printed values go down to the console -->
+  <g stroke="#38bdf8" stroke-width="4" marker-end="url(#head)">
+    <line x1="258" y1="138" x2="296" y2="138" />
+    <line x1="137" y1="278" x2="137" y2="306" />
+    <line x1="410" y1="278" x2="410" y2="306" />
+  </g>
+
+  <!-- Step numbers, in the order the code ran -->
+  <g fill="#38bdf8">
+    <circle cx="36" cy="32" r="15" />
+    <circle cx="195" cy="259" r="15" />
+    <circle cx="296" cy="69" r="15" />
+    <circle cx="450" cy="259" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="36" y="39">1</text>
+    <text x="195" y="266">2</text>
+    <text x="296" y="76">3</text>
+    <text x="450" y="266">4</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc">
+    <text x="62" y="39">called addTax(10)</text>
+    <text x="318" y="76">gave back nothing</text>
+  </g>
+</svg>
