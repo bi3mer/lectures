@@ -40,8 +40,8 @@ average = (s1 + s2 + s3 + s4 + s5) / 5
 print(f"Average: {average}")   # Average: 84.0
 ```
 
-- What about a class of 30? 
-- What if we don't know how many scores there will be? 
+- What about a class of 30?
+- What if we don't know how many scores there will be?
 
 ---
 
@@ -60,6 +60,35 @@ scores = [90, 85, 77, 100, 68]
 
 ---
 
+## The List Type
+
+```python
+scores = [90, 85, 77, 100, 68]
+print(type(scores))   # <class 'list'>
+
+parts = "Jane Doe".split(" ")
+print(type(parts))    # <class 'list'>
+```
+
+`list` is a type, like `int`, `float`, `str`, and `bool`.
+
+---
+
+## Lists Can Hold Any Type
+
+```python
+names = ["Ada", "Grace", "Alan"]   # strings
+prices = [2.50, 1.25, 4.00]        # floats
+present = [True, False, True]      # bools
+student = ["Ada", 19, 3.9, True]   # a mix: name, age, GPA, enrolled
+
+print(student)                     # ['Ada', 19, 3.9, True]
+```
+
+The items in a list do not have to be the same type. Python allows a mix, but most lists hold one type so that every item can be treated the same way.
+
+---
+
 ## Indexing a List
 
 ```python
@@ -74,6 +103,7 @@ scores = [90, 85, 77, 100, 68]
 
 </center>
 
+This is the same way that we index a string (e.g. `scores[0]` gives `90`).
 
 ---
 
@@ -87,8 +117,6 @@ print(scores[len(scores) - 1])   # 68
 print(scores[5])                 # IndexError: list index out of range
 ```
 
-Five items means the last index is 4, which is `len(scores) - 1`. There is no index 5, so Python crashes, just like it did for strings.
-
 ---
 
 ## Negative Indexes
@@ -98,12 +126,16 @@ scores = [90, 85, 77, 100, 68]
 print(scores[-1])   # 68, the same as scores[len(scores) - 1]
 ```
 
+<center>
+
 | Index          | 0    | 1    | 2    | 3     | 4    |
 | -------------- | ---- | ---- | ---- | ----- | ---- |
 | Item           | `90` | `85` | `77` | `100` | `68` |
 | Negative index | -5   | -4   | -3   | -2    | -1   |
 
-A **negative index** counts from the end: `-1` is the last item. Going past the front, like `scores[-6]`, crashes the same as going past the end. Strings work the same way: `"hello"[-1]` is `"o"`.
+</center>
+
+A **negative index** counts from the end: `-1` is the last item. Going past the front, like `scores[-6]`, crashes the same as going past the end. Strings work the same way: `"hello"[-1]` is `"o"`. (You can also use negative indexes for strings.)
 
 ---
 
@@ -129,7 +161,7 @@ print(len(names))   # 2
 </div>
 </div>
 
-`[]` is an empty list. `append` adds one item to the end. [Visualization](https://pythontutor.com/visualize.html#code=names%20%3D%20%5B%5D%0Anames.append%28%22Ada%22%29%0Anames.append%28%22Grace%22%29%0A%0Aprint%28names%29%0Aprint%28len%28names%29%29&curInstr=0&mode=display&origin=opt-frontend.js&py=311)
+`[]` is an empty list. `append` adds one item to the end.
 
 ---
 
@@ -374,7 +406,7 @@ Name the list after many things and the loop variable after one: `for score in s
 
 ---
 
-## Two Ways to Visit Every Item
+## `for` Two Ways
 
 <div class="cols">
 <div>
@@ -399,44 +431,7 @@ for score in scores:
 </div>
 </div>
 
-Both print `90`, `85`, and `77`. The left loop goes through the indexes, so it has to look each item up. The right loop goes through the items themselves: each time around, `score` holds the next one. [Visualization](https://pythontutor.com/visualize.html#code=scores%20%3D%20%5B90%2C%2085%2C%2077%5D%0A%0Afor%20score%20in%20scores%3A%0A%20%20%20%20print%28score%29&curInstr=0&mode=display&origin=opt-frontend.js&py=311)
-
----
-
-## It Works on Strings, Too
-
-<div class="cols">
-<div>
-
-```python
-word = input("Word: ").lower()
-count = 0
-
-for i in range(len(word)):
-    if word[i] in "aeiou":
-        count += 1
-
-print(f"Vowels: {count}")
-```
-
-</div>
-<div>
-
-```python
-word = input("Word: ").lower()
-count = 0
-
-for ch in word:
-    if ch in "aeiou":
-        count += 1
-
-print(f"Vowels: {count}")
-```
-
-</div>
-</div>
-
-Count the Vowels from week 4, before and after. A for-each loop over a string visits each character.
+Both print `90`, `85`, and `77`. The left loop goes through the indexes, so it has to look each item up. The right loop goes through the items themselves: each time around, `score` holds the next one.
 
 ---
 
@@ -455,23 +450,33 @@ for i, score in enumerate(scores):
 2 77
 ```
 
-`enumerate` hands the loop two things each time around: the index and the item. `i, score` unpacks them, the same way `a, b = ...` unpacked a returned pair in week 5.
+`enumerate` hands the loop two things each time around: the index and the item. `i, score` unpacks them, the same way `a, b = ...` unpacked [two returned values](07-functions.html#84).
 
 ---
 
 ## Which Loop?
 
+<br/>
+
+<center>
+
 | You need...        | Use                                  |
 | ------------------ | ------------------------------------ |
 | only the items     | `for score in scores:`               |
-| only the index     | `for i in range(len(scores)):`       |
+| the index          | `for i in range(len(scores)):`       |
 | index and the item | `for i, score in enumerate(scores):` |
 
-"Which day had the most sales?" needs both: the sales number to compare and the position to find the day, so `enumerate` fits. Most loops only need the items.
+</center>
+<br/>
+
+You can always use the index to access individual items, but getting the index from the item is much more involved.
 
 ---
 
-## Changing the Loop Variable
+## Modifying List Items
+
+<div class="cols">
+<div>
 
 ```python
 nums = [1, 2, 3]
@@ -482,7 +487,15 @@ for x in nums:
 print(nums)   # [1, 2, 3]
 ```
 
-`x` is a separate variable that gets each item in turn. Changing `x` changes only `x`, the same way `double(n)` from week 5 could not change the `n` outside it. [Visualization](https://pythontutor.com/visualize.html#code=nums%20%3D%20%5B1%2C%202%2C%203%5D%0A%0Afor%20x%20in%20nums%3A%0A%20%20%20%20x%20%3D%20x%20%2A%202%0A%0Aprint%28nums%29&curInstr=0&mode=display&origin=opt-frontend.js&py=311)
+</div>
+<div>
+
+<img src="./images/loop-variable.svg" width="480">
+
+</div>
+</div>
+
+`x` is a separate variable that gets each item in turn. Changing `x` changes only `x`, the same way changing a parameter inside a function does not change the variable you passed in ([example](07-functions.html#48)).
 
 ---
 
@@ -849,7 +862,9 @@ Message: Shoot I forgot my darn umbrella
 ***** I forgot my **** umbrella
 ```
 
-How do we check one word? How do we get the words back into one string?
+- HINT: we can split the sentence with `.split()`
+- How do we check one word?
+- How do we get the words back into one string?
 
 ---
 

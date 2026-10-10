@@ -1220,7 +1220,7 @@ How can one function give back two counts?
 ## Return Two Values
 
 ```python
-def count_letters_and_digits(text):
+def count_kinds(text):
     letters = 0
     digits = 0
 
