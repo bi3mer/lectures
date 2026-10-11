@@ -10,32 +10,6 @@ Colan Biemer
 
 ---
 
-## Required Reading
-
-Read **Chapter 5: Defining Functions** of the textbook.
-
-The syllabus, in the Course Info Module, has details of the textbook and how you may acquire it.
-
----
-
-## Quiz
-
-- The quiz is next week. It'll be online and you'll be using a lockdown browser. Make sure to have it installed before class. I will not be giving extra time for not having it installed. You can find [instructions online](https://bentley.service-now.com/bsc?id=kb_article_view&sysparm_article=KB0011417).
-- The quiz will have multiple choice, short answer, and coding questions.
-- This lecture on functions will also serve as a review for the quiz. (Note: defining functions will not be on the quiz.)
-- If you have accommodations, please email me.
-
----
-
-## Assignments this Week
-
-- Two In-Class Activities (Due: October 4th)
-- Assignment 2 (Due: October 4th)
-- One Anonymous Survey (Due: October 11th)
-- One Participation Assignment on Functions (Due: October 11th)
-
----
-
 ## We've Been Using Functions Since Week 1
 
 | Week | Functions                                                      |

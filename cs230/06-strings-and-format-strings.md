@@ -10,14 +10,6 @@ Colan Biemer
 
 ---
 
-## Required Reading
-
-Read **Chapter 8: Strings in Detail** of the textbook.
-
-The syllabus, in the Course Info Module, has details of the textbook and how you may acquire it.
-
----
-
 ## Our First String From Week 1
 
 ```python

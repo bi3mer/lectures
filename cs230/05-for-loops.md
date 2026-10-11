@@ -10,14 +10,6 @@ Colan Biemer
 
 ---
 
-## Required Reading
-
-Read **Chapter 4: Repetition** of the textbook.
-
-The syllabus, in the Course Info Module, has details of the textbook and how you may acquire it.
-
----
-
 ## For Loops
 
 ```python
