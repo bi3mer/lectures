@@ -119,6 +119,13 @@ main.doc {
   text-align: left;
 }
 
-.doc th {
+/* The whole table is dark like the code boxes, with the row under the mouse lit up. Only
+   body rows light up, so the header row stays put. */
+.doc th,
+.doc tr {
   background-color: #032837;
+}
+
+.doc tbody tr:hover {
+  background-color: #175b78;
 }

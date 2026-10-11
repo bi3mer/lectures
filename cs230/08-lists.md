@@ -388,6 +388,14 @@ print(f"{len(good_days)} good days")
 
 ---
 
+## In-Class Activity 1: Sign-In Sheet
+
+[https://bi3mer.github.io/autograder/cs230/w6i1.html](https://bi3mer.github.io/autograder/cs230/w6i1.html)
+
+`read_names` returns two lists. `first_names, last_names = read_names()` unpacks them, the same way `a, b = ...` unpacked [two returned values](07-functions.html#84).
+
+---
+
 ## Looping Over a List
 
 Visiting every item, one at a time.
