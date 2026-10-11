@@ -10,23 +10,6 @@ Colan Biemer
 
 ---
 
-## Required Reading
-
-Read **Chapter 6: Lists** and **Appendix G: Lists in Brief** of the textbook.
-
-The syllabus, in the Course Info Module, has details of the textbook and how you may acquire it.
-
----
-
-## Announcements
-
-**TODO: TBD**
-
-- Program 3 (Due: TODO)
-- Practice Problems 6.1, 6.2, and 6.3 (Due: TODO)
-
----
-
 ## Average of Five Scores
 
 ```python

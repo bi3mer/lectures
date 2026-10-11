@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 386" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title>An else if chain</title>
-  <desc>The user typed 10, so ounces held 10. Step 1 checked ounces &lt;= 8. 10 &lt;= 8 was false, so JavaScript skipped the block that stored "Small". Step 2 checked ounces &lt;= 12. 10 &lt;= 12 was true, so JavaScript ran the block that stored "Medium". Step 3 skipped the else block, since a check above it was true. size held "Medium".</desc>
+  <desc>ounces held 10. Step 1 checked ounces &lt;= 8. 10 &lt;= 8 was false, so JavaScript skipped the block that stored "Small". Step 2 checked ounces &lt;= 12. 10 &lt;= 12 was true, so JavaScript ran the block that stored "Medium". Step 3 skipped the else block, since a check above it was true. size held "Medium".</desc>
   <defs>
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
@@ -46,7 +46,7 @@
     <text x="36" y="217">3</text>
   </g>
   <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc" style="font-variant-ligatures: none">
-    <text x="62" y="33">typed 10: 10 &lt;= 8 was false</text>
+    <text x="62" y="33">10 &lt;= 8 was false</text>
     <text x="62" y="125">10 &lt;= 12 was true, so it ran</text>
     <text x="62" y="217">skipped, a check above was true</text>
   </g>

@@ -9,13 +9,19 @@ paginate: true
 .side-by-side { display: grid; grid-template-columns: 560px minmax(0, 1fr); gap: 24px; align-items: start; }
 .side-by-side p { margin: 0; }
 .caption { font-size: 20px; color: var(--secondary); }
-/* What the page showed, one column for each answer the user typed. */
+/* What the page showed, one column for each value we tried. */
 .runs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 24px; }
 .runs p { margin: 0; }
 /* The theme draws a .demo as a white panel whose 12px edge is a shadow, so the margins keep
    that edge clear of the caption above and the slide's sides. */
 .demo { margin: 20px 12px 28px; }
 .demo p { margin: 0; }
+/* Pieces of the Colan's Coffee page, drawn small inside a .demo. */
+.demo .sign { padding: 2px 10px; border-radius: 6px; background-color: dimgray; color: white; }
+.demo .card { padding: 4px 12px; border: 4px solid lightgray; border-radius: 8px; }
+.demo img { vertical-align: middle; }
+.demo button { font: inherit; }
+.demo input { font: inherit; width: 3em; }
 </style>
 
 # `if` Statements
@@ -80,146 +86,128 @@ The second line has both: `===` asked the question, and `=` put the answer in `i
 
 <p class="caption">Source: Allen Wirfs-Brock and Brendan Eich, <a href="https://doi.org/10.1145/3386327">"JavaScript: The First 20 Years"</a> (2020)</p>
 
-`"21" === 21` is `false`, so we turn `prompt` answers into numbers before comparing them.
+`"21" === 21` is `false`, so we turn what the user types into a number before comparing it.
 
 ---
 
-## Let's Write a Program
+## Let's Build Colan's Coffee
 
 Open [if-starter.html](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-starter.html) on GitHub and set it up in WebStorm:
 
-- Click **Copy raw file**, the copy icon above the code.
-- Paste it into a new HTML file in WebStorm.
-
-Our code goes in its `<script>`. Each problem gives us the lines that change the page.
+1. Click **Copy raw file**, the copy icon above the code.
+2. Paste it into a new HTML file in WebStorm.
+3. In the same folder, make an empty file named `practice.js`. The page already links to it with `<script src="practice.js"></script>`.
 
 ---
 
-## Problem (Me): Caffeine
+## Problem (Me): Open Sign
 
-Every coffee on our menu has caffeine, except `decaf`.
+The sign next to the shop's name says `Open`. The shop closes at 6 PM, which is hour 18 on a 24-hour clock.
 
-1. Ask which coffee the user wants.
-2. Check whether it has caffeine.
-3. Show `Has caffeine: true` on the page, with the real answer.
-
-Use this line to change the page:
+1. Get the current hour (0 to 23) with this line:
 
 ```js
-document.getElementById("message").textContent = "Has caffeine: true";
+let hour = new Date().getHours();
+```
+
+2. From hour 18 on, hide the sign. Use this line to change the page:
+
+```js
+document.getElementById("sign").hidden = true;
 ```
 
 ---
 
-## Solution (Me): Caffeine
+## Solution (Me): Open Sign
 
 ```js
-let coffee = prompt("Which coffee?");
-let hasCaffeine = coffee !== "decaf";
+let hour = new Date().getHours();
 
-document.getElementById("message").textContent = `Has caffeine: ${hasCaffeine}`;
-```
-
-<div class="runs">
-<div>
-<p class="caption">Typed latte</p>
-<div class="demo"><p>Has caffeine: true</p></div>
-</div>
-<div>
-<p class="caption">Typed decaf</p>
-<div class="demo"><p>Has caffeine: false</p></div>
-</div>
-<div>
-<p class="caption">Typed Decaf</p>
-<div class="demo"><p>Has caffeine: true</p></div>
-</div>
-</div>
-
-We compared the answer with a string, so there's no `Number()`. `Decaf` got `true`, since `!==` treats capital letters as different.
-
----
-
-## Problem (Us): Today's Number
-
-Anyone who guesses today's number, 7, gets a free coffee. Let's ask for a guess, then show `Free coffee: true`, with the real answer.
-
-1. Ask for a guess.
-2. Check whether the guess is 7. What happens if we skip `Number()`?
-3. Show the answer on the page.
-
-Use this line to change the page:
-
-```js
-document.getElementById("message").textContent = "Free coffee: true";
-```
-
----
-
-## Solution (Us): Today's Number
-
-```js
-let guess = Number(prompt("Guess today's number:"));
-let getsFreeCoffee = guess === 7;
-
-document.getElementById("message").textContent = `Free coffee: ${getsFreeCoffee}`;
+document.getElementById("sign").hidden = hour >= 18;
 ```
 
 <div class="runs">
 <div>
-<p class="caption">Typed 7</p>
-<div class="demo"><p>Free coffee: true</p></div>
+<p class="caption">Hour 9</p>
+<div class="demo"><p><strong>Colan's Coffee</strong> <span class="sign">Open</span></p></div>
 </div>
 <div>
-<p class="caption">Typed 3</p>
-<div class="demo"><p>Free coffee: false</p></div>
+<p class="caption">Hour 20</p>
+<div class="demo"><p><strong>Colan's Coffee</strong></p></div>
 </div>
 </div>
 
-Without `Number()`, typing 7 shows `Free coffee: false`, since `"7" === 7` is `false`.
+`hidden` takes a boolean, so the comparison's answer goes straight in. To see the sign at another hour, change the first line to `let hour = 20;` for a moment.
 
 ---
 
-## Problem (You): Can You Vote?
+## Problem (Us): Sold Out
 
-You can vote at 18 or older.
+Let's turn off the **Buy** button for the beans when the shop runs out.
 
-1. Ask the user's age, and turn the answer into a number.
-2. Check whether they're old enough to vote.
-3. Show `Can vote: true` on the page, with the real answer.
-
-Use this line to change the page:
+1. Store how many bags are left in a variable `bagsLeft`. Let's say 3.
+2. When none are left, turn off the button. Use this line to change the page:
 
 ```js
-document.getElementById("message").textContent = "Can vote: true";
+document.getElementById("buy").disabled = true;
 ```
 
+3. How can we test if there are no bags left?
+
 ---
 
-## Solution (You): Can You Vote?
+## Solution (Us): Sold Out
 
 ```js
-let age = Number(prompt("How old are you?"));
-let canVote = age >= 18;
+let bagsLeft = 3;
 
-document.getElementById("message").textContent = `Can vote: ${canVote}`;
+document.getElementById("buy").disabled = bagsLeft === 0;
 ```
 
 <div class="runs">
 <div>
-<p class="caption">Typed 25</p>
-<div class="demo"><p>Can vote: true</p></div>
+<p class="caption">3 bags</p>
+<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <button>Buy</button></p></div>
 </div>
 <div>
-<p class="caption">Typed 18</p>
-<div class="demo"><p>Can vote: true</p></div>
-</div>
-<div>
-<p class="caption">Typed 15</p>
-<div class="demo"><p>Can vote: false</p></div>
+<p class="caption">0 bags</p>
+<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <button disabled>Buy</button></p></div>
 </div>
 </div>
 
-`>=` let 18 through. With `>`, an 18-year-old would see `Can vote: false`.
+The second line uses both: `===` asks whether `bagsLeft` is 0, and `=` puts the answer in `disabled`.
+
+---
+
+## Problem (You): Age Limit
+
+Our drinks with caffeine are for ages 12 and up. Hot chocolate is for everyone. The menu has an age box, and it calls `checkAge()` every time the age in it changes:
+
+```html
+<input id="age" type="number" oninput="checkAge()" />
+```
+
+1. Write the `checkAge()` function.
+2. Inside it, get the age with `document.getElementById("age").value`, and turn it into a number.
+3. Under 12, turn off the **Order** button for the latte. Use this line to change the page:
+
+```js
+document.getElementById("latte").disabled = true;
+```
+
+---
+
+## Solution (You): Age Limit
+
+```js
+function checkAge() {
+  let age = Number(document.getElementById("age").value);
+
+  document.getElementById("latte").disabled = age < 12;
+}
+```
+
+With `<=`, a 12-year-old can't order a latte.
 
 ---
 
@@ -247,7 +235,7 @@ if (condition) {
 <div>
 
 ```js
-let bagsLeft = Number(prompt("Bags left?"));
+let bagsLeft = 3;
 let warning = "";
 
 if (bagsLeft < 5) {
@@ -258,15 +246,15 @@ if (bagsLeft < 5) {
 </div>
 <div>
 
-| Typed | `warning`        |
-| ----- | ---------------- |
-| 3     | `"Running low!"` |
-| 12    | `""`             |
+| `bagsLeft` | `warning`        |
+| ---------- | ---------------- |
+| 3          | `"Running low!"` |
+| 12         | `""`             |
 
 </div>
 </div>
 
-For 12, `12 < 5` was `false`, so JavaScript skipped the block, and `warning` stayed `""`.
+For 12, `12 < 5` was `false`, so the code inside of the if-statement brackets (`{ ... }`) was never run.
 
 ---
 
@@ -276,7 +264,7 @@ For 12, `12 < 5` was `false`, so JavaScript skipped the block, and `warning` sta
 <div>
 
 ```js
-let total = Number(prompt("Order total?"));
+let total = 60;
 let shipping;
 
 if (total >= 50) {
@@ -289,10 +277,10 @@ if (total >= 50) {
 </div>
 <div>
 
-| Typed | `shipping` |
-| ----- | ---------- |
-| 60    | `"free"`   |
-| 20    | `"$5"`     |
+| `total` | `shipping` |
+| ------- | ---------- |
+| 60      | `"free"`   |
+| 20      | `"$5"`     |
 
 </div>
 </div>
@@ -303,17 +291,17 @@ if (total >= 50) {
 
 ## Problem (Me): Open or Closed
 
-The coffee shop closes at 6 PM, which is hour 18 on a 24-hour clock.
+A missing sign doesn't tell anyone we're closed. Let's replace the `hidden` line with an `if`:
 
-1. Ask what hour it is (0 to 23), and turn the answer into a number.
-2. Before hour 18, show `We're open!` in green.
-3. Otherwise, show `Sorry, we're closed.` in red.
+1. Before hour 18, make the sign green.
+2. Otherwise, the sign says `Closed` on red, and the page turns gray.
 
 Use these lines to change the page:
 
 ```js
-document.getElementById("message").textContent = "We're open!";
-document.getElementById("message").style.color = "green";
+document.getElementById("sign").textContent = "Closed";
+document.getElementById("sign").style.backgroundColor = "red";
+document.body.style.backgroundColor = "gray";
 ```
 
 ---
@@ -321,121 +309,98 @@ document.getElementById("message").style.color = "green";
 ## Solution (Me): Open or Closed
 
 ```js
-let hour = Number(prompt("What hour is it?"));
-
 if (hour < 18) {
-  document.getElementById("message").textContent = "We're open!";
-  document.getElementById("message").style.color = "green";
+  document.getElementById("sign").style.backgroundColor = "green";
 } else {
-  document.getElementById("message").textContent = "Sorry, we're closed.";
-  document.getElementById("message").style.color = "red";
+  document.getElementById("sign").textContent = "Closed";
+  document.getElementById("sign").style.backgroundColor = "red";
+  document.body.style.backgroundColor = "gray";
 }
 ```
 
-<div class="runs">
-<div>
-<p class="caption">Typed 9</p>
-<div class="demo"><p style="color: green">We're open!</p></div>
-</div>
-<div>
-<p class="caption">Typed 18</p>
-<div class="demo"><p style="color: red">Sorry, we're closed.</p></div>
-</div>
-<div>
-<p class="caption">Typed 20</p>
-<div class="demo"><p style="color: red">Sorry, we're closed.</p></div>
-</div>
-</div>
-
-Each block can hold as many lines as we need.
+Each block can hold as many lines as we need. `document.body` is the page's `<body>`, so it needs no id.
 
 ---
 
-## Problem (Us): Even or Odd
+## Problem (Us): Member Name
 
-Let's ask the user for a whole number, then say whether it's even or odd, like `7 is odd.`
+Let's put the member's name on the rewards card. The card has a name box, and it calls `showName()` every time the name in it changes:
 
-1. Ask for a number, and turn the answer into a number.
-2. How can we tell that a number is even? (Hint: remember splitting the cookies?)
-3. Show the sentence on the page, with the real number.
+```html
+<input id="name" oninput="showName()" />
+```
 
-Use this line to change the page:
+1. Write the `showName()` function.
+2. Inside it, get the name with `document.getElementById("name").value`.
+3. If the box is empty, show `Guest`. Otherwise, show their name. Use this line to change the page:
 
 ```js
-document.getElementById("message").textContent = "7 is odd.";
+document.getElementById("member").textContent = "Guest";
 ```
 
 ---
 
-## Solution (Us): Even or Odd
+## Solution (Us): Member Name
 
 ```js
-let number = Number(prompt("Whole number?"));
+function showName() {
+  let name = document.getElementById("name").value;
 
-if (number % 2 === 0) {
-  document.getElementById("message").textContent = `${number} is even.`;
-} else {
-  document.getElementById("message").textContent = `${number} is odd.`;
+  if (name === "") {
+    document.getElementById("member").textContent = "Guest";
+  } else {
+    document.getElementById("member").textContent = name;
+  }
 }
 ```
 
-<div class="runs">
-<div>
-<p class="caption">Typed 8</p>
-<div class="demo"><p>8 is even.</p></div>
-</div>
-<div>
-<p class="caption">Typed 7</p>
-<div class="demo"><p>7 is odd.</p></div>
-</div>
-</div>
-
-An even number leaves no remainder when divided by 2. `%` runs before `===`, so JavaScript worked out `number % 2` first, then compared the result with `0`.
+`""` is an _empty_ string. We could also test with `name.length === 0`.
 
 ---
 
-## Problem (You): Logging In
+## Problem (You): Low Stock
 
-In our first lecture, the browser had to send the login form to the server just to find out the password box was empty. Now the page can check that itself.
+Let's warn customers when the beans run low.
 
-1. Ask the user for their password.
-2. If they left it empty, show `Please enter a password.` in red.
-3. Otherwise, show `Logging in...`.
+1. Under 5 bags, the stock line says `Only 3 left!` in orange, with the real count.
+2. Otherwise, it says `In stock.`
 
 Use these lines to change the page:
 
 ```js
-document.getElementById("message").textContent = "Logging in...";
-document.getElementById("message").style.color = "red";
+document.getElementById("stock").textContent = "Only 3 left!";
+document.getElementById("stock").style.color = "orange";
 ```
 
 ---
 
-## Solution (You): Logging In
+## Solution (You): Low Stock
 
 ```js
-let password = prompt("Password?");
-
-if (password === "") {
-  document.getElementById("message").textContent = "Please enter a password.";
-  document.getElementById("message").style.color = "red";
+if (bagsLeft < 5) {
+  document.getElementById("stock").textContent = `Only ${bagsLeft} left!`;
+  document.getElementById("stock").style.color = "orange";
 } else {
-  document.getElementById("message").textContent = "Logging in...";
+  document.getElementById("stock").textContent = "In stock.";
 }
 ```
 
 <div class="runs">
 <div>
-<p class="caption">Left it empty</p>
-<div class="demo"><p style="color: red">Please enter a password.</p></div>
+<p class="caption">12 bags</p>
+<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> In stock.</p></div>
 </div>
 <div>
-<p class="caption">Typed latte123</p>
-<div class="demo"><p>Logging in...</p></div>
+<p class="caption">3 bags</p>
+<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <span style="color: orange">Only 3 left!</span></p></div>
+</div>
+<div>
+<p class="caption">0 bags</p>
+<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <span style="color: orange">Only 0 left!</span></p></div>
 </div>
 </div>
 
-We compared the answer with a string, so there's no `Number()` this time. What if the user clicks **Cancel**? We'll come back to that.
+`bagsLeft` already exists from Sold Out, so there's no second `let`. `Only 0 left!` needs a third choice, which comes next.
 
 ---
 
@@ -465,7 +430,7 @@ JavaScript checks the conditions from top to bottom. It runs the block under the
 <div>
 
 ```js
-let ounces = Number(prompt("Ounces?"));
+let ounces = 10;
 let size;
 
 if (ounces <= 8) {
@@ -480,7 +445,7 @@ if (ounces <= 8) {
 </div>
 <div>
 
-![w:530 The user typed 10, so ounces held 10. Step 1 checked ounces <= 8. 10 <= 8 was false, so JavaScript skipped the block that stored "Small". Step 2 checked ounces <= 12. 10 <= 12 was true, so JavaScript ran the block that stored "Medium". Step 3 skipped the else block, since a check above it was true. size held "Medium".](examples/diagrams/else-if-chain.svg)
+![w:530 ounces held 10. Step 1 checked ounces <= 8. 10 <= 8 was false, so JavaScript skipped the block that stored "Small". Step 2 checked ounces <= 12. 10 <= 12 was true, so JavaScript ran the block that stored "Medium". Step 3 skipped the else block, since a check above it was true. size held "Medium".](examples/diagrams/else-if-chain.svg)
 
 </div>
 </div>
@@ -520,17 +485,17 @@ Put the narrowest check first.
 
 ## Problem (Me): Reward Levels
 
-Our coffee shop gives each member a level, based on their reward points. Ask for the member's points, then show their level on its background color:
+Each member gets a badge for their reward points. Store the points in a variable `points` (let's say 320), then set the badge and the color of the card's border:
 
-- 500 and up: `Gold member` on `gold`
-- 200 to 499: `Silver member` on `silver`
-- Below 200: `Bronze member` on `tan`
+- 500 and up: 🥇 with a `gold` border
+- 200 to 499: 🥈 with a `silver` border
+- Below 200: 🥉 with a `tan` border
 
 Use these lines to change the page:
 
 ```js
-document.getElementById("message").textContent = "Gold member";
-document.getElementById("message").style.backgroundColor = "gold";
+document.getElementById("badge").textContent = "🥇";
+document.getElementById("rewards").style.borderColor = "gold";
 ```
 
 ---
@@ -538,50 +503,52 @@ document.getElementById("message").style.backgroundColor = "gold";
 ## Solution (Me): Reward Levels
 
 ```js
-let points = Number(prompt("Reward points?"));
+let points = 320;
 
 if (points >= 500) {
-  document.getElementById("message").textContent = "Gold member";
-  document.getElementById("message").style.backgroundColor = "gold";
+  document.getElementById("badge").textContent = "🥇";
+  document.getElementById("rewards").style.borderColor = "gold";
 } else if (points >= 200) {
-  document.getElementById("message").textContent = "Silver member";
-  document.getElementById("message").style.backgroundColor = "silver";
+  document.getElementById("badge").textContent = "🥈";
+  document.getElementById("rewards").style.borderColor = "silver";
 } else {
-  document.getElementById("message").textContent = "Bronze member";
-  document.getElementById("message").style.backgroundColor = "tan";
+  document.getElementById("badge").textContent = "🥉";
+  document.getElementById("rewards").style.borderColor = "tan";
 }
 ```
 
 <div class="runs">
 <div>
-<p class="caption">Typed 650</p>
-<div class="demo"><p style="background-color: gold">Gold member</p></div>
+<p class="caption">650 points</p>
+<div class="demo"><div class="card" style="border-color: gold"><p>🥇 Sam</p></div></div>
 </div>
 <div>
-<p class="caption">Typed 320</p>
-<div class="demo"><p style="background-color: silver">Silver member</p></div>
+<p class="caption">320 points</p>
+<div class="demo"><div class="card" style="border-color: silver"><p>🥈 Sam</p></div></div>
 </div>
 <div>
-<p class="caption">Typed 40</p>
-<div class="demo"><p style="background-color: tan">Bronze member</p></div>
+<p class="caption">40 points</p>
+<div class="demo"><div class="card" style="border-color: tan"><p>🥉 Sam</p></div></div>
 </div>
 </div>
+
+An emoji is text, so `textContent` swaps the icon.
 
 ---
 
 ## Problem (Us): Stock Levels
 
-Let's improve the low-stock warning from earlier. Ask how many bags are left, then show:
+`Only 0 left!` should say `Sold out.` Let's replace our Low Stock code with three levels:
 
-- 0: `Sold out.` in red
-- 1 to 4: `Only 3 left!`, with the real count
+- 0: `Sold out.` in red, and the bag fades to `0.3` opacity
+- 1 to 4: `Only 3 left!` in orange, with the real count
 - 5 or more: `In stock.`
 
 Which check should go first? Use these lines to change the page:
 
 ```js
-document.getElementById("message").textContent = "Sold out.";
-document.getElementById("message").style.color = "red";
+document.getElementById("stock").style.color = "red";
+document.getElementById("bag").style.opacity = "0.3";
 ```
 
 ---
@@ -589,30 +556,30 @@ document.getElementById("message").style.color = "red";
 ## Solution (Us): Stock Levels
 
 ```js
-let bagsLeft = Number(prompt("Bags left?"));
-
 if (bagsLeft === 0) {
-  document.getElementById("message").textContent = "Sold out.";
-  document.getElementById("message").style.color = "red";
+  document.getElementById("stock").textContent = "Sold out.";
+  document.getElementById("stock").style.color = "red";
+  document.getElementById("bag").style.opacity = "0.3";
 } else if (bagsLeft < 5) {
-  document.getElementById("message").textContent = `Only ${bagsLeft} left!`;
+  document.getElementById("stock").textContent = `Only ${bagsLeft} left!`;
+  document.getElementById("stock").style.color = "orange";
 } else {
-  document.getElementById("message").textContent = "In stock.";
+  document.getElementById("stock").textContent = "In stock.";
 }
 ```
 
 <div class="runs">
 <div>
-<p class="caption">Typed 0</p>
-<div class="demo"><p style="color: red">Sold out.</p></div>
+<p class="caption">0 bags</p>
+<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" style="opacity: 0.3" /> <span style="color: red">Sold out.</span></p></div>
 </div>
 <div>
-<p class="caption">Typed 3</p>
-<div class="demo"><p>Only 3 left!</p></div>
+<p class="caption">3 bags</p>
+<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <span style="color: orange">Only 3 left!</span></p></div>
 </div>
 <div>
-<p class="caption">Typed 12</p>
-<div class="demo"><p>In stock.</p></div>
+<p class="caption">12 bags</p>
+<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> In stock.</p></div>
 </div>
 </div>
 
@@ -622,17 +589,16 @@ if (bagsLeft === 0) {
 
 ## Problem (You): A Greeting
 
-Show `Good morning!` before hour 12, `Good afternoon!` before hour 18, and `Good evening!` after that.
+The greeting under our name should change with the hour: `Good morning! ☀️` before hour 12, `Good afternoon! 🌤️` before hour 18, and `Good evening! 🌙` after that.
 
 ```js
 } else if (hour < 18) {
-  document.getElementById("message").textContent = "Good evening!";
-let hour = Number(prompt("What hour is it?"));
+  document.getElementById("greeting").textContent = "Good evening! 🌙";
 } else (hour >= 18) {
-  document.getElementById("message").textContent = "Good morning!";
+  document.getElementById("greeting").textContent = "Good morning! ☀️";
 }
 if (hour < 12) {
-  document.getElementById("message").textContent = "Good afternoon!";
+  document.getElementById("greeting").textContent = "Good afternoon! 🌤️";
 } else if hour < 18 {
 } else {
 ```
@@ -644,29 +610,27 @@ Assemble the program from the lines above. Two of the lines are wrong.
 ## Solution (You): A Greeting
 
 ```js
-let hour = Number(prompt("What hour is it?"));
-
 if (hour < 12) {
-  document.getElementById("message").textContent = "Good morning!";
+  document.getElementById("greeting").textContent = "Good morning! ☀️";
 } else if (hour < 18) {
-  document.getElementById("message").textContent = "Good afternoon!";
+  document.getElementById("greeting").textContent = "Good afternoon! 🌤️";
 } else {
-  document.getElementById("message").textContent = "Good evening!";
+  document.getElementById("greeting").textContent = "Good evening! 🌙";
 }
 ```
 
 <div class="runs">
 <div>
-<p class="caption">Typed 9</p>
-<div class="demo"><p>Good morning!</p></div>
+<p class="caption">Hour 9</p>
+<div class="demo"><p>Good morning! ☀️</p></div>
 </div>
 <div>
-<p class="caption">Typed 14</p>
-<div class="demo"><p>Good afternoon!</p></div>
+<p class="caption">Hour 14</p>
+<div class="demo"><p>Good afternoon! 🌤️</p></div>
 </div>
 <div>
-<p class="caption">Typed 20</p>
-<div class="demo"><p>Good evening!</p></div>
+<p class="caption">Hour 20</p>
+<div class="demo"><p>Good evening! 🌙</p></div>
 </div>
 </div>
 
@@ -717,20 +681,22 @@ let canRent = age >= 25 && hasLicense;
 
 ---
 
-## Example: Empty or Cancel
+## Example: Plant Milk
 
-Clicking **Cancel** on a `prompt` gives `null`, which isn't `""`, so our login check let it through. With `||`, one condition covers both:
+Oat milk and almond milk cost 50 cents extra.
 
 ```js
-let password = prompt("Password?");
-let isMissing = password === "" || password === null;
+let milk = "oat";
+let costsExtra = milk === "oat" || milk === "almond";
 ```
 
-| The user           | `password`   | `isMissing` |
-| ------------------ | ------------ | ----------- |
-| left it empty      | `""`         | `true`      |
-| clicked **Cancel** | `null`       | `true`      |
-| typed latte123     | `"latte123"` | `false`     |
+| `milk`     | `costsExtra` |
+| ---------- | ------------ |
+| `"oat"`    | `true`       |
+| `"almond"` | `true`       |
+| `"whole"`  | `false`      |
+
+`||` gives `true` when at least one side is `true`. Each side needs its own `milk ===`.
 
 ---
 
@@ -792,49 +758,39 @@ A range takes two comparisons, joined with `&&`.
 
 ---
 
-## Problem (Me): Open or Closed, Again
+## Problem (Me): Opening Hours
 
-Our page from earlier said `We're open!` at 3 AM. The shop opens at 7 and closes at 18.
+Our sign says `Open` at 3 AM. The shop opens at 7 and closes at 18. Let's change the condition in Open or Closed:
 
-1. Ask what hour it is, and turn the answer into a number.
-2. From 7 up to 18, show `We're open!` in green.
-3. Otherwise, show `Sorry, we're closed.` in red.
-
-Use these lines to change the page:
-
-```js
-document.getElementById("message").textContent = "We're open!";
-document.getElementById("message").style.color = "green";
-```
+1. From 7 up to 18, the sign is green.
+2. Otherwise, it says `Closed` on red, and the page turns gray.
 
 ---
 
-## Solution (Me): Open or Closed, Again
+## Solution (Me): Opening Hours
 
 ```js
-let hour = Number(prompt("What hour is it?"));
-
 if (hour >= 7 && hour < 18) {
-  document.getElementById("message").textContent = "We're open!";
-  document.getElementById("message").style.color = "green";
+  document.getElementById("sign").style.backgroundColor = "green";
 } else {
-  document.getElementById("message").textContent = "Sorry, we're closed.";
-  document.getElementById("message").style.color = "red";
+  document.getElementById("sign").textContent = "Closed";
+  document.getElementById("sign").style.backgroundColor = "red";
+  document.body.style.backgroundColor = "gray";
 }
 ```
 
 <div class="runs">
 <div>
-<p class="caption">Typed 3</p>
-<div class="demo"><p style="color: red">Sorry, we're closed.</p></div>
+<p class="caption">Hour 3</p>
+<div class="demo" style="background-color: gray; box-shadow: 0 0 0 12px gray"><p><strong>Colan's Coffee</strong> <span class="sign" style="background-color: red">Closed</span></p></div>
 </div>
 <div>
-<p class="caption">Typed 9</p>
-<div class="demo"><p style="color: green">We're open!</p></div>
+<p class="caption">Hour 9</p>
+<div class="demo"><p><strong>Colan's Coffee</strong> <span class="sign" style="background-color: green">Open</span></p></div>
 </div>
 <div>
-<p class="caption">Typed 20</p>
-<div class="demo"><p style="color: red">Sorry, we're closed.</p></div>
+<p class="caption">Hour 20</p>
+<div class="demo" style="background-color: gray; box-shadow: 0 0 0 12px gray"><p><strong>Colan's Coffee</strong> <span class="sign" style="background-color: red">Closed</span></p></div>
 </div>
 </div>
 
@@ -842,92 +798,89 @@ Only the condition changed. 3 failed `hour >= 7`, and 20 failed `hour < 18`.
 
 ---
 
-## Problem (Us): Free Shipping
+## Problem (Us): Free Pastry
 
-Remember shipping from `else`? Orders of \$50 or more still ship free, and now members ship free too.
+Early birds (before hour 9) and Gold members (500 points or more) get a free pastry. The pastry note on the rewards card starts out hidden.
 
-1. Ask for the order total, and turn it into a number.
-2. Ask `Member? (yes/no)`.
-3. If either rule applies, show `Free shipping!`. Otherwise, show `Shipping is $5.`
+1. If either rule applies, show the note.
+2. What should happen when neither rule applies?
 
 Use this line to change the page:
 
 ```js
-document.getElementById("message").textContent = "Free shipping!";
+document.getElementById("pastry").hidden = false;
 ```
 
 ---
 
-## Solution (Us): Free Shipping
+## Solution (Us): Free Pastry
 
 ```js
-let total = Number(prompt("Order total?"));
-let isMember = prompt("Member? (yes/no)") === "yes";
-
-if (total >= 50 || isMember) {
-  document.getElementById("message").textContent = "Free shipping!";
-} else {
-  document.getElementById("message").textContent = "Shipping is $5.";
+if (hour < 9 || points >= 500) {
+  document.getElementById("pastry").hidden = false;
 }
 ```
 
 <div class="runs">
 <div>
-<p class="caption">Typed 20, then yes</p>
-<div class="demo"><p>Free shipping!</p></div>
+<p class="caption">Hour 8, 40 points</p>
+<div class="demo"><div class="card" style="border-color: tan"><p>🥉 Sam</p><p>🥐 Free pastry!</p></div></div>
 </div>
 <div>
-<p class="caption">Typed 20, then no</p>
-<div class="demo"><p>Shipping is $5.</p></div>
+<p class="caption">Hour 14, 650 points</p>
+<div class="demo"><div class="card" style="border-color: gold"><p>🥇 Sam</p><p>🥐 Free pastry!</p></div></div>
+</div>
+<div>
+<p class="caption">Hour 14, 40 points</p>
+<div class="demo"><div class="card" style="border-color: tan"><p>🥉 Sam</p></div></div>
 </div>
 </div>
 
-`isMember` stored the answer to `=== "yes"`, a boolean. Typing `Yes` gives `false`, since `===` treats capital letters as different.
+There's no `else`. The note starts out hidden, so when neither rule applies, there's nothing to change.
 
 ---
 
-## Problem (You): Order Limits
+## Problem (You): Happy Hour
 
-Each order must be 1 to 10 bags.
+From hour 14 up to 16, lattes are half price.
 
-1. Ask how many bags the user wants, and turn the answer into a number.
-2. From 1 to 10, show `You ordered 3 bags.`, with the real number.
-3. Otherwise, show `Please order 1 to 10 bags.` in red.
+1. During happy hour, change the latte's price to `$2.25`, in red.
+2. Outside happy hour, leave it at `$4.50`.
 
 Use these lines to change the page:
 
 ```js
-document.getElementById("message").textContent = "You ordered 3 bags.";
-document.getElementById("message").style.color = "red";
+document.getElementById("latte-price").textContent = "$2.25";
+document.getElementById("latte-price").style.color = "red";
 ```
 
 ---
 
-## Solution (You): Order Limits
+## Solution (You): Happy Hour
 
 ```js
-let bags = Number(prompt("How many bags?"));
-
-if (bags >= 1 && bags <= 10) {
-  document.getElementById("message").textContent = `You ordered ${bags} bags.`;
-} else {
-  document.getElementById("message").textContent = "Please order 1 to 10 bags.";
-  document.getElementById("message").style.color = "red";
+if (hour >= 14 && hour < 16) {
+  document.getElementById("latte-price").textContent = "$2.25";
+  document.getElementById("latte-price").style.color = "red";
 }
 ```
 
 <div class="runs">
 <div>
-<p class="caption">Typed 3</p>
-<div class="demo"><p>You ordered 3 bags.</p></div>
+<p class="caption">Hour 13</p>
+<div class="demo"><p>Latte $4.50 <button>Order</button></p></div>
 </div>
 <div>
-<p class="caption">Typed abc</p>
-<div class="demo"><p style="color: red">Please order 1 to 10 bags.</p></div>
+<p class="caption">Hour 15</p>
+<div class="demo"><p>Latte <span style="color: red">$2.25</span> <button>Order</button></p></div>
+</div>
+<div>
+<p class="caption">Hour 16</p>
+<div class="demo"><p>Latte $4.50 <button>Order</button></p></div>
 </div>
 </div>
 
-With `bags < 1 || bags > 10` and the blocks swapped, `abc` shows `You ordered NaN bags.`, since every comparison with `NaN` gives `false`.
+16 failed `hour < 16`, so happy hour ends right at 4 PM.
 
 ---
 
@@ -936,7 +889,7 @@ With `bags < 1 || bags > 10` and the blocks swapped, `abc` shows `You ordered Na
 When both blocks only pick a value, the **ternary operator** fits the choice on one line:
 
 ```js
-let sign = hour < 18 ? "We're open!" : "Sorry, we're closed.";
+document.getElementById("sign").textContent = hour < 18 ? "Open" : "Closed";
 ```
 
 `condition ? a : b` gives back `a` when the condition is `true`, and `b` when it's `false`. When a block needs more than one line, like setting the color too, use `if` and `else`.
@@ -950,7 +903,7 @@ let sign = hour < 18 ? "We're open!" : "Sorry, we're closed.";
 ## Summary
 
 - A comparison gives a boolean: `true` or `false`.
-- Compare with `===` and `!==`, and turn `prompt` answers into numbers first.
+- Compare with `===` and `!==`, and turn what the user types into a number first.
 - `if` runs its block when the condition is `true`, and `else` runs when it's `false`.
 - `else if` checks from top to bottom and runs only the first match, so order matters.
 - `&&` needs both sides `true`, `||` needs one, and `!` flips a boolean.
