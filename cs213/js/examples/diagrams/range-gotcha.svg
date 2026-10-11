@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 384" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>A range in one step</title>
+  <desc>age held 45. Step 1 had 13 &lt;= 45 &lt;= 19. JavaScript went left to right, so 13 &lt;= 45 ran first. In step 2, 13 &lt;= 45 was true, which gave true &lt;= 19. In step 3, JavaScript counted true as 1 next to a number, which gave 1 &lt;= 19. In step 4, 1 &lt;= 19 was true, so 45 passed the check.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="540" height="384" rx="18" fill="#0f1b2d" />
+  <rect width="540" height="384" rx="18" fill="url(#grid)" />
+
+  <!-- Cards: the condition at each step -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="60" y="44" width="236" height="48" rx="10" />
+    <rect x="60" y="136" width="180" height="48" rx="10" />
+    <rect x="60" y="228" width="136" height="48" rx="10" />
+    <rect x="60" y="320" width="92" height="48" rx="10" />
+  </g>
+
+  <!-- Values that came out of a step are yellow -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" style="font-variant-ligatures: none; white-space: pre">
+    <text x="76" y="76">13 &lt;= 45 &lt;= 19</text>
+    <text x="76" y="168"><tspan fill="#facc15">true</tspan> &lt;= 19</text>
+    <text x="76" y="260"><tspan fill="#facc15">1</tspan> &lt;= 19</text>
+    <text x="76" y="352" fill="#facc15">true</text>
+  </g>
+
+  <!-- Blue underline: the part that ran next -->
+  <g stroke="#38bdf8" stroke-width="3" stroke-linecap="round">
+    <line x1="76" y1="84" x2="191" y2="84" />
+    <line x1="76" y1="176" x2="134" y2="176" />
+    <line x1="76" y1="268" x2="177" y2="268" />
+  </g>
+
+  <!-- Step numbers and labels -->
+  <g fill="#38bdf8">
+    <circle cx="36" cy="28" r="15" />
+    <circle cx="36" cy="120" r="15" />
+    <circle cx="36" cy="212" r="15" />
+    <circle cx="36" cy="304" r="15" />
+  </g>
+  <g font-size="18" font-weight="bold" fill="#0f1b2d" text-anchor="middle">
+    <text x="36" y="35">1</text>
+    <text x="36" y="127">2</text>
+    <text x="36" y="219">3</text>
+    <text x="36" y="311">4</text>
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc" style="font-variant-ligatures: none">
+    <text x="62" y="35">age held 45, 13 &lt;= 45 ran first</text>
+    <text x="62" y="127">13 &lt;= 45 gave true</text>
+    <text x="62" y="219">true counted as 1 next to a number</text>
+    <text x="62" y="311">1 &lt;= 19 was true, so 45 passed</text>
+  </g>
+</svg>

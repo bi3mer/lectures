@@ -350,11 +350,10 @@ const c = "Hi"; // a variable that can't change
 
 ## Let's Write a Program
 
-Download [index.html](examples/inline-js-starter.html) and set it up in WebStorm
+Open [inline-js-starter.html](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/inline-js-starter.html) on GitHub and set it up in WebStorm:
 
-- Open the page.
-- View Source.
-- Copy and paste into new html file on WebStorm.
+- Click **Copy raw file**, the copy icon above the code.
+- Paste it into a new HTML file in WebStorm.
 
 ---
 
@@ -1789,7 +1788,7 @@ console.log("Hello, World!");
 
 Our programs got longer, so we moved the code into its own file. `src` tells the browser which file to run.
 
-Starter files: [index.html](examples/script-starter/index.html) and [script.js](examples/script-starter/script.js).
+Starter files on GitHub: [index.html](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/script-starter/index.html) and [script.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/script-starter/script.js).
 
 ---
 
