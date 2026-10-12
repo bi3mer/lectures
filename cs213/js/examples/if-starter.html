@@ -56,7 +56,7 @@
         <label for="age">Your age:</label>
         <input id="age" type="number" oninput="checkAge()" />
       </p>
-      <p>Latte <span id="latte-price">$4.50</span> <button id="latte">Order</button></p>
+      <p>Latte <span id="latte-price">$4.50</span> <button id="latte" onclick="orderLatte()" disabled>Order</button></p>
       <p>Hot chocolate $3.75 <button>Order</button></p>
     </section>
 
@@ -72,7 +72,7 @@
       </p>
       <p>Yirgacheffe, 12 oz, $14.50</p>
       <p id="stock">In stock.</p>
-      <p><button id="buy">Buy</button></p>
+      <p><button id="buy" onclick="buyBag()">Buy</button></p>
     </section>
 
     <script src="practice.js"></script>

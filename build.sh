@@ -53,6 +53,18 @@ skip=(
   cs213/js/todo.md
 )
 
+# Umami page-view tracking. The build puts this tag in the <head> of every
+# page it makes from Markdown and of the hand-written pages listed below.
+# data-domains keeps visits to local builds from being counted. Example and
+# starter pages stay as they are, since students read and copy their source.
+analytics='<script defer src="https://cloud.umami.is/script.js" data-website-id="03289690-de5b-45e9-ad43-20128bb55fdf" data-domains="bi3mer.github.io"></script>'
+tracked=(
+  index.html
+  cs213/index.html
+  cs213/js/exercises/index.html
+  cs230/index.html
+)
+
 for tool in pandoc npx rsync; do
   if ! command -v "$tool" >/dev/null 2>&1; then
     echo "error: $tool is not installed or not on PATH" >&2
@@ -73,6 +85,17 @@ rsync -a \
   --exclude='node_modules/' --exclude='templates/' \
   --exclude='*.md' --exclude='build.sh' --exclude='.gitignore' \
   ./ "$out/"
+
+# Put the analytics tag just before a built page's </head>.
+add_analytics() {
+  awk -v tag="$analytics" '!done && sub(/<\/head>/, tag "&") { done = 1 } { print }' "$1" >"$1.tmp"
+  mv "$1.tmp" "$1"
+}
+
+# rsync just copied fresh, untagged versions of these pages.
+for page in "${tracked[@]}"; do
+  add_analytics "$out/$page"
+done
 
 is_skipped() {
   local f
@@ -97,6 +120,7 @@ build_one() {
       echo "$log" >&2
       return 1
     fi
+    add_analytics "$html"
     return 0
   fi
 
@@ -124,9 +148,10 @@ build_one() {
     echo "error: pandoc failed on $md" >&2
     return 1
   }
+  add_analytics "$html"
 }
-export -f run_marp build_one
-export out
+export -f run_marp build_one add_analytics
+export out analytics
 
 # With no files named, build every Markdown file that isn't skipped.
 if (( ${#targets[@]} == 0 )); then

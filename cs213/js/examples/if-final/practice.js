@@ -80,3 +80,21 @@ if (hour >= 14 && hour < 16) {
   document.getElementById("latte-price").textContent = "$2.25";
   document.getElementById("latte-price").style.color = "red";
 }
+
+// Order and Buy
+let ordered = false;
+
+function orderLatte() {
+  ordered = !ordered;
+  document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
+}
+
+function buyBag() {
+  bagsLeft = bagsLeft - 1;
+  let isSoldOut = bagsLeft === 0;
+  let message = isSoldOut ? "Sold out." : `Only ${bagsLeft} left!`;
+  document.getElementById("stock").textContent = message;
+  document.getElementById("stock").style.color = isSoldOut ? "red" : "orange";
+  document.getElementById("bag").style.opacity = isSoldOut ? "0.3" : "1";
+  document.getElementById("buy").disabled = isSoldOut;
+}

@@ -12,6 +12,8 @@ paginate: true
 /* What the page showed, one column for each value we tried. */
 .runs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 24px; }
 .runs p { margin: 0; }
+/* A table on its own, centered across the slide. */
+.centered table { margin-left: auto; margin-right: auto; }
 /* The theme draws a .demo as a white panel whose 12px edge is a shadow, so the margins keep
    that edge clear of the caption above and the slide's sides. */
 .demo { margin: 20px 12px 28px; }
@@ -20,13 +22,23 @@ paginate: true
 .demo .sign { padding: 2px 10px; border-radius: 6px; background-color: dimgray; color: white; }
 .demo .card { padding: 4px 12px; border: 4px solid lightgray; border-radius: 8px; }
 .demo img { vertical-align: middle; }
-.demo button { font: inherit; }
-.demo input { font: inherit; width: 3em; }
 </style>
 
 # `if`
 
 Colan Biemer
+
+---
+
+## Working with the DOM
+
+Today's exercises change a web page: they hide a sign, turn off a button, and recolor text. JavaScript changes a page through the **DOM** (Document Object Model). Each problem gives you the DOM line it needs:
+
+```js
+document.getElementById("sign").hidden = true;
+```
+
+We won't explain how these lines work. Copy them as given, and focus on the JavaScript that decides when they run.
 
 ---
 
@@ -164,13 +176,13 @@ let bagsLeft = 3;
 document.getElementById("buy").disabled = bagsLeft === 0;
 ```
 
-The second line uses both: `===` asks whether `bagsLeft` is 0, and `=` puts the answer in `disabled`.
+The last line uses both: `===` asks whether `bagsLeft` is 0, and `=` puts the answer in `disabled`.
 
 ---
 
 ## Problem (You): Age Limit
 
-Our drinks with caffeine are for ages 12 and up. Hot chocolate is for everyone. The menu has an age box, and it calls `checkAge()` every time the age in it changes:
+Our drinks with caffeine are for ages 12 and up, so the latte's **Order** button starts out turned off. Hot chocolate is for everyone. The menu has an age box, and it calls `checkAge()` every time the age in it changes:
 
 ```html
 <input id="age" type="number" oninput="checkAge()" />
@@ -178,7 +190,7 @@ Our drinks with caffeine are for ages 12 and up. Hot chocolate is for everyone. 
 
 1. Write the `checkAge()` function.
 2. Inside it, get the age with `document.getElementById("age").value`, and turn it into a number.
-3. Under 12, turn off the **Order** button for the latte. Use this line to change the page:
+3. From 12 up, turn the latte's **Order** button on. Under 12, turn it off. Use this line to change the page:
 
 ```js
 document.getElementById("latte").disabled = true;
@@ -196,7 +208,7 @@ function checkAge() {
 }
 ```
 
-With `<=`, a 12-year-old can't order a latte.
+With `age <= 12`, a 12-year-old can't order a latte.
 
 ---
 
@@ -521,8 +533,6 @@ if (points >= 500) {
 </div>
 </div>
 
-An emoji is text, so `textContent` swaps the icon.
-
 ---
 
 ## Problem (Us): Stock Levels
@@ -580,16 +590,17 @@ if (bagsLeft === 0) {
 
 The greeting under our name should change with the hour: `Good morning! ☀️` before hour 12, `Good afternoon! 🌤️` before hour 18, and `Good evening! 🌙` after that.
 
+<!-- prettier-ignore -->
 ```js
-} else if (hour < 18) {
-  document.getElementById("greeting").textContent = "Good evening! 🌙";
 } else (hour >= 18) {
-  document.getElementById("greeting").textContent = "Good morning! ☀️";
+} else {
+document.getElementById("greeting").textContent = "Good afternoon! 🌤️";
+document.getElementById("greeting").textContent = "Good morning! ☀️";
+} else if hour < 18 {
+} else if (hour < 18) {
 }
 if (hour < 12) {
-  document.getElementById("greeting").textContent = "Good afternoon! 🌤️";
-} else if hour < 18 {
-} else {
+document.getElementById("greeting").textContent = "Good evening! 🌙";
 ```
 
 Assemble the program from the lines above. Two of the lines are wrong.
@@ -623,7 +634,7 @@ if (hour < 12) {
 </div>
 </div>
 
-`else` never takes a condition, and every condition needs parentheses.
+`else` never takes a condition, and every condition needs parentheses, so `} else (hour >= 18) {` and `} else if hour < 18 {` were the wrong lines.
 
 ---
 
@@ -641,32 +652,72 @@ Each side of `&&` and `||` is a full comparison, like `total >= 10`, or a boolea
 
 ---
 
+## And: `&&`
+
+<div class="centered">
+
+| `a`     | `b`     | `a && b` |
+| ------- | ------- | -------- |
+| `true`  | `true`  | `true`   |
+| `true`  | `false` | `false`  |
+| `false` | `true`  | `false`  |
+| `false` | `false` | `false`  |
+
+</div>
+
+`&&` gives `true` only when both sides are `true`.
+
+---
+
+## Or: `||`
+
+<div class="centered">
+
+| `a`     | `b`     | `a \|\| b` |
+| ------- | ------- | ---------- |
+| `true`  | `true`  | `true`     |
+| `true`  | `false` | `true`     |
+| `false` | `true`  | `true`     |
+| `false` | `false` | `false`    |
+
+</div>
+
+`||` gives `false` only when both sides are `false`.
+
+---
+
+## Not: `!`
+
+<div class="centered">
+
+| `a`     | `!a`    |
+| ------- | ------- |
+| `true`  | `false` |
+| `false` | `true`  |
+
+</div>
+
+---
+
 ## Example: Member Discount
 
 To get 10% off, a customer has to spend at least \$10 **and** be a member.
 
-<div class="side-by-side">
-<div>
-
 ```js
 let total = 8;
 let isMember = true;
-let discount = total >= 10 && isMember;
+let getsDiscount = total >= 10 && isMember;
 ```
 
-</div>
-<div>
+<div class="centered">
 
-| `total` | `isMember` | `discount` |
-| ------- | ---------- | ---------- |
-| 8       | `true`     | `false`    |
-| 12      | `true`     | `true`     |
-| 12      | `false`    | `false`    |
+| `total` | `isMember` | `getsDiscount` |
+| ------- | ---------- | -------------- |
+| 8       | `true`     | `false`        |
+| 12      | `true`     | `true`         |
+| 12      | `false`    | `false`        |
 
 </div>
-</div>
-
-`&&` gives `true` only when both sides are `true`. `isMember` already holds a boolean, so it works as a condition by itself.
 
 ---
 
@@ -679,25 +730,28 @@ let milk = "oat";
 let costsExtra = milk === "oat" || milk === "almond";
 ```
 
+<div class="centered">
+
 | `milk`     | `costsExtra` |
 | ---------- | ------------ |
 | `"oat"`    | `true`       |
 | `"almond"` | `true`       |
 | `"whole"`  | `false`      |
 
-`||` gives `true` when at least one side is `true`. Each side needs its own `milk ===`.
+</div>
+
+Each side of `||` needs its own `milk ===`. For `"whole"`, `milk === "oat" || "almond"` gives `"almond"`, not `false`, and an `if` treats that string as `true`, so every milk would cost extra.
 
 ---
 
 ## Example: Not Sold Out
 
-A customer can order a bag when it's **not** sold out.
+A customer can order a bag when it's **not** sold out. `bagsLeft` already exists from Sold Out.
 
 <div class="side-by-side">
 <div>
 
 ```js
-let bagsLeft = 3;
 let isSoldOut = bagsLeft === 0;
 let canOrder = !isSoldOut;
 ```
@@ -768,31 +822,14 @@ if (hour >= 7 && hour < 18) {
 }
 ```
 
-<div class="runs">
-<div>
-<p class="caption">Hour 3</p>
-<div class="demo" style="background-color: gray; box-shadow: 0 0 0 12px gray"><p><strong>Colan's Coffee</strong> <span class="sign" style="background-color: red">Closed</span></p></div>
-</div>
-<div>
-<p class="caption">Hour 9</p>
-<div class="demo"><p><strong>Colan's Coffee</strong> <span class="sign" style="background-color: green">Open</span></p></div>
-</div>
-<div>
-<p class="caption">Hour 20</p>
-<div class="demo" style="background-color: gray; box-shadow: 0 0 0 12px gray"><p><strong>Colan's Coffee</strong> <span class="sign" style="background-color: red">Closed</span></p></div>
-</div>
-</div>
-
-Only the condition changed. 3 failed `hour >= 7`, and 20 failed `hour < 18`.
-
 ---
 
 ## Problem (Us): Free Pastry
 
-Early birds (before hour 9) and Gold members (500 points or more) get a free pastry. The pastry note on the rewards card starts out hidden.
+Early birds (before hour 9) and Gold members (500 points or more) get a free pastry.
 
-1. If either rule applies, show the note.
-2. What should happen when neither rule applies?
+1. If either rule applies, show the pastry note on the rewards card.
+2. The note starts out hidden. When neither rule applies, do we need an `else`?
 
 Use this line to change the page:
 
@@ -825,13 +862,13 @@ if (hour < 9 || points >= 500) {
 </div>
 </div>
 
-There's no `else`. The note starts out hidden, so when neither rule applies, there's nothing to change.
+There's no `else`. The note starts out hidden, and this code runs once, so when neither rule applies, there's nothing to change.
 
 ---
 
 ## Problem (You): Happy Hour
 
-From hour 14 up to 16, lattes are half price.
+From 2 PM until 4 PM (hours 14 and 15), lattes are half price.
 
 1. During happy hour, change the latte's price to `$2.25`, in red.
 2. Outside happy hour, leave it at `$4.50`.
@@ -854,39 +891,79 @@ if (hour >= 14 && hour < 16) {
 }
 ```
 
-<div class="runs">
-<div>
-<p class="caption">Hour 13</p>
-<div class="demo"><p>Latte $4.50 <button>Order</button></p></div>
-</div>
-<div>
-<p class="caption">Hour 15</p>
-<div class="demo"><p>Latte <span style="color: red">$2.25</span> <button>Order</button></p></div>
-</div>
-<div>
-<p class="caption">Hour 16</p>
-<div class="demo"><p>Latte $4.50 <button>Order</button></p></div>
-</div>
-</div>
-
-16 failed `hour < 16`, so happy hour ends right at 4 PM.
-
 ---
 
 ## Shortcut: The Ternary Operator
 
-When both blocks only pick a value, the **ternary operator** fits the choice on one line:
+![w:1120 isOpen held hour >= 7 && hour < 18. With the ternary operator, let text = isOpen ? "Open" : "Closed"; had three parts: isOpen was the condition, "Open" was the value if it was true, and "Closed" was the value if it was false. The same choice with if and else declared text, checked if (isOpen), stored "Open" in text when it was true, and stored "Closed" in text when it was false.](examples/diagrams/ternary.svg)
 
+The ternary operator fits an `if`/`else` on one line. _Ternary_ means three parts. Use it when both branches only pick a value; otherwise, use `if` and `else`.
+
+---
+
+## Problem (You): Order and Buy
+
+**Order** switches to `Cancel` and back. **Buy** takes away a bag. We start with 3 bags, so the stock line never needs `In stock.`
+
+<!-- prettier-ignore -->
 ```js
-let isOpen = hour >= 7 && hour < 18;
-document.getElementById("sign").textContent = isOpen ? "Open" : "Closed";
+function orderLatte() {
+document.getElementById("buy").disabled = isSoldOut;
+document.getElementById("stock").textContent = message;
+let message = isSoldOut ? "Sold out." : `Only ${bagsLeft} left!`;
+document.getElementById("bag").style.opacity = isSoldOut ? "0.3" : "1";
+let isSoldOut = bagsLeft === 0;
+let ordered = false;
+}
+}
+document.getElementById("stock").style.color = isSoldOut ? "red" : "orange";
+ordered = !ordered;
+function buyBag() {
+bagsLeft = bagsLeft - 1;
+document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
 ```
 
-`condition ? a : b` gives back `a` when the condition is `true`, and `b` when it's `false`. `isOpen` holds the Opening Hours condition, which keeps the second line short. When a block needs more than one line, like setting the color too, use `if` and `else`.
+Assemble both functions from the lines above.
+
+---
+
+## Solution (You): Order and Buy
+
+```js
+let ordered = false;
+
+function orderLatte() {
+  ordered = !ordered;
+  document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
+}
+
+function buyBag() {
+  bagsLeft = bagsLeft - 1;
+  let isSoldOut = bagsLeft === 0;
+  let message = isSoldOut ? "Sold out." : `Only ${bagsLeft} left!`;
+  document.getElementById("stock").textContent = message;
+  document.getElementById("stock").style.color = isSoldOut ? "red" : "orange";
+  document.getElementById("bag").style.opacity = isSoldOut ? "0.3" : "1";
+  document.getElementById("buy").disabled = isSoldOut;
+}
+```
+
+`ordered` sits outside `orderLatte()`, so it keeps its value between clicks.
 
 ---
 
 # Conclusion
+
+---
+
+## The Finished Page
+
+Every solution from today, together:
+
+- [Colan's Coffee](https://bi3mer.github.io/lectures/cs213/js/examples/if-final/), running live
+- [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-final/practice.js) on GitHub, in the order we wrote it
+
+The HTML is the same as `if-starter.html`. The page uses the real hour, so to see another time of day, change `new Date().getHours()` to a number, like `20`.
 
 ---
 
@@ -899,17 +976,6 @@ document.getElementById("sign").textContent = isOpen ? "Open" : "Closed";
 - `&&` needs both sides `true`, `||` needs one, and `!` flips a boolean.
 - A range takes two comparisons: `hour >= 7 && hour < 18`.
 - `condition ? a : b` picks between two values on one line.
-
----
-
-## The Finished Page
-
-Every solution from today, together:
-
-- [Colan's Coffee](https://bi3mer.github.io/lectures/cs213/js/examples/if-final/), running live
-- [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-final/practice.js) on GitHub, in the order we wrote it
-
-The HTML is the same as `if-starter.html`. The page uses the real hour, so to see another time of day, change `new Date().getHours()` to a number, like `20`.
 
 ---
 

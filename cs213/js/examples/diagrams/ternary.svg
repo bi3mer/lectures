@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 372" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The ternary operator</title>
+  <desc>isOpen held hour &gt;= 7 &amp;&amp; hour &lt; 18. With the ternary operator, let text = isOpen ? "Open" : "Closed"; had three parts: isOpen was the condition, "Open" was the value if it was true, and "Closed" was the value if it was false. The same choice with if and else declared text, checked if (isOpen), stored "Open" in text when it was true, and stored "Closed" in text when it was false.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1120" height="372" rx="18" fill="#0f1b2d" />
+  <rect width="1120" height="372" rx="18" fill="url(#grid)" />
+
+  <!-- Cards: isOpen across the top, then the ternary and the if and else it stands for -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="24" y="16" width="1072" height="56" rx="10" />
+    <rect x="24" y="124" width="640" height="232" rx="10" />
+    <rect x="688" y="124" width="408" height="232" rx="10" />
+  </g>
+
+  <!-- The condition is blue, the value if true is green, and the value if false is red,
+       in every card. -->
+  <text x="48" y="52" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" style="font-variant-ligatures: none; white-space: pre">let <tspan fill="#38bdf8" font-weight="bold">isOpen</tspan> = hour &gt;= 7 &amp;&amp; hour &lt; 18;</text>
+
+  <!-- The ternary. Each part is its own text, 14.4px per character, so the names below
+       line up with it in any monospace font. -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" style="font-variant-ligatures: none; white-space: pre">
+    <text x="70" y="228">let text =</text>
+    <text x="228.4" y="228" fill="#38bdf8" font-weight="bold">isOpen</text>
+    <text x="329.2" y="228">?</text>
+    <text x="358" y="228" fill="#4ade80">"Open"</text>
+    <text x="458.8" y="228">:</text>
+    <text x="487.6" y="228"><tspan fill="#f87171">"Closed"</tspan>;</text>
+  </g>
+
+  <!-- The name of each part, under it -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="18" text-anchor="middle">
+    <text x="271.6" y="266" fill="#38bdf8">condition</text>
+    <text x="401.2" y="266" fill="#4ade80">if true</text>
+    <text x="545.2" y="266" fill="#f87171">if false</text>
+  </g>
+
+  <!-- The same choice with if and else. The indented lines start two characters in. -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" style="font-variant-ligatures: none; white-space: pre">
+    <text x="712" y="166">let text;</text>
+    <text x="712" y="198">if (<tspan fill="#38bdf8" font-weight="bold">isOpen</tspan>) {</text>
+    <text x="740.8" y="230">text = <tspan fill="#4ade80">"Open"</tspan>;</text>
+    <text x="712" y="262">} else {</text>
+    <text x="740.8" y="294">text = <tspan fill="#f87171">"Closed"</tspan>;</text>
+    <text x="712" y="326">}</text>
+  </g>
+
+  <!-- Card labels -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc" style="font-variant-ligatures: none">
+    <text x="24" y="108">the ternary operator</text>
+    <text x="688" y="108">the same choice with if and else</text>
+  </g>
+</svg>
