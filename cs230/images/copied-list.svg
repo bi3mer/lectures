@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 260" role="img" aria-label="a points to its own list holding 1, 2, and 3, which is unchanged. b points to a separate list holding 1, 2, 3, and 4. The 4 was added through b.">
+  <!-- Colors: Sanzo Wada combination 151 (see themes/cs230-theme.css) -->
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f99d1b"/>
+    </marker>
+  </defs>
+
+  <rect x="1" y="1" width="818" height="258" rx="16" fill="#032837" stroke="#38728b" stroke-width="2"/>
+
+  <g font-family="SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace" text-anchor="middle">
+    <!-- a and its list -->
+    <text x="150" y="84" font-size="40" fill="#f5ecc2" text-anchor="end">a</text>
+    <line x1="162" y1="70" x2="252" y2="70" stroke="#f99d1b" stroke-width="3" marker-end="url(#head)"/>
+    <g fill="#064f6e" stroke="#a8c1cc" stroke-width="3">
+      <rect x="260" y="30" width="80" height="80"/>
+      <rect x="340" y="30" width="80" height="80"/>
+      <rect x="420" y="30" width="80" height="80"/>
+    </g>
+    <g font-size="36" fill="#f5ecc2">
+      <text x="300" y="83">1</text>
+      <text x="380" y="83">2</text>
+      <text x="460" y="83">3</text>
+    </g>
+    <text x="516" y="78" font-size="20" fill="#a8c1cc" text-anchor="start">← unchanged</text>
+
+    <!-- b and its own list -->
+    <text x="150" y="204" font-size="40" fill="#f5ecc2" text-anchor="end">b</text>
+    <line x1="162" y1="190" x2="252" y2="190" stroke="#f99d1b" stroke-width="3" marker-end="url(#head)"/>
+    <g fill="#064f6e" stroke-width="3">
+      <rect x="260" y="150" width="80" height="80" stroke="#a8c1cc"/>
+      <rect x="340" y="150" width="80" height="80" stroke="#a8c1cc"/>
+      <rect x="420" y="150" width="80" height="80" stroke="#a8c1cc"/>
+      <!-- drawn last so its orange edge sits on top -->
+      <rect x="500" y="150" width="80" height="80" stroke="#f99d1b"/>
+    </g>
+    <g font-size="36" fill="#f5ecc2">
+      <text x="300" y="203">1</text>
+      <text x="380" y="203">2</text>
+      <text x="460" y="203">3</text>
+      <text x="540" y="203">4</text>
+    </g>
+    <text x="596" y="198" font-size="20" fill="#f99d1b" text-anchor="start">← b.append(4)</text>
+  </g>
+</svg>

@@ -24,7 +24,7 @@ paginate: true
 .demo input { font: inherit; width: 3em; }
 </style>
 
-# `if` Statements
+# `if`
 
 Colan Biemer
 
@@ -137,7 +137,7 @@ document.getElementById("sign").hidden = hour >= 18;
 </div>
 </div>
 
-`hidden` takes a boolean, so the comparison's answer goes straight in. To see the sign at another hour, change the first line to `let hour = 20;` for a moment.
+`hidden` takes a boolean, so the comparison's answer goes straight in. To see the sign at another hour for testing, change the value of `hour` in the code.
 
 ---
 
@@ -163,17 +163,6 @@ let bagsLeft = 3;
 
 document.getElementById("buy").disabled = bagsLeft === 0;
 ```
-
-<div class="runs">
-<div>
-<p class="caption">3 bags</p>
-<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <button>Buy</button></p></div>
-</div>
-<div>
-<p class="caption">0 bags</p>
-<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <button disabled>Buy</button></p></div>
-</div>
-</div>
 
 The second line uses both: `===` asks whether `bagsLeft` is 0, and `=` puts the answer in `disabled`.
 
@@ -229,32 +218,32 @@ if (condition) {
 
 ---
 
-## Example: Low Stock
+## Example: Espresso Shots
 
 <div class="side-by-side">
 <div>
 
 ```js
-let bagsLeft = 3;
+let shots = 4;
 let warning = "";
 
-if (bagsLeft < 5) {
-  warning = "Running low!";
+if (shots > 3) {
+  warning = "Too much caffeine!";
 }
 ```
 
 </div>
 <div>
 
-| `bagsLeft` | `warning`        |
-| ---------- | ---------------- |
-| 3          | `"Running low!"` |
-| 12         | `""`             |
+| `shots` | `warning`              |
+| ------- | ---------------------- |
+| 4       | `"Too much caffeine!"` |
+| 2       | `""`                   |
 
 </div>
 </div>
 
-For 12, `12 < 5` was `false`, so the code inside of the if-statement brackets (`{ ... }`) was never run.
+For 2, `2 > 3` was `false`, so the code inside of the if-statement brackets (`{ ... }`) was never run.
 
 ---
 
@@ -648,36 +637,36 @@ if (hour < 12) {
 - `a || b`: **or**, `true` when at least one is `true`
 - `!a`: **not**, `true` becomes `false` and `false` becomes `true`
 
-Each side of `&&` and `||` is a full comparison, like `age >= 25`, or a boolean.
+Each side of `&&` and `||` is a full comparison, like `total >= 10`, or a boolean.
 
 ---
 
-## Example: Renting a Car
+## Example: Member Discount
 
-To rent a car, you need to be at least 25 **and** have a license.
+To get 10% off, a customer has to spend at least \$10 **and** be a member.
 
 <div class="side-by-side">
 <div>
 
 ```js
-let age = 22;
-let hasLicense = true;
-let canRent = age >= 25 && hasLicense;
+let total = 8;
+let isMember = true;
+let discount = total >= 10 && isMember;
 ```
 
 </div>
 <div>
 
-| `age` | `hasLicense` | `canRent` |
-| ----- | ------------ | --------- |
-| 22    | `true`       | `false`   |
-| 30    | `true`       | `true`    |
-| 30    | `false`      | `false`   |
+| `total` | `isMember` | `discount` |
+| ------- | ---------- | ---------- |
+| 8       | `true`     | `false`    |
+| 12      | `true`     | `true`     |
+| 12      | `false`    | `false`    |
 
 </div>
 </div>
 
-`&&` gives `true` only when both sides are `true`. `hasLicense` already holds a boolean, so it works as a condition by itself.
+`&&` gives `true` only when both sides are `true`. `isMember` already holds a boolean, so it works as a condition by itself.
 
 ---
 
@@ -889,10 +878,11 @@ if (hour >= 14 && hour < 16) {
 When both blocks only pick a value, the **ternary operator** fits the choice on one line:
 
 ```js
-document.getElementById("sign").textContent = hour < 18 ? "Open" : "Closed";
+let isOpen = hour >= 7 && hour < 18;
+document.getElementById("sign").textContent = isOpen ? "Open" : "Closed";
 ```
 
-`condition ? a : b` gives back `a` when the condition is `true`, and `b` when it's `false`. When a block needs more than one line, like setting the color too, use `if` and `else`.
+`condition ? a : b` gives back `a` when the condition is `true`, and `b` when it's `false`. `isOpen` holds the Opening Hours condition, which keeps the second line short. When a block needs more than one line, like setting the color too, use `if` and `else`.
 
 ---
 
@@ -908,6 +898,18 @@ document.getElementById("sign").textContent = hour < 18 ? "Open" : "Closed";
 - `else if` checks from top to bottom and runs only the first match, so order matters.
 - `&&` needs both sides `true`, `||` needs one, and `!` flips a boolean.
 - A range takes two comparisons: `hour >= 7 && hour < 18`.
+- `condition ? a : b` picks between two values on one line.
+
+---
+
+## The Finished Page
+
+Every solution from today, together:
+
+- [Colan's Coffee](https://bi3mer.github.io/lectures/cs213/js/examples/if-final/), running live
+- [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-final/practice.js) on GitHub, in the order we wrote it
+
+The HTML is the same as `if-starter.html`. The page uses the real hour, so to see another time of day, change `new Date().getHours()` to a number, like `20`.
 
 ---
 
