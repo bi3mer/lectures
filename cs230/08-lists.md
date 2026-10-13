@@ -375,7 +375,7 @@ print(f"{len(good_days)} good days")
 
 [https://bi3mer.github.io/autograder/cs230/w6i1.html](https://bi3mer.github.io/autograder/cs230/w6i1.html)
 
-`read_names` returns two lists. `first_names, last_names = read_names()` unpacks them, the same way `a, b = ...` unpacked [two returned values](07-functions.html#84).
+`read_names` returns two lists. `first_names, last_names = read_names()` unpacks them, the same way `a, b = ...` unpacked [two returned values](07-functions.html#81).
 
 ---
 
@@ -441,7 +441,7 @@ for i, score in enumerate(scores):
 2 77
 ```
 
-`enumerate` hands the loop two things each time around: the index and the item. `i, score` unpacks them, the same way `a, b = ...` unpacked [two returned values](07-functions.html#84).
+`enumerate` hands the loop two things each time around: the index and the item. `i, score` unpacks them, the same way `a, b = ...` unpacked [two returned values](07-functions.html#81).
 
 ---
 
@@ -486,7 +486,7 @@ print(nums)   # [1, 2, 3]
 </div>
 </div>
 
-`x` is a separate variable that gets each item in turn. Changing `x` changes only `x`, the same way changing a parameter inside a function does not change the variable you passed in ([example](07-functions.html#48)).
+`x` is a separate variable that gets each item in turn. Changing `x` changes only `x`, the same way changing a parameter inside a function does not change the variable you passed in ([example](07-functions.html#45)).
 
 ---
 
