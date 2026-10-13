@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ACME Order Book</title>
+    <style>
+      body {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 16px;
+        font-family: sans-serif;
+        background-color: #0e1117;
+        color: #e6edf3;
+      }
+
+      #banner {
+        font-size: 24px;
+        font-weight: bold;
+        color: gold;
+      }
+
+      .card {
+        margin-bottom: 16px;
+        padding: 0 16px;
+        border: 2px solid #30363d;
+        border-radius: 8px;
+        background-color: #161b22;
+      }
+
+      .bar,
+      .book {
+        font-family: monospace;
+        font-size: 18px;
+      }
+
+      .book {
+        padding: 0;
+        list-style: none;
+      }
+
+      .ask,
+      .down {
+        color: tomato;
+      }
+
+      .bid,
+      .up {
+        color: limegreen;
+      }
+
+      input {
+        font: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>ACME Order Book</h1>
+      <p id="banner">Market closed</p>
+    </header>
+
+    <section class="card">
+      <h2>Order Ticket</h2>
+      <p id="ticket">No order yet</p>
+      <p>Size: <span id="size" class="bar"></span></p>
+      <p>Filled: <span id="fill" class="bar"></span></p>
+    </section>
+
+    <section class="card">
+      <h2>Order Book</h2>
+      <ul id="asks" class="book"></ul>
+      <p id="spread"></p>
+      <ul id="bids" class="book"></ul>
+      <p>Average trade today: <span id="average"></span></p>
+    </section>
+
+    <section class="card">
+      <h2>Watchlist</h2>
+      <ul id="watchlist"></ul>
+      <p>
+        <label for="ticker">Look up a ticker:</label>
+        <input id="ticker" oninput="showQuote()" />
+        <span id="quote"></span>
+      </p>
+      <h3>Since the Open</h3>
+      <ul id="movers"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Portfolio</h2>
+      <ul id="positions"></ul>
+      <p>$1,000 in ACME buys: <span id="buying-power"></span></p>
+      <p>An index fund growing 7% a year doubles in: <span id="doubling"></span></p>
+    </section>
+
+    <script src="practice.js"></script>
+  </body>
+</html>

@@ -32,13 +32,13 @@ Colan Biemer
 
 ## Working with the DOM
 
-Today's exercises change a web page: they hide a sign, turn off a button, and recolor text. JavaScript changes a page through the **DOM** (Document Object Model). Each problem gives you the DOM line it needs:
+JavaScript changes a webpage through the **DOM** (Document Object Model), e.g.:
 
 ```js
 document.getElementById("sign").hidden = true;
 ```
 
-We won't explain how these lines work. Copy them as given, and focus on the JavaScript that decides when they run.
+We are going to use lines like this throughout the lecture, but I won't explain how these lines work. Copy them as given, and focus on the JavaScript part for now.
 
 ---
 
@@ -138,17 +138,6 @@ let hour = new Date().getHours();
 document.getElementById("sign").hidden = hour >= 18;
 ```
 
-<div class="runs">
-<div>
-<p class="caption">Hour 9</p>
-<div class="demo"><p><strong>Colan's Coffee</strong> <span class="sign">Open</span></p></div>
-</div>
-<div>
-<p class="caption">Hour 20</p>
-<div class="demo"><p><strong>Colan's Coffee</strong></p></div>
-</div>
-</div>
-
 `hidden` takes a boolean, so the comparison's answer goes straight in. To see the sign at another hour for testing, change the value of `hour` in the code.
 
 ---
@@ -182,18 +171,19 @@ The last line uses both: `===` asks whether `bagsLeft` is 0, and `=` puts the an
 
 ## Problem (You): Age Limit
 
-Our drinks with caffeine are for ages 12 and up, so the latte's **Order** button starts out turned off. Hot chocolate is for everyone. The menu has an age box, and it calls `checkAge()` every time the age in it changes:
+The menu has an age box, and it calls `checkAge()` every time the age in it changes:
 
 ```html
 <input id="age" type="number" oninput="checkAge()" />
 ```
 
-1. Write the `checkAge()` function.
-2. Inside it, get the age with `document.getElementById("age").value`, and turn it into a number.
-3. From 12 up, turn the latte's **Order** button on. Under 12, turn it off. Use this line to change the page:
+Unscramble the program below:
 
 ```js
-document.getElementById("latte").disabled = true;
+let age = Number(document.getElementById("age").value);
+}
+document.getElementById("latte").disabled = age < 12;
+function checkAge() {
 ```
 
 ---
@@ -208,7 +198,15 @@ function checkAge() {
 }
 ```
 
-With `age <= 12`, a 12-year-old can't order a latte.
+What does `checkAge()` do?
+
+---
+
+## Solution (You): Age Limit (Continued)
+
+Drinks with caffeine are for ages 12 and up. Every time the age changes, `checkAge()` turns the latte's **Order** button off for anyone under 12 and on for anyone 12 or older.
+
+With `age <= 12`, a 12-year-old couldn't order a latte.
 
 ---
 
@@ -386,21 +384,6 @@ if (bagsLeft < 5) {
 }
 ```
 
-<div class="runs">
-<div>
-<p class="caption">12 bags</p>
-<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> In stock.</p></div>
-</div>
-<div>
-<p class="caption">3 bags</p>
-<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <span style="color: orange">Only 3 left!</span></p></div>
-</div>
-<div>
-<p class="caption">0 bags</p>
-<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <span style="color: orange">Only 0 left!</span></p></div>
-</div>
-</div>
-
 `bagsLeft` already exists from Sold Out, so there's no second `let`. `Only 0 left!` needs a third choice, which comes next.
 
 ---
@@ -486,11 +469,23 @@ Put the narrowest check first.
 
 ## Problem (Me): Reward Levels
 
-Each member gets a badge for their reward points. Store the points in a variable `points` (let's say 320), then set the badge and the color of the card's border:
+Each member gets a badge for their reward points. The rewards card has a points box that starts at 320, and it calls `showRewards()` every time the points in it change:
 
-- 500 and up: 🥇 with a `gold` border
-- 200 to 499: 🥈 with a `silver` border
-- Below 200: 🥉 with a `tan` border
+```html
+<input id="points" type="number" value="320" oninput="showRewards()" />
+```
+
+1. Write the `showRewards()` function.
+2. Inside it, get the points as a number.
+
+---
+
+## Problem (Me): Reward Levels (Continued)
+
+3. Set the badge and the color of the card's border:
+   - 500 and up: 🥇 with a `gold` border
+   - 200 to 499: 🥈 with a `silver` border
+   - Below 200: 🥉 with a `tan` border
 
 Use these lines to change the page:
 
@@ -503,35 +498,28 @@ document.getElementById("rewards").style.borderColor = "gold";
 
 ## Solution (Me): Reward Levels
 
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
+
 ```js
-let points = 320;
+function showRewards() {
+  let points = Number(document.getElementById("points").value);
 
-if (points >= 500) {
-  document.getElementById("badge").textContent = "🥇";
-  document.getElementById("rewards").style.borderColor = "gold";
-} else if (points >= 200) {
-  document.getElementById("badge").textContent = "🥈";
-  document.getElementById("rewards").style.borderColor = "silver";
-} else {
-  document.getElementById("badge").textContent = "🥉";
-  document.getElementById("rewards").style.borderColor = "tan";
+  if (points >= 500) {
+    document.getElementById("badge").textContent = "🥇";
+    document.getElementById("rewards").style.borderColor = "gold";
+  } else if (points >= 200) {
+    document.getElementById("badge").textContent = "🥈";
+    document.getElementById("rewards").style.borderColor = "silver";
+  } else {
+    document.getElementById("badge").textContent = "🥉";
+    document.getElementById("rewards").style.borderColor = "tan";
+  }
 }
-```
 
-<div class="runs">
-<div>
-<p class="caption">650 points</p>
-<div class="demo"><div class="card" style="border-color: gold"><p>🥇 Sam</p></div></div>
-</div>
-<div>
-<p class="caption">320 points</p>
-<div class="demo"><div class="card" style="border-color: silver"><p>🥈 Sam</p></div></div>
-</div>
-<div>
-<p class="caption">40 points</p>
-<div class="demo"><div class="card" style="border-color: tan"><p>🥉 Sam</p></div></div>
-</div>
-</div>
+showRewards();
+```
 
 ---
 
@@ -566,21 +554,6 @@ if (bagsLeft === 0) {
   document.getElementById("stock").textContent = "In stock.";
 }
 ```
-
-<div class="runs">
-<div>
-<p class="caption">0 bags</p>
-<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" style="opacity: 0.3" /> <span style="color: red">Sold out.</span></p></div>
-</div>
-<div>
-<p class="caption">3 bags</p>
-<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> <span style="color: orange">Only 3 left!</span></p></div>
-</div>
-<div>
-<p class="caption">12 bags</p>
-<div class="demo"><p><img src="exercises/bag.svg" alt="" width="40" /> In stock.</p></div>
-</div>
-</div>
 
 `0 < 5` is also `true`, so the `=== 0` check had to come first.
 
@@ -828,7 +801,7 @@ if (hour >= 7 && hour < 18) {
 
 Early birds (before hour 9) and Gold members (500 points or more) get a free pastry.
 
-1. If either rule applies, show the pastry note on the rewards card.
+1. At the end of `showRewards()`, show the pastry note on the rewards card if either rule applies.
 2. The note starts out hidden. When neither rule applies, do we need an `else`?
 
 Use this line to change the page:
@@ -842,8 +815,14 @@ document.getElementById("pastry").hidden = false;
 ## Solution (Us): Free Pastry
 
 ```js
-if (hour < 9 || points >= 500) {
-  document.getElementById("pastry").hidden = false;
+function showRewards() {
+  // The Reward Levels code stays here.
+
+  if (hour < 9 || points >= 500) {
+    document.getElementById("pastry").hidden = false;
+  } else {
+    document.getElementById("pastry").hidden = true;
+  }
 }
 ```
 
@@ -862,22 +841,21 @@ if (hour < 9 || points >= 500) {
 </div>
 </div>
 
-There's no `else`. The note starts out hidden, and this code runs once, so when neither rule applies, there's nothing to change.
-
 ---
 
 ## Problem (You): Happy Hour
 
 From 2 PM until 4 PM (hours 14 and 15), lattes are half price.
 
-1. During happy hour, change the latte's price to `$2.25`, in red.
+1. During happy hour, cross out `$4.50` in red and show `$2.25` in green.
 2. Outside happy hour, leave it at `$4.50`.
 
 Use these lines to change the page:
 
 ```js
-document.getElementById("latte-price").textContent = "$2.25";
+document.getElementById("latte-price").style.textDecoration = "line-through";
 document.getElementById("latte-price").style.color = "red";
+document.getElementById("happy-price").hidden = false;
 ```
 
 ---
@@ -886,8 +864,9 @@ document.getElementById("latte-price").style.color = "red";
 
 ```js
 if (hour >= 14 && hour < 16) {
-  document.getElementById("latte-price").textContent = "$2.25";
+  document.getElementById("latte-price").style.textDecoration = "line-through";
   document.getElementById("latte-price").style.color = "red";
+  document.getElementById("happy-price").hidden = false;
 }
 ```
 
@@ -901,33 +880,22 @@ The ternary operator fits an `if`/`else` on one line. _Ternary_ means three part
 
 ---
 
-## Problem (You): Order and Buy
+## Problem (Me): Order a Latte
 
-**Order** switches to `Cancel` and back. **Buy** takes away a bag. We start with 3 bags, so the stock line never needs `In stock.`
+**Order** switches to `Cancel` and back. Assemble `orderLatte()` from these lines:
 
 <!-- prettier-ignore -->
 ```js
 function orderLatte() {
-document.getElementById("buy").disabled = isSoldOut;
-document.getElementById("stock").textContent = message;
-let message = isSoldOut ? "Sold out." : `Only ${bagsLeft} left!`;
-document.getElementById("bag").style.opacity = isSoldOut ? "0.3" : "1";
-let isSoldOut = bagsLeft === 0;
 let ordered = false;
 }
-}
-document.getElementById("stock").style.color = isSoldOut ? "red" : "orange";
 ordered = !ordered;
-function buyBag() {
-bagsLeft = bagsLeft - 1;
 document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
 ```
 
-Assemble both functions from the lines above.
-
 ---
 
-## Solution (You): Order and Buy
+## Solution (Me): Order a Latte
 
 ```js
 let ordered = false;
@@ -936,7 +904,34 @@ function orderLatte() {
   ordered = !ordered;
   document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
 }
+```
 
+`ordered` sits outside `orderLatte()`, so it keeps its value between clicks.
+
+---
+
+## Problem (You): Buy a Bag
+
+**Buy** takes away a bag. We start with 3 bags, so the stock line never needs `In stock.` Assemble `buyBag()` from these lines:
+
+<!-- prettier-ignore -->
+```js
+document.getElementById("buy").disabled = isSoldOut;
+document.getElementById("stock").textContent = message;
+let message = isSoldOut ? "Sold out." : `Only ${bagsLeft} left!`;
+document.getElementById("bag").style.opacity = isSoldOut ? "0.3" : "1";
+let isSoldOut = bagsLeft === 0;
+}
+document.getElementById("stock").style.color = isSoldOut ? "red" : "orange";
+function buyBag() {
+bagsLeft = bagsLeft - 1;
+```
+
+---
+
+## Solution (You): Buy a Bag
+
+```js
 function buyBag() {
   bagsLeft = bagsLeft - 1;
   let isSoldOut = bagsLeft === 0;
@@ -948,8 +943,6 @@ function buyBag() {
 }
 ```
 
-`ordered` sits outside `orderLatte()`, so it keeps its value between clicks.
-
 ---
 
 # Conclusion
@@ -958,12 +951,10 @@ function buyBag() {
 
 ## The Finished Page
 
-Every solution from today, together:
+- [Colan's Coffee](https://bi3mer.github.io/lectures/cs213/js/examples/if-final/), running live.
+- [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-final/practice.js) on GitHub.
 
-- [Colan's Coffee](https://bi3mer.github.io/lectures/cs213/js/examples/if-final/), running live
-- [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-final/practice.js) on GitHub, in the order we wrote it
-
-The HTML is the same as `if-starter.html`. The page uses the real hour, so to see another time of day, change `new Date().getHours()` to a number, like `20`.
+The HTML is the same as `if-starter.html`. The page uses the real hour, so to see another time of day, change `hours` to a hardcoded number.
 
 ---
 
@@ -979,7 +970,7 @@ The HTML is the same as `if-starter.html`. The page uses the real hour, so to se
 
 ---
 
-# Questions?
+# Appendix
 
 ---
 

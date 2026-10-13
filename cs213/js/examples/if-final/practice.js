@@ -47,19 +47,29 @@ if (bagsLeft === 0) {
   document.getElementById("stock").textContent = "In stock.";
 }
 
-// Reward Levels
-let points = 320;
+// Reward Levels, then Free Pastry
+function showRewards() {
+  let points = Number(document.getElementById("points").value);
 
-if (points >= 500) {
-  document.getElementById("badge").textContent = "🥇";
-  document.getElementById("rewards").style.borderColor = "gold";
-} else if (points >= 200) {
-  document.getElementById("badge").textContent = "🥈";
-  document.getElementById("rewards").style.borderColor = "silver";
-} else {
-  document.getElementById("badge").textContent = "🥉";
-  document.getElementById("rewards").style.borderColor = "tan";
+  if (points >= 500) {
+    document.getElementById("badge").textContent = "🥇";
+    document.getElementById("rewards").style.borderColor = "gold";
+  } else if (points >= 200) {
+    document.getElementById("badge").textContent = "🥈";
+    document.getElementById("rewards").style.borderColor = "silver";
+  } else {
+    document.getElementById("badge").textContent = "🥉";
+    document.getElementById("rewards").style.borderColor = "tan";
+  }
+
+  if (hour < 9 || points >= 500) {
+    document.getElementById("pastry").hidden = false;
+  } else {
+    document.getElementById("pastry").hidden = true;
+  }
 }
+
+showRewards();
 
 // A Greeting
 if (hour < 12) {
@@ -70,18 +80,14 @@ if (hour < 12) {
   document.getElementById("greeting").textContent = "Good evening! 🌙";
 }
 
-// Free Pastry
-if (hour < 9 || points >= 500) {
-  document.getElementById("pastry").hidden = false;
-}
-
 // Happy Hour
 if (hour >= 14 && hour < 16) {
-  document.getElementById("latte-price").textContent = "$2.25";
+  document.getElementById("latte-price").style.textDecoration = "line-through";
   document.getElementById("latte-price").style.color = "red";
+  document.getElementById("happy-price").hidden = false;
 }
 
-// Order and Buy
+// Order a Latte
 let ordered = false;
 
 function orderLatte() {
@@ -89,10 +95,13 @@ function orderLatte() {
   document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
 }
 
+// Buy a Bag
 function buyBag() {
   bagsLeft = bagsLeft - 1;
+
   let isSoldOut = bagsLeft === 0;
   let message = isSoldOut ? "Sold out." : `Only ${bagsLeft} left!`;
+
   document.getElementById("stock").textContent = message;
   document.getElementById("stock").style.color = isSoldOut ? "red" : "orange";
   document.getElementById("bag").style.opacity = isSoldOut ? "0.3" : "1";

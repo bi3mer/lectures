@@ -1,0 +1,172 @@
+// Every solution from the loops lecture, in the order we wrote them.
+// All companies and prices are made up.
+
+// Order Ticket
+let order = {
+  side: "BUY",
+  ticker: "ACME",
+  shares: 1000,
+  price: 100.25,
+};
+
+let ticketPrice = order.price.toFixed(2);
+let ticket = `${order.side} ${order.shares} ${order.ticker} @ $${ticketPrice}`;
+document.getElementById("ticket").textContent = ticket;
+
+// Quote Lookup
+let quotes = { ACME: 100.25, BLIP: 54.1, WIDG: 12.75 };
+
+function showQuote() {
+  let ticker = document.getElementById("ticker").value;
+  let quote = quotes[ticker];
+
+  if (quote === undefined) {
+    document.getElementById("quote").textContent = "Unknown ticker";
+  } else {
+    document.getElementById("quote").textContent = `$${quote.toFixed(2)}`;
+  }
+}
+
+// Size Bar, then Size Bar, Again
+let size = "";
+
+for (let i = 0; i < order.shares / 100; i++) {
+  size += "█";
+}
+
+document.getElementById("size").textContent = size;
+
+// Doubling Time
+let fund = { balance: 1000, rate: 0.07 };
+let balance = fund.balance;
+let years = 0;
+
+while (balance < 2 * fund.balance) {
+  balance += balance * fund.rate;
+  years++;
+}
+
+document.getElementById("doubling").textContent = `${years} years`;
+
+// Buying Power
+let cash = 1000;
+let bought = 0;
+
+while (cash >= quotes.ACME) {
+  cash -= quotes.ACME;
+  bought++;
+}
+
+let power = `${bought} shares, $${cash.toFixed(2)} left`;
+document.getElementById("buying-power").textContent = power;
+
+// Fill Bar
+order.filled = 600;
+let fill = "";
+
+for (let i = 1; i <= order.shares / 100; i++) {
+  if (i <= order.filled / 100) {
+    fill += "█";
+  } else {
+    fill += "░";
+  }
+}
+
+document.getElementById("fill").textContent = fill;
+
+// Opening Bell
+let countdown = "";
+
+for (let i = 5; i > 0; i--) {
+  countdown += `${i}... `;
+}
+
+countdown += "🔔 Open!";
+document.getElementById("banner").textContent = countdown;
+
+// Watchlist
+for (let ticker in quotes) {
+  let line = `<li>${ticker}: $${quotes[ticker].toFixed(2)}</li>`;
+  document.getElementById("watchlist").innerHTML += line;
+}
+
+// Order Book
+let asks = { "101.00": 300, "100.75": 900, "100.50": 400 };
+let bids = { "100.25": 600, "100.00": 1200, "99.75": 500 };
+
+function depthBar(shares) {
+  let bar = "";
+
+  for (let i = 0; i < shares / 100; i++) {
+    bar += "█";
+  }
+
+  return bar;
+}
+
+for (let price in asks) {
+  let shares = asks[price];
+  let line = `<li class="ask">${price} ${depthBar(shares)} ${shares}</li>`;
+  document.getElementById("asks").innerHTML += line;
+}
+
+for (let price in bids) {
+  let shares = bids[price];
+  let line = `<li class="bid">${price} ${depthBar(shares)} ${shares}</li>`;
+  document.getElementById("bids").innerHTML += line;
+}
+
+// Keys Are Strings: the best bid
+let bestBid = 0;
+
+for (let price in bids) {
+  if (Number(price) > bestBid) {
+    bestBid = Number(price);
+  }
+}
+
+// Spread
+let bestAsk = Infinity;
+
+for (let price in asks) {
+  if (Number(price) < bestAsk) {
+    bestAsk = Number(price);
+  }
+}
+
+let spread = `Spread: $${(bestAsk - bestBid).toFixed(2)}`;
+document.getElementById("spread").textContent = spread;
+
+// Average Price
+let trades = { "9:30": 100.1, "9:31": 100.3, "9:32": 100.45 };
+let priceSum = 0;
+let tradeCount = 0;
+
+Object.values(trades).forEach(function (price) {
+  priceSum += price;
+  tradeCount++;
+});
+
+let average = (priceSum / tradeCount).toFixed(2);
+document.getElementById("average").textContent = `$${average}`;
+
+// Positions
+let positions = { ACME: 10, BLIP: 25, WIDG: 40 };
+
+Object.keys(positions).forEach((ticker) => {
+  let held = positions[ticker];
+  let value = (held * quotes[ticker]).toFixed(2);
+  let line = `<li>${ticker}: ${held} shares, $${value}</li>`;
+  document.getElementById("positions").innerHTML += line;
+});
+
+// Movers
+let opens = { ACME: 100, BLIP: 55, WIDG: 12.5 };
+let change = (open, now) => ((now - open) / open) * 100;
+
+Object.keys(quotes).forEach((ticker) => {
+  let percent = change(opens[ticker], quotes[ticker]);
+  let side = percent >= 0 ? "up" : "down";
+  let line = `<li class="${side}">${ticker}: ${percent.toFixed(2)}%</li>`;
+  document.getElementById("movers").innerHTML += line;
+});

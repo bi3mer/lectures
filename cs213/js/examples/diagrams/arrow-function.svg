@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>From function to arrow function</title>
+  <desc>The same fee function written three ways. First, let fee = function (amount) { return amount * 0.01; }; stored a function in a variable. Second, the arrow function let fee = (amount) =&gt; { return amount * 0.01; }; dropped the word function and put =&gt; after the parameters. Third, let fee = (amount) =&gt; amount * 0.01; dropped the braces, return, and the inner semicolon, since the body was one expression, and gave back amount * 0.01 by itself.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1120" height="360" rx="18" fill="#0f1b2d" />
+  <rect width="1120" height="360" rx="18" fill="url(#grid)" />
+
+  <!-- Row labels: what changed from the row above -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc" style="font-variant-ligatures: none">
+    <text x="24" y="28">a function stored in a variable</text>
+    <text x="24" y="144">an arrow function: drop function, put =&gt; after the parameters</text>
+    <text x="24" y="260">one expression: drop { }, return, and the inner ;</text>
+  </g>
+
+  <!-- One card per row -->
+  <g fill="#1e293b" stroke="#64748b" stroke-width="2">
+    <rect x="24" y="40" width="1072" height="72" rx="10" />
+    <rect x="24" y="156" width="1072" height="72" rx="10" />
+    <rect x="24" y="272" width="1072" height="72" rx="10" />
+  </g>
+
+  <!-- The parameters are blue, the body is green, function is red, and => is yellow,
+       in every row. -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" style="font-variant-ligatures: none; white-space: pre">
+    <text x="48" y="86">let fee = <tspan fill="#f87171" font-weight="bold">function</tspan> <tspan fill="#38bdf8" font-weight="bold">(amount)</tspan> { <tspan fill="#4ade80">return amount * 0.01;</tspan> };</text>
+    <text x="48" y="202">let fee = <tspan fill="#38bdf8" font-weight="bold">(amount)</tspan> <tspan fill="#facc15" font-weight="bold">=&gt;</tspan> { <tspan fill="#4ade80">return amount * 0.01;</tspan> };</text>
+    <text x="48" y="318">let fee = <tspan fill="#38bdf8" font-weight="bold">(amount)</tspan> <tspan fill="#facc15" font-weight="bold">=&gt;</tspan> <tspan fill="#4ade80">amount * 0.01</tspan>;</text>
+  </g>
+</svg>

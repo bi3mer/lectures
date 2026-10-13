@@ -33,6 +33,10 @@
       button:disabled {
         opacity: 0.4;
       }
+
+      #happy-price {
+        color: green;
+      }
     </style>
   </head>
   <body>
@@ -47,6 +51,10 @@
         <label for="name">Your name:</label>
         <input id="name" oninput="showName()" />
       </p>
+      <p>
+        <label for="points">Your points:</label>
+        <input id="points" type="number" value="320" oninput="showRewards()" />
+      </p>
       <p id="pastry" hidden>🥐 Free pastry!</p>
     </section>
 
@@ -56,7 +64,7 @@
         <label for="age">Your age:</label>
         <input id="age" type="number" oninput="checkAge()" />
       </p>
-      <p>Latte <span id="latte-price">$4.50</span> <button id="latte" onclick="orderLatte()" disabled>Order</button></p>
+      <p>Latte <span id="latte-price">$4.50</span> <span id="happy-price" hidden>$2.25</span> <button id="latte" onclick="orderLatte()" disabled>Order</button></p>
       <p>Hot chocolate $3.75 <button>Order</button></p>
     </section>
 
@@ -70,7 +78,7 @@
           width="80"
         />
       </p>
-      <p>Yirgacheffe, 12 oz, $14.50</p>
+      <p>House Blend, 12 oz, $14.50</p>
       <p id="stock">In stock.</p>
       <p><button id="buy" onclick="buyBag()">Buy</button></p>
     </section>
