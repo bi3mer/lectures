@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ACME Order Book</title>
+    <title>TEST Order Book</title>
     <style>
       body {
         max-width: 600px;
@@ -56,8 +56,9 @@
   </head>
   <body>
     <header>
-      <h1>ACME Order Book</h1>
+      <h1>TEST Order Book</h1>
       <p id="banner">Market closed</p>
+      <p>Trading days this month: <span id="trading-days"></span></p>
     </header>
 
     <section class="card">
@@ -73,6 +74,7 @@
       <p id="spread"></p>
       <ul id="bids" class="book"></ul>
       <p>Average trade today: <span id="average"></span></p>
+      <p>Sell 1000 at market: <span id="market-sell"></span></p>
     </section>
 
     <section class="card">
@@ -90,7 +92,7 @@
     <section class="card">
       <h2>Portfolio</h2>
       <ul id="positions"></ul>
-      <p>$1,000 in ACME buys: <span id="buying-power"></span></p>
+      <p>$1,000 in TEST buys: <span id="buying-power"></span></p>
       <p>An index fund growing 7% a year doubles in: <span id="doubling"></span></p>
     </section>
 

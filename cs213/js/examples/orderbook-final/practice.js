@@ -4,7 +4,7 @@
 // Order Ticket
 let order = {
   side: "BUY",
-  ticker: "ACME",
+  ticker: "TEST",
   shares: 1000,
   price: 100.25,
 };
@@ -14,7 +14,7 @@ let ticket = `${order.side} ${order.shares} ${order.ticker} @ $${ticketPrice}`;
 document.getElementById("ticket").textContent = ticket;
 
 // Quote Lookup
-let quotes = { ACME: 100.25, BLIP: 54.1, WIDG: 12.75 };
+let quotes = { TEST: 100.25, BLIP: 54.1, WIDG: 12.75 };
 
 function showQuote() {
   let ticker = document.getElementById("ticker").value;
@@ -52,8 +52,8 @@ document.getElementById("doubling").textContent = `${years} years`;
 let cash = 1000;
 let bought = 0;
 
-while (cash >= quotes.ACME) {
-  cash -= quotes.ACME;
+while (cash >= quotes.TEST) {
+  cash -= quotes.TEST;
   bought++;
 }
 
@@ -90,10 +90,7 @@ for (let ticker in quotes) {
   document.getElementById("watchlist").innerHTML += line;
 }
 
-// Order Book
-let asks = { "101.00": 300, "100.75": 900, "100.50": 400 };
-let bids = { "100.25": 600, "100.00": 1200, "99.75": 500 };
-
+// Order Book, Step 1
 function depthBar(shares) {
   let bar = "";
 
@@ -104,11 +101,19 @@ function depthBar(shares) {
   return bar;
 }
 
+// Order Book, Step 2
+// prettier-ignore
+let asks = { "101.00": 300, "100.75": 900, "100.50": 400 };
+
 for (let price in asks) {
   let shares = asks[price];
   let line = `<li class="ask">${price} ${depthBar(shares)} ${shares}</li>`;
   document.getElementById("asks").innerHTML += line;
 }
+
+// Order Book, Step 3
+// prettier-ignore
+let bids = { "100.25": 600, "100.00": 1200, "99.75": 500 };
 
 for (let price in bids) {
   let shares = bids[price];
@@ -137,6 +142,33 @@ for (let price in asks) {
 let spread = `Spread: $${(bestAsk - bestBid).toFixed(2)}`;
 document.getElementById("spread").textContent = spread;
 
+// Market Sell
+let toSell = 1000;
+let fills = "";
+
+for (let price in bids) {
+  if (bids[price] >= toSell) {
+    fills += `${toSell} @ ${price}`;
+    break;
+  }
+  fills += `${bids[price]} @ ${price}, `;
+  toSell -= bids[price];
+}
+
+document.getElementById("market-sell").textContent = fills;
+
+// Trading Days
+let tradingDays = 0;
+
+for (let day = 1; day <= 30; day++) {
+  if (day % 7 === 6 || day % 7 === 0) {
+    continue;
+  }
+  tradingDays++;
+}
+
+document.getElementById("trading-days").textContent = tradingDays;
+
 // Average Price
 let trades = { "9:30": 100.1, "9:31": 100.3, "9:32": 100.45 };
 let priceSum = 0;
@@ -151,7 +183,7 @@ let average = (priceSum / tradeCount).toFixed(2);
 document.getElementById("average").textContent = `$${average}`;
 
 // Positions
-let positions = { ACME: 10, BLIP: 25, WIDG: 40 };
+let positions = { TEST: 10, BLIP: 25, WIDG: 40 };
 
 Object.keys(positions).forEach((ticker) => {
   let held = positions[ticker];
@@ -161,12 +193,12 @@ Object.keys(positions).forEach((ticker) => {
 });
 
 // Movers
-let opens = { ACME: 100, BLIP: 55, WIDG: 12.5 };
+let opens = { TEST: 100, BLIP: 55, WIDG: 12.5 };
 let change = (open, now) => ((now - open) / open) * 100;
 
 Object.keys(quotes).forEach((ticker) => {
   let percent = change(opens[ticker], quotes[ticker]);
-  let side = percent >= 0 ? "up" : "down";
-  let line = `<li class="${side}">${ticker}: ${percent.toFixed(2)}%</li>`;
+  let trend = percent >= 0 ? "up" : "down";
+  let line = `<li class="${trend}">${ticker}: ${percent.toFixed(2)}%</li>`;
   document.getElementById("movers").innerHTML += line;
 });

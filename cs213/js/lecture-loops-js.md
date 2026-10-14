@@ -42,12 +42,12 @@ Colan Biemer
 
 ```js
 let orderSide = "BUY";
-let orderTicker = "ACME";
+let orderTicker = "TEST";
 let orderShares = 1000;
 let orderPrice = 100.25;
 ```
 
-These four variables describe one stock order, but nothing in the code ties them together. A list of 100 orders would need 400 variables.
+These four variables describe one stock order: buy 1000 shares of TEST at \$100.25 each. Traders call a stock by its **ticker**, a short name like `TEST`. Nothing in the code ties the variables together, and a list of 100 orders would need 400 variables.
 
 An **object** keeps related values together under one name.
 
@@ -58,7 +58,7 @@ An **object** keeps related values together under one name.
 ```js
 let order = {
   side: "BUY",
-  ticker: "ACME",
+  ticker: "TEST",
   shares: 1000,
   price: 100.25,
 };
@@ -66,15 +66,23 @@ let order = {
 
 - An object's `{ }` holds **properties**. Each property is a **key**, a `:`, and a value.
 - Commas separate the properties. The comma after the last one is optional.
-- A short object fits on one line: `let quotes = { ACME: 100.25, BLIP: 54.1 };`
+- A short object fits on one line: `let quotes = { TEST: 100.25, BLIP: 54.1 };`
 
 ---
 
 ## Reading and Changing Properties
 
+<style scoped>
+/* The left code's first line is 58 characters, too wide for the usual 560px column. */
+.side-by-side { grid-template-columns: 760px minmax(0, 1fr); }
+</style>
+
+<div class="side-by-side">
+<div>
+
 <!-- prettier-ignore -->
 ```js
-let order = { side: "BUY", ticker: "ACME", shares: 1000 };
+let order = { side: "BUY", ticker: "TEST", shares: 1000 };
 
 console.log(order.shares); // 1000
 console.log(order.price);  // undefined
@@ -83,7 +91,21 @@ order.shares = 500;        // changes shares
 order.price = 100.25;      // adds price
 ```
 
-A dot reads a property. A key the object doesn't have gives `undefined`. Storing a value with `=` changes a property, or adds it when the object doesn't have it yet.
+</div>
+<div>
+
+```js
+let order = {};
+order.side = "BUY";
+order.ticker = "TEST";
+order.shares = 1000;
+order.price = 100.25;
+```
+
+</div>
+</div>
+
+A dot reads a property. A key the object doesn't have gives `undefined`. Storing a value with `=` changes a property, or adds it when the object doesn't have it yet. The code on the right starts from `{}`, an empty object, and adds one property per line.
 
 ---
 
@@ -91,35 +113,20 @@ A dot reads a property. A key the object doesn't have gives `undefined`. Storing
 
 <!-- prettier-ignore -->
 ```js
-let key = "shares";
+let key = "ticker";
 
-console.log(order["shares"]); // 1000
-console.log(order[key]);      // 1000
+console.log(order["ticker"]); // TEST
+console.log(order[key]);      // TEST
 console.log(order.key);       // undefined
 ```
 
 Brackets take a string, so the key can come from a variable. A dot always uses the name written after it, so `order.key` looks for a property named `key`.
 
-Later today, loops hand us each key in a variable, so they need brackets.
-
----
-
-## We've Been Using Objects
-
-```js
-document.getElementById("ticket").style.color = "limegreen";
-console.log("Hello!");
-```
-
-- `document` and `console` are objects that the browser gives every page.
-- `style` is an object too, with a property for each CSS property.
-- A property can hold a function, like `log` and `getElementById`. A function in an object is called a **method**.
-
 ---
 
 ## What's an Order Book?
 
-An **order book** lists the offers to buy and sell one stock. Traders call a stock by its **ticker**, a short name like `ACME`.
+An **order book** lists the offers to buy and sell one stock.
 
 <div class="side-by-side">
 <div>
@@ -142,7 +149,7 @@ All companies and prices today are made up.
 
 ## Let's Build an Order Book
 
-Today's exercises build a trading page for ACME stock. Open [orderbook-starter.html](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/orderbook-starter.html) on GitHub and set it up in WebStorm, in a new folder:
+Today's exercises build a trading page for TEST stock. Open [orderbook-starter.html](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/orderbook-starter.html) on GitHub and set it up in WebStorm, in a new folder:
 
 1. Click **Copy raw file**, the copy icon above the code.
 2. Paste it into a new HTML file in WebStorm.
@@ -154,14 +161,16 @@ As in the `if` lecture, each problem gives you the DOM lines it needs.
 
 ## Problem (Me): Order Ticket
 
-The ticket card shows the order we're about to send: buy 1000 shares of ACME at \$100.25 each. On a ticket, `@` reads as "at."
+The `ticket` paragraph shows the order we're about to send: buy 1000 shares of TEST at \$100.25 each. On a ticket, `@` reads as "at."
 
 1. Store the order in an object, `order`, with the properties `side`, `ticker`, `shares`, and `price`.
 2. Show the order with this line:
 
 ```js
-document.getElementById("ticket").textContent = "BUY 1000 ACME @ $100.25";
+document.getElementById("ticket").textContent = "BUY 1000 TEST @ $100.25";
 ```
+
+Build the string from `order` with a [template literal](lecture-js.html#58), and show the price with [two decimal places](lecture-js.html#78).
 
 ---
 
@@ -170,7 +179,7 @@ document.getElementById("ticket").textContent = "BUY 1000 ACME @ $100.25";
 ```js
 let order = {
   side: "BUY",
-  ticker: "ACME",
+  ticker: "TEST",
   shares: 1000,
   price: 100.25,
 };
@@ -180,17 +189,27 @@ let ticket = `${order.side} ${order.shares} ${order.ticker} @ $${ticketPrice}`;
 document.getElementById("ticket").textContent = ticket;
 ```
 
-<div class="demo book"><p>BUY 1000 ACME @ $100.25</p></div>
+<div class="demo book"><p>BUY 1000 TEST @ $100.25</p></div>
 
 ---
 
 ## Problem (You): Quote Lookup
 
-The watchlist's lookup box calls `showQuote()` every time its text changes. Show the ticker's price, like `$54.10`, or `Unknown ticker`. Start with this object:
+The watchlist has a lookup box, and it calls `showQuote()` every time its text changes, as in [Member Name](lecture-conditional-js.html#22):
+
+```html
+<input id="ticker" oninput="showQuote()" />
+```
+
+Write `showQuote()`. It shows the price of the ticker in the box, like `$54.10`, or `Unknown ticker`. Start with this object:
 
 ```js
-let quotes = { ACME: 100.25, BLIP: 54.1, WIDG: 12.75 };
+let quotes = { TEST: 100.25, BLIP: 54.1, WIDG: 12.75 };
 ```
+
+---
+
+## Problem (You): Quote Lookup (Continued)
 
 <!-- prettier-ignore -->
 ```js
@@ -226,22 +245,7 @@ function showQuote() {
 }
 ```
 
-<div class="runs">
-<div>
-<p class="caption">Typed BLIP</p>
-<div class="demo book"><p>$54.10</p></div>
-</div>
-<div>
-<p class="caption">Typed ZZZZ</p>
-<div class="demo book"><p>Unknown ticker</p></div>
-</div>
-<div>
-<p class="caption">Typed blip</p>
-<div class="demo book"><p>Unknown ticker</p></div>
-</div>
-</div>
-
-`quotes.ticker` and `quotes["ticker"]` both look for a key named `ticker`. Keys must match exactly, so `blip` is unknown.
+Typing `BLIP` shows `$54.10`, and `ZZZZ` shows `Unknown ticker`. Keys must match exactly, so `blip` is unknown too. `quotes.ticker` and `quotes["ticker"]` both look for a key named `ticker`.
 
 ---
 
@@ -267,14 +271,25 @@ A **loop** runs the same code again and again, as many times as we need.
 
 ## `while`
 
+<div class="side-by-side">
+<div>
+
 ```js
 while (condition) {
-  // runs again and again, as long as condition is true
+  // runs while condition is true
 }
 ```
 
-- It looks like an `if`: the condition goes in `( )`, and the code to run goes in `{ }`.
-- An `if` checks its condition once. A `while` checks it again each time the block finishes. Once it's `false`, JavaScript moves on to the code after the `}`.
+</div>
+<div>
+
+![w:530 A while loop went in a cycle. JavaScript started by checking the condition. When it was true, JavaScript ran the block, then went back and checked the condition again. When it was false, JavaScript skipped the block and moved on to the code after the loop.](examples/diagrams/while-loop.svg)
+
+</div>
+</div>
+
+- As in an [`if`](lecture-conditional-js.html#17), the condition goes in `( )`, and the code to run goes in `{ }`.
+- An `if` checks its condition once. A `while` checks it again each time the block finishes.
 - Each run through the block is one **iteration**.
 
 ---
@@ -310,7 +325,7 @@ console.log("Done");
 </div>
 </div>
 
-`count++` moves `count` toward 6, the first value that makes `count <= 5` false. `Done` prints after the loop ends.
+[`count++`](lecture-js.html#76) moves `count` toward 6, which makes `count <= 5` false.
 
 ---
 
@@ -330,14 +345,14 @@ Something in the block has to move the condition toward `false`.
 
 ---
 
-## `+=` With Strings
+## `+=` with Strings
 
 ```js
 let message = "Market";
 message += " open"; // "Market open"
 ```
 
-`+=` adds a string to the end of another. Start from an empty string, `""`, to build one up a piece at a time:
+`message += " open"` is short for `message = message + " open"` ([Assignment Shortcuts](lecture-js.html#76)), and `+` glues strings ([Concatenation](lecture-js.html#57)). Here we start from an [empty string](lecture-conditional-js.html#23), `""`, and add one piece at a time:
 
 ```js
 let bar = "";
@@ -389,7 +404,7 @@ document.getElementById("size").textContent = size;
 </div>
 </div>
 
-The page line comes after the loop, so it runs once, with every block in `size`.
+The page line runs once, after the loop has built every block.
 
 ---
 
@@ -401,12 +416,12 @@ An index fund grows 7% a year. Let's show how many years it takes \$1,000 to dou
 let fund = { balance: 1000, rate: 0.07 };
 ```
 
-1. Copy `fund.balance` into a variable `balance`, so the loop doesn't change the fund.
+1. Copy `fund.balance` into `balance`, so the loop doesn't change `fund`.
 2. Count the years in `years`, starting at 0. While `balance` is under twice the fund's balance, add a year of growth.
 3. Use this line to change the page:
 
 ```js
-document.getElementById("doubling").textContent = "11 years";
+document.getElementById("doubling").textContent = `${years} years`;
 ```
 
 ---
@@ -426,22 +441,33 @@ while (balance < 2 * fund.balance) {
 document.getElementById("doubling").textContent = `${years} years`;
 ```
 
-`balance` went 1000, 1070, 1144.90, and so on up to 1967.15, then 2104.85: 11 years. We didn't know the count before the loop started, so the loop ran until its condition turned `false`. `balance` is a copy, so `fund.balance` is still 1000.
+After 10 years, `balance` was 1967.15, still under 2000. After 11, it was 2104.85, and the loop stopped. We didn't know the count ahead of time, so `while` fit.
 
 ---
 
 ## Problem (You): Buying Power
 
-We have \$1,000, and ACME costs \$100.25 a share (`quotes.ACME`). Buy shares until we can't afford another, then show how many we bought and the cash left over.
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
-1. Store the cash in `cash`, and count the shares in `bought`, starting at 0.
-2. Each iteration buys one share. When should the loop stop?
+We have \$1,000, and a TEST share costs \$100.25 ([`quotes.TEST`](#11)). Buy shares until we can't afford another. The page should say `9 shares, $97.75 left`.
 
-Use this line to change the page:
-
+<!-- prettier-ignore -->
 ```js
-document.getElementById("buying-power").textContent = "9 shares, $97.75 left";
+bought++;
+while (cash >= 0) {
+let power = `${bought} shares, $${cash.toFixed(2)} left`;
+let cash = 1000;
+}
+while (cash >= quotes.TEST) {
+document.getElementById("buying-power").textContent = power;
+let bought = 0;
+cash -= quotes.TEST;
+while (cash > quotes.TEST) {
 ```
+
+Assemble the program from the lines above. Two of the lines are wrong.
 
 ---
 
@@ -451,8 +477,8 @@ document.getElementById("buying-power").textContent = "9 shares, $97.75 left";
 let cash = 1000;
 let bought = 0;
 
-while (cash >= quotes.ACME) {
-  cash -= quotes.ACME;
+while (cash >= quotes.TEST) {
+  cash -= quotes.TEST;
   bought++;
 }
 
@@ -460,7 +486,7 @@ let power = `${bought} shares, $${cash.toFixed(2)} left`;
 document.getElementById("buying-power").textContent = power;
 ```
 
-With `>`, exactly \$100.25 left over couldn't buy a share, so the condition uses `>=`.
+`cash >= 0` keeps buying while any cash is left, so it buys a 10th share: `10 shares, $-2.50 left`. `>` gives 9 shares here too, but with exactly \$100.25 left, it would skip a share we can afford.
 
 ---
 
@@ -490,7 +516,7 @@ The `( )` holds three parts, separated by `;`:
 
 ![w:1120 The same loop written two ways. With while, the setup let count = 1; came before the loop, the condition count <= 5 sat in the parentheses after while, and the update count++ was the last line of the block. With for, the setup, the condition, and the update sat together on one line, separated by semicolons: for (let count = 1; count <= 5; count++). Both blocks printed count.](examples/diagrams/for-loop.svg)
 
-A `for` loop is a `while` loop with the setup, the condition, and the update on one line. When a loop counts, `for` keeps the update where we can see it, so it's harder to forget.
+A `for` loop is a `while` loop with the setup, the condition, and the update on one line.
 
 ---
 
@@ -508,7 +534,7 @@ A `for` loop is a `while` loop with the setup, the condition, and the update on 
 
 </div>
 
-The third loop runs once too many. That's an **off-by-one** error, a common loop bug. To run a loop `n` times, start at 0 with `<`, or at 1 with `<=`. The update can be any shortcut from the intro lecture.
+If we want 5 iterations, the third loop runs once too many, an **off-by-one** error. To run a loop `n` times, start at 0 with `<`, or at 1 with `<=`.
 
 ---
 
@@ -539,13 +565,11 @@ for (let i = 0; i < order.shares / 100; i++) {
 document.getElementById("size").textContent = size;
 ```
 
-`count` is gone. A `let` in the `for` belongs to the loop, so `i` doesn't exist after the `}`, and the next loop can declare its own `let i`.
-
 ---
 
 ## Problem (Us): Fill Bar
 
-An order **fills** as other traders trade with it, often a few shares at a time. So far, 600 of our 1000 shares have filled. Let's draw █ for each 100 shares filled, and ░ for each 100 still open.
+An order **fills** as other traders trade with it, often a few shares at a time. Say 600 of our 1000 shares have filled. Let's draw █ for each 100 shares filled, and ░ for each 100 still open.
 
 1. Add a `filled` property to `order`, set to 600.
 2. Loop over the bar's slots, from 1 to `order.shares / 100`.
@@ -560,6 +584,10 @@ document.getElementById("fill").textContent = "██████░░░░";
 ---
 
 ## Solution (Us): Fill Bar
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
 ```js
 order.filled = 600;
@@ -628,7 +656,7 @@ for (let key in object) {
 
 - `key` holds each property's name, as a string.
 - To get the property's value, use brackets: `object[key]`.
-- For keys that are words, the properties come in the order they were added.
+- Keys come in the order they were added, except whole numbers like `"7"`, which come first, smallest to largest.
 
 ---
 
@@ -650,7 +678,7 @@ for (let key in order) {
 
 ```text
 side: BUY
-ticker: ACME
+ticker: TEST
 shares: 1000
 price: 100.25
 filled: 600
@@ -668,10 +696,10 @@ filled: 600
 The watchlist should show the price of every ticker in `quotes`, which already exists from Quote Lookup.
 
 1. Loop over `quotes` with `for...in`.
-2. Add a list item for each ticker with this line:
+2. Add a list item for each ticker, with the price to two decimal places, using this line:
 
 ```js
-document.getElementById("watchlist").innerHTML += "<li>ACME: $100.25</li>";
+document.getElementById("watchlist").innerHTML += "<li>TEST: $100.25</li>";
 ```
 
 `innerHTML` is the HTML inside an element, so `+=` adds the new `<li>` after the ones already there.
@@ -687,30 +715,28 @@ for (let ticker in quotes) {
 }
 ```
 
-<div class="demo book"><ul><li>ACME: $100.25</li><li>BLIP: $54.10</li><li>WIDG: $12.75</li></ul></div>
+<div class="demo book"><ul><li>TEST: $100.25</li><li>BLIP: $54.10</li><li>WIDG: $12.75</li></ul></div>
 
-The loop variable can have any name, and `ticker` says what each key is. Adding a ticker to `quotes` adds a line to the watchlist, with no change to the loop.
+Any name works for the loop variable, and `ticker` says what each key is. A new ticker in `quotes` adds a line, with no change to the loop.
 
 ---
 
-## Problem (Us): Order Book
+## Problem (Us): Order Book, Step 1
 
-Each side of the book is an object. A price is the key, and the shares offered at that price are the value:
+The `asks` and `bids` elements on the page will show lines like `101.00 ███ 300`: a price, a bar, and the shares. First, turn the loop from [Size Bar, Again](#31) into a function that draws a bar for any number of shares:
 
 ```js
-let asks = { "101.00": 300, "100.75": 900, "100.50": 400 };
-let bids = { "100.25": 600, "100.00": 1200, "99.75": 500 };
+console.log(depthBar(300)); // ███
+console.log(depthBar(1200)); // ████████████
 ```
 
-1. Every price needs Size Bar's loop, so put it in a function, `depthBar(shares)`, that returns the bar.
-2. For each ask, add a list item like `<li class="ask">101.00 ███ 300</li>` to the page's `asks` list with `innerHTML +=`.
-3. Do the same for the bids, with the `bid` class.
-
-The keys need quotes. Without them, `101.00` would become the key `"101"`.
+1. Name the function `depthBar`, with one parameter, `shares`.
+2. Copy that loop into the function, with `shares` in place of `order.shares`.
+3. [`return`](lecture-js.html#96) the bar.
 
 ---
 
-## Solution (Us): Order Book
+## Solution (Us): Order Book, Step 1
 
 ```js
 function depthBar(shares) {
@@ -722,7 +748,32 @@ function depthBar(shares) {
 
   return bar;
 }
+```
 
+The page doesn't change yet, since a function runs only when something calls it. In the console, `depthBar(300)` gives `"███"`.
+
+---
+
+## Problem (Us): Order Book, Step 2
+
+Each side of the book is an object. A price is the key, and the shares offered at that price are the value:
+
+<!-- prettier-ignore -->
+```js
+let asks = { "101.00": 300, "100.75": 900, "100.50": 400 };
+```
+
+The keys need quotes, or `101.00` would become the key `"101"`.
+
+1. Loop over `asks` with `for...in`, with `price` as the loop variable.
+2. Build `<li class="ask">[PRICE] ███ [SHARES]</li>`, with `depthBar(?)` for the bar.
+3. Add it to the `asks` element with `innerHTML +=`, as in [Watchlist](#40).
+
+---
+
+## Solution (Us): Order Book, Step 2
+
+```js
 for (let price in asks) {
   let shares = asks[price];
   let line = `<li class="ask">${price} ${depthBar(shares)} ${shares}</li>`;
@@ -730,15 +781,39 @@ for (let price in asks) {
 }
 ```
 
-`depthBar` is Size Bar's loop, with `shares` in place of `order.shares`.
+<div class="demo book"><ul class="ladder"><li class="ask">101.00 ███ 300</li><li class="ask">100.75 █████████ 900</li><li class="ask">100.50 ████ 400</li></ul></div>
+
+On the first iteration, `price` is `"101.00"`, and `asks[price]` is `300`.
 
 ---
 
-## Solution (Us): Order Book (Continued)
+## Problem (Us): Order Book, Step 3
 
-The bids loop is the asks loop with `bids` and the `bid` class:
+The bids side works the same way:
 
+<!-- prettier-ignore -->
 ```js
+let bids = { "100.25": 600, "100.00": 1200, "99.75": 500 };
+```
+
+Without quotes, `100.00` would become the key `"100"`. That's a whole number, so it would [come first](#37), above `"100.25"`.
+
+1. Copy the loop from [Step 2](#44).
+2. Change every `asks` to `bids`, including the element's id.
+3. Change the `ask` class to `bid`, so the bids show in green.
+
+---
+
+## Solution (Us): Order Book, Step 3
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
+
+<!-- prettier-ignore -->
+```js
+let bids = { "100.25": 600, "100.00": 1200, "99.75": 500 };
+
 for (let price in bids) {
   let shares = bids[price];
   let line = `<li class="bid">${price} ${depthBar(shares)} ${shares}</li>`;
@@ -772,7 +847,7 @@ for (let price in bids) {
 </div>
 <div>
 
-<p class="caption">Fixed</p>
+<p class="caption">Fixed with <a href="lecture-js.html#68"><code>Number()</code></a></p>
 
 ```js
 let bestBid = 0;
@@ -793,9 +868,9 @@ The bug finds `"99.75"`. After the first bid, `bestBid` holds a string, and Java
 
 ## Problem (You): Spread
 
-Copy the fixed best-bid loop from Keys Are Strings into `practice.js`. Then find the best ask, the lowest price in `asks`, and show the spread between them: `Spread: $0.25`.
+Copy the fixed best-bid loop into `practice.js`. Then find the best ask, the lowest price in `asks`, and show the spread: `Spread: $0.25`.
 
-1. Start `bestAsk` at `Infinity`, a value bigger than every number, so the first ask replaces it.
+1. Start `bestAsk` at `Infinity`, a value bigger than every other number, so the first ask replaces it.
 2. Loop over `asks`, and keep the lowest price.
 3. Subtract to get the spread, with two decimal places.
 
@@ -822,7 +897,178 @@ let spread = `Spread: $${(bestAsk - bestBid).toFixed(2)}`;
 document.getElementById("spread").textContent = spread;
 ```
 
+<p class="caption">Middle of the order book</p>
 <div class="demo book"><ul class="ladder"><li class="ask">100.50 ████ 400</li><li>Spread: $0.25</li><li class="bid">100.25 ██████ 600</li></ul></div>
+
+---
+
+# `break` and `continue`
+
+---
+
+## Stopping Early: `break`
+
+Which year is the first one where the index fund passes \$5,000?
+
+```js
+let fundBalance = 1000;
+
+for (let year = 1; year <= 50; year++) {
+  fundBalance *= 1.07;
+  if (fundBalance > 5000) {
+    console.log(`Year ${year}: $${fundBalance.toFixed(2)}`);
+    break;
+  }
+}
+```
+
+`break` ends the loop right away, even when the condition is still `true`. The loop allows 50 years, but this prints `Year 24: $5072.37` and stops.
+
+---
+
+## Problem (Us): Market Sell
+
+A **market order** trades right away, at the best prices in the book. Let's sell 1000 shares at market. `bids` lists the best bid first, so we sell at 100.25 first, then at 100.00, until all 1000 are sold.
+
+1. Count the shares still to sell in `toSell`, starting at 1000, and build the fills in `fills`.
+2. Loop over `bids`. When a bid has enough shares for the rest, sell the rest there and `break`.
+3. Otherwise, sell all of that bid's shares and move on.
+
+Use this line to change the page:
+
+```js
+document.getElementById("market-sell").textContent = "600 @ 100.25, 400 @ 100.00";
+```
+
+---
+
+## Solution (Us): Market Sell
+
+```js
+let toSell = 1000;
+let fills = "";
+
+for (let price in bids) {
+  if (bids[price] >= toSell) {
+    fills += `${toSell} @ ${price}`;
+    break;
+  }
+  fills += `${bids[price]} @ ${price}, `;
+  toSell -= bids[price];
+}
+
+document.getElementById("market-sell").textContent = fills;
+```
+
+Without `break`, the loop goes on to 99.75 and sells the last 400 shares a second time: `600 @ 100.25, 400 @ 100.00400 @ 99.75`.
+
+---
+
+## Skipping Ahead: `continue`
+
+<div class="side-by-side">
+<div>
+
+```js
+for (let ticker in quotes) {
+  if (ticker === order.ticker) {
+    continue;
+  }
+  console.log(ticker);
+}
+```
+
+</div>
+<div>
+
+<p class="caption">Console</p>
+
+```text
+BLIP
+WIDG
+```
+
+</div>
+</div>
+
+`continue` ends this iteration right away, and the loop goes on to the next one. Here it skips TEST, the stock we're trading. With `break`, the loop would end at TEST and print nothing.
+
+---
+
+## `continue` in a `while`
+
+<div class="side-by-side">
+<div>
+
+<p class="caption">Freezes the tab</p>
+
+```js
+let i = 0;
+
+while (i < 5) {
+  if (i === 2) {
+    continue;
+  }
+  console.log(i);
+  i++;
+}
+```
+
+</div>
+<div>
+
+<p class="caption">Prints 0, 1, 3, 4</p>
+
+```js
+for (let i = 0; i < 5; i++) {
+  if (i === 2) {
+    continue;
+  }
+  console.log(i);
+}
+```
+
+</div>
+</div>
+
+In the `while`, `continue` jumps back to the condition before `i++` runs, so `i` stays 2 forever. A `for` loop runs its update after a `continue`, so `i` moves on to 3.
+
+---
+
+## Problem (You): Trading Days
+
+The market is closed on weekends. This month has 30 days, and day 1 is a Monday, so the [remainder](lecture-js.html#72) `day % 7` is 6 on Saturdays and 0 on Sundays.
+
+1. Loop over the days of the month, from 1 to 30.
+2. Use `continue` to skip weekends. A weekend day is a Saturday [or](lecture-conditional-js.html#40) a Sunday.
+3. Count the other days in `tradingDays`.
+
+Use this line to change the page:
+
+```js
+document.getElementById("trading-days").textContent = tradingDays;
+```
+
+---
+
+## Solution (You): Trading Days
+
+```js
+let tradingDays = 0;
+
+for (let day = 1; day <= 30; day++) {
+  if (day % 7 === 6 || day % 7 === 0) {
+    continue;
+  }
+  tradingDays++;
+}
+
+document.getElementById("trading-days").textContent = tradingDays;
+```
+
+<div class="demo book"><p>Trading days this month: 22</p></div>
+
+With `break` in place of `continue`, the loop would stop at the first Saturday and count 5 days.
 
 ---
 
@@ -834,11 +1080,27 @@ document.getElementById("spread").textContent = spread;
 
 <!-- prettier-ignore -->
 ```js
-Object.keys(quotes);   // ["ACME", "BLIP", "WIDG"]
+Object.keys(quotes);   // ["TEST", "BLIP", "WIDG"]
 Object.values(quotes); // [100.25, 54.1, 12.75]
 ```
 
-`Object.keys` gives back a list of an object's keys, and `Object.values` gives back a list of its values. A list in `[ ]` is an **array**. Arrays get their own lecture next time; today we only loop over them.
+`Object.keys` gives back a list of an object's keys, and `Object.values` gives back a list of its values. A list in `[ ]` is an **array**. Arrays get their own lecture later; today we only loop over them.
+
+---
+
+## Functions Are Values
+
+```js
+let fee = function (amount) {
+  return amount * 0.01;
+};
+
+console.log(fee(500)); // 5
+```
+
+A [function](lecture-js.html#90) is a value, like a number or a string, so a variable can hold one. We call it with the variable's name: `fee(500)`.
+
+`forEach`, next, takes a function value like this one and calls it once for each item.
 
 ---
 
@@ -850,7 +1112,7 @@ Object.keys(quotes).forEach(function (ticker) {
 });
 ```
 
-- `forEach` is a method that every array has. It calls the function we give it once for each item in the array, with that item as the argument.
+- Every array has `forEach`, which we call with a dot, like `toFixed`. It calls the function we give it once for each item in the array, with that item as the argument.
 - The function has no name, since only `forEach` calls it.
 - The `)` after the `}` closes `forEach(`, and the `;` ends the statement.
 
@@ -883,7 +1145,7 @@ Object.keys(quotes).forEach(function (ticker) {
 <p class="caption">Console, for both</p>
 
 ```text
-ACME
+TEST
 BLIP
 WIDG
 ```
@@ -891,13 +1153,13 @@ WIDG
 </div>
 </div>
 
-Both loops print the same lines. With `Object.values`, `forEach` hands the function each value instead of each key.
+Both loops print the same lines. With `Object.values`, `forEach` hands the function each value instead of each key. `break` and `continue` work only in a loop, so inside `forEach`'s function, either one is a syntax error.
 
 ---
 
 ## Problem (Us): Average Price
 
-The book card should show the average price of today's trades in ACME. The keys are the times of the trades:
+The `average` span should show the average price of today's trades in TEST. The keys are the times of the trades:
 
 ```js
 let trades = { "9:30": 100.1, "9:31": 100.3, "9:32": 100.45 };
@@ -929,7 +1191,7 @@ let average = (priceSum / tradeCount).toFixed(2);
 document.getElementById("average").textContent = `$${average}`;
 ```
 
-`priceSum` and `tradeCount` sit outside the function, so they keep their totals between calls. A `let` inside the function would start over at 0 for every trade.
+`priceSum` and `tradeCount` sit outside the function, so they keep their totals between calls. Inside it, they'd start over at 0 for every trade.
 
 ---
 
@@ -937,45 +1199,11 @@ document.getElementById("average").textContent = `$${average}`;
 
 ---
 
-## Functions Are Values
-
-```js
-let fee = function (amount) {
-  return amount * 0.01;
-};
-
-console.log(fee(500)); // 5
-```
-
-A function is a value, like a number or a string, so a variable can hold one. We call it with the variable's name: `fee(500)`.
-
-That's what `forEach` gets: a function value, which it calls once for each item.
-
----
-
 ## From `function` to `=>`
 
-![w:1120 The same fee function written three ways. First, let fee = function (amount) { return amount * 0.01; }; stored a function in a variable. Second, the arrow function let fee = (amount) => { return amount * 0.01; }; dropped the word function and put => after the parameters. Third, let fee = (amount) => amount * 0.01; dropped the braces, return, and the inner semicolon, since the body was one expression, and gave back amount * 0.01 by itself.](examples/diagrams/arrow-function.svg)
+![w:1000 The same fee function written three ways. First, let fee = function (amount) { return amount * 0.01; }; stored a function in a variable. Second, the arrow function let fee = (amount) => { return amount * 0.01; }; dropped the word function and put => after the parameters. Third, let fee = (amount) => amount * 0.01; dropped the braces, return, and the inner semicolon, since the body was one expression, and gave back amount * 0.01 by itself.](examples/diagrams/arrow-function.svg)
 
 An **arrow function** is a shorter way to write a function value. Without `{ }`, it gives back its one expression, with no `return`.
-
----
-
-## Arrow Function Shapes
-
-```js
-let marketStatus = () => "Open";
-let fee = (amount) => amount * 0.01;
-let profit = (buyPrice, sellPrice) => sellPrice - buyPrice;
-let cost = (shares, price) => {
-  let subtotal = shares * price;
-  return subtotal + fee(subtotal);
-};
-```
-
-- With no parameters, write empty `()`.
-- With one parameter, the `()` are optional: `amount => amount * 0.01` works too.
-- With more than one statement, the body needs `{ }` and `return`.
 
 ---
 
@@ -990,7 +1218,7 @@ let makeOrder = (ticker) => ({ ticker: ticker, shares: 100 });
 console.log(makeOrder("BLIP").shares); // 100
 ```
 
-With `{ }`, the body is a block, and a block gives back only what `return` gives back. To give back an object from a one-line arrow function, wrap the object in `( )`, so JavaScript doesn't read its `{ }` as a block.
+With `{ }`, the body is a block, and a block gives back only what [`return`](lecture-js.html#96) gives back. To give back an object from a one-line arrow function, wrap the object in `( )`, so JavaScript doesn't read its `{ }` as a block.
 
 ---
 
@@ -999,18 +1227,19 @@ With `{ }`, the body is a block, and a block gives back only what `return` gives
 <!-- prettier-ignore -->
 ```js
 console.log(double(4)); // 8
-console.log(half(4));   // ReferenceError: half isn't ready yet
+console.log(half(4));   // ReferenceError
 
 function double(n) { return n * 2; }
 let half = (n) => n / 2;
 ```
 
-- Use `function` for a named function that the page calls, like `showQuote()` from `oninput`. JavaScript sets up every `function` before the file runs, so it works from anywhere in the file.
-- Use an arrow function for a short function that we hand to another function, like `forEach`. An arrow function stored with `let` exists only after its line runs.
+- JavaScript sets up every `function` before the file runs, so `double(4)` works above its line. An arrow function stored with `let` exists only after its line runs, so `half(4)` fails.
+- Use an arrow function for a one-line formula, like `fee`, or for a function we hand to `forEach`, however many lines it has.
+- Use `function` for the rest, like `depthBar`, or `showQuote()` from `oninput`.
 
 ---
 
-## Example: `forEach` With an Arrow Function
+## Example: `forEach` with an Arrow Function
 
 ```js
 Object.keys(quotes).forEach((ticker) => console.log(ticker));
@@ -1021,28 +1250,28 @@ Object.values(trades).forEach((price) => {
 });
 ```
 
-The first loop's body is one statement, so it fits on one line. The second is Average Price's loop, and its body has two statements, so it keeps its `{ }`.
+The first loop's body is one expression, so it needs no `{ }`. The second is Average Price's loop, and its body has two statements, so it keeps its `{ }`.
 
 ---
 
-## Problem (Me): Positions
+## Problem (You): Positions
 
 Our portfolio holds three stocks:
 
 ```js
-let positions = { ACME: 10, BLIP: 25, WIDG: 40 };
+let positions = { TEST: 10, BLIP: 25, WIDG: 40 };
 ```
 
-1. List each position with its value at today's price, like `<li>ACME: 10 shares, $1002.50</li>`.
+1. List each position with its value at today's price in `quotes`, like `<li>TEST: 10 shares, $1002.50</li>`.
 2. Loop with `Object.keys` and `forEach`, and give `forEach` an arrow function.
-3. Add each list item to the page's `positions` list with `innerHTML +=`, as in Watchlist.
+3. Add each list item to the `positions` element with `innerHTML +=`, as in [Watchlist](#40).
 
 ---
 
-## Solution (Me): Positions
+## Solution (You): Positions
 
 ```js
-let positions = { ACME: 10, BLIP: 25, WIDG: 40 };
+let positions = { TEST: 10, BLIP: 25, WIDG: 40 };
 
 Object.keys(positions).forEach((ticker) => {
   let held = positions[ticker];
@@ -1052,26 +1281,27 @@ Object.keys(positions).forEach((ticker) => {
 });
 ```
 
-<div class="demo book"><ul><li>ACME: 10 shares, $1002.50</li><li>BLIP: 25 shares, $1352.50</li><li>WIDG: 40 shares, $510.00</li></ul></div>
+<div class="demo book"><ul><li>TEST: 10 shares, $1002.50</li><li>BLIP: 25 shares, $1352.50</li><li>WIDG: 40 shares, $510.00</li></ul></div>
 
 ---
 
 ## Problem (You): Movers
 
-Show how far each stock has moved since the market opened, as a percent with two decimal places. The starter's CSS colors the `up` class green and the `down` class red. Store the math in an arrow function, `change`.
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
-```js
-let opens = { ACME: 100, BLIP: 55, WIDG: 12.5 };
-```
+Show each stock's move since the open, as a percent. `opens` holds the opening prices. A [ternary](lecture-conditional-js.html#52) can pick the starter's `up` (green) or `down` (red) class.
 
 <!-- prettier-ignore -->
 ```js
-let line = `<li class="${side}">${ticker}: ${percent.toFixed(2)}%</li>`;
+let line = `<li class="${trend}">${ticker}: ${percent.toFixed(2)}%</li>`;
 Object.keys(quotes).forEach(ticker) => {
 });
 let change = (open, now) => ((now - open) / open) * 100;
 document.getElementById("movers").innerHTML += line;
-let side = percent >= 0 ? "up" : "down";
+let opens = { TEST: 100, BLIP: 55, WIDG: 12.5 };
+let trend = percent >= 0 ? "up" : "down";
 let change = (open, now) => { ((now - open) / open) * 100; };
 Object.keys(quotes).forEach((ticker) => {
 let percent = change(opens[ticker], quotes[ticker]);
@@ -1083,37 +1313,38 @@ Assemble the program from the lines above. Two of the lines are wrong.
 
 ## Solution (You): Movers
 
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
+
 ```js
+let opens = { TEST: 100, BLIP: 55, WIDG: 12.5 };
 let change = (open, now) => ((now - open) / open) * 100;
 
 Object.keys(quotes).forEach((ticker) => {
   let percent = change(opens[ticker], quotes[ticker]);
-  let side = percent >= 0 ? "up" : "down";
-  let line = `<li class="${side}">${ticker}: ${percent.toFixed(2)}%</li>`;
+  let trend = percent >= 0 ? "up" : "down";
+  let line = `<li class="${trend}">${ticker}: ${percent.toFixed(2)}%</li>`;
   document.getElementById("movers").innerHTML += line;
 });
 ```
 
-<div class="runs">
-<div class="demo book"><p class="up">ACME: 0.25%</p></div>
-<div class="demo book"><p class="down">BLIP: -1.64%</p></div>
-<div class="demo book"><p class="up">WIDG: 2.00%</p></div>
-</div>
+<div class="demo book"><ul><li class="up">TEST: 0.25%</li><li class="down">BLIP: -1.64%</li><li class="up">WIDG: 2.00%</li></ul></div>
 
-With `{ }`, `change` gives back `undefined`, and `percent.toFixed(2)` stops with an error. `forEach(ticker) => {` closes `forEach(` before the arrow function starts, a syntax error that stops all of `practice.js`.
+A braced `change` gives back `undefined`. `forEach(ticker) => {` closes `forEach(` too soon, a syntax error that stops all of `practice.js`.
 
 ---
 
 ## Which Loop?
 
-| Loop       | Use It When                                | Example From Today |
+| Loop       | Use It When                                | Example from Today |
 | ---------- | ------------------------------------------ | ------------------ |
 | `while`    | we don't know how many iterations it needs | Doubling Time      |
 | `for`      | we know how many iterations it needs       | Fill Bar           |
 | `for...in` | we need every key in an object             | Order Book         |
 | `forEach`  | we have an array and a function to run     | Positions          |
 
-Any of these loops can do the others' jobs. Pick the one that says what the loop is for.
+`while` and `for` can do each other's jobs. Pick the loop that says what it's for.
 
 ---
 
@@ -1125,7 +1356,7 @@ Any of these loops can do the others' jobs. Pick the one that says what the loop
 
 Every solution from today, together:
 
-- [ACME Order Book](https://bi3mer.github.io/lectures/cs213/js/examples/orderbook-final/), running live
+- [TEST Order Book](https://bi3mer.github.io/lectures/cs213/js/examples/orderbook-final/), running live
 - [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/orderbook-final/practice.js) on GitHub, in the order we wrote it
 
 The HTML is the same as `orderbook-starter.html`.
@@ -1134,12 +1365,14 @@ The HTML is the same as `orderbook-starter.html`.
 
 ## Summary
 
-- An object keeps values under keys. Read one with `order.shares`, or with `order[key]` when the key is in a variable.
-- A `while` loop repeats its block while its condition is `true`, so something in the block has to make it `false`.
-- A `for` loop puts the setup, the condition, and the update on one line. To run it `n` times, start at 0 with `<`, or at 1 with `<=`.
-- `for...in` gives each key of an object as a string, so use `Number()` before comparing number keys.
-- `Object.keys` and `Object.values` give arrays, and `forEach` runs a function for each item.
-- An arrow function, like `(amount) => amount * 0.01`, gives back its one expression. With `{ }`, it needs `return`.
+- An object holds values under keys: `order.shares`, or `order[key]`.
+- A `while` loop repeats until something in its block makes the condition `false`.
+- A `for` loop puts the setup, condition, and update on one line.
+- To run a loop `n` times, start at 0 with `<`, or at 1 with `<=`.
+- `for...in` gives keys as strings, so compare prices with `Number()`.
+- `break` ends a loop early, and `continue` skips to the next iteration.
+- `Object.keys` gives an array, and `forEach` runs a function per item.
+- Without `{ }`, an arrow function gives back its one expression.
 
 ---
 
@@ -1147,21 +1380,18 @@ The HTML is the same as `orderbook-starter.html`.
 
 ---
 
-## Stopping Early: `break`
+## Keys We Didn't Write
 
-Which year is the first one where the index fund passes \$5,000?
+Typing `toString` into Quote Lookup's box stops `showQuote()` with an error:
 
-```js
-let balance = 1000;
-
-for (let year = 1; year <= 50; year++) {
-  balance *= 1.07;
-
-  if (balance > 5000) {
-    console.log(`Year ${year}: $${balance.toFixed(2)}`);
-    break;
-  }
-}
+```text
+TypeError: quote.toFixed is not a function
 ```
 
-`break` ends the loop right away, even when the condition is still `true`. It prints `Year 24: $5072.37` once. Without `break`, it would also print years 25 through 50.
+Every object comes with keys we didn't write, like `toString` and `constructor`. Their values are functions, so `quote === undefined` is `false`, and the `else` calls `toFixed` on a function. `Object.hasOwn(quotes, ticker)` is `true` only for keys we put in `quotes`, and [`!`](lecture-conditional-js.html#41) flips it:
+
+<!-- prettier-ignore -->
+```js
+if (quote === undefined) {            // before
+if (!Object.hasOwn(quotes, ticker)) { // after
+```
