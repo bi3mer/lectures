@@ -1,0 +1,54 @@
+/* @theme lecture-print */
+
+/*
+ * Black-and-white version of the lecture theme, for the PDFs build.sh makes. The layout is
+ * lecture.css's; only the colors change, so a PDF page matches its slide. Grays mark what the
+ * blues did (secondary text, rules, code boxes, table stripes).
+ *
+ * Demos and screenshots keep their colors, since they show what the CSS on the slide does.
+ *
+ * build.sh picks this theme with `--theme lecture-print`, which overrides `theme: lecture` in
+ * a deck's front matter.
+ */
+
+@import 'lecture';
+
+section {
+  /* Switches the default theme's code colors back to their light versions. */
+  color-scheme: light;
+
+  --bg: white;
+  --text: black;
+  --heading: black;
+  --accent: black;
+  --secondary: #555;
+  --rule: #999;
+  --code-bg: #eee;
+  --inline-code-bg: #eee;
+  --table-stripe: #f6f6f6;
+}
+
+/* Code: no syntax colors, except comments in gray. */
+section pre [class*="hljs-"] {
+  color: inherit;
+}
+
+section pre .hljs-comment {
+  color: var(--secondary);
+  font-style: italic;
+}
+
+/* A demo's white panel disappears on a white page, so outline its edge. The offset matches
+   the 12px shadow that widens the panel in lecture.css. */
+section .demo,
+section .plain,
+section .boxes,
+section .sketch,
+section .twelve {
+  outline: 1px solid var(--rule);
+  outline-offset: 12px;
+}
+
+section span.demo {
+  outline: none;
+}

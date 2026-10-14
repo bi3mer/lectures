@@ -2,12 +2,14 @@
 # Build the course site into _site/.
 #
 # Every file is copied over as is, except Markdown:
-#   - a file whose front matter says `marp: true` becomes a slide deck (Marp)
+#   - a file whose front matter says `marp: true` becomes a slide deck (Marp),
+#     plus a PDF of the deck for students to download
 #   - any other Markdown file becomes a web page (pandoc, templates/page.html)
 # Either way, foo.md becomes foo.html next to where foo.md was, so links like
-# `css/lecture-css.html` in the index pages work.
+# `css/lecture-css.html` in the index pages work. A deck's PDF is foo.pdf.
 #
-# Needs pandoc and Node. Run it from anywhere:
+# Needs pandoc, Node, and Chrome or Chromium, which Marp prints the PDFs with.
+# If Marp can't find the browser, point CHROME_PATH at it. Run it from anywhere:
 #   ./build.sh                              rebuild the whole site from scratch
 #   ./build.sh cs230/string-cheatsheet.md   rebuild only the named files
 #
@@ -36,6 +38,9 @@ cd "$repo"
 
 out=_site
 workers=${JOBS:-4}
+
+# Where GitHub Pages publishes the site.
+site=https://bi3mer.github.io/lectures
 
 # Not named `marp`: this function gets exported, and where sh is bash, the
 # shell npx starts to run the real `marp` would call this function instead,
@@ -111,6 +116,26 @@ build_one() {
   local kind=$1 md=$2
   local html="$out/${md%.md}.html"
 
+  if [[ "$kind" == pdf ]]; then
+    echo "pdf     $md"
+    # The PDF uses the black-and-white theme (themes/lecture-print.css) in
+    # place of the deck's own.
+    #
+    # --base-url makes a link like `08-lists.html#27` in the PDF open the live
+    # site. Without it, the link points at the file on the computer that ran
+    # the build. Relative image paths resolve against the same URL, so the
+    # PDF's images come from the last deploy, not from this checkout: a new or
+    # changed image shows up in the PDF one deploy late, and a build with no
+    # network gets broken-image icons.
+    local log
+    if ! log=$(run_marp --no-stdin --no-config-file --html --theme-set themes --theme lecture-print --pdf --base-url "$site/$(dirname "$md")/" -o "${html%.html}.pdf" "$md" 2>&1); then
+      echo "error: marp failed to make a PDF of $md" >&2
+      echo "$log" >&2
+      return 1
+    fi
+    return 0
+  fi
+
   if [[ "$kind" == slides ]]; then
     echo "slides  $md"
     # --html lets the decks' <div class="demo"> examples through.
@@ -151,7 +176,7 @@ build_one() {
   add_analytics "$html"
 }
 export -f run_marp build_one add_analytics
-export out analytics
+export out analytics site
 
 # With no files named, build every Markdown file that isn't skipped.
 if (( ${#targets[@]} == 0 )); then
@@ -182,9 +207,10 @@ if (( ${#slides[@]} > 0 )); then
   }
 fi
 
-# Decks go first since they take longest. xargs finishes the other files after
-# a failure, then exits non-zero.
+# PDFs and then decks go first since they take longest. xargs finishes the
+# other files after a failure, then exits non-zero.
 {
+  for md in "${slides[@]}"; do printf 'pdf\0%s\0' "$md"; done
   for md in "${slides[@]}"; do printf 'slides\0%s\0' "$md"; done
   for md in "${pages[@]}"; do printf 'page\0%s\0' "$md"; done
 } | xargs -0 -n 2 -P "$workers" bash -c 'set -euo pipefail; build_one "$@"' _ || {
@@ -192,4 +218,4 @@ fi
   exit 1
 }
 
-echo "built ${#slides[@]} slide decks and ${#pages[@]} pages into $out/"
+echo "built ${#slides[@]} slide decks (each with a PDF) and ${#pages[@]} pages into $out/"
