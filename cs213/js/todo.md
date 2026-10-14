@@ -23,3 +23,14 @@ Slide numbers refer to `lecture-js.md` as of 2026-10-04 and will shift as slides
 - [ ] "`+` With Strings", the only slide that shows `+=` on strings.
 - [ ] "`console.log()` With Several Values", which prints values separated by commas.
 - [ ] The detailed data type slides: "Numbers", "Strings", "Booleans", "`null` vs. `undefined`", "Arrays and Objects", "`typeof`", and "Dynamic Typing".
+
+## For the Arrays Lecture
+
+- [ ] **Review the arrays draft.** `lecture-arrays-js.md` is a first draft built on `orderbook-arrays-starter.html`, and it now holds the `forEach` and arrow-function slides that moved out of `lecture-loops-js.md`. `cs213/index.html` doesn't link to it yet.
+  - Calls made on 2026-10-14, all kept as drafted:
+    - Prices are numbers, best first. This is the payoff for arrays of objects, since it removes the quoted keys and `Number()`.
+    - Market Sell leaves the tape alone, so the range, upticks, and average stay consistent with what the page drew at load.
+    - Watchlist and Movers stay separate. Linking them would add a redraw that teaches nothing new.
+    - Placing an order doesn't match orders that cross or merge prices. The Place a Bid solution says so.
+    - The `({ })` object-return example and the bullet about `function` being set up early stay cut, since no exercise uses them.
+    - Draw the Asks keeps the placeholder comment for the bids code, so the solution fits on one slide.

@@ -39,13 +39,11 @@
         list-style: none;
       }
 
-      .ask,
-      .down {
+      .ask {
         color: tomato;
       }
 
-      .bid,
-      .up {
+      .bid {
         color: limegreen;
       }
 
@@ -73,7 +71,6 @@
       <ul id="asks" class="book"></ul>
       <p id="spread"></p>
       <ul id="bids" class="book"></ul>
-      <p>Average trade today: <span id="average"></span></p>
       <p>Sell 1000 at market: <span id="market-sell"></span></p>
     </section>
 
@@ -85,13 +82,10 @@
         <input id="ticker" oninput="showQuote()" />
         <span id="quote"></span>
       </p>
-      <h3>Since the Open</h3>
-      <ul id="movers"></ul>
     </section>
 
     <section class="card">
       <h2>Portfolio</h2>
-      <ul id="positions"></ul>
       <p>$1,000 in TEST buys: <span id="buying-power"></span></p>
       <p>An index fund growing 7% a year doubles in: <span id="doubling"></span></p>
     </section>

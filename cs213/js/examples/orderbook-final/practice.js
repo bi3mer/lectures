@@ -168,37 +168,3 @@ for (let day = 1; day <= 30; day++) {
 }
 
 document.getElementById("trading-days").textContent = tradingDays;
-
-// Average Price
-let trades = { "9:30": 100.1, "9:31": 100.3, "9:32": 100.45 };
-let priceSum = 0;
-let tradeCount = 0;
-
-Object.values(trades).forEach(function (price) {
-  priceSum += price;
-  tradeCount++;
-});
-
-let average = (priceSum / tradeCount).toFixed(2);
-document.getElementById("average").textContent = `$${average}`;
-
-// Positions
-let positions = { TEST: 10, BLIP: 25, WIDG: 40 };
-
-Object.keys(positions).forEach((ticker) => {
-  let held = positions[ticker];
-  let value = (held * quotes[ticker]).toFixed(2);
-  let line = `<li>${ticker}: ${held} shares, $${value}</li>`;
-  document.getElementById("positions").innerHTML += line;
-});
-
-// Movers
-let opens = { TEST: 100, BLIP: 55, WIDG: 12.5 };
-let change = (open, now) => ((now - open) / open) * 100;
-
-Object.keys(quotes).forEach((ticker) => {
-  let percent = change(opens[ticker], quotes[ticker]);
-  let trend = percent >= 0 ? "up" : "down";
-  let line = `<li class="${trend}">${ticker}: ${percent.toFixed(2)}%</li>`;
-  document.getElementById("movers").innerHTML += line;
-});

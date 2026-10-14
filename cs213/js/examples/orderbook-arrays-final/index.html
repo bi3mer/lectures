@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TEST Trading Desk</title>
+    <style>
+      body {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 16px;
+        font-family: sans-serif;
+        background-color: #0e1117;
+        color: #e6edf3;
+      }
+
+      .card {
+        margin-bottom: 16px;
+        padding: 0 16px;
+        border: 2px solid #30363d;
+        border-radius: 8px;
+        background-color: #161b22;
+      }
+
+      .book {
+        padding: 0;
+        list-style: none;
+        font-family: monospace;
+        font-size: 18px;
+      }
+
+      .ask,
+      .down {
+        color: tomato;
+      }
+
+      .bid,
+      .up {
+        color: limegreen;
+      }
+
+      input,
+      button {
+        font: inherit;
+      }
+
+      input[type="number"] {
+        width: 6em;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>TEST Trading Desk</h1>
+      <p>Last trade: <span id="last"></span></p>
+    </header>
+
+    <section class="card">
+      <h2>Order Book</h2>
+      <ul id="asks" class="book"></ul>
+      <p id="spread"></p>
+      <ul id="bids" class="book"></ul>
+      <p>
+        <button id="sell" onclick="sellAtMarket()">Sell 500 at market</button>
+        <span id="fills"></span>
+      </p>
+      <p>
+        <label for="order-price">Price</label>
+        <input id="order-price" type="number" step="0.05" />
+        <label for="order-shares">Shares</label>
+        <input id="order-shares" type="number" step="100" />
+      </p>
+      <p>
+        <button onclick="placeBid()">Place bid</button>
+        <button onclick="placeAsk()">Place ask</button>
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Today's Trades</h2>
+      <ul id="tape" class="book"></ul>
+      <p>Today's range: <span id="range"></span></p>
+      <p>Ticks: <span id="ticks"></span></p>
+      <p>Average price: <span id="average"></span></p>
+    </section>
+
+    <section class="card">
+      <h2>Watchlist</h2>
+      <p id="watchlist"></p>
+      <p>
+        <label for="new-ticker">Ticker</label>
+        <input id="new-ticker" />
+        <button onclick="addTicker()">Add</button>
+        <button onclick="removeTicker()">Remove last</button>
+        <span id="removed"></span>
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Portfolio</h2>
+      <ul id="positions"></ul>
+      <p>Total: <span id="total"></span></p>
+      <h3>Since the Open</h3>
+      <ul id="movers"></ul>
+    </section>
+
+    <script src="practice.js"></script>
+  </body>
+</html>
