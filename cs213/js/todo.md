@@ -42,3 +42,4 @@ Slide numbers refer to `lecture-js.md` as of 2026-10-04 and will shift as slides
   - Free Pastry adds to `showRewards()`, so the starter's `practice.js` would have to provide the Reward Levels code.
   - The latte's **Order** button calls `parsons3()`, so the starter would provide it too, or the button would lose its `onclick`.
   - Six links in other decks point into this deck by slide number. Renumber them after any cut.
+  - The starter's `practice.js` marks each problem with a `// Slide N:` comment. Renumber those too after any cut.
