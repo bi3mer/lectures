@@ -34,3 +34,11 @@ Slide numbers refer to `lecture-js.md` as of 2026-10-04 and will shift as slides
     - Placing an order doesn't match orders that cross or merge prices. The Place a Bid solution says so.
     - The `({ })` object-return example and the bullet about `function` being set up early stay cut, since no exercise uses them.
     - Draw the Asks keeps the placeholder comment for the bids code, so the solution fits on one slide.
+
+## For the Conditionals Lecture
+
+- [ ] **Decide whether to cut the "Problem (Me)" exercises from `lecture-conditional-js.md`.** The loops deck cut its "Me" problems to fit one class. Here, they are Open Sign, Open or Closed, Reward Levels, Opening Hours, and Parsons 3 (formerly Order a Latte), 10 slides in all. Cutting them costs more than it did in loops:
+  - The whole sign sequence is "Me", so students would see the first `if`/`else` and the first `&&` only on concept slides.
+  - Free Pastry adds to `showRewards()`, so the starter's `practice.js` would have to provide the Reward Levels code.
+  - The latte's **Order** button calls `parsons3()`, so the starter would provide it too, or the button would lose its `onclick`.
+  - Six links in other decks point into this deck by slide number. Renumber them after any cut.

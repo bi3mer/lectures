@@ -9,9 +9,6 @@ paginate: true
 .side-by-side { display: grid; grid-template-columns: 560px minmax(0, 1fr); gap: 24px; align-items: start; }
 .side-by-side p { margin: 0; }
 .caption { font-size: 20px; color: var(--secondary); }
-/* What the page showed, one column for each value we tried. */
-.runs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 24px; }
-.runs p { margin: 0; }
 /* A table on its own, centered across the slide. */
 .centered table { margin-left: auto; margin-right: auto; }
 /* The theme draws a .demo as a white panel whose 12px edge is a shadow, so the margins keep
@@ -22,8 +19,7 @@ paginate: true
 /* Pieces of the order book page, drawn small inside a .demo, in the page's dark colors. */
 .demo.book { background-color: #161b22; color: #e6edf3; box-shadow: 0 0 0 12px #161b22; }
 .demo.book .banner { color: gold; font-weight: bold; }
-.demo.book .bar, .demo.book .ladder { font-family: monospace; }
-.demo.book .ladder { padding: 0; list-style: none; font-size: 22px; }
+.demo.book .ladder { padding: 0; list-style: none; font-family: monospace; font-size: 22px; }
 .demo.book .ask { color: tomato; }
 .demo.book .bid { color: limegreen; }
 </style>
@@ -159,89 +155,52 @@ An **order book** lists the offers to buy and sell one stock.
 
 ---
 
-## Let's Build an Order Book
+## Let's Build a Simple Order Book
 
-Today's exercises build a trading page for TEST stock. Open [orderbook-starter.html](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/orderbook-starter.html) on GitHub and set it up in WebStorm, in a new folder:
+Today's exercises build a trading page for TEST stock. Its starter has two files on GitHub: [index.html](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/orderbook-starter/index.html) and [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/orderbook-starter/practice.js). Set them up in WebStorm, in a new folder:
 
-1. Click **Copy raw file**, the copy icon above the code.
-2. Paste it into a new HTML file in WebStorm.
-3. In the same folder, make an empty file named `practice.js`. The page already links to it with `<script src="practice.js"></script>`.
+1. Open each file, and click **Copy raw file**, the copy icon above the code.
+2. Paste each one into a new file in WebStorm with the same name.
 
----
-
-## Problem (Me): Order Ticket
-
-The `ticket` paragraph shows the order we're about to send: buy 1000 shares of TEST at \$100.25 each. On a ticket, `@` reads as "at."
-
-1. Store the order in an object, `order`, with the properties `side`, `ticker`, `shares`, and `price`.
-2. Show the order with this line:
-
-```js
-document.getElementById("ticket").textContent = "BUY 1000 TEST @ $100.25";
-```
-
-Build the string from `order` with a [template literal](lecture-js.html#58), and show the price with [two decimal places](lecture-js.html#78).
+`index.html` already links to `practice.js` with `<script src="practice.js"></script>`.
 
 ---
 
-## Solution (Me): Order Ticket
-
-```js
-let order = {
-  side: "BUY",
-  ticker: "TEST",
-  shares: 1000,
-  price: 100.25,
-};
-
-let ticketPrice = order.price.toFixed(2);
-let ticket = `${order.side} ${order.shares} ${order.ticker} @ $${ticketPrice}`;
-document.getElementById("ticket").textContent = ticket;
-```
-
-<div class="demo book"><p>BUY 1000 TEST @ $100.25</p></div>
-
----
-
-## Problem (You): Quote Lookup
+## Problem (You): Parsons 1
 
 <style scoped>
 pre { font-size: 0.75em; }
 </style>
-
-The watchlist's lookup box calls `showQuote()` whenever its text changes, as in [Member Name](lecture-conditional-js.html#22). It should show the price of the ticker in the box, like `$54.10`, or `Unknown ticker`.
 
 <!-- prettier-ignore -->
 ```js
 } else {
 let quote = quotes.ticker;
 document.getElementById("quote").textContent = `$${quote.toFixed(2)}`;
-function showQuote() {
+function parsons1() {
 }
-let quotes = { TEST: 100.25, BLIP: 54.1, WIDG: 12.75 };
 if (quote === undefined) {
-let ticker = document.getElementById("ticker").value;
+let ticker = document.getElementById("ticker").value.toUpperCase();
 document.getElementById("quote").textContent = "Unknown ticker";
 let quote = quotes["ticker"];
 }
 let quote = quotes[ticker];
 ```
 
-Assemble the program from the jumbled lines. Two of them are wrong.
+- Assemble the program in the Parsons 1 section of `practice.js`. Two of the lines are wrong.
+- What does `parsons1` do? What should it be named?
 
 ---
 
-## Solution (You): Quote Lookup
+## Solution (You): Parsons 1
 
 <style scoped>
 pre { font-size: 0.75em; }
 </style>
 
 ```js
-let quotes = { TEST: 100.25, BLIP: 54.1, WIDG: 12.75 };
-
-function showQuote() {
-  let ticker = document.getElementById("ticker").value;
+function parsons1() {
+  let ticker = document.getElementById("ticker").value.toUpperCase();
   let quote = quotes[ticker];
 
   if (quote === undefined) {
@@ -252,7 +211,7 @@ function showQuote() {
 }
 ```
 
-Typing `BLIP` shows `$54.10`, and `ZZZZ` shows `Unknown ticker`. Keys must match exactly, so `blip` is unknown too. `quotes.ticker` and `quotes["ticker"]` both look for a key named `ticker`. `quotes` sits outside the function, so later problems can use it too.
+It shows the price of the ticker typed into the page's lookup box, so `showQuote` would be a better name. Typing `BLIP` or `blip` shows `$54.10`, and `ZZZZ` shows `Unknown ticker`.
 
 ---
 
@@ -369,74 +328,19 @@ bar += "█"; // "██"
 
 ---
 
-## Problem (Me): Size Bar
-
-Trading screens draw an order's size as a bar. Let's draw one █ for every 100 shares in our order.
-
-1. Use a `while` loop to build a string with `order.shares / 100` blocks in it.
-2. Put the string on the page with this line:
-
-```js
-document.getElementById("size").textContent = "██████████";
-```
-
----
-
-## Solution (Me): Size Bar
-
-```js
-let size = "";
-let count = 0;
-
-while (count < order.shares / 100) {
-  size += "█";
-  count++;
-}
-
-document.getElementById("size").textContent = size;
-```
-
-<div class="runs">
-<div>
-<p class="caption">300 shares</p>
-<div class="demo book"><p class="bar">███</p></div>
-</div>
-<div>
-<p class="caption">1000 shares</p>
-<div class="demo book"><p class="bar">██████████</p></div>
-</div>
-<div>
-<p class="caption">1500 shares</p>
-<div class="demo book"><p class="bar">███████████████</p></div>
-</div>
-</div>
-
-The page line runs once, after the loop has built every block.
-
----
-
 ## Problem (Us): Doubling Time
 
-The page asks how long an index fund growing 7% a year takes to double. Let's find out for \$1,000:
-
-```js
-let fund = { balance: 1000, rate: 0.07 };
-```
+The page asks how long an index fund growing 7% a year takes to double. Let's find out for `fund` (`practice.js`, line 10), in the Doubling Time section.
 
 1. Copy `fund.balance` into `balance`, so the loop doesn't change `fund`.
 2. Count the years in `years`, starting at 0. While `balance` is under twice the fund's balance, add a year of growth.
-3. Use this line to change the page:
-
-```js
-document.getElementById("doubling").textContent = `${years} years`;
-```
+3. Uncomment the section's page line.
 
 ---
 
 ## Solution (Us): Doubling Time
 
 ```js
-let fund = { balance: 1000, rate: 0.07 };
 let balance = fund.balance;
 let years = 0;
 
@@ -452,48 +356,58 @@ After 10 years, `balance` was 1967.15, still under 2000. After 11, it was 2104.8
 
 ---
 
-## Problem (You): Buying Power
+## Problem (You): Parsons 2
 
 <style scoped>
 pre { font-size: 0.75em; }
 </style>
 
-We have \$1,000, and a TEST share costs \$100.25 ([`quotes.TEST`](#12)). Buy shares until we can't afford another. The page should say `9 shares, $97.75 left`.
-
 <!-- prettier-ignore -->
 ```js
 bought++;
 while (cash >= 0) {
+}
 let power = `${bought} shares, $${cash.toFixed(2)} left`;
 let cash = 1000;
+parsons2();
 }
 while (cash >= quotes.TEST) {
 document.getElementById("buying-power").textContent = power;
+function parsons2() {
 let bought = 0;
 cash -= quotes.TEST;
 while (cash > quotes.TEST) {
 ```
 
-Assemble the program from the lines above. Two of the lines are wrong.
+- Assemble the program in the Parsons 2 section of `practice.js`. Two of the lines are wrong.
+- What does `parsons2` do? What should it be named?
 
 ---
 
-## Solution (You): Buying Power
+## Solution (You): Parsons 2
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
 ```js
-let cash = 1000;
-let bought = 0;
+function parsons2() {
+  let cash = 1000;
+  let bought = 0;
 
-while (cash >= quotes.TEST) {
-  cash -= quotes.TEST;
-  bought++;
+  while (cash >= quotes.TEST) {
+    cash -= quotes.TEST;
+    bought++;
+  }
+
+  let power = `${bought} shares, $${cash.toFixed(2)} left`;
+  document.getElementById("buying-power").textContent = power;
 }
 
-let power = `${bought} shares, $${cash.toFixed(2)} left`;
-document.getElementById("buying-power").textContent = power;
+parsons2();
 ```
 
-`cash >= 0` keeps buying while any cash is left, so it buys a 10th share: `10 shares, $-2.50 left`. `>` gives 9 shares here too, but with exactly \$100.25 left, it would skip a share we can afford.
+It spends \$1,000 on TEST shares until the cash left can't buy another, and shows `9 shares, $97.75 left`, so `showBuyingPower` would be a better name.
 
 ---
 
@@ -545,44 +459,14 @@ If we want 5 iterations, the third loop runs once too many, an **off-by-one** er
 
 ---
 
-## Size Bar, Again
-
-We could replace the `while` loop in Size Bar with a `for` loop:
-
-<p class="caption">Before</p>
-
-```js
-let count = 0;
-
-while (count < order.shares / 100) {
-  size += "█";
-  count++;
-}
-```
-
-<p class="caption">After</p>
-
-```js
-for (let i = 0; i < order.shares / 100; i++) {
-  size += "█";
-}
-```
-
----
-
 ## Problem (Us): Fill Bar
 
-An order **fills** as other traders trade with it, often a few shares at a time. Say 600 of our 1000 shares have filled. Let's draw █ for each 100 shares filled, and ░ for each 100 still open.
+An order **fills** as other traders trade with it, often a few shares at a time. `order.filled` (`practice.js`, line 6) says 600 of our 1000 shares have filled. In the Fill Bar section, let's draw █ for each 100 shares filled, and ░ for each 100 still open.
 
-1. Add a `filled` property to `order`, set to 600.
+1. Start an empty string, `fill`.
 2. Loop over the bar's slots, from 1 to `order.shares / 100`.
-3. For each slot, add █ or ░. How do we know which one?
-
-Use this line to change the page:
-
-```js
-document.getElementById("fill").textContent = "██████░░░░";
-```
+3. For each slot, add █ or ░ to `fill`. How do we know which one?
+4. Uncomment the section's page line.
 
 ---
 
@@ -628,22 +512,17 @@ for (let i = filledSlots; i < slots; i++) {
 </div>
 </div>
 
-Both start with `order.filled = 600;` and `let fill = "";`, and end with the page line. On the left, the `if` runs on every iteration, so each slot gets its own choice. On the right, the first loop draws the filled slots, and the second starts where it stopped. The left `if` also fits on one line: `fill += i <= order.filled / 100 ? "█" : "░";`.
+Both start with `let fill = "";` and end with the page line. On the left, the `if` runs on every iteration, so each slot gets its own choice. On the right, the first loop draws the filled slots, and the second starts where it stopped. The left `if` also fits on one line: `fill += i <= order.filled / 100 ? "█" : "░";`.
 
 ---
 
 ## Problem (You): Opening Bell
 
-Before the market opens, the banner at the top should show a countdown: `5... 4... 3... 2... 1... 🔔 Open!`
+Before the market opens, the banner at the top should show a countdown: `5... 4... 3... 2... 1... 🔔 Open!` Write it in the Opening Bell section.
 
-1. Use a `for` loop that counts down from 5 to 1, and build the string.
+1. Use a `for` loop that counts down from 5 to 1, and build the string in `countdown`.
 2. Add `🔔 Open!` at the end.
-
-Use this line to change the page:
-
-```js
-document.getElementById("banner").textContent = "🔔 Open!";
-```
+3. Uncomment the section's page line.
 
 ---
 
@@ -699,43 +578,13 @@ filled: 600
 
 - The loop runs once for each property, with `key` set to the property's name, as a string.
 - To get the property's value, use brackets: `order[key]`. With `order.key`, every line would end in `undefined`.
-- Keys come in the order they were added, so `filled`, from Fill Bar, comes last. Whole numbers like `"7"` come first, smallest to largest.
-
----
-
-## Problem (Me): Watchlist
-
-The watchlist should show the price of every ticker in `quotes`, which already exists from Quote Lookup.
-
-1. Loop over `quotes` with `for...in`.
-2. Add a list item for each ticker, with the price to two decimal places, using this line:
-
-```js
-document.getElementById("watchlist").innerHTML += "<li>TEST: $100.25</li>";
-```
-
-`innerHTML` is the HTML inside an element, so `+=` adds the new `<li>` after the ones already there.
-
----
-
-## Solution (Me): Watchlist
-
-```js
-for (let ticker in quotes) {
-  let line = `<li>${ticker}: $${quotes[ticker].toFixed(2)}</li>`;
-  document.getElementById("watchlist").innerHTML += line;
-}
-```
-
-<div class="demo book"><ul><li>TEST: $100.25</li><li>BLIP: $54.10</li><li>WIDG: $12.75</li></ul></div>
-
-Any name works for the loop variable, and `ticker` says what each key is. A new ticker in `quotes` adds a line, with no change to the loop.
+- Keys come in the order they were added, except whole numbers like `"7"`, which come first, smallest to largest.
 
 ---
 
 ## Problem (Us): Order Book, Step 1
 
-The order book on the page will show each price as a line like `101.00 ███ 300`: the price, a bar, and the shares. First, turn the loop from [Size Bar, Again](#29) into a function that draws a bar for any number of shares:
+The order book on the page will show each price as a line like `101.00 ███ 300`: the price, a bar, and the shares. First, in the Order Book, Step 1 section, write a function that draws one █ for every 100 shares:
 
 ```js
 console.log(depthBar(300)); // ███
@@ -743,7 +592,7 @@ console.log(depthBar(1200)); // ████████████
 ```
 
 1. Name the function `depthBar`, with one parameter, `shares`.
-2. Inside the function, start an empty string, `bar`. Copy that loop below it, with `shares` in place of `order.shares` and `bar` in place of `size`.
+2. Start an empty string, `bar`. Use a `for` loop to add `shares / 100` blocks to it, as in [`+=` with Strings](#16).
 3. [`return`](lecture-js.html#96) `bar`.
 
 ---
@@ -768,18 +617,11 @@ The page doesn't change yet, since a function runs only when something calls it.
 
 ## Problem (Us): Order Book, Step 2
 
-Each side of the book is an object. A price is the key, and the shares offered at that price are the value:
+Each side of the book is an object. A price is the key, and the shares offered at that price are the value, as in `asks` (`practice.js`, line 12). The keys need quotes, or `101.00` would become the key `"101"`.
 
-<!-- prettier-ignore -->
-```js
-let asks = { "101.00": 300, "100.75": 900, "100.50": 400 };
-```
-
-The keys need quotes, or `101.00` would become the key `"101"`.
-
-1. Loop over `asks` with `for...in`, with `price` as the loop variable.
+1. In the Order Book, Step 2 section, loop over `asks` with `for...in`, with `price` as the loop variable.
 2. Build `<li class="ask">[PRICE] ███ [SHARES]</li>`, with `depthBar(?)` for the bar. The starter's CSS makes `.ask` red and `.bid` green.
-3. Add it to the `asks` element with `innerHTML +=`, as in [Watchlist](#37).
+3. Add it to the page: uncomment the section's page line inside the loop. `innerHTML` is the HTML inside an element, so `+=` adds each `<li>` after the ones already there.
 
 ---
 
@@ -789,10 +631,7 @@ The keys need quotes, or `101.00` would become the key `"101"`.
 pre { font-size: 0.75em; }
 </style>
 
-<!-- prettier-ignore -->
 ```js
-let asks = { "101.00": 300, "100.75": 900, "100.50": 400 };
-
 for (let price in asks) {
   let shares = asks[price];
   let line = `<li class="ask">${price} ${depthBar(shares)} ${shares}</li>`;
@@ -812,12 +651,9 @@ On the first iteration, `price` is `"101.00"`, and `asks[price]` is `300`.
 pre { font-size: 0.75em; }
 </style>
 
-The bids side works the same way. Copy the loop from [Step 2](#41), change every `asks` to `bids`, and change `class="ask"` to `class="bid"`, so the bids show in green:
+`bids` (`practice.js`, line 13) works the same way. Copy the loop from [Step 2](#34) into the Order Book, Step 3 section, change every `asks` to `bids`, and change `class="ask"` to `class="bid"`, so the bids show in green:
 
-<!-- prettier-ignore -->
 ```js
-let bids = { "100.25": 600, "100.00": 1200, "99.75": 500 };
-
 for (let price in bids) {
   let shares = bids[price];
   let line = `<li class="bid">${price} ${depthBar(shares)} ${shares}</li>`;
@@ -872,17 +708,12 @@ The bug finds `"99.75"`. After the first bid, `bestBid` holds a string, and Java
 
 ## Problem (You): Spread
 
-Copy the fixed best-bid loop into `practice.js`. Then find the best ask, the lowest price in `asks`, and show the spread: `Spread: $0.25`.
+Copy the fixed best-bid loop into the Spread section of `practice.js`. Then find the best ask, the lowest price in `asks`, and show the spread: `Spread: $0.25`.
 
 1. Start `bestAsk` at `Infinity` (`let bestAsk = Infinity;`). (Consider why `Infinity`.)
 2. Loop over `asks`, and keep the lowest price.
-3. Subtract to get the spread, with two decimal places.
-
-Use this line to change the page:
-
-```js
-document.getElementById("spread").textContent = "Spread: $0.25";
-```
+3. Subtract to get the spread, and store it in `spread`, like `Spread: $0.25`.
+4. Uncomment the section's page line.
 
 ---
 
@@ -944,7 +775,7 @@ BLIP
 
 ## Pseudocode
 
-**Pseudocode** is a plan for a program, written in plain English but laid out like code. Here's the loop from Size Bar both ways:
+**Pseudocode** is a plan for a program, written in plain English but laid out like code. Here's the loop from Doubling Time both ways:
 
 <div class="side-by-side">
 <div>
@@ -952,12 +783,12 @@ BLIP
 <p class="caption">Pseudocode</p>
 
 ```text
-set size to ""
-set count to 0
+set balance to fund.balance
+set years to 0
 
-while count is under order.shares / 100
-  add "█" to size
-  add 1 to count
+while balance is under 2 * fund.balance
+  add balance * fund.rate to balance
+  add 1 to years
 ```
 
 </div>
@@ -966,12 +797,12 @@ while count is under order.shares / 100
 <p class="caption">JavaScript</p>
 
 ```js
-let size = "";
-let count = 0;
+let balance = fund.balance;
+let years = 0;
 
-while (count < order.shares / 100) {
-  size += "█";
-  count++;
+while (balance < 2 * fund.balance) {
+  balance += balance * fund.rate;
+  years++;
 }
 ```
 
@@ -1006,7 +837,7 @@ In the table above, the 100.00 bid had more shares than we needed, so we sold on
 pre { font-size: 0.75em; }
 </style>
 
-Let's sell 1000 shares at market. `bids` lists the best bid first, so a loop over `bids` visits the bids in the order we sell to them. Turn the pseudocode into code.
+Let's sell 1000 shares at market. `bids` lists the best bid first, so a loop over `bids` visits the bids in the order we sell to them. Turn the pseudocode into code in the Market Sell section.
 
 ```text
 set toSell to 1000
@@ -1022,11 +853,7 @@ for each price in bids
 put fills on the page
 ```
 
-Use this line to change the page:
-
-```js
-document.getElementById("market-sell").textContent = "600 @ 100.25, 400 @ 100.00";
-```
+For the last line, uncomment the section's page line.
 
 ---
 
@@ -1125,7 +952,7 @@ In the `while`, `continue` jumps back to the condition before `i++` runs, so `i`
 
 ## Problem (You): Trading Days
 
-The market is closed on weekends. This month has 30 days, and day 1 is a Monday, so the [remainder](lecture-js.html#72) `day % 7` is 6 on Saturdays and 0 on Sundays. Here's the plan in pseudocode.
+The market is closed on weekends. This month has 30 days, and day 1 is a Monday, so the [remainder](lecture-js.html#72) `day % 7` is 6 on Saturdays and 0 on Sundays. Turn the pseudocode into code in the Trading Days section.
 
 ```text
 set tradingDays to 0
@@ -1138,11 +965,7 @@ for each day from 1 to 30
 put tradingDays on the page
 ```
 
-Use this line to change the page:
-
-```js
-document.getElementById("trading-days").textContent = tradingDays;
-```
+For the last line, uncomment the section's page line.
 
 ---
 
@@ -1194,7 +1017,7 @@ Every solution from today, together:
 - [TEST Order Book](https://bi3mer.github.io/lectures/cs213/js/examples/orderbook-final/), running live
 - [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/orderbook-final/practice.js) on GitHub, in the order we wrote it
 
-The HTML is the same as `orderbook-starter.html`.
+The HTML is the same as the starter's `index.html`, and `practice.js` starts with the starter's code.
 
 ---
 
@@ -1215,13 +1038,13 @@ The HTML is the same as `orderbook-starter.html`.
 
 ## Keys We Didn't Write
 
-Typing `toString` into Quote Lookup's box stops `showQuote()` with an error:
+Typing `toString` into the lookup box from Parsons 1 stops `parsons1()` with an error:
 
 ```text
 TypeError: quote.toFixed is not a function
 ```
 
-Every object comes with keys we didn't write, like `toString` and `constructor`. Their values are functions, so `quote === undefined` is `false`, and the `else` calls `toFixed` on a function. `Object.hasOwn(quotes, ticker)` is `true` only for keys we put in `quotes`, and [`!`](lecture-conditional-js.html#41) flips it:
+Every object comes with keys we didn't write, like `toString` and `constructor`. Their values are functions, so `quote === undefined` is `false`, and the `else` calls `toFixed` on a function. `Object.hasOwn(quotes, ticker)` is `true` only for keys we put in `quotes`, and [`!`](lecture-conditional-js.html#40) flips it:
 
 <!-- prettier-ignore -->
 ```js

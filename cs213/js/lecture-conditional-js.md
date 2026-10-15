@@ -104,64 +104,45 @@ The second line has both: `===` asked the question, and `=` put the answer in `i
 
 ## Let's Build Colan's Coffee
 
-Open [if-starter.html](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-starter.html) on GitHub and set it up in WebStorm:
+Today's exercises build a page for a coffee shop. Its starter has two files on GitHub: [index.html](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-starter/index.html) and [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-starter/practice.js). Set them up in WebStorm, in a new folder:
 
-1. Click **Copy raw file**, the copy icon above the code.
-2. Paste it into a new HTML file in WebStorm.
-3. In the same folder, make an empty file named `practice.js`. The page already links to it with `<script src="practice.js"></script>`.
+1. Open each file, and click **Copy raw file**, the copy icon above the code.
+2. Paste each one into a new file in WebStorm with the same name.
+
+`index.html` already links to `practice.js` with `<script src="practice.js"></script>`.
 
 ---
 
 ## Problem (Me): Open Sign
 
-The sign next to the shop's name says `Open`. The shop closes at 6 PM, which is hour 18 on a 24-hour clock.
+The sign next to the shop's name says `Open`. The shop closes at 6 PM, which is hour 18 on a 24-hour clock. `hour` (`practice.js`, line 1) holds the current hour, from 0 to 23.
 
-1. Get the current hour (0 to 23) with this line:
-
-```js
-let hour = new Date().getHours();
-```
-
-2. From hour 18 on, hide the sign. Use this line to change the page:
-
-```js
-document.getElementById("sign").hidden = true;
-```
+In the Open Sign section, hide the sign from hour 18 on, with the page line for Open Sign.
 
 ---
 
 ## Solution (Me): Open Sign
 
 ```js
-let hour = new Date().getHours();
-
 document.getElementById("sign").hidden = hour >= 18;
 ```
 
-`hidden` takes a boolean, so the comparison's answer goes straight in. To see the sign at another hour for testing, change the value of `hour` in the code.
+`hidden` takes a boolean, so the comparison's answer goes straight in. To see the sign at another hour for testing, change `new Date().getHours()` on line 1 to a number, like 20.
 
 ---
 
 ## Problem (Us): Sold Out
 
-Let's turn off the **Buy** button for the beans when the shop runs out.
+Let's turn off the **Buy** button for the beans when the shop runs out. `bagsLeft` (`practice.js`, line 2) holds how many bags are left.
 
-1. Store how many bags are left in a variable `bagsLeft`. Let's say 3.
-2. When none are left, turn off the button. Use this line to change the page:
-
-```js
-document.getElementById("buy").disabled = true;
-```
-
-3. How can we test if there are no bags left?
+1. In the Sold Out section, turn off the button when none are left, with the section's page line.
+2. How can we test if there are no bags left?
 
 ---
 
 ## Solution (Us): Sold Out
 
 ```js
-let bagsLeft = 3;
-
 document.getElementById("buy").disabled = bagsLeft === 0;
 ```
 
@@ -169,44 +150,43 @@ The last line uses both: `===` asks whether `bagsLeft` is 0, and `=` puts the an
 
 ---
 
-## Problem (You): Age Limit
+## Problem (You): Parsons 1
 
-The menu has an age box, and it calls `checkAge()` every time the age in it changes:
+The page calls `parsons1()` from this input:
 
 ```html
-<input id="age" type="number" oninput="checkAge()" />
+<input id="age" type="number" oninput="parsons1()" />
 ```
-
-Unscramble the program below:
 
 ```js
 let age = Number(document.getElementById("age").value);
 }
 document.getElementById("latte").disabled = age < 12;
-function checkAge() {
+function parsons1() {
 ```
+
+- Assemble the program in the Parsons 1 section of `practice.js`.
+- What does `parsons1` do? What should it be named?
 
 ---
 
-## Solution (You): Age Limit
+## Solution (You): Parsons 1
 
 ```js
-function checkAge() {
+function parsons1() {
   let age = Number(document.getElementById("age").value);
 
   document.getElementById("latte").disabled = age < 12;
 }
 ```
 
-What does `checkAge()` do?
+What does `parsons1` do? What should it be named?
 
 ---
 
-## Solution (You): Age Limit (Continued)
+## Solution (You): Parsons 1 (Continued)
 
-Drinks with caffeine are for ages 12 and up. Every time the age changes, `checkAge()` turns the latte's **Order** button off for anyone under 12 and on for anyone 12 or older.
-
-With `age <= 12`, a 12-year-old couldn't order a latte.
+Drinks with caffeine are for ages 12 and up. Every time the age changes, `parsons1()` turns the latte's **Order** button off for anyone under 12 and on for anyone 12 or older, so `checkAge` would be a better name.
 
 ---
 
@@ -290,18 +270,12 @@ if (total >= 50) {
 
 ## Problem (Me): Open or Closed
 
-A missing sign doesn't tell anyone we're closed. Let's replace the `hidden` line with an `if`:
+A missing sign doesn't tell anyone we're closed. In the Open Sign section, let's replace the `hidden` line with an `if`:
 
 1. Before hour 18, make the sign green.
 2. Otherwise, the sign says `Closed` on red, and the page turns gray.
 
-Use these lines to change the page:
-
-```js
-document.getElementById("sign").textContent = "Closed";
-document.getElementById("sign").style.backgroundColor = "red";
-document.body.style.backgroundColor = "gray";
-```
+Use the page lines for Open or Closed.
 
 ---
 
@@ -329,13 +303,9 @@ Let's put the member's name on the rewards card. The card has a name box, and it
 <input id="name" oninput="showName()" />
 ```
 
-1. Write the `showName()` function.
-2. Inside it, get the name with `document.getElementById("name").value`.
-3. If the box is empty, show `Guest`. Otherwise, show their name. Use this line to change the page:
-
-```js
-document.getElementById("member").textContent = "Guest";
-```
+1. In the Member Name section, write the `showName()` function.
+2. Inside it, get the name with the section's first page line.
+3. If the box is empty, show `Guest`. Otherwise, show their name. The section's second page line shows `Guest`.
 
 ---
 
@@ -359,17 +329,12 @@ function showName() {
 
 ## Problem (You): Low Stock
 
-Let's warn customers when the beans run low.
+Let's warn customers when the beans run low. In the Low Stock section:
 
 1. Under 5 bags, the stock line says `Only 3 left!` in orange, with the real count.
 2. Otherwise, it says `In stock.`
 
-Use these lines to change the page:
-
-```js
-document.getElementById("stock").textContent = "Only 3 left!";
-document.getElementById("stock").style.color = "orange";
-```
+Use the page lines for Low Stock.
 
 ---
 
@@ -384,7 +349,7 @@ if (bagsLeft < 5) {
 }
 ```
 
-`bagsLeft` already exists from Sold Out, so there's no second `let`. `Only 0 left!` needs a third choice, which comes next.
+`bagsLeft` already exists on line 2, so there's no second `let`. `Only 0 left!` needs a third choice, which comes next.
 
 ---
 
@@ -475,24 +440,12 @@ Each member gets a badge for their reward points. The rewards card has a points 
 <input id="points" type="number" value="320" oninput="showRewards()" />
 ```
 
-1. Write the `showRewards()` function.
+1. In the Reward Levels section, write the `showRewards()` function.
 2. Inside it, get the points as a number.
-
----
-
-## Problem (Me): Reward Levels (Continued)
-
-3. Set the badge and the color of the card's border:
+3. Set the badge and the color of the card's border, with the page lines for Reward Levels:
    - 500 and up: 🥇 with a `gold` border
    - 200 to 499: 🥈 with a `silver` border
    - Below 200: 🥉 with a `tan` border
-
-Use these lines to change the page:
-
-```js
-document.getElementById("badge").textContent = "🥇";
-document.getElementById("rewards").style.borderColor = "gold";
-```
 
 ---
 
@@ -525,18 +478,13 @@ showRewards();
 
 ## Problem (Us): Stock Levels
 
-`Only 0 left!` should say `Sold out.` Let's replace our Low Stock code with three levels:
+`Only 0 left!` should say `Sold out.` Let's replace the code in the Low Stock section with three levels:
 
 - 0: `Sold out.` in red, and the bag fades to `0.3` opacity
 - 1 to 4: `Only 3 left!` in orange, with the real count
 - 5 or more: `In stock.`
 
-Which check should go first? Use these lines to change the page:
-
-```js
-document.getElementById("stock").style.color = "red";
-document.getElementById("bag").style.opacity = "0.3";
-```
+Which check should go first? Use the page lines for Stock Levels, in the Low Stock section.
 
 ---
 
@@ -559,37 +507,51 @@ if (bagsLeft === 0) {
 
 ---
 
-## Problem (You): A Greeting
+## Problem (You): Parsons 2
 
-The greeting under our name should change with the hour: `Good morning! ☀️` before hour 12, `Good afternoon! 🌤️` before hour 18, and `Good evening! 🌙` after that.
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
 <!-- prettier-ignore -->
 ```js
 } else (hour >= 18) {
 } else {
 document.getElementById("greeting").textContent = "Good afternoon! 🌤️";
+parsons2();
 document.getElementById("greeting").textContent = "Good morning! ☀️";
 } else if hour < 18 {
+}
+function parsons2() {
 } else if (hour < 18) {
 }
 if (hour < 12) {
 document.getElementById("greeting").textContent = "Good evening! 🌙";
 ```
 
-Assemble the program from the lines above. Two of the lines are wrong.
+- Assemble the program in the Parsons 2 section of `practice.js`. Two of the lines are wrong.
+- What does `parsons2` do? What should it be named?
 
 ---
 
-## Solution (You): A Greeting
+## Solution (You): Parsons 2
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
 ```js
-if (hour < 12) {
-  document.getElementById("greeting").textContent = "Good morning! ☀️";
-} else if (hour < 18) {
-  document.getElementById("greeting").textContent = "Good afternoon! 🌤️";
-} else {
-  document.getElementById("greeting").textContent = "Good evening! 🌙";
+function parsons2() {
+  if (hour < 12) {
+    document.getElementById("greeting").textContent = "Good morning! ☀️";
+  } else if (hour < 18) {
+    document.getElementById("greeting").textContent = "Good afternoon! 🌤️";
+  } else {
+    document.getElementById("greeting").textContent = "Good evening! 🌙";
+  }
 }
+
+parsons2();
 ```
 
 <div class="runs">
@@ -607,7 +569,7 @@ if (hour < 12) {
 </div>
 </div>
 
-`else` never takes a condition, and every condition needs parentheses, so `} else (hour >= 18) {` and `} else if hour < 18 {` were the wrong lines.
+It greets the visitor for the time of day, so `showGreeting` would be a better name.
 
 ---
 
@@ -719,7 +681,7 @@ Each side of `||` needs its own `milk ===`. For `"whole"`, `milk === "oat" || "a
 
 ## Example: Not Sold Out
 
-A customer can order a bag when it's **not** sold out. `bagsLeft` already exists from Sold Out.
+A customer can order a bag when it's **not** sold out. `bagsLeft` is on line 2 of `practice.js`.
 
 <div class="side-by-side">
 <div>
@@ -776,7 +738,7 @@ A range takes two comparisons, joined with `&&`.
 
 ## Problem (Me): Opening Hours
 
-Our sign says `Open` at 3 AM. The shop opens at 7 and closes at 18. Let's change the condition in Open or Closed:
+Our sign says `Open` at 3 AM. The shop opens at 7 and closes at 18. Let's change the condition from Open or Closed, in the Open Sign section:
 
 1. From 7 up to 18, the sign is green.
 2. Otherwise, it says `Closed` on red, and the page turns gray.
@@ -801,14 +763,10 @@ if (hour >= 7 && hour < 18) {
 
 Early birds (before hour 9) and Gold members (500 points or more) get a free pastry.
 
-1. At the end of `showRewards()`, show the pastry note on the rewards card if either rule applies.
+1. At the end of `showRewards()`, in the Reward Levels section, show the pastry note on the rewards card if either rule applies.
 2. The note starts out hidden. When neither rule applies, do we need an `else`?
 
-Use this line to change the page:
-
-```js
-document.getElementById("pastry").hidden = false;
-```
+Use the page line for Free Pastry, in the Reward Levels section.
 
 ---
 
@@ -847,16 +805,10 @@ function showRewards() {
 
 From 2 PM until 4 PM (hours 14 and 15), lattes are half price.
 
-1. During happy hour, cross out `$4.50` in red and show `$2.25` in green.
+1. In the Happy Hour section, during happy hour, cross out `$4.50` in red and show `$2.25` in green.
 2. Outside happy hour, leave it at `$4.50`.
 
-Use these lines to change the page:
-
-```js
-document.getElementById("latte-price").style.textDecoration = "line-through";
-document.getElementById("latte-price").style.color = "red";
-document.getElementById("happy-price").hidden = false;
-```
+Use the section's page lines.
 
 ---
 
@@ -880,39 +832,42 @@ The ternary operator fits an `if`/`else` on one line. _Ternary_ means three part
 
 ---
 
-## Problem (Me): Order a Latte
-
-**Order** switches to `Cancel` and back. Assemble `orderLatte()` from these lines:
+## Problem (Me): Parsons 3
 
 <!-- prettier-ignore -->
 ```js
-function orderLatte() {
+function parsons3() {
 let ordered = false;
 }
 ordered = !ordered;
 document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
 ```
 
+- Assemble the program in the Parsons 3 section of `practice.js`.
+- What does `parsons3` do? What should it be named?
+
 ---
 
-## Solution (Me): Order a Latte
+## Solution (Me): Parsons 3
 
 ```js
 let ordered = false;
 
-function orderLatte() {
+function parsons3() {
   ordered = !ordered;
   document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
 }
 ```
 
-`ordered` sits outside `orderLatte()`, so it keeps its value between clicks.
+Each click on the latte's **Order** button switches it to `Cancel` and back, so `toggleOrder` would be a better name.
 
 ---
 
-## Problem (You): Buy a Bag
+## Problem (You): Parsons 4
 
-**Buy** takes away a bag. We start with 3 bags, so the stock line never needs `In stock.` Assemble `buyBag()` from these lines:
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
 <!-- prettier-ignore -->
 ```js
@@ -923,16 +878,19 @@ document.getElementById("bag").style.opacity = isSoldOut ? "0.3" : "1";
 let isSoldOut = bagsLeft === 0;
 }
 document.getElementById("stock").style.color = isSoldOut ? "red" : "orange";
-function buyBag() {
+function parsons4() {
 bagsLeft = bagsLeft - 1;
 ```
 
+- Assemble the program in the Parsons 4 section of `practice.js`.
+- What does `parsons4` do? What should it be named?
+
 ---
 
-## Solution (You): Buy a Bag
+## Solution (You): Parsons 4
 
 ```js
-function buyBag() {
+function parsons4() {
   bagsLeft = bagsLeft - 1;
   let isSoldOut = bagsLeft === 0;
   let message = isSoldOut ? "Sold out." : `Only ${bagsLeft} left!`;
@@ -942,6 +900,8 @@ function buyBag() {
   document.getElementById("buy").disabled = isSoldOut;
 }
 ```
+
+Each click on **Buy** takes away a bag and updates the stock line, the bag's fade, and the button, so `buyBag` would be a better name.
 
 ---
 
@@ -954,7 +914,7 @@ function buyBag() {
 - [Colan's Coffee](https://bi3mer.github.io/lectures/cs213/js/examples/if-final/), running live.
 - [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/js/examples/if-final/practice.js) on GitHub.
 
-The HTML is the same as `if-starter.html`. The page uses the real hour, so to see another time of day, change `hours` to a hardcoded number.
+The HTML is the same as the starter's `index.html`, and `practice.js` starts with the starter's code. The page uses the real hour, so to see another time of day, change `new Date().getHours()` to a number, like 20.
 
 ---
 

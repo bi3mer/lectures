@@ -43,10 +43,10 @@ Colan Biemer
 let bids = { "100.25": 600, "100.00": 1200, "99.75": 500 };
 ```
 
-Last lecture's order book kept each price in a key ([Order Book, Step 3](lecture-loops-js.html#42)), and that caused trouble:
+Last lecture's order book kept each price in a key ([Order Book, Step 3](lecture-loops-js.html#35)), and that caused trouble:
 
 - The keys needed quotes, or `100.00` would have become `"100"` and jumped to the front.
-- Keys are strings, so finding the best bid took a loop and `Number()` ([Keys Are Strings](lecture-loops-js.html#43)).
+- Keys are strings, so finding the best bid took a loop and `Number()` ([Keys Are Strings](lecture-loops-js.html#36)).
 - The levels stayed in the order we typed them, so a new price couldn't go in the middle.
 
 An **array** keeps values in order, and numbers stay numbers.
@@ -132,7 +132,7 @@ console.log(tickers.includes("blip")); // false
 console.log(tickers.join(", "));       // TEST, BLIP
 ```
 
-`includes` asks whether an item is in the array. Strings have to match exactly, as keys did in [Quote Lookup](lecture-loops-js.html#12). `join` glues the items into one string, with its argument between each pair.
+`includes` asks whether an item is in the array. Strings have to match exactly, as keys did in [Parsons 1](lecture-loops-js.html#10). `join` glues the items into one string, with its argument between each pair.
 
 ---
 
@@ -219,7 +219,7 @@ function addTicker() {
 showWatchlist();
 ```
 
-The list shows at load and after every click, so the line goes in a function, as in [We Can Remove Duplicate Code With Functions](lecture-js.html#89). `watchlist` sits outside `addTicker()`, so it keeps its tickers between clicks, as `ordered` did in [Order a Latte](lecture-conditional-js.html#54). Without `ticker !== ""`, an empty box adds an empty ticker: `TEST, BLIP, `.
+The list shows at load and after every click, so the line goes in a function, as in [We Can Remove Duplicate Code With Functions](lecture-js.html#89). `watchlist` sits outside `addTicker()`, so it keeps its tickers between clicks, as `ordered` did in [Parsons 3](lecture-conditional-js.html#53). Without `ticker !== ""`, an empty box adds an empty ticker: `TEST, BLIP, `.
 
 ---
 
@@ -288,7 +288,7 @@ for (let i = 0; i < prices.length; i++) {
 </div>
 </div>
 
-`i` takes every index from 0 to `length - 1`: start at 0 with `<`, as in [How Many Times?](lecture-loops-js.html#28) The condition uses `length`, so the loop fits an array of any size.
+`i` takes every index from 0 to `length - 1`: start at 0 with `<`, as in [How Many Times?](lecture-loops-js.html#24) The condition uses `length`, so the loop fits an array of any size.
 
 ---
 
@@ -352,7 +352,7 @@ for (let i in prices) {
 </div>
 </div>
 
-On an array, [`for...in`](lecture-loops-js.html#35) gives the indexes, and like every key, they're strings. `"0" + 1` glues into `"01"`. Loop over an array with `for...of`, or with `for` and an index.
+On an array, [`for...in`](lecture-loops-js.html#30) gives the indexes, and like every key, they're strings. `"0" + 1` glues into `"01"`. Loop over an array with `for...of`, or with `for` and an index.
 
 ---
 
@@ -377,7 +377,7 @@ With an index, a loop can go backward, or compare an item with the one before it
 Traders call the list of trades the **tape**. Today's Trades should list every trade, newest first.
 
 1. Loop over `prices` backward, from the last index down to 0.
-2. Add each price, with two decimal places, with `innerHTML +=`, as in [Watchlist](lecture-loops-js.html#37). Use this line:
+2. Add each price, with two decimal places, with `innerHTML +=`, as in [Order Book, Step 2](lecture-loops-js.html#34). Use this line:
 
 ```js
 document.getElementById("tape").innerHTML += "<li>100.50</li>";
@@ -436,7 +436,7 @@ let range = `$${low.toFixed(2)} to $${high.toFixed(2)}`;
 document.getElementById("range").textContent = range;
 ```
 
-[Spread](lecture-loops-js.html#45) started `bestAsk` at `Infinity`. An array has a first item, so `low` and `high` can start at a real price. These prices are numbers, so they need no `Number()`.
+[Spread](lecture-loops-js.html#38) started `bestAsk` at `Infinity`. An array has a first item, so `low` and `high` can start at a real price. These prices are numbers, so they need no `Number()`.
 
 ---
 
@@ -532,7 +532,7 @@ console.log(bids[0].shares); // 500
 
 Market Sell and Place a Bid will change the book later, so the drawing goes in a function we can call again, `drawBook()`.
 
-1. Store the bids from [Arrays of Objects](#28) in `bids`. Copy `depthBar` from [Order Book, Step 1](lecture-loops-js.html#39).
+1. Store the bids from [Arrays of Objects](#28) in `bids`. Copy `depthBar` from [Order Book, Step 1](lecture-loops-js.html#32).
 2. In `drawBook()`, clear the bids list. Then add a line for each bid, like `<li class="bid">100.25 ██████ 600</li>`.
 3. Call `drawBook()` once.
 
@@ -631,7 +631,7 @@ function drawBook() {
 
 ## Problem (Us): Market Sell
 
-The **Sell 500 at market** button calls `sellAtMarket()`. As in [Market Sell](lecture-loops-js.html#50), it sells to the best bid first. Now the book changes: a filled level leaves, and a partly filled level keeps its leftover shares.
+The **Sell 500 at market** button calls `sellAtMarket()`. As in [Market Sell](lecture-loops-js.html#43), it sells to the best bid first. Now the book changes: a filled level leaves, and a partly filled level keeps its leftover shares.
 
 1. Count the shares left to sell in `toSell`. `push` each fill, like `500 @ 100.25`, onto an array, `fills`.
 2. While there are shares to sell and bids to sell to, sell to `bids[0]`. If it has no more shares than we need, sell them all and `shift` it off. Otherwise, take what we need from its `shares`.
@@ -932,7 +932,7 @@ The first loop's body is one expression, so it needs no `{ }`. The second is Ave
 pre { font-size: 0.75em; }
 </style>
 
-Under **Since the Open**, show each position's move since the open, as a percent. A [ternary](lecture-conditional-js.html#52) can pick the starter's `up` (green) or `down` (red) class.
+Under **Since the Open**, show each position's move since the open, as a percent. A [ternary](lecture-conditional-js.html#51) can pick the starter's `up` (green) or `down` (red) class.
 
 <!-- prettier-ignore -->
 ```js
@@ -986,7 +986,7 @@ levels.sort((a, b) => a - b);
 console.log(levels); // [99.75, 100, 100.25]
 ```
 
-Without a function, `sort` compares items as strings, as in [Keys Are Strings](lecture-loops-js.html#43). Given a function, `sort` calls it with two items, `a` and `b`. A negative result puts `a` first, and a positive one puts `b` first. Either way, `sort` changes the array itself.
+Without a function, `sort` compares items as strings, as in [Keys Are Strings](lecture-loops-js.html#36). Given a function, `sort` calls it with two items, `a` and `b`. A negative result puts `a` first, and a positive one puts `b` first. Either way, `sort` changes the array itself.
 
 ---
 

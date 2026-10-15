@@ -62,7 +62,6 @@
     <section class="card">
       <h2>Order Ticket</h2>
       <p id="ticket">No order yet</p>
-      <p>Size: <span id="size" class="bar"></span></p>
       <p>Filled: <span id="fill" class="bar"></span></p>
     </section>
 
@@ -75,11 +74,10 @@
     </section>
 
     <section class="card">
-      <h2>Watchlist</h2>
-      <ul id="watchlist"></ul>
+      <h2>Quotes</h2>
       <p>
         <label for="ticker">Look up a ticker:</label>
-        <input id="ticker" oninput="showQuote()" />
+        <input id="ticker" oninput="parsons1()" />
         <span id="quote"></span>
       </p>
     </section>
