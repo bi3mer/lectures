@@ -98,8 +98,6 @@ The second line has both: `===` asked the question, and `=` put the answer in `i
 
 <p class="caption">Source: Allen Wirfs-Brock and Brendan Eich, <a href="https://doi.org/10.1145/3386327">"JavaScript: The First 20 Years"</a> (2020)</p>
 
-`"21" === 21` is `false`, so we turn what the user types into a number before comparing it.
-
 ---
 
 ## Let's Build Colan's Coffee
