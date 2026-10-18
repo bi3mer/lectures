@@ -26,10 +26,19 @@ Slide numbers refer to `lecture-js.md` as of 2026-10-04 and will shift as slides
 
 ## For the Arrays Lecture
 
-- [ ] **Review the arrays draft.** `lecture-arrays-js.md` is a first draft built on `orderbook-arrays-starter.html`, and it now holds the `forEach` and arrow-function slides that moved out of `lecture-loops-js.md`. `cs213/index.html` doesn't link to it yet.
+- [ ] **Review the arrays draft.** `lecture-arrays-js.md` is a first draft built on `examples/orderbook-arrays-starter/` (`index.html` and `practice.js`), and it now holds the `forEach` and arrow-function slides that moved out of `lecture-loops-js.md`. `cs213/index.html` doesn't link to it yet.
+  - On 2026-10-17, the "Problem (Me)" exercises were cut, as in the loops deck:
+    - Last Trade and Draw the Bids moved into the starter's `practice.js`, which now holds `prices`, the last-trade line, `depthBar`, and a `drawBook()` that draws the bids. Draw the Asks and Empty Book are sections inside `drawBook()`.
+    - Draw the Tape was cut along with the tape on the page. Draw the Asks now carries its lesson about looping backward to index 0.
+    - Market Sell (Us) moved ahead of Draw the Asks, so the Arrays of Objects section runs Us, You, You.
+  - Also on 2026-10-17, the deck was cut to 50 slides plus an appendix:
+    - Positions (You) was cut, since it repeated Average Price. The page lost its positions list and total. `positions` stays in the starter for Movers, whose slide now introduces it.
+    - Place an Ask (You) was cut, since it repeated Place a Bid with the sort flipped. The starter provides `placeAsk()`, and Place a Bid's solution carries its lessons: the sort direction, and `Number()`.
+    - "`for...in` on an Array" moved to an appendix after "Questions?".
+    - "Example: `forEach` with an Arrow Function" was folded into "Braces and When to Use `=>`".
   - Calls made on 2026-10-14, all kept as drafted:
     - Prices are numbers, best first. This is the payoff for arrays of objects, since it removes the quoted keys and `Number()`.
-    - Market Sell leaves the tape alone, so the range, upticks, and average stay consistent with what the page drew at load.
+    - Market Sell leaves `prices` alone, so the range, upticks, and average stay consistent with what the page drew at load.
     - Watchlist and Movers stay separate. Linking them would add a redraw that teaches nothing new.
     - Placing an order doesn't match orders that cross or merge prices. The Place a Bid solution says so.
     - The `({ })` object-return example and the bullet about `function` being set up early stay cut, since no exercise uses them.
