@@ -151,80 +151,6 @@ Each line crashes on its own. Check with `in` before `remove`, and check `len` b
 
 ---
 
-## Removing While Looping
-
-<div class="cols">
-<div>
-
-```python
-nums = [3, 5, 8, 7, 9]
-
-for n in nums:
-    if n % 2 == 1:
-        nums.remove(n)
-
-print(nums)   # [5, 8, 9]
-```
-
-</div>
-<div>
-
-```python
-nums = [3, 5, 8, 7, 9]
-
-evens = []
-for n in nums:
-    if n % 2 == 0:
-        evens.append(n)
-
-print(evens)   # [8]
-```
-
-</div>
-</div>
-
-The left loop walks by position. Removing `3` slides `5` into index 0, and the loop moves on to index 1, so it never checks `5`. Removing `7` skips `9` the same way. Build a new list instead (right), as in [Even Numbers](08-lists.html#34). [Visualization](https://pythontutor.com/visualize.html#code=nums%20%3D%20%5B3%2C%205%2C%208%2C%207%2C%209%5D%0A%0Afor%20n%20in%20nums%3A%0A%20%20%20%20if%20n%20%25%202%20%3D%3D%201%3A%0A%20%20%20%20%20%20%20%20nums.remove%28n%29%0A%0Aprint%28nums%29&curInstr=0&mode=display&origin=opt-frontend.js&py=311)
-
----
-
-## I Do: Playlist
-
-```python
-# A playlist plays its songs in order. Move the last song to the
-# front, then print the next three songs and the rest.
-playlist = ["Blue Sky", "Rainy Day", "Night Drive", "Sunrise", "Last Call"]
-```
-
-```
-Up next: ['Last Call', 'Blue Sky', 'Rainy Day']
-Later: ['Night Drive', 'Sunrise']
-```
-
-What should this do if the playlist is empty?
-
----
-
-## Solution: Playlist
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```python
-playlist = ["Blue Sky", "Rainy Day", "Night Drive", "Sunrise", "Last Call"]
-
-if len(playlist) > 0:
-    song = playlist.pop()
-    playlist.insert(0, song)
-
-print(f"Up next: {playlist[:3]}")
-print(f"Later: {playlist[3:]}")
-```
-
-`pop` hands back the song it removed, so it can go straight into `insert`. The guard skips the move for an empty playlist, where `pop` would crash. `playlist[:3]` and `playlist[3:]` split the list at index 3 with no overlap, and neither slice changes `playlist`.
-
----
-
 ## We Do: Waitlist
 
 ```python
@@ -265,6 +191,42 @@ print(f"Waitlist: {waitlist}")
 ```
 
 Grace is known by name, so `remove` takes her out, and the `in` check keeps it from crashing if she already left. Alan goes to index 0 with `insert`. The open seat goes to whoever is at index 0, so `pop(0)` removes that student and hands them back.
+
+---
+
+## Removing While Looping
+
+<div class="cols">
+<div>
+
+```python
+nums = [3, 5, 8, 7, 9]
+
+for n in nums:
+    if n % 2 == 1:
+        nums.remove(n)
+
+print(nums)   # [5, 8, 9]
+```
+
+</div>
+<div>
+
+```python
+nums = [3, 5, 8, 7, 9]
+
+evens = []
+for n in nums:
+    if n % 2 == 0:
+        evens.append(n)
+
+print(evens)   # [8]
+```
+
+</div>
+</div>
+
+The left loop walks by position. Removing `3` slides `5` into index 0, and the loop moves on to index 1, so it never checks `5`. Removing `7` skips `9` the same way. Build a new list instead (right), as in [Even Numbers](08-lists.html#34). [Visualization](https://pythontutor.com/visualize.html#code=nums%20%3D%20%5B3%2C%205%2C%208%2C%207%2C%209%5D%0A%0Afor%20n%20in%20nums%3A%0A%20%20%20%20if%20n%20%25%202%20%3D%3D%201%3A%0A%20%20%20%20%20%20%20%20nums.remove%28n%29%0A%0Aprint%28nums%29&curInstr=0&mode=display&origin=opt-frontend.js&py=311)
 
 ---
 
@@ -375,6 +337,21 @@ print(b)   # [1, 2, 3, 4]
 
 ---
 
+## Why Numbers and Strings Never Showed This
+
+```python
+a = "hi"
+b = a
+b += "!"
+
+print(a)   # hi
+print(b)   # hi!
+```
+
+Numbers and strings only look copied by value. Python copies the reference every time, for every type. A string cannot change in place, though, so `b += "!"` builds a new string and points `b` at it, as [`+=` on strings](06-strings-and-format-strings.html#43) did in week 4. `a` still reaches the old string. Numbers work the same way. A list can change in place, so sharing one shows. [Visualization](https://pythontutor.com/visualize.html#code=a%20%3D%20%22hi%22%0Ab%20%3D%20a%0Ab%20%2B%3D%20%22%21%22%0A%0Aprint%28a%29%0Aprint%28b%29&curInstr=0&mode=display&origin=opt-frontend.js&py=311&heapPrimitives=nevernest)
+
+---
+
 ## Making a Copy
 
 <div class="cols">
@@ -406,21 +383,6 @@ the rows: changing a row through the copy changes it in the original too.
 
 ---
 
-## Why Numbers and Strings Never Showed This
-
-```python
-a = "hi"
-b = a
-b += "!"
-
-print(a)   # hi
-print(b)   # hi!
-```
-
-Numbers and strings only look copied by value. Python copies the reference every time, for every type. A string cannot change in place, though, so `b += "!"` builds a new string and points `b` at it, as [`+=` on strings](06-strings-and-format-strings.html#43) did in week 4. `a` still reaches the old string. Numbers work the same way. A list can change in place, so sharing one shows. [Visualization](https://pythontutor.com/visualize.html#code=a%20%3D%20%22hi%22%0Ab%20%3D%20a%0Ab%20%2B%3D%20%22%21%22%0A%0Aprint%28a%29%0Aprint%28b%29&curInstr=0&mode=display&origin=opt-frontend.js&py=311&heapPrimitives=nevernest)
-
----
-
 ## Functions That Change a List
 
 ```python
@@ -434,6 +396,42 @@ print(scores)   # [2, 4, 6]
 ```
 
 Passing a list to a function copies the reference, so `nums` and `scores` are one list. `double_all` changes that list and gives back `None`, like `append`. Compare [`double(n)`](07-functions.html#45), which could not change the caller's `n`, and [`shout_all`](08-lists.html#28), which built a new list. [Visualization](https://pythontutor.com/visualize.html#code=def%20double_all%28nums%29%3A%0A%20%20%20%20for%20i%2C%20x%20in%20enumerate%28nums%29%3A%0A%20%20%20%20%20%20%20%20nums%5Bi%5D%20%3D%20x%20%2A%202%0A%0Ascores%20%3D%20%5B1%2C%202%2C%203%5D%0Adouble_all%28scores%29%0Aprint%28scores%29&curInstr=0&mode=display&origin=opt-frontend.js&py=311)
+
+---
+
+## We Do: Curve the Scores
+
+```python
+# Write a function, curve, that adds points to every score in the
+# list without going over 100. curve changes the list itself and
+# returns nothing.
+scores = [90, 85, 77, 98]
+curve(scores, 5)
+print(scores)
+```
+
+```
+[95, 90, 82, 100]
+```
+
+- Do we need the items, the indexes, or both?
+- Why does `print(scores)` show the change?
+
+---
+
+## Solution: Curve the Scores
+
+```python
+def curve(scores, points):
+    for i, score in enumerate(scores):
+        scores[i] = min(score + points, 100)
+
+scores = [90, 85, 77, 98]
+curve(scores, 5)
+print(scores)
+```
+
+The loop needs both: `score` to work out the new value, and `i` to put it back. `min(score + points, 100)` caps each score, using `min` the way week 1 did. The `scores` inside `curve` and the one outside are one list, so the caller sees every change.
 
 ---
 
@@ -493,81 +491,6 @@ Strings sort the way [`min` and `max` compared them](08-lists.html#38): one char
 
 ---
 
-## I Do: Median
-
-```python
-# Write a function, median, that returns the middle score once the
-# scores are in order. With an even number of scores, return the
-# average of the two middle ones. Leave scores unchanged.
-scores = [90, 72, 85, 100, 68]
-```
-
-```
-Median: 85
-Scores: [90, 72, 85, 100, 68]
-```
-
----
-
-## Solution: Median
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```python
-def median(scores):
-    ordered = sorted(scores)
-    middle = len(ordered) // 2
-    if len(ordered) % 2 == 1:
-        return ordered[middle]
-    return (ordered[middle - 1] + ordered[middle]) / 2
-
-scores = [90, 72, 85, 100, 68]
-print(f"Median: {median(scores)}")
-print(f"Scores: {scores}")
-```
-
-`sorted` gives `median` a list of its own, so `scores` prints the way it was entered. With five scores, `middle` is `5 // 2`, or 2: the third item. With four, the two middle items sit at indexes 1 and 2. `scores.sort()` would find the same median, but it would reorder the caller's list.
-
----
-
-## We Do: Curve the Scores
-
-```python
-# Write a function, curve, that adds points to every score in the
-# list without going over 100. curve changes the list itself and
-# returns nothing.
-scores = [90, 85, 77, 98]
-curve(scores, 5)
-print(scores)
-```
-
-```
-[95, 90, 82, 100]
-```
-
-- Do we need the items, the indexes, or both?
-- Why does `print(scores)` show the change?
-
----
-
-## Solution: Curve the Scores
-
-```python
-def curve(scores, points):
-    for i, score in enumerate(scores):
-        scores[i] = min(score + points, 100)
-
-scores = [90, 85, 77, 98]
-curve(scores, 5)
-print(scores)
-```
-
-The loop needs both: `score` to work out the new value, and `i` to put it back. `min(score + points, 100)` caps each score, using `min` the way week 1 did. The `scores` inside `curve` and the one outside are one list, so the caller sees every change.
-
----
-
 ## You Do: Top Three
 
 Write `top_three`, a function that returns the three highest scores, lowest first. Then print them and the scores as entered. **One line does not belong.**
@@ -613,14 +536,6 @@ print(f"Scores: {scores}")
 ```
 
 The extra line was `ranked = scores.sort()`. `sort` gives back `None`, so `ranked[-3:]` would raise a `TypeError`. Even without the crash, it would reorder `scores`, and the last line would print them sorted. After `sorted`, the three highest scores are at the end, so `[-3:]` takes them.
-
----
-
-## In-Class Activity 1: Drop the Lowest
-
-[https://bi3mer.github.io/autograder/cs230/w7i1.html](https://bi3mer.github.io/autograder/cs230/w7i1.html)
-
-`drop_lowest` has to leave the list it was given unchanged. The program prints that list at the end, so a shared list shows up in the output.
 
 ---
 
@@ -691,6 +606,46 @@ Chapter 7 reads files one line at a time, and each line is a string like this on
 
 ---
 
+## We Do: Column Average
+
+```python
+# Write a function, column_average, that returns the average of one
+# column of the table. Use it to print the average of each test.
+table = [["Ada", 90, 85], ["Grace", 70, 88], ["Alan", 100, 95]]
+```
+
+```
+Test 1: 86.67
+Test 2: 89.33
+```
+
+- A column is one item from every row. Which loop do we need?
+- Which columns hold test scores?
+
+---
+
+## Solution: Column Average
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
+
+```python
+def column_average(table, col):
+    total = 0
+    for row in table:
+        total += row[col]
+    return total / len(table)
+
+table = [["Ada", 90, 85], ["Grace", 70, 88], ["Alan", 100, 95]]
+for col in range(1, 3):
+    print(f"Test {col}: {column_average(table, col):.2f}")
+```
+
+A column takes one item from every row, so the loop goes over the rows and adds `row[col]` from each. `len(table)` is the number of rows, one per student. Column 0 holds the names, so the tests are columns 1 and 2: `range(1, 3)`. `column_average(table, 0)` would add `"Ada"` to a number and raise a `TypeError`.
+
+---
+
 ## Tuples
 
 ```python
@@ -726,75 +681,38 @@ print(low, high)   # 2 9
 
 ---
 
-## I Do: Student Totals
-
-```python
-# Each row holds a name and three test scores. Print each
-# student's total.
-table = [
-    ["Ada", 90, 85, 92],
-    ["Grace", 70, 88, 81],
-    ["Alan", 100, 95, 98],
-]
-```
-
-```
-Ada: 267
-Grace: 239
-Alan: 293
-```
-
----
-
-## Solution: Student Totals
+## You Do: Best Student
 
 <style scoped>
 pre { font-size: 0.75em; }
 </style>
 
-```python
-table = [
-    ["Ada", 90, 85, 92],
-    ["Grace", 70, 88, 81],
-    ["Alan", 100, 95, 98],
-]
+Write `best_student`, a function that returns the name and average of the student with the highest average, as a tuple. **One line does not belong.**
 
+```python
+return best[0], average
+table = [["Ada", 90, 85], ["Grace", 70, 88], ["Alan", 100, 95]]
+if sum(row) > sum(best):
+best = table[0]
+print(f"Best: {name} ({average:.2f})")
 for row in table:
-    total = 0
-    for score in row[1:]:
-        total += score
-    print(f"{row[0]}: {total}")
-```
-
-`row[0]` is the name, and the slice `row[1:]` holds only the scores. Looping over `row` itself would try to add `"Ada"` to a number and raise a `TypeError`. `sum(row[1:])` does the inner loop in one call.
-
----
-
-## We Do: Best Student
-
-```python
-# Write a function, best_student, that takes the table and returns
-# the name and average of the student with the highest average, as
-# a tuple.
-table = [
-    ["Ada", 90, 85, 92],
-    ["Grace", 70, 88, 81],
-    ["Alan", 100, 95, 98],
-]
+average = sum(best[1:]) / len(best[1:])
+def best_student(table):
+best = row
+name, average = best_student(table)
+if sum(row[1:]) > sum(best[1:]):
 ```
 
 ```
-Best: Alan (97.67)
+Best: Alan (97.50)
 ```
-
-What do we need to remember as we go? What should it start as?
 
 ---
 
 ## Solution: Best Student
 
 <style scoped>
-pre { font-size: 0.7em; }
+pre { font-size: 0.75em; }
 </style>
 
 ```python
@@ -807,65 +725,12 @@ def best_student(table):
     average = sum(best[1:]) / len(best[1:])
     return best[0], average
 
-table = [
-    ["Ada", 90, 85, 92],
-    ["Grace", 70, 88, 81],
-    ["Alan", 100, 95, 98],
-]
+table = [["Ada", 90, 85], ["Grace", 70, 88], ["Alan", 100, 95]]
 name, average = best_student(table)
 print(f"Best: {name} ({average:.2f})")
 ```
 
-`best` starts as the first row, as in [How `max` Works](08-lists.html#37). Every row has three scores, so the highest total is also the highest average. `return best[0], average` hands back a tuple, and the caller unpacks it.
-
----
-
-## You Do: Column Average
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-Write `column_average`, a function that returns the average of one column of the table. Use it to print the average of each test. **One line does not belong.**
-
-```python
-return total / len(table)
-for col in range(3):
-total = 0
-table = [["Ada", 90, 85], ["Grace", 70, 88], ["Alan", 100, 95]]
-total += row[col]
-def column_average(table, col):
-for col in range(1, 3):
-print(f"Test {col}: {column_average(table, col):.2f}")
-for row in table:
-```
-
-```
-Test 1: 86.67
-Test 2: 89.33
-```
-
----
-
-## Solution: Column Average
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```python
-def column_average(table, col):
-    total = 0
-    for row in table:
-        total += row[col]
-    return total / len(table)
-
-table = [["Ada", 90, 85], ["Grace", 70, 88], ["Alan", 100, 95]]
-for col in range(1, 3):
-    print(f"Test {col}: {column_average(table, col):.2f}")
-```
-
-The extra line was `for col in range(3):`. Column 0 holds the names, so `column_average(table, 0)` would add `"Ada"` to a number and raise a `TypeError`. `range(1, 3)` gives only the score columns. `len(table)` is the number of rows, one per student.
+The extra line was `if sum(row) > sum(best):`. Item 0 of each row is a name, so `sum(row)` would add `"Ada"` to a number and raise a `TypeError`, as column 0 did in Column Average. The slice `row[1:]` leaves the name out. `best` starts as the first row, as in [How `max` Works](08-lists.html#37), and every row has two scores, so the highest total is also the highest average. `return best[0], average` hands back a tuple for the caller to unpack.
 
 ---
 
@@ -879,16 +744,18 @@ ul { font-size: 0.85em; }
 - `nums[i] = x` replaces one item, which a string or a tuple cannot do
 - `insert` adds at a position; `remove` takes out a value; `pop` takes out a position and hands the item back; `del` takes out a position
 - Removing from a list while a `for` loop walks through it skips items, so build a new list instead
-- Lists are copied by reference: after `b = a`, or after passing a list to a function, both names share one list; `copy()` makes a separate one
+- After `b = a`, or after passing a list to a function, both names share one list; `copy()` makes a separate one
 - `sorted` returns a new list; `sort` changes the list and gives back `None`
 - A list of lists holds a table, read with `table[row][col]`
 - A tuple is like a list that cannot change; `return a, b` and `enumerate` hand back tuples
 
 ---
 
-## Next Up: Files
+## Next Up: Exceptions and Files
 
-Reading and writing files: Chapter 7.
+Exceptions, then reading and writing files: Chapter 7.
+
+The [Changing Lists Cheat Sheet](changing-lists-cheatsheet.html) has today's tools in one place, with more examples and a few extra list methods.
 
 <!--
 If time (from plans/1-lists.md): extend(), clear(), reverse(), a slice step (nums[::2]),
