@@ -36,6 +36,15 @@ Slide numbers refer to `lecture-js.md` as of 2026-10-04 and will shift as slides
     - Place an Ask (You) was cut, since it repeated Place a Bid with the sort flipped. The starter provides `placeAsk()`, and Place a Bid's solution carries its lessons: the sort direction, and `Number()`.
     - "`for...in` on an Array" moved to an appendix after "Questions?".
     - "Example: `forEach` with an Arrow Function" was folded into "Braces and When to Use `=>`".
+  - On 2026-10-19, the deck was cut to 40 slides, counting the appendix:
+    - Remove Last (You) was cut, along with its button, `removeTicker()`, and its section in the starter. "Array Methods" still teaches `pop`.
+    - "Arrays" and "Example: Today's Trades" became one "Arrays" slide.
+    - "Changing an Array" and "`includes` and `join`" became "Array Methods", with bullets in place of the methods table.
+    - "Looping with an Index", "`for...of`", and "Which Loop?" became "Index or `for...of`".
+    - "Two Names, One Object" was folded into "Arrays of Objects".
+    - "Functions Are Values", "`forEach`", and "Example: `for...of` vs. `forEach`" became one "`forEach`" slide. "From `function` to `=>`" now says a variable can hold a function.
+    - The `forEach` and Arrow Functions sections became one.
+    - "`sort` Compares Strings" and "Sorting Objects" became "`sort`".
   - Calls made on 2026-10-14, all kept as drafted:
     - Prices are numbers, best first. This is the payoff for arrays of objects, since it removes the quoted keys and `Number()`.
     - Market Sell leaves `prices` alone, so the range, upticks, and average stay consistent with what the page drew at load.

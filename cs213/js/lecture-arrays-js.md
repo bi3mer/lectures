@@ -56,18 +56,6 @@ An **array** keeps values in order, and numbers stay numbers.
 ## Arrays
 
 ```js
-let array = [first, second, third];
-```
-
-- An **array** holds a list of values, in order, inside `[ ]`.
-- Commas separate the values. Each value is an **item**.
-- Each item has an **index**, its position in the list. Indexes start at 0.
-
----
-
-## Example: Today's Trades
-
-```js
 let prices = [100.1, 100.3, 100.45, 100.25, 100.25, 100.5];
 ```
 
@@ -79,7 +67,9 @@ let prices = [100.1, 100.3, 100.45, 100.25, 100.25, 100.5];
 
 </div>
 
-`prices` holds the price of every TEST trade today, oldest first. The first trade is at index 0, so the sixth is at index 5.
+- An **array** holds a list of values, in order, inside `[ ]`. Commas separate the values, and each value is an **item**.
+- Each item has an **index**, its position in the list. Indexes start at 0, so the sixth item is at index 5.
+- `prices` holds the price of every TEST trade today, oldest first.
 
 ---
 
@@ -97,42 +87,27 @@ Brackets read an item by its index, as they read a property by its key in [Brack
 
 ---
 
-## Changing an Array
+## Array Methods
 
-<!-- prettier-ignore -->
-```js
-let sizes = [300, 900, 400];
-
-sizes[1] = 1000;             // [300, 1000, 400]
-sizes.push(500);             // [300, 1000, 400, 500]
-let popped = sizes.pop();    // 500, and sizes is [300, 1000, 400]
-let shifted = sizes.shift(); // 300, and sizes is [1000, 400]
-```
-
-<div class="centered">
-
-| Method       | Does                     | Gives Back     |
-| ------------ | ------------------------ | -------------- |
-| `push(item)` | adds `item` to the end   | the new length |
-| `pop()`      | takes off the last item  | that item      |
-| `shift()`    | takes off the first item | that item      |
-
-</div>
-
----
-
-## `includes` and `join`
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
 <!-- prettier-ignore -->
 ```js
 let tickers = ["TEST", "BLIP"];
 
+tickers[1] = "WIDG";                   // ["TEST", "WIDG"]
+tickers.push("BLIP");                  // ["TEST", "WIDG", "BLIP"]
 console.log(tickers.includes("BLIP")); // true
 console.log(tickers.includes("blip")); // false
-console.log(tickers.join(", "));       // TEST, BLIP
+console.log(tickers.join(", "));       // TEST, WIDG, BLIP
+let popped = tickers.pop();            // "BLIP", and tickers is ["TEST", "WIDG"]
+let shifted = tickers.shift();         // "TEST", and tickers is ["WIDG"]
 ```
 
-`includes` asks whether an item is in the array. Strings have to match exactly, which is why [Parsons 1](lecture-loops-js.html#10) turned the ticker to uppercase before looking it up. `join` glues the items into one string, with its argument between each pair.
+- `push` adds an item to the end. `pop` and `shift` take off the last or first item, and return it.
+- `includes` checks for an exact match. `join` glues the items into one string, with its argument between each pair.
 
 ---
 
@@ -187,79 +162,24 @@ showWatchlist();
 
 ---
 
-## Problem (You): Remove Last
-
-The **Remove last** button calls `removeTicker()`. It takes the last ticker off the watchlist, shows the list again, and says which ticker it took off: `Removed BLIP`.
-
-<!-- prettier-ignore -->
-```js
-document.getElementById("removed").textContent = `Removed ${removed}`;
-let removed = watchlist.pop;
-}
-showWatchlist();
-let removed = watchlist[watchlist.length];
-function removeTicker() {
-let removed = watchlist.pop();
-```
-
-Assemble `removeTicker()` in the Remove Last section. Two of the lines are wrong.
-
----
-
-## Solution (You): Remove Last
-
-```js
-function removeTicker() {
-  let removed = watchlist.pop();
-  showWatchlist();
-  document.getElementById("removed").textContent = `Removed ${removed}`;
-}
-```
-
-`watchlist.pop` without `()` doesn't call `pop`. Nothing comes off, and the page says `Removed function pop() { [native code] }`. `watchlist[watchlist.length]` reads one past the last index, so it gives `undefined` and takes nothing off. Once the list is empty, `pop()` gives back `undefined` too.
-
----
-
 # Looping Over Arrays
 
 ---
 
-## Looping with an Index
+## Index or `for...of`
 
 <div class="side-by-side">
 <div>
+
+<p class="caption">With an index</p>
 
 ```js
 for (let i = 0; i < prices.length; i++) {
-  console.log(`${i}: ${prices[i]}`);
+  console.log(prices[i]);
 }
 ```
 
-</div>
-<div>
-
-<p class="caption">Console</p>
-
-```text
-0: 100.1
-1: 100.3
-2: 100.45
-3: 100.25
-4: 100.25
-5: 100.5
-```
-
-</div>
-</div>
-
-`i` takes every index from 0 to `length - 1`: start at 0 with `<`, as in [How Many Times?](lecture-loops-js.html#24) The condition uses `length`, so the loop fits an array of any size.
-
----
-
-## `for...of`
-
-<div class="side-by-side">
-<div>
+<p class="caption"><code>for...of</code></p>
 
 ```js
 for (let price of prices) {
@@ -270,7 +190,7 @@ for (let price of prices) {
 </div>
 <div>
 
-<p class="caption">Console</p>
+<p class="caption">Console, for both</p>
 
 ```text
 100.1
@@ -284,23 +204,8 @@ for (let price of prices) {
 </div>
 </div>
 
-`for...of` hands the loop each item itself, so there's no index to look up. Name the array after many things and the loop variable after one: `price` of `prices`.
-
----
-
-## Which Loop?
-
-<div class="centered">
-
-| We Need...                      | Use                                       |
-| ------------------------------- | ----------------------------------------- |
-| each item, first to last        | `for (let price of prices)`               |
-| the index, or a different order | `for (let i = 0; i < prices.length; i++)` |
-| each key of an object           | `for (let key in object)`                 |
-
-</div>
-
-With an index, a loop can go backward, or compare an item with the one before it.
+- `i` takes every index from 0 to `length - 1`, as in [How Many Times?](lecture-loops-js.html#24), so the loop fits an array of any size.
+- `for...of` hands the loop each item itself: `price` of `prices`. Use an index only to go backward, or to compare an item with the one before it.
 
 ---
 
@@ -308,7 +213,7 @@ With an index, a loop can go backward, or compare an item with the one before it
 
 Today's range is the lowest and highest price so far: `$100.10 to $100.50`. Let's find it in the Today's Range section.
 
-1. Start `low` and `high` at the first trade in `prices` (`practice.js`, line 1).
+1. Start `low` and `high` at the first trade in `prices`.
 2. Loop over `prices` with `for...of`, and keep the lowest and highest.
 3. Store the range in `range`, like `$100.10 to $100.50`.
 4. Uncomment the section's page line.
@@ -401,6 +306,10 @@ document.getElementById("ticks").textContent = `${upticks} up, ${downticks} down
 
 ## Arrays of Objects
 
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
+
 <!-- prettier-ignore -->
 ```js
 let bids = [
@@ -408,25 +317,15 @@ let bids = [
   { price: 100, shares: 1200 },
   { price: 99.75, shares: 500 },
 ];
-
-console.log(bids[0].price);            // 100.25
 console.log(bids[1].price.toFixed(2)); // 100.00
-```
 
-Each item is an object for one price level, and `bids[0].price` reads the first level's price. The best bid comes first, so the array holds the book's order. Prices are plain numbers: no quotes, and [`toFixed(2)`](lecture-js.html#78) puts back the zeros in `100.00`.
-
----
-
-## Two Names, One Object
-
-```js
 let best = bids[0];
 best.shares -= 100;
-
-console.log(bids[0].shares); // 500
+console.log(bids[0].shares);           // 500
 ```
 
-`best = bids[0]` doesn't copy the level. Both names reach the same object, so changing `best.shares` changes the book. Numbers and strings copy by value, as in [Copy by Value](lecture-js.html#99), but an object or an array is shared by all of its names.
+- Each item is an object for one price level, best bid first. Prices are plain numbers: no quotes, and [`toFixed(2)`](lecture-js.html#78) puts back the zeros.
+- `best = bids[0]` doesn't copy the level. Both names reach the same object, so changing `best.shares` changes the book. Numbers and strings [copy by value](lecture-js.html#99), but objects and arrays are shared.
 
 ---
 
@@ -435,8 +334,8 @@ console.log(bids[0].shares); // 500
 The **Sell 500 at market** button calls `sellAtMarket()`. As in [Market Sell](lecture-loops-js.html#43), it sells to the best bid first. Now the book changes: a filled level leaves, and a partly filled level keeps its leftover shares. Let's write it in the Market Sell section.
 
 1. Count the shares left to sell in `toSell`. `push` each fill, like `500 @ 100.25`, onto an array, `fills`.
-2. While there are shares to sell and bids to sell to, sell to `bids[0]` (`practice.js`, line 3). If it has no more shares than we need, sell them all and `shift` it off. Otherwise, take what we need from its `shares`.
-3. At the end of `sellAtMarket()`, uncomment the section's page line. Then call `drawBook()` (`practice.js`, line 33), which clears the bids and draws them again.
+2. While there are shares to sell and bids to sell to, sell to `bids[0]`. If it has no more shares than we need, sell them all and `shift` it off. Otherwise, take what we need from its `shares`.
+3. At the end of `sellAtMarket()`, uncomment the section's page line. Then call `drawBook()` (above the Watchlist section), which clears the bids and draws them again.
 
 ---
 
@@ -485,13 +384,13 @@ function sellAtMarket() {
 </div>
 </div>
 
-`best` and `bids[0]` are [one object](#24), so `best.shares -= toSell` changes the book itself. A fill that empties a level can be the last fill, so a `", "` typed after each fill could be left dangling at the end. `join` puts commas only between fills.
+`best` and `bids[0]` are [one object](#17), so `best.shares -= toSell` changes the book itself. A fill that empties a level can be the last fill, so a `", "` typed after each fill could be left dangling at the end. `join` puts commas only between fills.
 
 ---
 
 ## Problem (You): Draw the Asks
 
-`drawBook()` (`practice.js`, line 33) draws only the bids. Add the asks (`practice.js`, line 8) in its Draw the Asks section. They're stored best first, like the bids, so the lowest ask is at index 0.
+`drawBook()` (above the Watchlist section) draws only the bids. Add the asks in its Draw the Asks section. They're stored best first, like the bids, so the lowest ask is at index 0.
 
 1. Clear the asks list, as `drawBook()` clears the bids. Then loop over `asks` backward, from the last index down to 0, so the highest ask is on top. [Opening Bell](lecture-loops-js.html#28) counted down with `i--`, but it stopped at 1.
 2. Store the spread in `spread`: the best ask's price minus the best bid's. Both are at index 0, so no loop is needed.
@@ -566,23 +465,7 @@ Once `bids` is empty, `bids[0]` is `undefined`, so `bids[0].price` stopped `draw
 
 ---
 
-# `forEach`
-
----
-
-## Functions Are Values
-
-```js
-let fee = function (amount) {
-  return amount * 0.01;
-};
-
-console.log(fee(500)); // 5
-```
-
-A [function](lecture-js.html#90) is a value, like a number or a string, so a variable can hold one. We call it with the variable's name: `fee(500)`.
-
-`forEach`, next, takes a function value like this one and calls it once for each item in an array.
+# `forEach` and Arrow Functions
 
 ---
 
@@ -594,51 +477,9 @@ prices.forEach(function (price) {
 });
 ```
 
-- Every array has `forEach`, which we call with a dot, like `push`. It calls the function we give it once for each item in the array, with that item as the argument.
-- The function has no name, since only `forEach` calls it.
-- The `)` after the `}` closes `forEach(`, and the `;` ends the statement.
-
----
-
-## Example: `for...of` vs. `forEach`
-
-<div class="side-by-side">
-<div>
-
-<p class="caption"><code>for...of</code></p>
-
-```js
-for (let price of prices) {
-  console.log(price);
-}
-```
-
-<p class="caption"><code>forEach</code></p>
-
-```js
-prices.forEach(function (price) {
-  console.log(price);
-});
-```
-
-</div>
-<div>
-
-<p class="caption">Console, for both</p>
-
-```text
-100.1
-100.3
-100.45
-100.25
-100.25
-100.5
-```
-
-</div>
-</div>
-
-Both loops print every price. `break` and `continue` work only in a loop, so inside `forEach`'s function, either one is a syntax error. When a loop might stop early, use `for...of`.
+- A [function](lecture-js.html#90) is a value, like a number, so we can hand one to another function. Every array has `forEach`, which calls the function we give it once for each item, with that item as the argument.
+- The function has no name, since only `forEach` calls it. The `)` after the `}` closes `forEach(`.
+- This prints every price, like [`for...of`](#11). But `break` and `continue` work only in a loop, so inside `forEach`'s function, either one is a syntax error. When a loop might stop early, use `for...of`.
 
 ---
 
@@ -669,15 +510,11 @@ document.getElementById("average").textContent = `$${average}`;
 
 ---
 
-# Arrow Functions
-
----
-
 ## From `function` to `=>`
 
-![w:1000 The same fee function written three ways. First, let fee = function (amount) { return amount * 0.01; }; stored a function in a variable. Second, the arrow function let fee = (amount) => { return amount * 0.01; }; dropped the word function and put => after the parameters. Third, let fee = (amount) => amount * 0.01; dropped the braces, return, and the inner semicolon, since the body was one expression, and gave back amount * 0.01 by itself.](examples/diagrams/arrow-function.svg)
+![w:1000 The same fee function written three ways. First, let fee = function (amount) { return amount * 0.01; }; stored a function in a variable. Second, the arrow function let fee = (amount) => { return amount * 0.01; }; dropped the word function and put => after the parameters. Third, let fee = (amount) => amount * 0.01; dropped the braces, return, and the inner semicolon, since the body was one expression, and returned amount * 0.01 by itself.](examples/diagrams/arrow-function.svg)
 
-An **arrow function** is a shorter way to write a function value. Without `{ }`, it gives back its one expression, with no `return`.
+A variable can hold a function value, like `fee`, and we call it by the variable's name: `fee(500)`. An **arrow function** is a shorter way to write a function value. Without `{ }`, it returns its one expression without writing `return`.
 
 ---
 
@@ -698,8 +535,8 @@ prices.forEach((price) => {
 });
 ```
 
-- With `{ }`, the body is a block, and a block gives back only what [`return`](lecture-js.html#96) gives back. That breaks `fee`.
-- `forEach` doesn't use what its function gives back, so either form works there. Average Price's loop keeps its `{ }` because it changes `priceSum`.
+- With `{ }`, the body is a block, and the function returns only what follows [`return`](lecture-js.html#96). That breaks `fee`.
+- `forEach` doesn't use what its function returns, so either form works there. Average Price's loop keeps its `{ }` because it changes `priceSum`.
 - Use an arrow function for a one-line formula, like `fee`, or for a function we hand to `forEach` or `sort`. Use `function` for the rest, like `drawBook()`, or `addTicker()` from `onclick`.
 
 ---
@@ -710,7 +547,7 @@ prices.forEach((price) => {
 pre { font-size: 0.75em; }
 </style>
 
-`positions` (`practice.js`, line 14) lists the stocks we hold, each with its opening price, `open`, and today's `price`. Under **Since the Open**, show each one's move since the open, as a percent. A [ternary](lecture-conditional-js.html#51) can pick the starter's `up` (green) or `down` (red) class.
+`positions` lists the stocks we hold, each with its opening price, `open`, and today's `price`. Under **Since the Open**, show each one's move since the open, as a percent. A [ternary](lecture-conditional-js.html#51) can pick the starter's `up` (green) or `down` (red) class.
 
 <!-- prettier-ignore -->
 ```js
@@ -748,11 +585,15 @@ positions.forEach((position) => {
 
 <div class="demo book"><ul><li class="up">TEST: 0.50%</li><li class="down">BLIP: -1.64%</li><li class="up">WIDG: 2.00%</li></ul></div>
 
-A braced `change` gives back `undefined`, so `percent.toFixed(2)` stops with a TypeError. `forEach(position) => {` closes `forEach(` too soon, a syntax error that stops all of `practice.js`.
+A braced `change` returns `undefined`, so `percent.toFixed(2)` stops with a TypeError. `forEach(position) => {` closes `forEach(` too soon, a syntax error that stops all of `practice.js`.
 
 ---
 
-## `sort` Compares Strings
+## `sort`
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
 ```js
 let levels = [100.25, 99.75, 100];
@@ -764,29 +605,15 @@ levels.sort((a, b) => a - b);
 console.log(levels); // [99.75, 100, 100.25]
 ```
 
-Without a function, `sort` compares items as strings, as in [Keys Are Strings](lecture-loops-js.html#36). Given a function, `sort` calls it with two items, `a` and `b`. A negative result puts `a` first, and a positive one puts `b` first. Either way, `sort` changes the array itself.
-
----
-
-## Sorting Objects
-
-<div class="centered">
-
-| Function                      | Sorts               |
-| ----------------------------- | ------------------- |
-| `(a, b) => a - b`             | smallest first      |
-| `(a, b) => b - a`             | largest first       |
-| `(a, b) => b.price - a.price` | highest price first |
-
-</div>
-
-For an array of objects, subtract the property to sort by. `a - b` is negative when `a` is smaller, so the smaller item goes first.
+- Without a function, `sort` compares items as strings, as in [Keys Are Strings](lecture-loops-js.html#36).
+- Given one, it calls the function with two items, `a` and `b`, and a negative result puts `a` first. `a - b` sorts smallest first, and `b - a` largest first.
+- For objects, subtract the property: `(a, b) => b.price - a.price` puts the highest price first. Either way, `sort` changes the array itself.
 
 ---
 
 ## Problem (Us): Place a Bid
 
-The order form has **Price** and **Shares** boxes. **Place ask** already works: `placeAsk()` (`practice.js`, line 52) adds an ask and keeps `asks` lowest first. **Place bid** calls `placeBid()`. Let's write it in the Place a Bid section.
+The order form has **Price** and **Shares** boxes. **Place ask** already works: `placeAsk()` (above the Watchlist section) adds an ask and keeps `asks` lowest first. **Place bid** calls `placeBid()`. Let's write it in the Place a Bid section.
 
 1. Read both boxes, and turn each into a number with [`Number()`](lecture-js.html#68), as `placeAsk()` does.
 2. `push` a new level onto `bids`. Then sort `bids` so the highest price comes first.

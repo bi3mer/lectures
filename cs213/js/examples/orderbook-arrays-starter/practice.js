@@ -65,8 +65,6 @@ drawBook();
 // let ticker = document.getElementById("new-ticker").value;
 // document.getElementById("watchlist").textContent = watchlist.join(", ");
 
-// -------------------------------- Remove Last --------------------------------
-
 // ------------------------------- Today's Range -------------------------------
 
 // Write your code above this note. Then uncomment the page line below.

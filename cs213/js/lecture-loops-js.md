@@ -330,7 +330,7 @@ bar += "█"; // "██"
 
 ## Problem (Us): Doubling Time
 
-The page asks how long an index fund growing 7% a year takes to double. Let's find out for `fund` (`practice.js`, line 10), in the Doubling Time section.
+The page asks how long an index fund growing 7% a year takes to double. Let's find out for `fund`, in the Doubling Time section.
 
 1. Copy `fund.balance` into `balance`, so the loop doesn't change `fund`.
 2. Count the years in `years`, starting at 0. While `balance` is under twice the fund's balance, add a year of growth.
@@ -461,7 +461,7 @@ If we want 5 iterations, the third loop runs once too many, an **off-by-one** er
 
 ## Problem (Us): Fill Bar
 
-An order **fills** as other traders trade with it, often a few shares at a time. `order.filled` (`practice.js`, line 6) says 600 of our 1000 shares have filled. In the Fill Bar section, let's draw █ for each 100 shares filled, and ░ for each 100 still open.
+An order **fills** as other traders trade with it, often a few shares at a time. `order.filled` says 600 of our 1000 shares have filled. In the Fill Bar section, let's draw █ for each 100 shares filled, and ░ for each 100 still open.
 
 1. Start an empty string, `fill`.
 2. Loop over the bar's slots, from 1 to `order.shares / 100`.
@@ -617,7 +617,7 @@ The page doesn't change yet, since a function runs only when something calls it.
 
 ## Problem (Us): Order Book, Step 2
 
-Each side of the book is an object. A price is the key, and the shares offered at that price are the value, as in `asks` (`practice.js`, line 12). The keys need quotes, or `101.00` would become the key `"101"`.
+Each side of the book is an object. A price is the key, and the shares offered at that price are the value, as in `asks`. The keys need quotes, or `101.00` would become the key `"101"`.
 
 1. In the Order Book, Step 2 section, loop over `asks` with `for...in`, with `price` as the loop variable.
 2. Build `<li class="ask">[PRICE] ███ [SHARES]</li>`, with `depthBar(?)` for the bar. The starter's CSS makes `.ask` red and `.bid` green.
@@ -651,7 +651,7 @@ On the first iteration, `price` is `"101.00"`, and `asks[price]` is `300`.
 pre { font-size: 0.75em; }
 </style>
 
-`bids` (`practice.js`, line 13) works the same way. Copy the loop from [Step 2](#34) into the Order Book, Step 3 section, change every `asks` to `bids`, and change `class="ask"` to `class="bid"`, so the bids show in green:
+`bids` works the same way. Copy the loop from [Step 2](#34) into the Order Book, Step 3 section, change every `asks` to `bids`, and change `class="ask"` to `class="bid"`, so the bids show in green:
 
 ```js
 for (let price in bids) {

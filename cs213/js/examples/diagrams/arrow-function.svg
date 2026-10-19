@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title>From function to arrow function</title>
-  <desc>The same fee function written three ways. First, let fee = function (amount) { return amount * 0.01; }; stored a function in a variable. Second, the arrow function let fee = (amount) =&gt; { return amount * 0.01; }; dropped the word function and put =&gt; after the parameters. Third, let fee = (amount) =&gt; amount * 0.01; dropped the braces, return, and the inner semicolon, since the body was one expression, and gave back amount * 0.01 by itself.</desc>
+  <desc>The same fee function written three ways. First, let fee = function (amount) { return amount * 0.01; }; stored a function in a variable. Second, the arrow function let fee = (amount) =&gt; { return amount * 0.01; }; dropped the word function and put =&gt; after the parameters. Third, let fee = (amount) =&gt; amount * 0.01; dropped the braces, return, and the inner semicolon, since the body was one expression, and returned amount * 0.01 by itself.</desc>
   <defs>
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />

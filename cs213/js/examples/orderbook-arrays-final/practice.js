@@ -93,13 +93,6 @@ function addTicker() {
 
 showWatchlist();
 
-// -------------------------------- Remove Last --------------------------------
-function removeTicker() {
-  let removed = watchlist.pop();
-  showWatchlist();
-  document.getElementById("removed").textContent = `Removed ${removed}`;
-}
-
 // ------------------------------- Today's Range -------------------------------
 let low = prices[0];
 let high = prices[0];
