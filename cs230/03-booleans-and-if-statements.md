@@ -451,3 +451,5 @@ Enter y for yes or n for no: asdf
 Enter y for yes or n for no: asdf
 ...
 ```
+
+[Repetition: While](04-while-loops.html)

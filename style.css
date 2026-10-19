@@ -119,13 +119,25 @@ main.doc {
   text-align: left;
 }
 
-/* The whole table is dark like the code boxes, with the row under the mouse lit up. Only
-   body rows light up, so the header row stays put. */
+/* The whole table is dark like the code boxes, with the row under the mouse lit up in orange.
+   Only body rows light up, so the header row stays put. */
 .doc th,
 .doc tr {
   background-color: #032837;
 }
 
+/* The light text is unreadable on orange (1.8:1), so the lit row switches to the code boxes'
+   dark blue (7.2:1). Links would be orange on orange, and the blue code chips would hold dark
+   text, so both switch too. */
 .doc tbody tr:hover {
-  background-color: #175b78;
+  background-color: #f99d1b;
+  color: #032837;
+}
+
+.doc tbody tr:hover a {
+  color: #032837;
+}
+
+.doc tbody tr:hover code {
+  background-color: rgba(3, 40, 55, 0.15);
 }

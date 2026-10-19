@@ -466,3 +466,5 @@ for i in range(5):
 3
 4
 ```
+
+[Repetition: For](05-for-loops.html)

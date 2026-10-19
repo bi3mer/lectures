@@ -523,3 +523,5 @@ ONE
 ## Next Time
 
 Every program so far runs top to bottom. Next we'll write programs that make decisions about whether to do one thing or another.
+
+[Booleans and Decision Making](03-booleans-and-if-statements.html)

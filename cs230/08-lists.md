@@ -586,7 +586,7 @@ else:
     print(f"Average: {result:.2f}")
 ```
 
-The guard returns `None` for an empty list, like `split_bill` in week 5. The loop is the week 3 accumulator, now walking through a list.
+The guard returns `None` for an empty list ([Look Before You Leap](patterns.html#look-before-you-leap)), like `split_bill` in week 5. The loop is the week 3 accumulator, now walking through a list.
 
 ---
 
@@ -783,7 +783,7 @@ ValueError: max() iterable argument is empty
 TypeError: unsupported operand type(s) for +: 'int' and 'str'
 ```
 
-Each line crashes on its own. An empty list has no largest item, so check `len` first. The second list holds strings, which is what you get when you `append` an `input` without `int`.
+Each line crashes on its own. An empty list has no largest item, so check `len` first ([Look Before You Leap](patterns.html#look-before-you-leap)). The second list holds strings, which is what you get when you `append` an `input` without `int`.
 
 ---
 
@@ -970,3 +970,5 @@ ul { font-size: 0.85em; }
 ## Next Up: Changing Lists
 
 Slicing, `insert`, `remove`, `pop`, copying, sorting, and tables as lists of lists.
+
+[Changing Lists](09-changing-lists.html)

@@ -298,7 +298,7 @@ for i, score in enumerate([90, 85]):
     print(i, score)
 ```
 
-A **tuple** is written with parentheses. Indexing, `len`, slices, and `for` loops work the same as on a list, but `point[0] = 5` is a `TypeError`. `return a, b` hands back one tuple, and `low, high = ...` **unpacks** it into two names. `enumerate` hands the loop a tuple each time around, `(0, 90)` and then `(1, 85)`, and `i, score` unpacks it.
+Unlike a list, a **tuple** is **immutable**: once it exists, its items never change, so `point[0] = 5` is a `TypeError`. Indexing, `len`, slices, and `for` loops work the same as on a list. `return a, b` hands back one tuple, and `low, high = ...` **unpacks** it into two names. `enumerate` hands the loop a tuple each time around, `(0, 90)` and then `(1, 85)`, and `i, score` unpacks it.
 
 ## Common Mistakes
 

@@ -1257,3 +1257,5 @@ ul { font-size: 0.85em; }
 ## Next Up: Quiz 1
 
 45 minutes, covering weeks 1 through 4: variables and types, decisions, loops, and strings.
+
+Then [Lists](08-lists.html).

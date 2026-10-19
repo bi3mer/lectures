@@ -1361,3 +1361,5 @@ print(hello_world())
 ```
 Hello, World!
 ```
+
+[Functions](07-functions.html)

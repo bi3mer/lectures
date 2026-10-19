@@ -219,14 +219,14 @@ Python refuses to run the left version. Every block needs at least one indented 
 **One line does not belong.**
 
 ```python
-quantity = get_float("Quantity: ")
+quantity = mystery("Quantity: ")
 except ValueError:
 return None
-def get_float(prompt):
+def mystery(prompt):
 print(f"Total: ${price * quantity:.2f}")
 try:
 print("Enter a number.")
-price = get_float("Price: ")
+price = mystery("Price: ")
 while True:
 return float(input(prompt))
 ```
@@ -236,19 +236,19 @@ return float(input(prompt))
 ## Solution: Parsons Problem #1 (you)
 
 ```python
-def get_float(prompt):
+def mystery(prompt):
     while True:
         try:
             return float(input(prompt))
         except ValueError:
             print("Enter a number.")
 
-price = get_float("Price: ")
-quantity = get_float("Quantity: ")
+price = mystery("Price: ")
+quantity = mystery("Quantity: ")
 print(f"Total: ${price * quantity:.2f}")
 ```
 
-The extra line was `return None`. `get_float` has to ask again, and `return None` would end the function on the first bad entry, and `price * quantity` would raise a `TypeError`. `return` ends the function, and the loop with it, the first time `float` succeeds. A bad entry prints the message, and `while True` asks again.
+The extra line was `return None`. `mystery` has to ask again, and `return None` would end the function on the first bad entry, and `price * quantity` would raise a `TypeError`. `return` ends the function, and the loop with it, the first time `float` succeeds. A bad entry prints the message, and `while True` asks again.
 
 ---
 
@@ -732,7 +732,7 @@ ul { font-size: 0.85em; }
 
 ## Next Up: Folders and Dictionaries
 
-The `os` module, then dictionaries: Appendix K and Chapter 9.
+The `os` module, then dictionaries.
 
 The [Exceptions and Files Cheat Sheet](exceptions-and-files-cheatsheet.html) has today's tools in one place, with more examples and the textbook's `readline` loop.
 

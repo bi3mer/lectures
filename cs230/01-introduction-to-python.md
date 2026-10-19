@@ -139,3 +139,5 @@ One of the selling points of Python is that reads like english. So far, we haven
 ## Next Time
 
 We start writing programs: variables, printing, user input, and the types Python uses to hold data.
+
+[Variables and Statements in Python](02-variables-and-statements.html)

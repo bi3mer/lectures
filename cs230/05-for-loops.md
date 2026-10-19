@@ -446,7 +446,7 @@ Which do you prefer? Why?
 
 ## Next Up: Strings and Format Strings
 
-Strings and Format Strings
+[Strings and Format Strings](06-strings-and-format-strings.html)
 
 ---
 
