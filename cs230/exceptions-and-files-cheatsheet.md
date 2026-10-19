@@ -1,6 +1,6 @@
 # Exceptions and Files Cheatsheet
 
-An **exception** is an error that stops a program unless the program catches it. A **text file** holds lines of text that stay on disk after a program ends. This sheet collects exceptions and files from Chapter 7 and class in one place. Every example can be pasted into a file and run. The file examples expect the class data files ([names.txt](data/names.txt), [measures.txt](data/measures.txt), [scores.csv](data/scores.csv), [sales.csv](data/sales.csv), and [prices.csv](data/prices.csv)) in a folder named `data`, next to your program.
+An **exception** is an error that stops a program unless the program catches it. A **text file** holds lines of text that stay on disk after a program ends. This sheet collects exceptions and files from Chapter 7 and class in one place. Every example can be pasted into a file and run. The file examples expect the class data files ([names.txt](data/names.txt), [measures.txt](data/measures.txt), [scores.csv](data/scores.csv), [sales.csv](data/sales.csv), and [prices.csv](data/prices.csv)) saved next to your program.
 
 ## Exceptions
 
@@ -142,50 +142,10 @@ print(f"Total: ${total:.2f}")
 
 The second `input` sits after the `try` and the `except`, so it runs either way. Inside the `try`, a bad entry would skip it, and the loop would never end.
 
-## Files and Folders
-
-### Paths: `os.path.join`
-
-```python
-import os
-
-path = os.path.join("data", "scores.csv")
-print(path)   # data/scores.csv on a Mac, data\scores.csv on Windows
-```
-
-`import os` loads the `os` module, a set of tools for files and folders that comes with Python. `os.path.join` glues folder and file names together with the separator your computer uses. VS Code runs your program from the folder it has open, so open the folder that holds your program, or `open` will look for `data` in the wrong place.
-
-### Every File in a Folder: `os.listdir`
-
-```python
-import os
-
-for name in sorted(os.listdir("data")):
-    if not name.startswith("."):
-        count = 0
-        with open(os.path.join("data", name), "r") as f:
-            for line in f:
-                count += 1
-        print(f"{name}: {count} lines")
-```
-
-```
-measures.txt: 4 lines
-names.txt: 3 lines
-prices.csv: 6 lines
-sales.csv: 6 lines
-scores.csv: 6 lines
-```
-
-`os.listdir` gives back a list of the names in a folder, in no fixed order, so `sorted` puts them in alphabetical order. The names come without the folder: `open(name, "r")` would look next to the program and raise a `FileNotFoundError`, so `os.path.join` puts `data` back in front. The `startswith` check skips hidden files such as `.DS_Store`, which Finder makes on a Mac. The blank line at the end of `measures.txt` counts as a line.
-
 ## Reading a File
 
 ```python
-import os
-
-path = os.path.join("data", "names.txt")
-with open(path, "r") as f:
+with open("names.txt", "r") as f:
     for line in f:
         print(line.strip())
 ```
@@ -208,10 +168,7 @@ Alan
 ### Without `with`: `open` and `close`
 
 ```python
-import os
-
-path = os.path.join("data", "names.txt")
-f = open(path, "r")
+f = open("names.txt", "r")
 for line in f:
     print(line.rstrip("\n"))
 f.close()
@@ -222,9 +179,7 @@ This is the textbook's form (program 7-3). `open` hands back the file, and `clos
 ### Reading with `readline` and `while`
 
 ```python
-import os
-
-f = open(os.path.join("data", "names.txt"), "r")
+f = open("names.txt", "r")
 line = f.readline()
 while line != "":
     print(line.rstrip("\n"))
@@ -237,11 +192,9 @@ This is the textbook's program 7-2. `readline` gives back `""` only at the end o
 ### Skipping Blank Lines
 
 ```python
-import os
-
 total = 0
 count = 0
-with open(os.path.join("data", "measures.txt"), "r") as f:
+with open("measures.txt", "r") as f:
     for line in f:
         line = line.strip()
         if line != "":
@@ -256,9 +209,7 @@ print(f"Average: {total / count:.2f}")   # Average: 9.93
 ## Lines with Fields
 
 ```python
-import os
-
-with open(os.path.join("data", "scores.csv"), "r") as f:
+with open("scores.csv", "r") as f:
     f.readline()
     for line in f:
         fields = line.strip().split(",")
@@ -272,11 +223,9 @@ Each line of `scores.csv` holds two **fields**, separated by a comma: `"Ada,90\n
 ## Writing a File
 
 ```python
-import os
-
 name = "Ada"
 score = 90
-with open(os.path.join("data", "report.txt"), "w") as out:
+with open("report.txt", "w") as out:
     print(f"Report for {name}", file=out)
     print("name,score", file=out)
     print(name, score, sep=",", file=out)
@@ -288,7 +237,7 @@ name,score
 Ada,90
 ```
 
-`file=out` sends `print`'s line to the file instead of the screen, `\n` included. `sep=","` puts a comma between the values, which builds a CSV line. The block above is what `data/report.txt` holds after the program runs.
+`file=out` sends `print`'s line to the file instead of the screen, `\n` included. `sep=","` puts a comma between the values, which builds a CSV line. The block above is what `report.txt` holds after the program runs.
 
 | Mode  | Opens the file to... | If the file exists          | If it is missing    |
 | ----- | -------------------- | --------------------------- | ------------------- |
@@ -301,17 +250,15 @@ Never open your input file with `"w"`: it is erased before your program can read
 ### Read Everything, Then Write
 
 ```python
-import os
-
 values = []
-with open(os.path.join("data", "measures.txt"), "r") as f:
+with open("measures.txt", "r") as f:
     for line in f:
         if line.strip() != "":
             values.append(float(line))
 average = sum(values) / len(values)
 
 count = 0
-with open(os.path.join("data", "high.txt"), "w") as out:
+with open("high.txt", "w") as out:
     for value in values:
         if value > average:
             print(value, file=out)
@@ -326,10 +273,8 @@ The average needs every value, so the first block reads the whole file into a li
 ### Two Files at Once
 
 ```python
-import os
-
-with open(os.path.join("data", "prices.csv"), "r") as fin:
-    with open(os.path.join("data", "new_prices.csv"), "w") as fout:
+with open("prices.csv", "r") as fin:
+    with open("new_prices.csv", "w") as fout:
         print(fin.readline().strip(), file=fout)
         for line in fin:
             fields = line.strip().split(",")
@@ -345,10 +290,7 @@ Both files stay open at once, so the `with` blocks nest. The first `print` copie
 ### Adding to a File
 
 ```python
-import os
-
-path = os.path.join("data", "guests.txt")
-with open(path, "a") as out:
+with open("guests.txt", "a") as out:
     name = input("Name: ")
     while name != "":
         print(name, file=out)
@@ -365,15 +307,14 @@ Run this twice, and `guests.txt` holds the names from both runs. With `"w"`, eac
 | `input` inside the `try` of an input loop      | a bad entry skips it, and the loop never ends         | read the next entry after the `try` and `except` |
 | `int("3.5")`                                   | `ValueError`: `int` rejects a decimal point           | `float("3.5")`, or `int(float("3.5"))` for `3`   |
 | `for line in f:` after the `with` block ends   | `ValueError: I/O operation on closed file.`           | indent everything that uses `f` under `with`     |
-| `open(name, "r")` with a name from `listdir`   | `FileNotFoundError`: the name has no folder in front  | `open(os.path.join("data", name), "r")`          |
 | `print(line)`                                  | double spaced: the line's `\n` plus `print`'s own     | `print(line.strip())`                            |
 | `float(line)` on a blank line                  | `ValueError: could not convert string to float: '\n'` | skip lines where `line.strip() == ""`            |
 | `fields[1]` on a blank line                    | `IndexError`: `"".split(",")` is `['']`               | skip lines where `line.strip() == ""`            |
 | no `f.readline()` before the loop              | `ValueError` from `int("score")` on the header        | call `f.readline()` once before the loop         |
 | `fields[1] > best_score`                       | `TypeError`: every field is a string                  | `int(fields[1]) > best_score`                    |
 | `"Ada, Boston".split(",")`                     | the second field is `" Boston"`, with a space         | `strip()` each field                             |
-| `open(path, "w")` on your input file           | erases the file before it is read                     | write to a different file                        |
-| `print(..., file=out)` after `open(path, "r")` | `io.UnsupportedOperation: not writable`               | open with `"w"` or `"a"`                         |
+| `open(filename, "w")` on your input file       | erases the file before it is read                     | write to a different file                        |
+| `print(..., file=out)` after `open(name, "r")` | `io.UnsupportedOperation: not writable`               | open with `"w"` or `"a"`                         |
 | `f = open(...)` with no `f.close()`            | a written file can end up empty                       | use `with`, or call `f.close()`                  |
 
 ## Glossary
@@ -382,11 +323,8 @@ Run this twice, and `guests.txt` holds the names from both runs. With `"w"`, eac
 - **CSV**: Comma-separated values. A text file where commas separate the fields on each line, such as `scores.csv`.
 - **exception**: An error Python raises while a program runs. It stops the program unless an `except` catches it.
 - **field**: One value on a line of a file, such as `Ada` or `90` in `Ada,90`.
-- **folder**: A place on disk that holds files. `os.listdir` lists what is in one.
 - **header**: A first line that names the columns, such as `name,score`.
 - **mode**: The second argument to `open`: `"r"` to read, `"w"` to write, or `"a"` to append.
-- **module**: A set of tools loaded with `import`, such as `os`.
 - **newline**: The character `\n` at the end of every line in a file.
-- **path**: Where a file is, such as `data/scores.csv`. `os.path.join` builds one.
 - **raise**: What Python does when a line fails: it creates an exception, which stops the program unless something catches it.
 - **text file**: A file of lines of text, which VS Code can open and show.

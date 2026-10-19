@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 610 300" role="img" aria-label="Two runs of the same code. With 3.5, every line in try runs, then the path jumps over the except block to print(&quot;Done&quot;). With abc, float(text) raises a ValueError, the path jumps over print(value * 2) to except ValueError:, runs its print, then reaches print(&quot;Done&quot;).">
+  <!-- Colors: Sanzo Wada combination 151 (see themes/lecture.css) -->
+  <defs>
+    <marker id="head-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a8c1cc"/>
+    </marker>
+    <marker id="head-err" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f99d1b"/>
+    </marker>
+  </defs>
+
+  <rect x="1" y="1" width="608" height="298" rx="16" fill="#032837" stroke="#38728b" stroke-width="2"/>
+
+  <g font-family="SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace">
+    <!-- one label per run, above its track -->
+    <g font-size="20" text-anchor="middle">
+      <text x="44" y="36" fill="#a8c1cc">3.5</text>
+      <text x="92" y="36" fill="#f99d1b">abc</text>
+    </g>
+
+    <!-- the code, one line every 34 units; indented lines start 4 characters (48 units) in -->
+    <g font-size="20" fill="#f5ecc2">
+      <text x="132" y="70">text = input("Enter a number: ")</text>
+      <text x="132" y="104">try:</text>
+      <text x="180" y="138">value = float(text)</text>
+      <text x="180" y="172">print(value * 2)</text>
+      <text x="132" y="206">except ValueError:</text>
+      <text x="180" y="240">print(f"{text} is not a number.")</text>
+      <text x="132" y="274">print("Done")</text>
+    </g>
+    <text x="420" y="138" font-size="18" fill="#f99d1b">← ValueError</text>
+
+    <!-- 3.5: down through try, then around the except block -->
+    <g stroke="#a8c1cc" stroke-width="3" fill="none">
+      <line x1="44" y1="63" x2="44" y2="165"/>
+      <path d="M44,171 C14,190 14,248 42,264" marker-end="url(#head-ok)"/>
+    </g>
+    <g fill="#a8c1cc">
+      <circle cx="44" cy="63" r="6"/>
+      <circle cx="44" cy="97" r="6"/>
+      <circle cx="44" cy="131" r="6"/>
+      <circle cx="44" cy="165" r="6"/>
+      <circle cx="44" cy="267" r="6"/>
+    </g>
+
+    <!-- abc: down to float(text), around print(value * 2), then through except -->
+    <g stroke="#f99d1b" stroke-width="3" fill="none">
+      <line x1="92" y1="63" x2="92" y2="131"/>
+      <path d="M92,137 C120,150 120,184 94,196" marker-end="url(#head-err)"/>
+      <line x1="92" y1="199" x2="92" y2="267"/>
+    </g>
+    <g fill="#f99d1b">
+      <circle cx="92" cy="63" r="6"/>
+      <circle cx="92" cy="97" r="6"/>
+      <circle cx="92" cy="131" r="6"/>
+      <circle cx="92" cy="199" r="6"/>
+      <circle cx="92" cy="233" r="6"/>
+      <circle cx="92" cy="267" r="6"/>
+    </g>
+  </g>
+</svg>
