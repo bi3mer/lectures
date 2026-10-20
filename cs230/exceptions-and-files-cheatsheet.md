@@ -1,6 +1,6 @@
 # Exceptions and Files Cheatsheet
 
-An **exception** is an error that stops a program unless the program catches it. A **text file** holds lines of text that stay on disk after a program ends. This sheet collects exceptions and files from Chapter 7 and class in one place. Every example can be pasted into a file and run. The file examples expect the class data files ([names.txt](data/names.txt), [measures.txt](data/measures.txt), [scores.csv](data/scores.csv), [sales.csv](data/sales.csv), and [prices.csv](data/prices.csv)) saved next to your program.
+An **exception** is an error that stops a program unless the program catches it. A **text file** holds lines of text that stay on disk after a program ends. This sheet collects exceptions and files from Chapter 7 and class in one place. Every example can be pasted into a file and run. The file examples expect the `data` folder from [data.zip](data.zip) next to your program. The [Data Files](data/index.html) page shows what is in each file.
 
 ## Exceptions
 
@@ -12,7 +12,7 @@ An **exception** is an error that stops a program unless the program catches it.
 | `ZeroDivisionError` | dividing by zero                             | `60 / 0`                                     |
 | `NameError`         | a name Python does not know                  | a typo, like `flaot("3.5")`                  |
 | `AttributeError`    | a method the value does not have             | `names.append("Ada")` when `names` is `None` |
-| `FileNotFoundError` | opening a missing file to read it            | `open("nmaes.txt", "r")`                     |
+| `FileNotFoundError` | opening a missing file to read it            | `open("data/nmaes.txt", "r")`                |
 
 ## `try` and `except`
 
@@ -142,10 +142,24 @@ print(f"Total: ${total:.2f}")
 
 The second `input` sits after the `try` and the `except`, so it runs either way. Inside the `try`, a bad entry would skip it, and the loop would never end.
 
+## Paths on a Mac and on Windows
+
+A **path** names a file by the folders that lead to it: `data/names.txt` is `names.txt` inside the folder `data`. The examples on this sheet write paths the Mac way.
+
+| Write               | Mac           | Windows       | Why                             |
+| ------------------- | ------------- | ------------- | ------------------------------- |
+| `"data/names.txt"`  | works         | works         | Windows turns each `/` into `\` |
+| `"data\\names.txt"` | does not work | works         | `\\` in a string is one `\`     |
+| `"data\names.txt"`  | does not work | does not work | `\n` in a string is a newline   |
+
+Windows uses `\` because of MS-DOS, the system it grew out of. MS-DOS 1.0 had no folders, and its commands already used `/` to start an option. Command Prompt still does: `dir /w` lists a folder in wide format. When MS-DOS 2.0 added folders in 1983, `/` was taken, so the **separator** between folder names became `\`. MS-DOS also accepted `/` in paths, and Windows still does.
+
+Two problems come from this history. In a Python string, `\` starts an escape sequence ([Special Characters](string-cheatsheet.html#special-characters)), so `"data\names.txt"` holds a newline, and `"C:\Users\ada"` is a `SyntaxError`, because `\U` starts a different escape. And Command Prompt reads `/` as the start of an option, so a path typed there with `/` can fail even though Python accepts it. The [`os` module cheat sheet](os-module-cheatsheet.html#paths) shows `os.path.join`, which builds a path with the computer's own separator.
+
 ## Reading a File
 
 ```python
-with open("names.txt", "r") as f:
+with open("data/names.txt", "r") as f:
     for line in f:
         print(line.strip())
 ```
@@ -168,7 +182,7 @@ Alan
 ### Without `with`: `open` and `close`
 
 ```python
-f = open("names.txt", "r")
+f = open("data/names.txt", "r")
 for line in f:
     print(line.rstrip("\n"))
 f.close()
@@ -179,7 +193,7 @@ This is the textbook's form (program 7-3). `open` hands back the file, and `clos
 ### Reading with `readline` and `while`
 
 ```python
-f = open("names.txt", "r")
+f = open("data/names.txt", "r")
 line = f.readline()
 while line != "":
     print(line.rstrip("\n"))
@@ -194,7 +208,7 @@ This is the textbook's program 7-2. `readline` gives back `""` only at the end o
 ```python
 total = 0
 count = 0
-with open("measures.txt", "r") as f:
+with open("data/measures.txt", "r") as f:
     for line in f:
         line = line.strip()
         if line != "":
@@ -209,7 +223,7 @@ print(f"Average: {total / count:.2f}")   # Average: 9.93
 ## Lines with Fields
 
 ```python
-with open("scores.csv", "r") as f:
+with open("data/scores.csv", "r") as f:
     f.readline()
     for line in f:
         fields = line.strip().split(",")
@@ -251,7 +265,7 @@ Never open your input file with `"w"`: it is erased before your program can read
 
 ```python
 values = []
-with open("measures.txt", "r") as f:
+with open("data/measures.txt", "r") as f:
     for line in f:
         if line.strip() != "":
             values.append(float(line))
@@ -273,7 +287,7 @@ The average needs every value, so the first block reads the whole file into a li
 ### Two Files at Once
 
 ```python
-with open("prices.csv", "r") as fin:
+with open("data/prices.csv", "r") as fin:
     with open("new_prices.csv", "w") as fout:
         print(fin.readline().strip(), file=fout)
         for line in fin:
@@ -326,5 +340,7 @@ Run this twice, and `guests.txt` holds the names from both runs. With `"w"`, eac
 - **header**: A first line that names the columns, such as `name,score`.
 - **mode**: The second argument to `open`: `"r"` to read, `"w"` to write, or `"a"` to append.
 - **newline**: The character `\n` at the end of every line in a file.
+- **path**: A string that names a file by the folders that lead to it, such as `data/names.txt`.
 - **raise**: What Python does when a line fails: it creates an exception, which stops the program unless something catches it.
+- **separator**: The character between the pieces of a path: `/` on a Mac, `\` on Windows.
 - **text file**: A file of lines of text, which VS Code can open and show.

@@ -141,3 +141,36 @@ main.doc {
 .doc tbody tr:hover code {
   background-color: rgba(3, 40, 55, 0.15);
 }
+
+/* The data page (cs230/data/index.md). A large link at the top downloads every file as one
+   zip. Below it, each file is a box that opens to show the file, with a download arrow beside
+   its name. The file sits flush in the box, which is already dark. */
+.doc .download-all {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.doc details {
+  background-color: #032837;
+  margin: 8px 0;
+  padding: 8px 16px;
+}
+
+.doc summary {
+  cursor: pointer;
+}
+
+.doc details pre {
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.doc .download svg {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.25em;
+}
+
+.doc summary .download {
+  margin-left: 8px;
+}

@@ -8,7 +8,10 @@
 # Either way, foo.md becomes foo.html next to where foo.md was, so links like
 # `css/lecture-css.html` in the index pages work. A deck's PDF is foo.pdf.
 #
-# Needs pandoc, Node, and Chrome or Chromium, which Marp prints the PDFs with.
+# A course's data folder also becomes a zip next to it (cs230/data/ becomes
+# cs230/data.zip), so students can download every data file at once.
+#
+# Needs pandoc, Node, zip, and Chrome or Chromium, which Marp prints the PDFs with.
 # If Marp can't find the browser, point CHROME_PATH at it. Run it from anywhere:
 #   ./build.sh                              rebuild the whole site from scratch
 #   ./build.sh cs230/string-cheatsheet.md   rebuild only the named files
@@ -70,7 +73,7 @@ tracked=(
   cs230/index.html
 )
 
-for tool in pandoc npx rsync; do
+for tool in pandoc npx rsync zip; do
   if ! command -v "$tool" >/dev/null 2>&1; then
     echo "error: $tool is not installed or not on PATH" >&2
     exit 1
@@ -100,6 +103,17 @@ add_analytics() {
 # rsync just copied fresh, untagged versions of these pages.
 for page in "${tracked[@]}"; do
   add_analytics "$out/$page"
+done
+
+# Zip each course's data folder. The files sit at the top of the zip, not in a
+# data/ folder inside it: Finder unzips data.zip into a folder named data, and
+# Windows' Extract All suggests one, so either way students get one data folder.
+# A data/ folder inside would give them data/data/ on Windows. The data page's
+# Markdown stays out.
+for dir in */data; do
+  [[ -d "$dir" ]] || continue
+  rm -f "$out/$dir.zip"
+  (cd "$dir" && zip -q -r -X "$repo/$out/$dir.zip" . -x '*.md' '*.DS_Store')
 done
 
 is_skipped() {

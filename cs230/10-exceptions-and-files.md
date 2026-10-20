@@ -256,9 +256,38 @@ The extra line was `return None`. `mystery` has to ask again, and `return None` 
 
 ---
 
-## Files We'll Use Today
+## Files for Today
 
-Download today's files and save them next to your program: [names.txt](data/names.txt), [measures.txt](data/measures.txt), [scores.csv](data/scores.csv), [sales.csv](data/sales.csv), and [prices.csv](data/prices.csv).
+<div class="cols">
+<div>
+
+Download [data.zip](data.zip) and unzip it next to your program. It makes the `data` folder on the right.
+
+```python
+"data/names.txt"     # Mac
+"data\\names.txt"    # Windows
+```
+
+The slides use the Mac path, which Windows also accepts; the [cheat sheet](exceptions-and-files-cheatsheet.html#paths-on-a-mac-and-on-windows) explains why Windows has two. The next lecture has Python pick the separator.
+
+</div>
+<div>
+
+```
+week7/          ← open in VS Code
+├── program.py
+└── data/
+    ├── measures.txt
+    ├── months/
+    ├── names.txt
+    ├── prices.csv
+    ├── products.csv
+    ├── sales.csv
+    └── scores.csv
+```
+
+</div>
+</div>
 
 ---
 
@@ -295,7 +324,7 @@ Without `with`, you have to write a program like above. `close` is like clicking
 <div>
 
 ```python
-with open("names.txt", "r") as f:
+with open("data/names.txt", "r") as f:
     for line in f:
         print(line)
 ```
@@ -333,7 +362,7 @@ Alan
 ## Removing the `\n`
 
 ```python
-with open("names.txt", "r") as f:
+with open("data/names.txt", "r") as f:
     for line in f:
         print(line.strip())
 ```
@@ -351,7 +380,7 @@ Alan
 ## `FileNotFoundError`
 
 ```python
-filename = "na.txt"
+filename = "data/na.txt"
 try:
     with open(filename, "r") as f:
         for line in f:
@@ -361,7 +390,7 @@ except FileNotFoundError:
 ```
 
 ```
-Could not find na.txt
+Could not find data/na.txt
 ```
 
 `open` raises a `FileNotFoundError` when no file has that name, such as `na.txt` typed for `names.txt`.
@@ -372,7 +401,7 @@ Could not find na.txt
 
 ```python
 total = 0
-with open("measures.txt", "r") as f:
+with open("data/measures.txt", "r") as f:
     for line in f:
         total += float(line)
 
@@ -418,7 +447,7 @@ Each line of `scores.csv` holds two **fields**, separated by a comma. Strip, spl
 ## Problem: What Is the Output?
 
 ```python
-with open("scores.csv", "r") as f:
+with open("data/scores.csv", "r") as f:
     for line in f:
         fields = line.strip().split(",")
         print(fields[0], int(fields[1]))
@@ -435,7 +464,7 @@ ValueError: invalid literal for int() with base 10: 'score'
 The way to fix this is to read the header first, and then process the rest of the file:
 
 ```python
-with open("scores.csv", "r") as f:
+with open("data/scores.csv", "r") as f:
     f.readline()
     for line in f:
         fields = line.strip().split(",")
@@ -484,7 +513,7 @@ Total: $151.90
 
 ```python
 total = 0
-with open("sales.csv", "r") as f:
+with open("data/sales.csv", "r") as f:
     f.readline()
     for line in f:
         fields = line.strip().split(",")
@@ -512,7 +541,7 @@ score = int(fields[1])
 best_name = ""
 for line in f:
 if score > best_score:
-with open("scores.csv", "r") as f:
+with open("data/scores.csv", "r") as f:
 best_name = fields[0]
 fields = line.strip().split(",")
 best_score = -1
@@ -529,7 +558,7 @@ pre { font-size: 0.75em; }
 ```python
 best_name = ""
 best_score = -1
-with open("scores.csv", "r") as f:
+with open("data/scores.csv", "r") as f:
     f.readline()
     for line in f:
         fields = line.strip().split(",")
@@ -641,7 +670,7 @@ pre { font-size: 0.7em; }
 
 ```python
 skipped = 0
-with open("prices.csv", "r") as f_in:
+with open("data/prices.csv", "r") as f_in:
     with open("new_prices.csv", "w") as f_out:
         header = f_in.readline()
         f_out.write(header)
@@ -681,14 +710,14 @@ with open([FILENAME], "a") as [NAME]:
 f_out.write(f"{name}\n")
 names = []
 else:
-with open("names.txt", "w") as f_out:
+with open("data/names.txt", "w") as f_out:
 name = input("Name: ")
 for line in f_in:
 print(f"{name} is already on the list.")
-with open("names.txt", "a") as f_out:
+with open("data/names.txt", "a") as f_out:
 names.append(line.strip())
 if name in names:
-with open("names.txt", "r") as f_in:
+with open("data/names.txt", "r") as f_in:
 ```
 
 ---
@@ -697,7 +726,7 @@ with open("names.txt", "r") as f_in:
 
 ```python
 names = []
-with open("names.txt", "r") as f_in:
+with open("data/names.txt", "r") as f_in:
     for line in f_in:
         names.append(line.strip())
 
@@ -705,11 +734,11 @@ name = input("Name: ")
 if name in names:
     print(f"{name} is already on the list.")
 else:
-    with open("names.txt", "a") as f_out:
+    with open("data/names.txt", "a") as f_out:
         f_out.write(f"{name}\n")
 ```
 
-The extra line was `with open("names.txt", "w") as f_out:`. `"w"` would erase the list and leave only the new name.
+The extra line was `with open("data/names.txt", "w") as f_out:`. `"w"` would erase the list and leave only the new name.
 
 ---
 
@@ -730,16 +759,13 @@ ul { font-size: 0.85em; }
 
 ---
 
-## Next Up: Folders and Dictionaries
+## Next Up: The `os` Module
 
-The `os` module, then dictionaries.
+[The `os` Module](11-os-module.html)
 
 The [Exceptions and Files Cheat Sheet](exceptions-and-files-cheatsheet.html) has today's tools in one place, with more examples and the textbook's `readline` loop.
 
 <!--
 If time: the textbook's while loop over readline() (program 7-2), which stops when readline()
 returns "", and a demo of "a" (append): run the cheat sheet's guests.txt program twice.
-Next week: os.path.join() and os.listdir() (both moved out of this deck), os.getcwd() to explain
-FileNotFoundError from the wrong folder, os.path.isfile(), os.path.exists(), and programs K-1
-and K-2.
 -->
