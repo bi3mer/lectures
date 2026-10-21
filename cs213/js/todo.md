@@ -45,6 +45,17 @@ Slide numbers refer to `lecture-js.md` as of 2026-10-04 and will shift as slides
     - "Functions Are Values", "`forEach`", and "Example: `for...of` vs. `forEach`" became one "`forEach`" slide. "From `function` to `=>`" now says a variable can hold a function.
     - The `forEach` and Arrow Functions sections became one.
     - "`sort` Compares Strings" and "Sorting Objects" became "`sort`".
+  - On 2026-10-20, the deck was split into two halves: every concept slide first (slides 2 to 17), then the "Building the Trading Desk" divider (slide 18), then the exercises. The deck is 42 slides.
+    - "`for...in` on an Array" moved out of the appendix to just after "Index or `for...of`", so the deck now ends at "Questions?".
+    - The concept half has no section dividers, so the only break is between the concepts and the exercises. Teaching every concept first matters more than the 40-slide target.
+    - "Prices Stuck in Keys" became two slides. "What We Did" shows last lecture's `bids`, written as in the loops starter, and its three problems. "What We Should Have Done" is a teaser with no code that links ahead to "The Order Book as an Array", the last concept slide. That slide shows `bids` as an array of objects, with one fix for each problem.
+    - Arrays, indexes, and `length` now take four slides. "Arrays" is generic: `colors`, and a `mixed` array of three types. "Indexes" holds the index table. "`length`" notes that strings have `length` too. "Reading Items" reads in-range indexes, `prices[prices.length]`, and `prices[-1]`. `prices` and its "oldest first" note sit at the top of "Reading Items", the first slide that reads it.
+    - "From `function` to `=>`" ran past the slide edge, so its code for storing `fee` in a variable moved to a new "A Function in a Variable" slide just before it.
+    - "Braces and When to Use `=>`" builds a `tape` string, since summing `priceSum` gave away Average Price. It no longer names exercise functions, or `sort`, which comes after it.
+    - "Let's Build a Trading Desk" became "Setting Up the Starter", since it follows the "Building the Trading Desk" divider.
+    - The Empty Book solution no longer names Place a Bid, which students write later.
+    - The Summary gained bullets for `length` and out-of-range indexes, and for arrow functions. Its first two bullets were then tightened so it fits.
+    - The exercises kept their order, so the starter's sections still line up with the slides. Watchlist, Today's Range, Average Price, and Place a Bid link back to the concept slide they use.
   - Calls made on 2026-10-14, all kept as drafted:
     - Prices are numbers, best first. This is the payoff for arrays of objects, since it removes the quoted keys and `Number()`.
     - Market Sell leaves `prices` alone, so the range, upticks, and average stay consistent with what the page drew at load.
