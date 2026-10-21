@@ -16,10 +16,12 @@ let asks = [
 ];
 
 let positions = [
-  { ticker: "TEST", shares: 10, open: 100, price: 100.5 },
-  { ticker: "BLIP", shares: 25, open: 55, price: 54.1 },
-  { ticker: "WIDG", shares: 40, open: 12.5, price: 12.75 },
+  { ticker: "TEST", open: 100, price: 100.5 },
+  { ticker: "BLIP", open: 55, price: 54.1 },
+  { ticker: "WIDG", open: 12.5, price: 12.75 },
 ];
+
+let watchlist = ["TEST", "BLIP"]; // @1
 
 document.getElementById("last").textContent =
   `$${prices[prices.length - 1].toFixed(2)} (${prices.length} trades)`;
@@ -77,21 +79,19 @@ function placeAsk() {
 drawBook();
 
 // --------------------------------- Watchlist ---------------------------------
-let watchlist = ["TEST", "BLIP"];
-
-function showWatchlist() {
+function showWatchList() {
   document.getElementById("watchlist").textContent = watchlist.join(", ");
 }
 
 function addTicker() {
-  let ticker = document.getElementById("new-ticker").value;
+  let ticker = document.getElementById("new-ticker").value.toUpperCase();
   if (ticker !== "" && !watchlist.includes(ticker)) {
     watchlist.push(ticker);
   }
-  showWatchlist();
+  showWatchList();
 }
 
-showWatchlist();
+showWatchList();
 
 // ------------------------------- Today's Range -------------------------------
 let low = prices[0];
@@ -109,19 +109,23 @@ for (let price of prices) {
 let range = `$${low.toFixed(2)} to $${high.toFixed(2)}`;
 document.getElementById("range").textContent = range;
 
-// ---------------------------------- Upticks ----------------------------------
-let upticks = 0;
-let downticks = 0;
+// --------------------------------- Parsons 1 ---------------------------------
+function parsons1() {
+  let upticks = 0;
+  let downticks = 0;
 
-for (let i = 1; i < prices.length; i++) {
-  if (prices[i] > prices[i - 1]) {
-    upticks++;
-  } else if (prices[i] < prices[i - 1]) {
-    downticks++;
+  for (let i = 1; i < prices.length; i++) {
+    if (prices[i] > prices[i - 1]) {
+      upticks++;
+    } else if (prices[i] < prices[i - 1]) {
+      downticks++;
+    }
   }
+
+  document.getElementById("ticks").textContent = `${upticks} up, ${downticks} down`;
 }
 
-document.getElementById("ticks").textContent = `${upticks} up, ${downticks} down`;
+parsons1();
 
 // -------------------------------- Market Sell --------------------------------
 function sellAtMarket() {
@@ -149,22 +153,26 @@ function sellAtMarket() {
 // ------------------------------- Average Price -------------------------------
 let priceSum = 0;
 
-prices.forEach(function (price) {
+prices.forEach((price) => {
   priceSum += price;
 });
 
 let average = (priceSum / prices.length).toFixed(2);
 document.getElementById("average").textContent = `$${average}`;
 
-// ---------------------------------- Movers -----------------------------------
-let change = (open, now) => ((now - open) / open) * 100;
+// --------------------------------- Parsons 2 ---------------------------------
+function parsons2() {
+  let change = (open, now) => ((now - open) / open) * 100;
 
-positions.forEach((position) => {
-  let percent = change(position.open, position.price);
-  let trend = percent >= 0 ? "up" : "down";
-  let line = `<li class="${trend}">${position.ticker}: ${percent.toFixed(2)}%</li>`;
-  document.getElementById("movers").innerHTML += line;
-});
+  positions.forEach((position) => {
+    let percent = change(position.open, position.price);
+    let trend = percent >= 0 ? "up" : "down";
+    let line = `<li class="${trend}">${position.ticker}: ${percent.toFixed(2)}%</li>`;
+    document.getElementById("movers").innerHTML += line;
+  });
+}
+
+parsons2();
 
 // -------------------------------- Place a Bid --------------------------------
 function placeBid() {

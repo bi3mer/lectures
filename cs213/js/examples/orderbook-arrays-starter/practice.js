@@ -12,10 +12,12 @@ let asks = [
 ];
 
 let positions = [
-  { ticker: "TEST", shares: 10, open: 100, price: 100.5 },
-  { ticker: "BLIP", shares: 25, open: 55, price: 54.1 },
-  { ticker: "WIDG", shares: 40, open: 12.5, price: 12.75 },
+  { ticker: "TEST", open: 100, price: 100.5 },
+  { ticker: "BLIP", open: 55, price: 54.1 },
+  { ticker: "WIDG", open: 12.5, price: 12.75 },
 ];
+
+let watchlist = []; // @1
 
 document.getElementById("last").textContent =
   `$${prices[prices.length - 1].toFixed(2)} (${prices.length} trades)`;
@@ -40,13 +42,19 @@ function drawBook() {
   }
 
   // ------------------------------ Draw the Asks ------------------------------
+  // Page line for Draw the Asks. Uncomment it where your code needs it.
 
-  // Write your code above this note. Then uncomment the page line below.
-  // document.getElementById("spread").textContent = `Spread: $${spread.toFixed(2)}`;
+  // clear the asks, then draw them from the last index down to 0
+  // the spread is the best ask's price minus the best bid's
+  // document.getElementById("spread").textContent = `Spread: $${?}`;
 
   // ------------------------------- Empty Book --------------------------------
-  // Page line for Empty Book. Uncomment it where your code needs it.
-  // document.getElementById("sell").disabled = true;
+  // Page lines for Empty Book. Uncomment them where your code needs them.
+
+  // show Spread: none when either side is empty
+  // turn off the Sell button when there are no bids
+  // document.getElementById("spread").textContent = "Spread: none";
+  // document.getElementById("sell").disabled = ?;
 }
 
 function placeAsk() {
@@ -62,25 +70,51 @@ drawBook();
 
 // --------------------------------- Watchlist ---------------------------------
 // Page lines for Watchlist. Uncomment them where your code needs them.
-// let ticker = document.getElementById("new-ticker").value;
-// document.getElementById("watchlist").textContent = watchlist.join(", ");
+
+function showWatchList() {
+  // make each value from watchlist comma separated
+  // document.getElementById("watchlist").textContent = ?;
+}
+
+function addTicker() {
+  // let ticker = document.getElementById("new-ticker").value;
+}
+
+showWatchList();
 
 // ------------------------------- Today's Range -------------------------------
+// Page line for Today's Range. Uncomment it where your code needs it.
 
-// Write your code above this note. Then uncomment the page line below.
-// document.getElementById("range").textContent = range;
+// find the lowest and highest price in prices
+// document.getElementById("range").textContent = ?;
 
-// ---------------------------------- Upticks ----------------------------------
+// --------------------------------- Parsons 1 ---------------------------------
 
 // -------------------------------- Market Sell --------------------------------
 // Page line for Market Sell. Uncomment it where your code needs it.
-// document.getElementById("fills").textContent = fills.join(", ");
+
+function sellAtMarket() {
+  // sell 500 shares, best bid first, and keep each fill in fills
+  let toSell = 500;
+  let fills = [];
+
+  // document.getElementById("fills").textContent = ?;
+  drawBook();
+}
 
 // ------------------------------- Average Price -------------------------------
+// Page line for Average Price. Uncomment it where your code needs it.
 
-// Write your code above this note. Then uncomment the page line below.
-// document.getElementById("average").textContent = `$${average}`;
+// add up prices with forEach, then divide by the number of trades
+// document.getElementById("average").textContent = `$${?}`;
 
-// ---------------------------------- Movers -----------------------------------
+// --------------------------------- Parsons 2 ---------------------------------
 
 // -------------------------------- Place a Bid --------------------------------
+// Page lines for Place a Bid. Uncomment them where your code needs them.
+
+function placeBid() {
+  // add the bid, keep the highest price first, then redraw the book
+  // let price = document.getElementById("order-price").value;
+  // let shares = document.getElementById("order-shares").value;
+}
