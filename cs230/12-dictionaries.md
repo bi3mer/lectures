@@ -14,18 +14,17 @@ Colan Biemer
 
 ---
 
-## Two Lists That Go Together
+## Sample: Revenue Per Day
 
 ```python
 days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
 sales = [50, 75, 60, 90, 40]
 
 for i in range(len(days)):
-    if days[i] == "Wed":
-        print(sales[i])   # 60
+    print(f"{days[i]}: {sales[i]}")
 ```
 
-The two lists must stay in step, and every lookup takes a loop.
+This works, but `days[i]` and `sales[i]` match only by position. Delete `"Wed"` from `days` alone, and the loop prints `Thu: 60` and `Fri: 90` with no error.
 
 ---
 
@@ -46,173 +45,148 @@ A **dictionary** stores **key**: **value** pairs. `sales["Wed"]` looks up a valu
 
 ---
 
-## Problem: What Is the Output?
+## Adding and Replacing
 
 ```python
-d = {"a": 1}
-d["a"] = 5
-d["b"] = 2
-print(d)
-print(len(d))
+sales = {"Mon": 50, "Tue": 75}
+
+sales["Wed"] = 60   # new key: adds a pair
+sales["Mon"] = 55   # existing key: replaces its value
+
+print(sales)   # {'Mon': 55, 'Tue': 75, 'Wed': 60}
 ```
 
----
-
-## Solution: What Is the Output?
-
-```
-{'a': 5, 'b': 2}
-2
-```
-
-Assigning to a key that exists replaces its value. A new key adds a pair.
+Assigning to a new key adds a pair. Assigning to a key that exists replaces its value, and the key keeps its place.
 
 ---
 
 ## Starting from `{}`
 
-<div class="cols">
-<div>
-
 ```python
-contacts = {}
+player = {}
 
-entry = input("> ")
-while entry != "":
-    email, phone = entry.split()
-    contacts[email] = phone
-    entry = input("> ")
+player["name"] = "Ada"
+player["pos"] = [3, 4]
+player["health"] = 12
 
-print(contacts)
+print(player)
 ```
 
-</div>
-<div>
-
 ```
-> ada@mail.com 555-1223
-> alan@mail.com 555-9887
->
-{'ada@mail.com': '555-1223', 'alan@mail.com': '555-9887'}
+{'name': 'Ada', 'pos': [3, 4], 'health': 12}
 ```
 
-</div>
-</div>
-
-`{}` is an empty dictionary, and each `contacts[email] = phone` adds a pair. `email, phone = ...` is [Unpacking](07-functions.html#81). This is textbook program 9-1.
+`{}` is an empty dictionary, and each assignment adds a pair. A value can be any type, even a list like `[3, 4]`.
 
 ---
 
 ## `KeyError`
 
 ```python
-sales = {"Mon": 50, "Tue": 75, "Wed": 60, "Thu": 90, "Fri": 40}
+player = {"name": "ada", "pos": [3, 4], "health": 12}
 
-print(sales["Sat"])
+print(player["mana"])
 ```
 
 ```
-KeyError: 'Sat'
+KeyError: 'mana'
 ```
-
-A missing key raises a `KeyError`, the dictionary's version of [Index Out of Range](08-lists.html#7).
 
 ---
 
 ## Checking with `in`
 
+```python
+player = {"name": "ada", "pos": [3, 4], "health": 12}
+
+if "mana" in player:
+    print(player["mana"])
+else:
+    print("No mana.")
+```
+
+```
+No mana.
+```
+
+`in` and `not in` work as they do on [lists](08-lists.html#41). Check with `in` before a key lookup that might miss.
+
+---
+
+## `in` Checks Only the Keys
+
+```python
+player = {"name": "ada", "pos": [3, 4], "health": 12}
+
+print("health" in player)   # True
+print(12 in player)         # False
+```
+
+`12` is a value in `player`, but `in` checks only the keys, so `12 in player` is `False`.
+
+---
+
+## Catching a `KeyError`
+
+<style scoped>
+pre { font-size: 0.65em; }
+</style>
+
 <div class="cols">
 <div>
 
 ```python
-sales = {"Mon": 50, "Tue": 75, "Wed": 60}
+player = {"name": "ada", "pos": [3, 4], "health": 12}
 
-day = input("Day: ")
-if day in sales:
-    print(sales[day])
-else:
-    print("No sales recorded.")
+try:
+    print(player["mana"])
+except KeyError as error:
+    print(f"Missing key: {error}")
+```
+
+</div>
+<div>
+
+```python
+import traceback
+
+player = {"name": "ada", "pos": [3, 4], "health": 12}
+
+try:
+    print(player["mana"])
+except KeyError:
+    traceback.print_exc()
+```
+
+</div>
+</div>
+
+<div class="cols">
+<div>
+
+```
+Missing key: 'mana'
 ```
 
 </div>
 <div>
 
 ```
-Day: Tue
-75
-```
-
-```
-Day: Sat
-No sales recorded.
+Traceback (most recent call last):
+  File "/Users/you/game.py", line 6, in <module>
+    print(player["mana"])
+          ~~~~~~^^^^^^^^
+KeyError: 'mana'
 ```
 
 </div>
 </div>
 
-`in` and `not in` work as they do on [lists](08-lists.html#41). Textbook program 9-3 guards its lookup the same way.
+`as error` stores the exception, as [`as f`](10-exceptions-and-files.html#17) stored the file. `traceback.print_exc()` prints the full crash report, and the program keeps running.
 
 ---
 
-## Problem: What Is the Output?
-
-```python
-prices = {"coffee": 3.0, "tea": 2.5}
-
-print("tea" in prices)
-print(2.5 in prices)
-```
-
----
-
-## Solution: What Is the Output?
-
-```
-True
-False
-```
-
-`in` checks only the keys.
-
----
-
-## Problem: Find the Bug
-
-```python
-menu = {"coffee": 3.00, "tea": 2.50, "bagel": 2.75}
-
-item = input("Item: ")
-if item in menu:
-    print(f"${menu[item]:.2f}")
-else:
-    print("Not on the menu.")
-```
-
-```
-Item: Coffee
-Not on the menu.
-```
-
-The user typed `Coffee`, then a space.
-
----
-
-## Solution: Find the Bug
-
-```python
-item = input("Item: ").strip().lower()
-```
-
-```
-Item: Coffee
-$3.00
-```
-
-`"Coffee "` and `"coffee"` are different keys. Clean the input with `.strip().lower()` before the lookup.
-
----
-
-## Lookup Tables
+## Problem: Day Names (you)
 
 <style scoped>
 pre { font-size: 0.7em; }
@@ -246,6 +220,19 @@ match day:
 </div>
 <div>
 
+[This `match`](03-booleans-and-if-statements.html#28) prints the name of a day. Rewrite it with a dictionary.
+
+</div>
+</div>
+
+---
+
+## Solution: Day Names (you)
+
+<style scoped>
+pre { font-size: 0.7em; }
+</style>
+
 ```python
 days = {
     1: "Monday",
@@ -264,60 +251,7 @@ else:
     print("Not a valid day")
 ```
 
-</div>
-</div>
-
-Left: [Day of Week](03-booleans-and-if-statements.html#28). When every case only picks a value, one dictionary replaces the `match`. Keys can be numbers.
-
----
-
-## Problem: State Names (us)
-
-```python
-# Ask for two-letter state abbreviations until a blank line, and print
-# each state's name. Print "Unknown state." for any other input.
-```
-
-```
-State: PA
-Pennsylvania
-State: ny
-New York
-State: XX
-Unknown state.
-State:
-```
-
-- What are the keys, and what are the values?
-- How should `ny` work?
-
----
-
-## Solution: State Names (us)
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```python
-states = {
-    "DE": "Delaware",
-    "MD": "Maryland",
-    "NJ": "New Jersey",
-    "NY": "New York",
-    "PA": "Pennsylvania",
-}
-
-abbr = input("State: ").strip().upper()
-while abbr != "":
-    if abbr in states:
-        print(states[abbr])
-    else:
-        print("Unknown state.")
-    abbr = input("State: ").strip().upper()
-```
-
-`upper` turns `ny` into the key `NY`. A blank line strips to `""`, which ends the loop.
+A **lookup table** is a dictionary that turns one value into another, here a day number into its name.
 
 ---
 
@@ -328,13 +262,13 @@ while abbr != "":
 ```python
 total += menu["item"]
 print(f"Total: ${total:.2f}")
-item = input("Item: ")
+item = input("Item: ").strip().lower()
 if item in menu:
 menu = {"coffee": 3.00, "tea": 2.50, "bagel": 2.75}
 while item != "":
 total += menu[item]
 total = 0
-item = input("Item: ")
+item = input("Item: ").strip().lower()
 ```
 
 ---
@@ -345,11 +279,11 @@ item = input("Item: ")
 menu = {"coffee": 3.00, "tea": 2.50, "bagel": 2.75}
 
 total = 0
-item = input("Item: ")
+item = input("Item: ").strip().lower()
 while item != "":
     if item in menu:
         total += menu[item]
-    item = input("Item: ")
+    item = input("Item: ").strip().lower()
 
 print(f"Total: ${total:.2f}")
 ```
@@ -392,12 +326,11 @@ A `for` loop over a dictionary gives its keys, in the order they were added. `fo
 
 ---
 
-## `values()` and `items()`
-
-<div class="cols">
-<div>
+## `values()`
 
 ```python
+sales = {"Mon": 50, "Tue": 75, "Wed": 60, "Thu": 90, "Fri": 40}
+
 total = 0
 for amount in sales.values():
     total += amount
@@ -405,10 +338,15 @@ for amount in sales.values():
 print(total)   # 315
 ```
 
-</div>
-<div>
+`values()` gives the loop each value, without its key.
+
+---
+
+## `items()`
 
 ```python
+sales = {"Mon": 50, "Tue": 75, "Wed": 60, "Thu": 90, "Fri": 40}
+
 for day, amount in sales.items():
     print(f"{day}: {amount}")
 ```
@@ -421,10 +359,7 @@ Thu: 90
 Fri: 40
 ```
 
-</div>
-</div>
-
-`items()` hands the loop a `(key, value)` tuple, which unpacks as [`enumerate`](09-changing-lists.html#39)'s did. Textbook program 9-4 loops this way.
+`items()` hands the loop a `(key, value)` tuple, which unpacks the values (similar to [`enumerate`](09-changing-lists.html#39)).
 
 ---
 
@@ -463,8 +398,6 @@ sales = {"Mon": 50, "Tue": 75, "Wed": 60, "Thu": 90, "Fri": 40}
 Best day: Thu (90)
 ```
 
-[Longest Word](08-lists.html#31) kept the longest word as it went.
-
 - What do we need to remember as we go?
 - What should it start as?
 
@@ -485,7 +418,7 @@ for day, amount in sales.items():
 print(f"Best day: {best_day} ({best_amount})")
 ```
 
-This is the [Longest Word](08-lists.html#32) pattern with two variables: one for the key, and one for its value.
+This is the same pattern that we used for [Longest Word](08-lists.html#32) but with two variables.
 
 ---
 
@@ -525,7 +458,7 @@ A new key starts at 1. A key seen before goes up by 1.
 
 ---
 
-## Problem: Find the Bug
+## Problem: Find & Solve the Bug (you)
 
 ```python
 votes = ["red", "blue", "red", "green", "red"]
@@ -537,56 +470,68 @@ for vote in votes:
 print(counts)
 ```
 
----
-
-## Solution: Find the Bug
+Fix it so you get this output:
 
 ```
-KeyError: 'red'
+{'red': 3, 'blue': 1, 'green': 1}
 ```
-
-`+=` needs an old value to add to, and the first `"red"` has none. The `if`/`else` gives each new key its first 1.
 
 ---
 
-## Problem: Sales by Product (us)
+## Solution: Find & Solve the Bug (you)
 
 ```python
-# Read data/sales.csv and print each product's total of
-# price * quantity, to the cent.
+votes = ["red", "blue", "red", "green", "red"]
+
+counts = {}
+for vote in votes:
+    if vote in counts:
+        counts[vote] += 1
+    else:
+        counts[vote] = 1
+
+print(counts)
 ```
 
-<div class="cols">
-<div>
-
 ```
-product,date,price,quantity
-P-01,2023-01-01,9.95,5
-P-02,2023-01-02,10.50,2
-P-01,2023-01-03,9.85,4
-P-02,2023-01-04,10.60,3
-P-01,2023-01-05,9.95,1
+{'red': 3, 'blue': 1, 'green': 1}
 ```
 
-</div>
-<div>
-
-```
-P-01: $99.10
-P-02: $52.80
-```
-
-</div>
-</div>
-
-[Total Sales](10-exceptions-and-files.html#31) kept one total.
-
-- What are the keys?
-- What happens the first time a product shows up?
+`counts[vote] += 1` raised `KeyError: 'red'`, since the first `"red"` has no old value to add to. The `else` gives each new key its first 1.
 
 ---
 
-## Solution: Sales by Product (us)
+## Parsons Problem #2 (you)
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
+
+**One line does not belong.**
+
+```python
+sums[product]["revenue"] += revenue
+totals = mystery(totals)
+for line in f:
+def mystery(sums):
+units = int(fields[3])
+import os
+sums[product] = {"units": 0, "revenue": 0}
+mystery(totals)
+with open(path, "r") as f:
+product = fields[0]
+if product not in sums:
+totals = {}
+revenue = float(fields[2]) * units
+f.readline()
+sums[product]["units"] += units
+path = os.path.join("data", "sales.csv")
+fields = line.strip().split(",")
+```
+
+---
+
+## Solution: Parsons Problem #2 (you)
 
 <style scoped>
 pre { font-size: 0.7em; }
@@ -595,64 +540,81 @@ pre { font-size: 0.7em; }
 ```python
 import os
 
+def mystery(sums):
+    path = os.path.join("data", "sales.csv")
+    with open(path, "r") as f:
+        f.readline()
+        for line in f:
+            fields = line.strip().split(",")
+            product = fields[0]
+            units = int(fields[3])
+            revenue = float(fields[2]) * units
+            if product not in sums:
+                sums[product] = {"units": 0, "revenue": 0}
+            sums[product]["units"] += units
+            sums[product]["revenue"] += revenue
+
 totals = {}
-path = os.path.join("data", "sales.csv")
-with open(path, "r") as f:
-    f.readline()
-    for line in f:
-        fields = line.strip().split(",")
-        product = fields[0]
-        amount = float(fields[2]) * int(fields[3])
-        if product in totals:
-            totals[product] += amount
-        else:
-            totals[product] = amount
-
-for product, total in totals.items():
-    print(f"{product}: ${total:.2f}")
+mystery(totals)
 ```
 
-This is the Total Sales loop with one total per product. The `if`/`else` is the counting pattern, adding `amount` in place of 1.
+The extra line, `totals = mystery(totals)`, would set `totals` to `None`.
 
 ---
 
-## Parsons Problem #2 (you)
-
-**One line does not belong.**
+## Dictionaries Are Passed by Reference
 
 ```python
-counts[first] = 1
-for word in words:
-counts = []
-else:
-return counts
-first = word[0].lower()
-def mystery(words):
-counts[first] += 1
-print(mystery(["Apple", "avocado", "banana", "Cherry", "blueberry"]))
-counts = {}
-if first in counts:
+def heal(character):
+    character["health"] += 5
+
+player = {"name": "ada", "pos": [3, 4], "health": 12}
+heal(player)
+print(player["health"])   # 17
 ```
+
+Like [lists](09-changing-lists.html#22), dictionaries are passed by reference: the function gets the same dictionary, not a copy.
 
 ---
 
-## Solution: Parsons Problem #2 (you)
+## Problem: Sales by Product (us)
+
+`totals` now holds a dictionary for each product:
 
 ```python
-def mystery(words):
-    counts = {}
-    for word in words:
-        first = word[0].lower()
-        if first in counts:
-            counts[first] += 1
-        else:
-            counts[first] = 1
-    return counts
-
-print(mystery(["Apple", "avocado", "banana", "Cherry", "blueberry"]))
+{
+    "P-01": {"units": 10, "revenue": 99.10000000000001},
+    "P-02": {"units": 5, "revenue": 52.8},
+}
 ```
 
-The extra line was `counts = []`. A list takes only number indexes, so `counts[first] = 1` raises `TypeError: list indices must be integers or slices, not str`.
+Print each product like this:
+
+```
+P-01: 10 units, $99.10
+P-02: 5 units, $52.80
+```
+
+- Which loop gives us each product with its dictionary?
+- How do we read `"units"` out of that dictionary?
+
+---
+
+## Solution: Sales by Product (us)
+
+```python
+for product, stats in totals.items():
+    units = stats["units"]
+    revenue = stats["revenue"]
+    print(f"{product}: {units} units, ${revenue:.2f}")
+```
+
+```
+P-01: 10 units, $99.10
+P-02: 5 units, $52.80
+```
+
+`stats` is one product's dictionary, so `stats["units"]` reads its units. In one step, `totals["P-01"]["units"]` is `10`.
 
 ---
 
@@ -663,7 +625,7 @@ ul { font-size: 0.85em; }
 </style>
 
 - A **dictionary** stores **key**: **value** pairs, like `{"Mon": 50, "Tue": 75}`
-- `d[key]` looks up a value; a missing key raises a `KeyError`
+- `d[key]` looks up a value; a missing key raises a `KeyError`, which `except KeyError as error:` catches
 - `d[key] = value` adds a pair, or replaces the value of a key that exists
 - `key in d` checks the keys only; check before a lookup that might miss
 - Clean typed keys with `strip` and `lower` (or `upper`), since `"Coffee "` is not `"coffee"`
@@ -675,11 +637,5 @@ ul { font-size: 0.85em; }
 
 ## Next Up: Records and Sets
 
-[Records and Sets](13-records-and-sets.html)
-
-The [Dictionaries and Sets Cheat Sheet](dictionaries-and-sets-cheatsheet.html) has today's tools in one place, with `get` and sorting by key.
-
-<!--
-If time: the cheat sheet's shorter counting line, counts[vote] = counts.get(vote, 0) + 1, and
-sorted(totals) to print Sales by Product in key order.
--->
+- [Records and Sets](13-records-and-sets.html)
+- [Dictionaries and Sets Cheat Sheet](dictionaries-and-sets-cheatsheet.html)

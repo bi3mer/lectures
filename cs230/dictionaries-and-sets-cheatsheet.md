@@ -1,6 +1,6 @@
 # Dictionaries and Sets Cheatsheet
 
-A **dictionary** stores **key**: **value** pairs and looks up each value by its key. A **set** holds distinct items in no particular order. This sheet collects Chapter 9 of the textbook and class in one place. Every example can be pasted into a file and run. The file examples expect the `data` folder from [data.zip](data.zip) next to your program. The [Data Files](data/index.html) page shows what is in each file.
+A **dictionary** stores **key**: **value** pairs and looks up each value by its key. A **set** holds distinct items in no particular order. This sheet collects the [Dictionaries](12-dictionaries.html) and [Records and Sets](13-records-and-sets.html) lectures in one place. Every example can be pasted into a file and run. The file examples expect the `data` folder from [data.zip](data.zip) next to your program. The [Data Files](data/index.html) page shows what is in each file.
 
 ## Creating a Dictionary
 
@@ -50,7 +50,7 @@ False
 KeyError: 'Sat'
 ```
 
-`d[key]` gives back the value for `key`, and a missing key raises a `KeyError`. `in` and `not in` look at the keys only, so `60 in sales` is `False`. Check with `in` before a lookup that might miss, as textbook program 9-3 does:
+`d[key]` gives back the value for `key`, and a missing key raises a `KeyError`. `in` and `not in` look at the keys only, so `60 in sales` is `False`. Check with `in` before a lookup that might miss:
 
 ```python
 sales = {"Mon": 50, "Tue": 75, "Wed": 60}
@@ -66,6 +66,48 @@ else:
 Day: Sat
 No sales recorded.
 ```
+
+### Catching a `KeyError`
+
+```python
+sales = {"Mon": 50, "Tue": 75, "Wed": 60}
+
+try:
+    print(sales["Sat"])
+except KeyError as error:
+    print(f"Missing key: {error}")
+```
+
+```
+Missing key: 'Sat'
+```
+
+`except KeyError` catches the missing key, and `as error` stores the exception in `error`. Printing `error` shows the key that was missing, in quotes. Python programmers use both styles: check with `in` first, or try the lookup and catch the `KeyError`.
+
+To print the whole crash report instead, use `traceback.print_exc()`:
+
+```python
+import traceback
+
+sales = {"Mon": 50, "Tue": 75, "Wed": 60}
+
+try:
+    print(sales["Sat"])
+except KeyError:
+    traceback.print_exc()
+print("Still running.")
+```
+
+```
+Traceback (most recent call last):
+  File "/Users/you/sales.py", line 6, in <module>
+    print(sales["Sat"])
+          ~~~~~^^^^^^^
+KeyError: 'Sat'
+Still running.
+```
+
+`print_exc` prints the report Python prints for a crash, with the file and line number, and then the program keeps running. It reads the exception being handled, so `except KeyError:` needs no `as error`. Python 3.10 and older leave out the `~~~~~^^^^^^^` line. The report goes to the error stream, not to standard output, so when output is sent to a file instead of a terminal, the report can land before earlier `print` lines.
 
 ### `get`
 
@@ -100,25 +142,20 @@ print(d)
 
 Assigning to a key that exists replaces its value, and the key keeps its place. Assigning to a new key adds a pair at the end. A dictionary never holds the same key twice.
 
-Textbook program 9-1 starts from `{}` and adds a pair for each line the user types:
+Starting from `{}`, each assignment adds a pair. A value can be any type, even a list:
 
 ```python
-contacts = {}
+player = {}
 
-entry = input("> ")
-while entry != "":
-    email, phone = entry.split()
-    contacts[email] = phone
-    entry = input("> ")
+player["name"] = "Ada"
+player["pos"] = [3, 4]
+player["health"] = 12
 
-print(contacts)
+print(player)
 ```
 
 ```
-> ada@mail.com 555-1223
-> alan@mail.com 555-9887
->
-{'ada@mail.com': '555-1223', 'alan@mail.com': '555-9887'}
+{'name': 'Ada', 'pos': [3, 4], 'health': 12}
 ```
 
 ### Keys Typed by the User
@@ -217,7 +254,7 @@ Wed: 60
 | `d.values()`      | a value                                          |
 | `d.items()`       | a `(key, value)` tuple, unpacked as `key, value` |
 
-`sum(sales.values())` adds up the values. `sum(sales)` tries to add up the keys and raises a `TypeError`. Textbook program 9-4 loops over `items()`.
+`sum(sales.values())` adds up the values. `sum(sales)` tries to add up the keys and raises a `TypeError`.
 
 ### In Key Order: `sorted`
 
@@ -345,7 +382,7 @@ else:
 No Sat to remove.
 ```
 
-`del d[key]` removes the pair for `key`. A missing key raises a `KeyError`, so textbook program 9-6 checks with `in` first.
+`del d[key]` removes the pair for `key`. A missing key raises a `KeyError`, so the second `del` checks with `in` first.
 
 ## Combining: `update`
 
@@ -421,7 +458,7 @@ s01 Ana 3.6
 s02 Ben 3.4
 ```
 
-A **record** is a dictionary whose keys name its fields, like `"name"` and `"gpa"`. `students["s01"]["gpa"]` reads left to right: the record for `s01`, then its `gpa` field. Inside the loop, `student` is one record, so its fields are `student["name"]` and `student["gpa"]`. Textbook program 9-5 loops over records this way.
+A **record** is a dictionary whose keys name its fields, like `"name"` and `"gpa"`. `students["s01"]["gpa"]` reads left to right: the record for `s01`, then its `gpa` field. Inside the loop, `student` is one record, so its fields are `student["name"]` and `student["gpa"]`.
 
 `students["name"]` raises `KeyError: 'name'`, because the keys of `students` are ids. The name of one student is `students[sid]["name"]`.
 
@@ -453,7 +490,7 @@ Q-011: $11.50
 Q-011x: $11.95
 ```
 
-Each line of `products.csv` becomes one record, keyed by its product id. Converting `price` once, as the record is built, means every later use gets a `float`. Textbook program 9-8 reads its product file the same way.
+Each line of `products.csv` becomes one record, keyed by its product id. Converting `price` once, as the record is built, means every later use gets a `float`.
 
 ## Dictionaries of Lists
 
@@ -543,8 +580,6 @@ print(sorted(tags))
 | `x in s`      | `True` if `x` is in `s`                                 |
 | `len(s)`      | the number of items                                     |
 
-Textbook program 9-7 builds a set from typed input and checks with `in` before `remove`.
-
 `set` is the quick way to count distinct items:
 
 ```python
@@ -632,22 +667,22 @@ Values have no limit: a value can be a list, a dictionary, or a set.
 
 ## Common Mistakes
 
-| Code                                          | Problem                                                         | Fix                                         |
-| --------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------- |
-| `d["Sat"]` for a key `d` does not have        | `KeyError: 'Sat'`                                               | check `"Sat" in d` first, or `d.get("Sat")` |
-| `menu[item]` when the user typed `Coffee `    | case and spaces make a different key                            | `input(...).strip().lower()`                |
-| `days["1"]` when the keys are numbers         | `"1"` is not `1`                                                | `days[int(text)]`                           |
-| `menu["item"]`                                | looks up the word `item`, not the variable                      | `menu[item]`                                |
-| `for x in d:` to add up the values            | `x` is each key                                                 | `for x in d.values():`                      |
-| `counts[key] += 1` for a new key              | `KeyError`: `+=` needs an old value                             | `if`/`else`, or `counts.get(key, 0) + 1`    |
-| `counts = []` to count                        | `TypeError: list indices must be integers or slices, not str`   | `counts = {}`                               |
-| `del d[key]` inside `for key in d:`           | `RuntimeError: dictionary changed size during iteration`        | build a new dictionary                      |
-| `students["name"]` on a dictionary of records | `KeyError`: the keys are ids                                    | `students[sid]["name"]`                     |
-| `sum(scores)` on a dictionary of lists        | adds the keys                                                   | `sum(scores[name])`                         |
-| `found = {}` for an empty set                 | `{}` is a dictionary, so `found.add` raises an `AttributeError` | `found = set()`                             |
-| `colors[0]` on a set                          | `TypeError: 'set' object is not subscriptable`                  | `sorted(colors)[0]`                         |
-| `print(colors)` on a set                      | the order can change from run to run                            | `print(sorted(colors))`                     |
-| a list as a key or set item                   | `TypeError`: a list is not hashable                             | use a tuple                                 |
+| Code                                          | Problem                                                         | Fix                                                               |
+| --------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `d["Sat"]` for a key `d` does not have        | `KeyError: 'Sat'`                                               | check `"Sat" in d` first, catch the `KeyError`, or `d.get("Sat")` |
+| `menu[item]` when the user typed `Coffee `    | case and spaces make a different key                            | `input(...).strip().lower()`                                      |
+| `days["1"]` when the keys are numbers         | `"1"` is not `1`                                                | `days[int(text)]`                                                 |
+| `menu["item"]`                                | looks up the word `item`, not the variable                      | `menu[item]`                                                      |
+| `for x in d:` to add up the values            | `x` is each key                                                 | `for x in d.values():`                                            |
+| `counts[key] += 1` for a new key              | `KeyError`: `+=` needs an old value                             | `if`/`else`, or `counts.get(key, 0) + 1`                          |
+| `counts = []` to count                        | `TypeError: list indices must be integers or slices, not str`   | `counts = {}`                                                     |
+| `del d[key]` inside `for key in d:`           | `RuntimeError: dictionary changed size during iteration`        | build a new dictionary                                            |
+| `students["name"]` on a dictionary of records | `KeyError`: the keys are ids                                    | `students[sid]["name"]`                                           |
+| `sum(scores)` on a dictionary of lists        | adds the keys                                                   | `sum(scores[name])`                                               |
+| `found = {}` for an empty set                 | `{}` is a dictionary, so `found.add` raises an `AttributeError` | `found = set()`                                                   |
+| `colors[0]` on a set                          | `TypeError: 'set' object is not subscriptable`                  | `sorted(colors)[0]`                                               |
+| `print(colors)` on a set                      | the order can change from run to run                            | `print(sorted(colors))`                                           |
+| a list as a key or set item                   | `TypeError`: a list is not hashable                             | use a tuple                                                       |
 
 ## Glossary
 
