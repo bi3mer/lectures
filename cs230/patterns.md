@@ -290,4 +290,4 @@ When `scores.csv` is not next to the program:
 Could not find scores.csv
 ```
 
-[`FileNotFoundError`](10-exceptions-and-files.html#22) in the exceptions lecture reads every line of the file the same way.
+[`FileNotFoundError`](10-exceptions-and-files.html#24) in the exceptions lecture reads every line of the file the same way.

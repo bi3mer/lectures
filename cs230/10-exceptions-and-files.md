@@ -318,6 +318,49 @@ Without `with`, you have to write a program like above. `close` is like clicking
 
 ---
 
+## New Keyword: `finally`
+
+```python
+try:
+    # code that might raise an exception
+except [EXCEPTION]:
+    # runs only if the code in try raised EXCEPTION
+finally:
+    # always runs, whether or not the code in try raised
+```
+
+`finally` runs last, whether `try` finished or raised. The `except` is optional: a `try` can have only a `finally`.
+
+---
+
+## What `with` Does Underneath
+
+<div class="cols">
+<div>
+
+```python
+with open([FILENAME], "r") as [NAME]:
+    # NAME is the open file
+```
+
+</div>
+<div>
+
+```python
+[NAME] = open([FILENAME], "r")
+try:
+    # NAME is the open file
+finally:
+    [NAME].close()
+```
+
+</div>
+</div>
+
+Both do the same thing: `close` sits in `finally`, so it runs even if the block raises. [Python added `with` in 2006](why-with.html) to replace this pattern.
+
+---
+
 ## Problem: What Is the Output?
 
 <div class="cols">
@@ -751,7 +794,7 @@ ul { font-size: 0.85em; }
 - An **exception** stops the program; `try` and `except` catch one, so the program can keep going
 - Name the exception you expect, like `except ValueError:`; a bare `except:` also hides bugs such as typos
 - `int` and `float` raise a `ValueError` on text that is not a number
-- `with open(filename, "r") as f:` closes the file when the block ends; without `with`, call `f.close()`
+- `with open(filename, "r") as f:` works like `try` with `f.close()` in `finally`, which always runs
 - `for line in f:` reads one line at a time, as a string that keeps its `\n`, so `strip` it
 - `f.readline()` reads one line (`""` at the end of the file), which is how to skip a header
 - `split(",")` breaks a line into fields; convert number fields with `int` or `float`

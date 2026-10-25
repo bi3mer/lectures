@@ -579,7 +579,7 @@ P-02: $52.80
 </div>
 </div>
 
-[Total Sales](10-exceptions-and-files.html#29) kept one total.
+[Total Sales](10-exceptions-and-files.html#31) kept one total.
 
 - What are the keys?
 - What happens the first time a product shows up?

@@ -4,6 +4,11 @@ theme: lecture
 paginate: true
 ---
 
+<style>
+/* Center every table on its slide. */
+section table { margin-left: auto; margin-right: auto; }
+</style>
+
 # The `os` Module
 
 Colan Biemer
@@ -49,7 +54,7 @@ Alan
 </div>
 </div>
 
-[Files for Today](10-exceptions-and-files.html#16) wrote this path one way on a Mac and another on Windows. Today, Python picks the separator.
+[Last time](10-exceptions-and-files.html#16), we wrote a file path one way on a Mac and another on Windows. This is a really bad approach because it means our programs will only work one one operating system (OS), and not another.
 
 ---
 
@@ -70,7 +75,7 @@ Each file is also on the [Data Files](data/index.html) page.
 <div>
 
 ```
-week8/          ← open in VS Code
+week8/
 ├── program.py
 └── data/
     ├── measures.txt
@@ -98,7 +103,7 @@ import [MODULE]
 [MODULE].[FUNCTION]()
 ```
 
-To reach `names.txt` inside `data`, Python needs a path, and the `os` module builds paths. A **module** is a file of extra functions that ships with Python. [Float Type](02-variables-and-statements.html#21) imported `sys` the same way.
+To reach `names.txt` inside `data`, Python needs a path, and the `os` module builds paths. A **module** is a file of extra functions that ships with Python.
 
 ---
 
@@ -158,7 +163,7 @@ FileNotFoundError: [Errno 2] No such file or directory: 'datanames.txt'
 
 ---
 
-## Where Python Looks
+## Current Working Directory (CWD)
 
 ---
 
@@ -177,11 +182,11 @@ print(os.getcwd())
 <div>
 
 ```
-/Users/ada/cs230/week8
+/Users/example-student/cs230/week8
 ```
 
 ```
-C:\Users\ada\cs230\week8
+C:\Users\example-student\cs230\week8
 ```
 
 </div>
@@ -197,7 +202,7 @@ Right: the output on a Mac, then on Windows. `getcwd` is short for "get current 
 <div>
 
 ```
-cs230/          ← open in VS Code
+cs230/
 ├── week7/
 └── week8/
     ├── data/
@@ -241,7 +246,12 @@ cs230/          ← Python looks here
 
 Python starts the path from the **current working directory**. VS Code's Run button sets it to the open folder, `cs230`, not the program's folder.
 
-Fix: File > Open Folder, then pick `week8`. The error is the same [`FileNotFoundError`](10-exceptions-and-files.html#22) as last week.
+There are two fixes:
+
+1. File > Open Folder, then pick `week8`.
+2. Update the code: `path = os.path.join("week8", "data", "names.txt")`
+
+Which do you prefer?
 
 ---
 
@@ -295,7 +305,7 @@ print(sorted(os.listdir("data")))
 
 ---
 
-## Problem: Find the Bug
+## Problem: Find the Bug & Fix It
 
 ```python
 import os
@@ -308,53 +318,47 @@ for name in sorted(os.listdir("data")):
     print(name, count)
 ```
 
----
-
-## Solution: Find the Bug
-
 ```
 FileNotFoundError: [Errno 2] No such file or directory: 'measures.txt'
 ```
 
-```python
-for name in sorted(os.listdir("data")):
-    path = os.path.join("data", name)
-    count = 0
-    with open(path, "r") as f:
-```
-
-`listdir` gives names without their folder, so `join` builds the path `open` needs. This pairing is the main use of `join`.
-
 ---
 
-## Problem: What Is the Output?
+## Problem 2: Find the Bug
 
 ```python
-import os
-
 for name in sorted(os.listdir("data")):
     path = os.path.join("data", name)
     count = 0
+
     with open(path, "r") as f:
         for line in f:
             count += 1
+
     print(name, count)
 ```
 
----
-
-## Solution: What Is the Output?
-
 ```
-measures.txt 4
 IsADirectoryError: [Errno 21] Is a directory: 'data/months'
 ```
 
-`listdir` lists folders too, and `open` cannot read a folder. Windows raises a `PermissionError` instead. The count is 4 because the last line of `measures.txt` is blank.
+Adding `join` fixed the first bug. On Windows, this one raises `PermissionError`.
 
 ---
 
-## `os.path.isfile` and `os.path.exists`
+## Folder or File: `isdir`, `isfile`, `exists`
+
+| Function               | `True` when `path` is |
+| ---------------------- | --------------------- |
+| `os.path.isdir(path)`  | a folder              |
+| `os.path.isfile(path)` | a file                |
+| `os.path.exists(path)` | a folder or a file    |
+
+All three are `False` for a path that does not exist.
+
+---
+
+## Checking Three Paths
 
 ```python
 import os
@@ -363,43 +367,108 @@ names = os.path.join("data", "names.txt")
 months = os.path.join("data", "months")
 typo = os.path.join("data", "nmaes.txt")
 
+print(os.path.isdir(months))    # True
+print(os.path.isdir(names))     # False
 print(os.path.isfile(names))    # True
 print(os.path.isfile(months))   # False
 print(os.path.exists(months))   # True
 print(os.path.exists(typo))     # False
 ```
 
-`isfile` is `True` only for a file that exists. `exists` is `True` for a file or a folder.
+---
+
+## Problem 2: Find the Bug & Fix It
+
+```python
+for name in sorted(os.listdir("data")):
+    path = os.path.join("data", name)
+    count = 0
+
+    with open(path, "r") as f:
+        for line in f:
+            count += 1
+
+    print(name, count)
+```
+
+```
+measures.txt 4
+IsADirectoryError: [Errno 21] Is a directory: 'data/months'
+```
 
 ---
 
-## Only the Files: Program K-1
+## Solution 2: Find the Bug & Fix It
 
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
+<div class="cols">
+<div>
 
 ```python
-# list all file names in the data subdirectory
+for name in sorted(os.listdir("data")):
+    path = os.path.join("data", name)
+    count = 0
+
+    if os.path.isdir(path):
+        continue
+
+    with open(path, "r") as f:
+        for line in f:
+            count += 1
+
+    print(name, count)
+```
+
+</div>
+<div>
+
+```python
+for name in sorted(os.listdir("data")):
+    path = os.path.join("data", name)
+    count = 0
+
+    if not os.path.isfile(path):
+        continue
+
+    with open(path, "r") as f:
+        for line in f:
+            count += 1
+
+    print(name, count)
+```
+
+</div>
+</div>
+
+Both solutions skip folders. The left explicitly skips folders. The right skips everything that is not a file. Either is fine for our use case, but things get more complicated when you consider [symlinks](https://en.wikipedia.org/wiki/Symbolic_link) and other special file types. Generally, prefer `isfile` for this kind of task.
+
+---
+
+## Problem: What Is the Output?
+
+```python
 import os
 
-dirname = "data"
-for filename in sorted(os.listdir(dirname)):
-    pathname = os.path.join(dirname, filename)
-    if os.path.isfile(pathname):
-        print(filename)
+files = 0
+folders = 0
+for name in os.listdir("data"):
+    path = os.path.join("data", name)
+    if os.path.isfile(path):
+        files += 1
+    elif os.path.isdir(path):
+        folders += 1
+
+print(files, folders)
 ```
 
+---
+
+## Solution: What Is the Output?
+
 ```
-measures.txt
-names.txt
-prices.csv
-products.csv
-sales.csv
-scores.csv
+6 1
 ```
 
-This is textbook program K-1, with `sorted` added. `isfile` is `False` for `months`, so the loop skips it.
+Six files and one folder, `months`. A special file type would land in neither count.
 
 ---
 
@@ -545,7 +614,7 @@ The extra line was `path = folder + name`. Paths like `datamonths` name nothing,
 All months: $275.55
 ```
 
-[Total Sales](10-exceptions-and-files.html#29) did one file.
+[Total Sales](10-exceptions-and-files.html#31) did one file.
 
 - Which part of Total Sales stays the same?
 - What changes from file to file?
@@ -555,77 +624,32 @@ All months: $275.55
 ## Solution: Total of Every Month (us)
 
 <style scoped>
-pre { font-size: 0.7em; }
+pre { font-size: 0.65em; }
 </style>
-
-<div class="cols">
-<div>
 
 ```python
 import os
 
-def file_total(path):
-    total = 0
+folder = os.path.join("data", "months")
+grand_total = 0
+for name in sorted(os.listdir(folder)):
+    path = os.path.join(folder, name)
+    if not os.path.isfile(path):
+        continue
+
+    month_total = 0
     with open(path, "r") as f:
         f.readline()
         for line in f:
             fields = line.strip().split(",")
             price = float(fields[2])
             quantity = int(fields[3])
-            total += price * quantity
-    return total
-```
-
-</div>
-<div>
-
-```python
-folder = os.path.join("data", "months")
-grand_total = 0
-for name in sorted(os.listdir(folder)):
-    path = os.path.join(folder, name)
-    month_total = file_total(path)
+            month_total += price * quantity
     print(f"{name}: ${month_total:.2f}")
     grand_total += month_total
 
 print(f"All months: ${grand_total:.2f}")
 ```
-
-</div>
-</div>
-
-`file_total` is the Total Sales loop, with the path as a parameter. The main loop builds each path, calls `file_total`, and adds up the totals.
-
----
-
-## Problem: Find the Bug
-
-On a Mac, the same program can crash. Printing the folder's names shows why:
-
-```python
-print(sorted(os.listdir(folder)))
-```
-
-```
-['.DS_Store', '2023-01.csv', '2023-02.csv', '2023-03.csv']
-```
-
-What does the loop do with `.DS_Store`?
-
----
-
-## Solution: Find the Bug
-
-```python
-for name in sorted(os.listdir(folder)):
-    if name.endswith(".csv"):
-        path = os.path.join(folder, name)
-        month_total = file_total(path)
-        print(f"{name}: ${month_total:.2f}")
-        grand_total += month_total
-```
-
-Finder adds a hidden `.DS_Store` file to folders it opens. It is not a CSV, so reading it fails. `endswith` skips it, the partner of `startswith` from [More Methods](06-strings-and-format-strings.html#90).
 
 ---
 
@@ -669,7 +693,7 @@ with open("all_months.csv", "w") as f_out:
                     f_out.write(line)
 ```
 
-The extra line was `with open(name, "r") as f_in:`, which drops the folder, as in [this bug](11-os-module.html#18). Each `readline` skips one file's header, so `all_months.csv` has one header, at the top. Textbook program K-2 copies every header.
+The extra line was `with open(name, "r") as f_in:`, which drops the folder, as in [this bug](11-os-module.html#17). Each `readline` skips one file's header, so `all_months.csv` has one header, at the top.
 
 ---
 
@@ -685,17 +709,12 @@ ul { font-size: 0.85em; }
 - A path starts from the **current working directory**, which in VS Code is the open folder
 - `os.listdir(folder)` gives the names inside `folder`, files and folders alike, in any order
 - `listdir` gives names only, so `join` each one to its folder before `open`
-- `os.path.isfile` is `True` for a file; `os.path.exists` is `True` for a file or a folder
+- `os.path.isdir` is `True` for a folder, `os.path.isfile` for a file, and `os.path.exists` for either
 - `name.endswith(".csv")` skips other files, such as `.DS_Store`
 
 ---
 
 ## Next Up: Dictionaries
 
-[Dictionaries](12-dictionaries.html)
-
-The [`os` Module Cheat Sheet](os-module-cheatsheet.html) has today's tools in one place, with textbook programs K-1 and K-2 as printed.
-
-<!--
-If the class runs long, skip slides 13 and 14 (the missing os. bug).
--->
+- [Dictionaries](12-dictionaries.html)
+- [`os` Module Cheat Sheet](os-module-cheatsheet.html)
