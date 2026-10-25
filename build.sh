@@ -59,6 +59,7 @@ skip=(
   cs213/js/plans.md
   cs213/js/temp.md
   cs213/js/todo.md
+  future-plans/plan.md
 )
 
 # Umami page-view tracking. The build puts this tag in the <head> of every
