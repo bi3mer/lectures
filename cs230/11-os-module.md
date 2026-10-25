@@ -718,3 +718,4 @@ ul { font-size: 0.85em; }
 
 - [Dictionaries](12-dictionaries.html)
 - [`os` Module Cheat Sheet](os-module-cheatsheet.html)
+- [Practice Problem: Search My Notes](https://bi3mer.github.io/autograder/cs230/os-0.html)

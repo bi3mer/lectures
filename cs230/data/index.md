@@ -62,7 +62,7 @@ juice,4.00
 <details>
 <summary><code>products.csv</code><a class="download" href="products.csv" download title="Download products.csv" aria-label="Download products.csv"><svg><use href="#download-icon" /></svg></a></summary>
 
-From [Records and Sets](../13-records-and-sets.html).
+From the [Dictionaries and Sets Cheat Sheet](../dictionaries-and-sets-cheatsheet.html).
 
 ```
 product-id,division,price

@@ -418,7 +418,7 @@ for item in stock:
 RuntimeError: dictionary changed size during iteration
 ```
 
-Build a new dictionary instead, as with lists:
+There are two ways around it. One builds a new dictionary, as with lists:
 
 ```python
 stock = {"apples": 9, "pears": 0, "plums": 4, "kiwis": 0}
@@ -434,6 +434,28 @@ print(in_stock)
 ```
 {'apples': 9, 'plums': 4}
 ```
+
+The other collects the keys in a list, then deletes them after the loop ends:
+
+```python
+stock = {"apples": 9, "pears": 0, "plums": 4, "kiwis": 0}
+
+to_delete = []
+for item, count in stock.items():
+    if count == 0:
+        to_delete.append(item)
+
+for item in to_delete:
+    del stock[item]
+
+print(stock)
+```
+
+```
+{'apples': 9, 'plums': 4}
+```
+
+The first leaves `stock` as it was. The second changes `stock` itself.
 
 Changing the value of a key that exists is fine inside the loop, since the number of keys stays the same: `stock[item] += 1`.
 
@@ -593,6 +615,21 @@ print(sorted(unique))
 ```
 4 3
 ['cat', 'hat', 'the']
+```
+
+Sets are passed by reference, like lists and dictionaries. A function that changes its set changes the caller's set:
+
+```python
+def add_tag(tags):
+    tags.add("new")
+
+labels = {"sale"}
+add_tag(labels)
+print(sorted(labels))
+```
+
+```
+['new', 'sale']
 ```
 
 ## Set Operations
