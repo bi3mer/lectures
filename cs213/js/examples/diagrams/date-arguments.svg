@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 216" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The arguments to new Date</title>
+  <desc>new Date(2026, 11, 4, 20, 0) took five arguments, in order. 2026 was the year. 11 was the month, December, since months count from 0. 4 was the day. 20 was the hour, 8 PM on a 24-hour clock. 0 was the minute, so the time was 8:00 PM.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1000" height="216" rx="18" fill="#0f1b2d" />
+  <rect width="1000" height="216" rx="18" fill="url(#grid)" />
+
+  <!-- Each argument has its own color: year blue, month red, day green, hour yellow, minute purple. -->
+
+  <!-- The call. Each part is its own text, 24px per character, so the bars and labels below
+       line up with it in any monospace font. -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="40" fill="#e2e8f0" style="font-variant-ligatures: none; white-space: pre">
+    <text x="164" y="78">new Date(</text>
+    <text x="380" y="78" fill="#38bdf8" font-weight="bold">2026</text>
+    <text x="476" y="78">,</text>
+    <text x="524" y="78" fill="#f87171" font-weight="bold">11</text>
+    <text x="572" y="78">,</text>
+    <text x="620" y="78" fill="#4ade80" font-weight="bold">4</text>
+    <text x="644" y="78">,</text>
+    <text x="692" y="78" fill="#facc15" font-weight="bold">20</text>
+    <text x="740" y="78">,</text>
+    <text x="788" y="78" fill="#c084fc" font-weight="bold">0</text>
+    <text x="812" y="78">)</text>
+  </g>
+
+  <!-- A bar under each argument -->
+  <rect x="380" y="92" width="96" height="5" rx="2" fill="#38bdf8" />
+  <rect x="524" y="92" width="48" height="5" rx="2" fill="#f87171" />
+  <rect x="620" y="92" width="24" height="5" rx="2" fill="#4ade80" />
+  <rect x="692" y="92" width="48" height="5" rx="2" fill="#facc15" />
+  <rect x="788" y="92" width="24" height="5" rx="2" fill="#c084fc" />
+
+  <!-- What each argument is, centered under its bar -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="22" font-weight="bold" text-anchor="middle">
+    <text x="428" y="130" fill="#38bdf8">year</text>
+    <text x="548" y="130" fill="#f87171">month</text>
+    <text x="632" y="130" fill="#4ade80">day</text>
+    <text x="716" y="130" fill="#facc15">hour</text>
+    <text x="800" y="130" fill="#c084fc">minute</text>
+  </g>
+
+  <!-- What each value means -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="22" fill="#e2e8f0" text-anchor="middle">
+    <text x="428" y="162">2026</text>
+    <text x="548" y="162">December</text>
+    <text x="632" y="162">4</text>
+    <text x="716" y="162">8 PM</text>
+    <text x="800" y="162">:00</text>
+  </g>
+
+  <!-- Why 11 and 20 mean what they do -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="17" text-anchor="middle">
+    <text x="548" y="192" fill="#f87171">counts from 0</text>
+    <text x="716" y="192" fill="#facc15">24-hour clock</text>
+  </g>
+</svg>

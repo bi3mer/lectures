@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Semicolons: Live</title>
+    <style>
+      body {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 16px;
+        font-family: sans-serif;
+        background-color: #1b1530;
+        color: #f4efe6;
+      }
+
+      header {
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 0;
+        font-size: 48px;
+        color: #ffb845;
+      }
+
+      .card {
+        margin-bottom: 16px;
+        padding: 0 16px;
+        border: 2px solid #3d3360;
+        border-radius: 8px;
+        background-color: #261e42;
+      }
+
+      .total {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .ticket {
+        padding: 0 16px;
+        border: 2px dashed #ffb845;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 18px;
+      }
+
+      input,
+      button {
+        font: inherit;
+      }
+
+      input[type="number"] {
+        width: 4em;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>The Semicolons</h1>
+      <p>Live at Main Hall · <span id="when"></span></p>
+      <p id="countdown"></p>
+    </header>
+
+    <section class="card">
+      <h2>Tickets</h2>
+      <p>General admission: <span id="price"></span> each, at most 8 per order</p>
+      <p>
+        <label for="count">Tickets</label>
+        <input id="count" type="number" value="2" onchange="showTotal()" />
+      </p>
+      <p>
+        <label for="code">Promo code</label>
+        <input id="code" />
+        <button onclick="applyCode()">Apply</button>
+        <span id="code-message"></span>
+      </p>
+      <p>Tickets: <span id="subtotal"></span></p>
+      <p>Fee (12%): <span id="fee"></span></p>
+      <p class="total">Total: <span id="total"></span></p>
+    </section>
+
+    <section class="card">
+      <h2>Your Ticket</h2>
+      <p>
+        <label for="name">Name</label>
+        <input id="name" oninput="showName()" />
+      </p>
+      <div class="ticket">
+        <p>THE SEMICOLONS · MAIN HALL</p>
+        <p id="ticket-name">GUEST</p>
+        <p id="confirmation"></p>
+      </div>
+      <p><button onclick="parsons1()">Buy</button></p>
+    </section>
+
+    <script src="practice.js"></script>
+  </body>
+</html>
