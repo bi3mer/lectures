@@ -11,9 +11,9 @@ console.log(0.1 + 0.2 === 0.3); // false
 console.log(127.5 * 0.12);      // 15.299999999999999
 ```
 
-JavaScript stores every number in binary, where the places after the point are halves, quarters, eighths, and so on. Most decimals, like 0.1, [have no exact binary form](lecture-math-dates-strings-js.html#51), just as 1/3 has no exact decimal form (0.333...). JavaScript keeps the closest binary number instead, so math on decimals can land a tiny bit off.
+JavaScript stores every number in binary, where the places after the point are halves, quarters, eighths, and so on. Most decimals, like 0.1, [have no exact binary form](lecture-math-dates-strings-js.html#55), just as 1/3 has no exact decimal form (0.333...). JavaScript keeps the closest binary number instead, so math on decimals can land a tiny bit off.
 
-`0.1` still prints as `0.1`, because JavaScript [prints the shortest decimal that leads back to the stored number](lecture-math-dates-strings-js.html#53). `0.1 + 0.2` is stored as a different number than `0.3`, so it prints with more digits. For money, [round to cents](#rounding-to-cents).
+`0.1` still prints as `0.1`, because JavaScript [prints the shortest decimal that leads back to the stored number](lecture-math-dates-strings-js.html#57). `0.1 + 0.2` is stored as a different number than `0.3`, so it prints with more digits. For money, [round to cents](#rounding-to-cents).
 
 ## Checking a Number
 
@@ -113,22 +113,25 @@ console.log(fee.toFixed(2) + 1);              // 15.301
 
 Round with `Math.round(x * 100) / 100` while calculating. Turn the result into text with `toFixed(2)` or `toLocaleString` only to show it. A number keeps no trailing zeros, so `15.30` prints as `15.3` until it is formatted.
 
-The ticket page rounds each amount before adding them, so the lines on the page add up to the total. With 15% off, three $42.50 tickets cost 108.375, which rounds to 108.38:
+The ticket page rounds each amount with `toCents` before adding them, so the lines on the page add up to the total. With 15% off, three $42.50 tickets cost 108.375, which rounds to 108.38:
 
 <!-- prettier-ignore -->
 ```js
-let price = 42.5;
-let percentOff = 15;
-let count = 3;
+function toCents(amount) {
+  return Math.round(amount * 100) / 100;
+}
 
-let subtotal = count * price * (1 - percentOff / 100);
-console.log(subtotal);       // 108.375
+const price = 42.5;
+const percentOff = 15;
+const count = 3;
+console.log(count * price * (1 - percentOff / 100)); // 108.375
 
-subtotal = Math.round(subtotal * 100) / 100;
-let fee = Math.round(subtotal * 0.12 * 100) / 100;
-console.log(subtotal);       // 108.38
-console.log(fee);            // 13.01
-console.log(subtotal + fee); // 121.39
+const subtotal = toCents(count * price * (1 - percentOff / 100));
+const fee = toCents(subtotal * 0.12);
+const total = toCents(subtotal + fee);
+console.log(subtotal); // 108.38
+console.log(fee);      // 13.01
+console.log(total);    // 121.39
 ```
 
 `1 - percentOff / 100` is the share of the price left to pay: `0.85` for 15% off.
@@ -190,9 +193,9 @@ let roll = Math.floor(Math.random() * 6) + 1;
 `Math.floor(Math.random() * n) + 1` is a whole number from 1 to `n`. Without the `+ 1`, it is 0 to `n - 1`, a random index into a list of `n` items. The ticket page picks a random row and seat this way, so this prints something new on every run:
 
 ```js
-let rows = "ABCDEFGH";
-let row = rows[Math.floor(Math.random() * rows.length)];
-let seat = Math.floor(Math.random() * 20) + 1;
+const rows = "ABCDEFGH";
+const row = rows[Math.floor(Math.random() * rows.length)];
+const seat = Math.floor(Math.random() * 20) + 1;
 console.log(`Row ${row}, seat ${seat}`);
 ```
 
@@ -295,12 +298,12 @@ The ticket page puts the date and the time together:
 
 <!-- prettier-ignore -->
 ```js
-let show = new Date(2026, 11, 4, 20, 0);
-let full = { weekday: "long", month: "long", day: "numeric" };
-let short = { hour: "numeric", minute: "2-digit" };
+const showTime = new Date(2026, 11, 4, 20, 0);
+const full = { weekday: "long", month: "long", day: "numeric" };
+const short = { hour: "numeric", minute: "2-digit" };
 
-let date = show.toLocaleDateString("en-US", full);
-let time = show.toLocaleTimeString("en-US", short);
+const date = showTime.toLocaleDateString("en-US", full);
+const time = showTime.toLocaleTimeString("en-US", short);
 console.log(`${date} at ${time}`); // Friday, December 4 at 8:00 PM
 ```
 
@@ -347,19 +350,17 @@ console.log(`${days}d ${hours}h ${minutes}m`); // 3d 7h 30m
 
 `ms / (1000 * 60 * 60)` is 79.5 hours. `Math.floor` keeps the 79 whole hours, and [`% 24`](lecture-js.html#72) keeps the remainder after dividing by 24: the 7 hours that don't fill a day. The minutes work the same way, with 60 minutes to an hour.
 
-On the ticket page, the countdown subtracts the current time, `new Date()`, from `show`, so its output changes as time passes:
+On the ticket page, the countdown subtracts the current time, `new Date()`, from `showTime`, so its output changes as time passes:
 
 ```js
-let show = new Date(2026, 11, 4, 20, 0);
+const showTime = new Date(2026, 11, 4, 20, 0);
 
 function countdownText() {
-  let ms = show - new Date();
-  let days = Math.floor(ms / (1000 * 60 * 60 * 24));
-  let hours = Math.floor(ms / (1000 * 60 * 60)) % 24;
-  let minutes = Math.floor(ms / (1000 * 60)) % 60;
+  const ms = showTime - new Date();
+  const days = Math.floor(ms / (1000 * 60 * 60 * 24));
 
   if (ms > 0) {
-    return `Starts in ${days}d ${hours}h ${minutes}m`;
+    return `Starts in ${days} days`;
   } else {
     return "The show has started";
   }
@@ -403,6 +404,7 @@ A string method never changes its string. It returns a new value, so keep the re
 | `s.replaceAll(a, b)`  | `s` with every `a` swapped for `b`                              | `"1,250".replaceAll(",", "")` is `"1250"`      |
 | `s.replace(a, b)`     | `s` with only the first `a` swapped for `b`                     | `"1,250,000".replace(",", "")` is `"1250,000"` |
 | `s.padStart(n, x)`    | `s` with `x` added to the front until it is `n` characters long | `"5".padStart(2, "0")` is `"05"`               |
+| `s.padEnd(n, x)`      | `s` with `x` added to the end until it is `n` characters long   | `"Ada".padEnd(6, ".")` is `"Ada..."`           |
 | `s.repeat(n)`         | `s` glued to itself `n` times                                   | `"█".repeat(6)` is `"██████"`                  |
 
 ### Strings Don't Change
@@ -486,7 +488,7 @@ console.log("1,250,000".replace(",", ""));      // 1250,000
 
 `replaceAll` swaps every match of its first argument for its second, and `""` deletes them. `replace` swaps only the first match.
 
-### Padding and Repeating: `padStart` and `repeat`
+### Padding and Repeating: `padStart`, `padEnd`, and `repeat`
 
 <!-- prettier-ignore -->
 ```js
@@ -495,10 +497,14 @@ console.log(String(minutes).padStart(2, "0"));        // 05
 console.log(String(12).padStart(2, "0"));             // 12
 console.log(String(42).padStart(4, "0"));             // 0042
 console.log(`8:${String(minutes).padStart(2, "0")}`); // 8:05
+console.log(`[${"Ada".padEnd(6)}]`);                  // [Ada   ]
+console.log("Ada".padEnd(6, "."));                    // Ada...
 console.log(minutes.padStart(2, "0"));                // TypeError
 ```
 
 `padStart(2, "0")` adds `"0"`s to the front until the string is 2 characters long, as a clock shows `8:05`. If the string is already long enough, `padStart` leaves it as it is. A number has no `padStart`, so it needs [`String()`](lecture-js.html#75) first.
+
+`padEnd` works the same way, but adds to the end of the string.
 
 <!-- prettier-ignore -->
 ```js
@@ -510,59 +516,65 @@ console.log("★".repeat(4) + "☆".repeat(1)); // ★★★★☆
 
 ### On the Ticket Page
 
-A promo code like `SEMI10` takes 10% off, and `semi10` with stray spaces works too. The number after `SEMI` is the percent:
+A promo code like `21310` takes 10% off, and `21310` with stray spaces works too. The number after `213` is the percent, from 1 to 50:
 
 <!-- prettier-ignore -->
 ```js
 function promoPercent(typed) {
-  let code = typed.trim().toUpperCase();
-  let percent = Number(code.slice(4));
+  const code = typed.trim();
+  const percent = Number(code.slice(3));
 
-  if (code.startsWith("SEMI") && Number.isInteger(percent) && percent > 0) {
+  if (code.startsWith("213") && percent >= 1 && percent <= 50) {
     return percent;
   } else {
     return 0;
   }
 }
 
-console.log(promoPercent("SEMI10"));    // 10
-console.log(promoPercent("  semi15 ")); // 15
-console.log(promoPercent("SEMIX"));     // 0
-console.log(promoPercent("SEMI"));      // 0
+console.log(promoPercent("21310"));    // 10
+console.log(promoPercent("  21315 ")); // 15
+console.log(promoPercent("213X"));     // 0
+console.log(promoPercent("213"));      // 0
+console.log(promoPercent("21375"));    // 0
+console.log(promoPercent("2132.5"));   // 2.5
 ```
 
-`SEMIX` makes `percent` `NaN`, and `SEMI` alone makes it `0`, so both are unknown codes.
+`213X` makes `percent` `NaN`, `213` alone makes it `0`, and `21375` is over 50, so all three are unknown codes. Every comparison with `NaN` is `false`, so `percent >= 1` rules out `213X`. A decimal like `2132.5` takes 2.5% off.
 
-The ticket shows the last name in capitals, then the first name:
+The ticket shows the last name in capitals, then the first and middle names as typed. A single name shows on its own, in capitals:
 
 <!-- prettier-ignore -->
 ```js
 function ticketName(typed) {
-  let name = typed.trim();
+  const name = typed.trim();
 
   if (name === "") {
     return "GUEST";
   } else {
-    let parts = name.split(" ");
-    let first = parts[0];
-    first = first[0].toUpperCase() + first.slice(1).toLowerCase();
-    let last = parts[parts.length - 1].toUpperCase();
-    return `${last}, ${first}`;
+    const parts = name.split(" ");
+    if (parts.length === 1) {
+      return name.toUpperCase();
+    } else {
+      const first = parts.slice(0, -1).join(" ");
+      const last = parts[parts.length - 1].toUpperCase();
+      return `${last}, ${first}`;
+    }
   }
 }
 
-console.log(ticketName("ada lovelace"));         // LOVELACE, Ada
-console.log(ticketName("  ADA king LOVELACE ")); // LOVELACE, Ada
+console.log(ticketName("ada lovelace"));         // LOVELACE, ada
+console.log(ticketName("  ADA king LOVELACE ")); // LOVELACE, ADA king
+console.log(ticketName("ada"));                  // ADA
 console.log(ticketName("   "));                  // GUEST
 ```
 
-Without the empty check, `first[0]` is `undefined`, and calling `toUpperCase()` on it is a `TypeError`. A middle name is skipped, since `last` is the last part.
+`slice(0, -1)` copies every part but the last, as it does for a string, so `join` glues only the first and middle names back together. A single name has no last name to split off, so it is shown alone, in capitals.
 
 The confirmation code pads a random number to 4 digits:
 
 <!-- prettier-ignore -->
 ```js
-let number = 42;
+const number = 42;
 console.log("SC-" + String(number).padStart(4, "0")); // SC-0042
 ```
 

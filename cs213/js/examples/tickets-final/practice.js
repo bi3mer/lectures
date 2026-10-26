@@ -1,6 +1,6 @@
-let price = 42.5; // one general admission ticket
-let percentOff = 0; // a promo code changes this
-let show = new Date(2026, 11, 4, 20, 0); // @1
+const price = 42.5; // one general admission ticket
+let percentOff = 0; // a percent from 0 to 50, set by a promo code
+const showTime = new Date(2026, 11, 4, 20, 0);
 
 // turns a number into dollars and cents: 1234.5 becomes $1,234.50
 function dollars(amount) {
@@ -8,6 +8,11 @@ function dollars(amount) {
 }
 
 document.getElementById("price").textContent = dollars(price);
+
+// --------------------------------- To Cents ----------------------------------
+function toCents(amount) {
+  return Math.round(amount * 100) / 100;
+}
 
 // -------------------------------- Order Total --------------------------------
 function showTotal() {
@@ -19,10 +24,10 @@ function showTotal() {
   count = Math.min(count, 8);
   document.getElementById("count").value = count;
 
-  let subtotal = count * price * (1 - percentOff / 100);
-  subtotal = Math.round(subtotal * 100) / 100;
-  let fee = Math.round(subtotal * 0.12 * 100) / 100;
-  let total = subtotal + fee;
+  // ------------------------------- Order Total -------------------------------
+  const subtotal = toCents(count * price * (1 - percentOff / 100));
+  const fee = toCents(subtotal * 0.12);
+  const total = toCents(subtotal + fee);
 
   document.getElementById("subtotal").textContent = dollars(subtotal);
   document.getElementById("fee").textContent = dollars(fee);
@@ -33,13 +38,11 @@ showTotal();
 
 // --------------------------------- Countdown ---------------------------------
 function showCountdown() {
-  let ms = show - new Date();
-  let days = Math.floor(ms / (1000 * 60 * 60 * 24));
-  let hours = Math.floor(ms / (1000 * 60 * 60)) % 24;
-  let minutes = Math.floor(ms / (1000 * 60)) % 60;
+  const ms = showTime - new Date();
+  const days = Math.floor(ms / (1000 * 60 * 60 * 24));
 
   if (ms > 0) {
-    document.getElementById("countdown").textContent = `Starts in ${days}d ${hours}h ${minutes}m`;
+    document.getElementById("countdown").textContent = `Starts in ${days} days`;
   } else {
     document.getElementById("countdown").textContent = "The show has started";
   }
@@ -49,19 +52,19 @@ showCountdown();
 setInterval(showCountdown, 1000); // calls showCountdown again every 1000 ms
 
 // --------------------------------- Show Date ---------------------------------
-let full = { weekday: "long", month: "long", day: "numeric" };
-let date = show.toLocaleDateString("en-US", full);
-let short = { hour: "numeric", minute: "2-digit" };
-let time = show.toLocaleTimeString("en-US", short);
+const full = { weekday: "long", month: "long", day: "numeric" };
+const date = showTime.toLocaleDateString("en-US", full);
+const short = { hour: "numeric", minute: "2-digit" };
+const time = showTime.toLocaleTimeString("en-US", short);
 
 document.getElementById("when").textContent = `${date} at ${time}`;
 
 // -------------------------------- Promo Code ---------------------------------
 function applyCode() {
-  let code = document.getElementById("code").value.trim().toUpperCase();
-  let percent = Number(code.slice(4));
+  const code = document.getElementById("code").value.trim();
+  const percent = Number(code.slice(3));
 
-  if (code.startsWith("SEMI") && Number.isInteger(percent) && percent > 0) {
+  if (code.startsWith("213") && percent >= 1 && percent <= 50) {
     percentOff = percent;
     document.getElementById("code-message").textContent = `${percent}% off`;
   } else {
@@ -74,26 +77,29 @@ function applyCode() {
 
 // ------------------------------ Name on Ticket -------------------------------
 function showName() {
-  let name = document.getElementById("name").value.trim();
+  const name = document.getElementById("name").value.trim();
 
   if (name === "") {
     document.getElementById("ticket-name").textContent = "GUEST";
   } else {
-    let parts = name.split(" ");
-    let first = parts[0];
-    first = first[0].toUpperCase() + first.slice(1).toLowerCase();
-    let last = parts[parts.length - 1].toUpperCase();
-    document.getElementById("ticket-name").textContent = `${last}, ${first}`;
+    const parts = name.split(" ");
+    if (parts.length === 1) {
+      document.getElementById("ticket-name").textContent = name.toUpperCase();
+    } else {
+      const first = parts.slice(0, -1).join(" ");
+      const last = parts[parts.length - 1].toUpperCase();
+      document.getElementById("ticket-name").textContent = `${last}, ${first}`;
+    }
   }
 }
 
 // --------------------------------- Parsons 1 ---------------------------------
 function parsons1() {
-  let rows = "ABCDEFGH";
-  let row = rows[Math.floor(Math.random() * rows.length)];
-  let seat = Math.floor(Math.random() * 20) + 1;
-  let number = Math.floor(Math.random() * 10000);
-  let code = "SC-" + String(number).padStart(4, "0");
+  const rows = "ABCDEFGH";
+  const row = rows[Math.floor(Math.random() * rows.length)];
+  const seat = Math.floor(Math.random() * 20) + 1;
+  const number = Math.floor(Math.random() * 10000);
+  const code = "SC-" + String(number).padStart(4, "0");
 
   document.getElementById("confirmation").textContent = `Row ${row}, seat ${seat}, ${code}`;
 }
