@@ -23,7 +23,7 @@ console.log(0.1 + 0.2 === 0.3); // false
 console.log(127.5 * 0.12);      // 15.299999999999999
 ```
 
-JavaScript [stores every number in binary](#55). Most decimals, like 0.1, have no exact binary form, just as 1/3 has no exact decimal form (0.333...).
+JavaScript [stores every number in binary](#56). Most decimals, like 0.1, have no exact binary form, just as 1/3 has no exact decimal form (0.333...).
 
 ---
 
@@ -341,12 +341,12 @@ Each `get` method we've seen, except `getDay`, has a `set` partner. October (`9`
 
 <!-- prettier-ignore -->
 ```js
-let code = "semi10";
-code.toUpperCase();
-console.log(code); // semi10
+let name = "lovelace";
+name.toUpperCase();
+console.log(name); // lovelace
 
-code = code.toUpperCase();
-console.log(code); // SEMI10
+name = name.toUpperCase();
+console.log(name); // LOVELACE
 ```
 
 A string is **immutable**, which means no method can change it. [`toUpperCase`](lecture-loops-js.html#10) returns a new, uppercase string. `.toLowerCase()` works the same way.
@@ -357,11 +357,11 @@ A string is **immutable**, which means no method can change it. [`toUpperCase`](
 
 <!-- prettier-ignore -->
 ```js
-let code = "SEMI10";
+let name = "LOVELACE";
 let count = 2;
 let paid = true;
 
-console.log(code.toLowerCase());         // semi10
+console.log(name.toLowerCase());         // lovelace
 console.log(count.toFixed(2));           // 2.00
 console.log(String(paid).toUpperCase()); // TRUE
 console.log(count.toLowerCase());        // TypeError
@@ -388,12 +388,12 @@ console.log(`[${typed.trim()}]`); // [ada  lovelace]
 
 <!-- prettier-ignore -->
 ```js
-let typed = "  semi10 ";
-let code = typed.trim().toUpperCase();
-console.log(code); // SEMI10
+let typed = "  lovelace ";
+let name = typed.trim().toUpperCase();
+console.log(name); // LOVELACE
 ```
 
-Calling a method on the result of another method is **chaining**. It runs left to right: `trim` gives `"semi10"`, and `toUpperCase` runs on that.
+Calling a method on the result of another method is **chaining**. It runs left to right: `trim` gives `"lovelace"`, and `toUpperCase` runs on that.
 
 ---
 
@@ -416,9 +416,9 @@ Each one returns a boolean. [Like an array's `includes`](lecture-arrays-js.html#
 
 <!-- prettier-ignore -->
 ```js
-let code = "SEMI10";
-console.log(code.slice(0, 4)); // SEMI
-console.log(code.slice(4));    // 10
+let code = "SC-0042";
+console.log(code.slice(0, 2)); // SC
+console.log(code.slice(3));    // 0042
 
 let word = "aDA";
 word = word[0].toUpperCase() + word.slice(1).toLowerCase();
@@ -427,28 +427,43 @@ console.log(word); // Ada
 
 `slice(start, end)`<sup>1</sup> copies from `start` up to, but not including, `end`. With no `end`, it copies to the end.
 
-<div class="footnote">1. This is similar to <a href="../../cs230/06-strings-and-format-strings.html#74">slicing in Python</a>: <code>code.slice(0, 4)</code> is <code>code[0:4]</code>.</div>
+<div class="footnote">1. This is similar to <a href="../../cs230/06-strings-and-format-strings.html#74">slicing in Python</a>: <code>code.slice(0, 2)</code> is <code>code[0:2]</code>.</div>
 
 ---
 
 ## Negative Indexes in `slice`
 
 ```text
-  S   E   M   I   1   0
-  0   1   2   3   4   5
- -6  -5  -4  -3  -2  -1
+  S   C   -   0   0   4   2
+  0   1   2   3   4   5   6
+ -7  -6  -5  -4  -3  -2  -1
 ```
 
 <!-- prettier-ignore -->
 ```js
-let code = "SEMI10";
-console.log(code.slice(-2));     // 10
-console.log(code.slice(-4, -2)); // MI
-console.log(code.slice(1, -1));  // EMI1
+let code = "SC-0042";
+console.log(code.slice(-4));     // 0042
+console.log(code.slice(-4, -2)); // 00
+console.log(code.slice(1, -1));  // C-004
 console.log(code[-1]);           // undefined
 ```
 
-A negative index counts back from the end, so `-1` is the last character and `slice(-2)` is `slice(4)`. Square brackets don't count back, so `code[-1]` is `undefined`, [the same as with arrays](lecture-arrays-js.html#7).
+A negative index counts back from the end, so `-1` is the last character and `slice(-4)` is `slice(3)`. Square brackets don't count back, so `code[-1]` is `undefined`, [the same as with arrays](lecture-arrays-js.html#7).
+
+---
+
+## `substr`
+
+<!-- prettier-ignore -->
+```js
+let code = "SC-0042";
+console.log(code.substr(5, 2)); // 42
+console.log(code.slice(5, 7));  // 42
+console.log(code.substr(3));    // 0042
+console.log(code.substr(-4));   // 0042
+```
+
+`substr(start, length)` copies `length` characters from `start`, so its second argument is a count, where `slice`'s is an end index. [MDN marks `substr` deprecated](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr): expect it in older code, and write `slice`.
 
 ---
 
@@ -487,7 +502,7 @@ console.log("1,250,000".replace(",", ""));      // 1250,000
 let minutes = 5;
 console.log(String(minutes).padStart(2, "0")); // 05
 console.log("4242".padStart(8, "*"));          // ****4242
-console.log("SEMI10".padStart(3, "0"));        // SEMI10
+console.log(String(45).padStart(2, "0"));      // 45
 console.log(minutes.padStart(2, "0"));         // TypeError
 ```
 
@@ -558,7 +573,7 @@ The **Tickets** box calls `showTotal()` when its number changes. Let's update th
 1. `count` holds the box's value. Turn it into a number.
 2. Take `percentOff` percent off the tickets (it stays 0 until Promo Code).
 3. Find the 12% fee on that amount.
-4. Uncomment the last three page lines, and replace each `?` with an amount, passed to `dollars()`, rounded with [`toCents`](#36).
+4. Uncomment the last three page lines, and replace each `?` with an amount, passed to `dollars()`, rounded with [`toCents`](#37).
 
 The box starts at 2 tickets, which should cost $85.00, plus a $10.20 fee.
 

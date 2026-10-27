@@ -11,9 +11,9 @@ console.log(0.1 + 0.2 === 0.3); // false
 console.log(127.5 * 0.12);      // 15.299999999999999
 ```
 
-JavaScript stores every number in binary, where the places after the point are halves, quarters, eighths, and so on. Most decimals, like 0.1, [have no exact binary form](lecture-math-dates-strings-js.html#55), just as 1/3 has no exact decimal form (0.333...). JavaScript keeps the closest binary number instead, so math on decimals can land a tiny bit off.
+JavaScript stores every number in binary, where the places after the point are halves, quarters, eighths, and so on. Most decimals, like 0.1, [have no exact binary form](lecture-math-dates-strings-js.html#56), just as 1/3 has no exact decimal form (0.333...). JavaScript keeps the closest binary number instead, so math on decimals can land a tiny bit off.
 
-`0.1` still prints as `0.1`, because JavaScript [prints the shortest decimal that leads back to the stored number](lecture-math-dates-strings-js.html#57). `0.1 + 0.2` is stored as a different number than `0.3`, so it prints with more digits. For money, [round to cents](#rounding-to-cents).
+`0.1` still prints as `0.1`, because JavaScript [prints the shortest decimal that leads back to the stored number](lecture-math-dates-strings-js.html#58). `0.1 + 0.2` is stored as a different number than `0.3`, so it prints with more digits. For money, [round to cents](#rounding-to-cents).
 
 ## Checking a Number
 
@@ -393,13 +393,14 @@ A string method never changes its string. It returns a new value, so keep the re
 
 | Method                | Returns                                                         | Example                                        |
 | --------------------- | --------------------------------------------------------------- | ---------------------------------------------- |
-| `s.toUpperCase()`     | `s` in all uppercase                                            | `"semi10".toUpperCase()` is `"SEMI10"`         |
-| `s.toLowerCase()`     | `s` in all lowercase                                            | `"SEMI10".toLowerCase()` is `"semi10"`         |
-| `s.trim()`            | `s` without the spaces, tabs, and line breaks at either end     | `"  semi10 ".trim()` is `"semi10"`             |
+| `s.toUpperCase()`     | `s` in all uppercase                                            | `"lovelace".toUpperCase()` is `"LOVELACE"`     |
+| `s.toLowerCase()`     | `s` in all lowercase                                            | `"LOVELACE".toLowerCase()` is `"lovelace"`     |
+| `s.trim()`            | `s` without the spaces, tabs, and line breaks at either end     | `"  lovelace ".trim()` is `"lovelace"`         |
 | `s.includes(x)`       | `true` if `x` appears anywhere in `s`                           | `"ada@school.edu".includes("@")` is `true`     |
-| `s.startsWith(x)`     | `true` if `s` begins with `x`                                   | `"SEMI10".startsWith("SEMI")` is `true`        |
+| `s.startsWith(x)`     | `true` if `s` begins with `x`                                   | `"21310".startsWith("213")` is `true`          |
 | `s.endsWith(x)`       | `true` if `s` ends with `x`                                     | `"ada@school.edu".endsWith(".edu")` is `true`  |
-| `s.slice(start, end)` | the characters from `start` up to, but not including, `end`     | `"SEMI10".slice(0, 4)` is `"SEMI"`             |
+| `s.slice(start, end)` | the characters from `start` up to, but not including, `end`     | `"SC-0042".slice(0, 2)` is `"SC"`              |
+| `s.substr(start, n)`  | `n` characters, starting at `start` (deprecated)                | `"SC-0042".substr(5, 2)` is `"42"`             |
 | `s.split(x)`          | an array of the pieces between each `x`                         | `"20:00".split(":")` is `["20", "00"]`         |
 | `s.replaceAll(a, b)`  | `s` with every `a` swapped for `b`                              | `"1,250".replaceAll(",", "")` is `"1250"`      |
 | `s.replace(a, b)`     | `s` with only the first `a` swapped for `b`                     | `"1,250,000".replace(",", "")` is `"1250,000"` |
@@ -411,30 +412,30 @@ A string method never changes its string. It returns a new value, so keep the re
 
 <!-- prettier-ignore -->
 ```js
-let code = "semi10";
-code.toUpperCase();
-console.log(code); // semi10
+let name = "lovelace";
+name.toUpperCase();
+console.log(name); // lovelace
 
-code = code.toUpperCase();
-console.log(code); // SEMI10
+name = name.toUpperCase();
+console.log(name); // LOVELACE
 ```
 
-The second line builds `"SEMI10"` and throws it away, so `code` is still `"semi10"`. Assigning the result back to `code` keeps it.
+The second line builds `"LOVELACE"` and throws it away, so `name` is still `"lovelace"`. Assigning the result back to `name` keeps it.
 
 ### Trimming and Chaining
 
 <!-- prettier-ignore -->
 ```js
-let typed = "  semi10 ";
-console.log(`[${typed}]`);                      // [  semi10 ]
-console.log(`[${typed.trim()}]`);               // [semi10]
-console.log(`[${typed.trim().toUpperCase()}]`); // [SEMI10]
+let typed = "  lovelace ";
+console.log(`[${typed}]`);                      // [  lovelace ]
+console.log(`[${typed.trim()}]`);               // [lovelace]
+console.log(`[${typed.trim().toUpperCase()}]`); // [LOVELACE]
 console.log(`[${"  ada  lovelace ".trim()}]`);  // [ada  lovelace]
 ```
 
 The brackets show where each string starts and ends. `trim` removes the spaces at both ends, but not the ones in the middle. People type stray spaces into boxes, so trim what a box gives you.
 
-Calling a method on the result of another method is **chaining**. It runs left to right: `trim` returns `"semi10"`, and `toUpperCase` runs on that.
+Calling a method on the result of another method is **chaining**. It runs left to right: `trim` returns `"lovelace"`, and `toUpperCase` runs on that.
 
 ### Searching: `includes`, `startsWith`, and `endsWith`
 
@@ -449,14 +450,14 @@ console.log(email.includes("School")); // false
 
 Each one returns a boolean. They look for an exact match, so `"School"` doesn't match `"school"`.
 
-### Cutting: `slice` and `split`
+### Cutting: `slice`, `substr`, and `split`
 
 <!-- prettier-ignore -->
 ```js
-let code = "SEMI10";
-console.log(code.slice(0, 4)); // SEMI
-console.log(code.slice(4));    // 10
-console.log(code.slice(-2));   // 10
+let code = "SC-0042";
+console.log(code.slice(0, 2)); // SC
+console.log(code.slice(3));    // 0042
+console.log(code.slice(-4));   // 0042
 console.log(code[-1]);         // undefined
 
 let word = "aDA";
@@ -465,6 +466,17 @@ console.log(word); // Ada
 ```
 
 `slice(start, end)` copies from `start` up to, but not including, `end`. With no `end`, it copies to the end of the string. A negative index counts back from the end in `slice`, but not in brackets, so `code[-1]` is `undefined`.
+
+<!-- prettier-ignore -->
+```js
+let code = "SC-0042";
+console.log(code.substr(5, 2)); // 42
+console.log(code.slice(5, 7));  // 42
+console.log(code.substr(3));    // 0042
+console.log(code.substr(-4));   // 0042
+```
+
+`substr(start, length)` copies `length` characters, starting at `start`. Its second argument is a count, where `slice`'s is an end index, so `substr(5, 2)` and `slice(5, 7)` copy the same two characters. Like `slice`, it copies to the end when the second argument is left out, and a negative `start` counts back from the end. [MDN marks `substr` deprecated](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr) because it sits in the part of the standard kept only so old web pages still run, so `slice` is the one to write.
 
 <!-- prettier-ignore -->
 ```js
@@ -582,8 +594,9 @@ console.log("SC-" + String(number).padStart(4, "0")); // SC-0042
 
 | Code                             | Problem                                        | Fix                                 |
 | -------------------------------- | ---------------------------------------------- | ----------------------------------- |
-| `code.toUpperCase();` on its own | `code` doesn't change                          | `code = code.toUpperCase();`        |
+| `name.toUpperCase();` on its own | `name` doesn't change                          | `name = name.toUpperCase();`        |
 | `minutes.padStart(2, "0")`       | `TypeError`: a number has no `padStart`        | `String(minutes).padStart(2, "0")`  |
 | `"1,250,000".replace(",", "")`   | `"1250,000"`: only the first comma goes        | `"1,250,000".replaceAll(",", "")`   |
 | `code[-1]`                       | `undefined`: brackets don't count from the end | `code.slice(-1)`                    |
+| `"SC-0042".substr(3, 5)`         | `"0042"`: the `5` is a count, not an end index | `"SC-0042".slice(3, 5)`             |
 | `"20:00".split(":")[0] + 1`      | `"201"`: the pieces are strings                | `Number("20:00".split(":")[0]) + 1` |
