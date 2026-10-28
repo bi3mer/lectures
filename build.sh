@@ -70,6 +70,7 @@ analytics='<script defer src="https://cloud.umami.is/script.js" data-website-id=
 tracked=(
   index.html
   cs213/index.html
+  cs213/schedule.html
   cs213/js/exercises/index.html
   cs230/index.html
 )

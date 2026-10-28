@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 350" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Whitespace is text</title>
+  <desc>The ul element with id party had seven child nodes, at indexes 0 to 6. Indexes 0, 2, 4, and 6 were text nodes holding only whitespace: a line break and two spaces before each li, and a line break after the last one. Indexes 1, 3, and 5 were the li elements, whose text nodes held "Ada", "Grace", and "Linus".</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="900" height="350" rx="18" fill="#0f1b2d" />
+  <rect width="900" height="350" rx="18" fill="url(#grid)" />
+
+  <!-- Colors match dom-tree.svg: elements blue, text yellow. Children sit 120 apart, centered
+       at 90, 210, ..., 810. -->
+
+  <!-- Lines from the ul to each child, and from each li to its text -->
+  <g stroke="#64748b" stroke-width="2" fill="none">
+    <path d="M450 62 L90 124" />
+    <path d="M450 62 L210 124" />
+    <path d="M450 62 L330 124" />
+    <path d="M450 62 L450 124" />
+    <path d="M450 62 L570 124" />
+    <path d="M450 62 L690 124" />
+    <path d="M450 62 L810 124" />
+    <path d="M210 190 L210 240" />
+    <path d="M450 190 L450 240" />
+    <path d="M690 190 L690 240" />
+  </g>
+
+  <!-- Each child's index in childNodes -->
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="16" fill="#94a3b8" text-anchor="middle">
+    <text x="90" y="143">0</text>
+    <text x="210" y="143">1</text>
+    <text x="330" y="143">2</text>
+    <text x="450" y="143">3</text>
+    <text x="570" y="143">4</text>
+    <text x="690" y="143">5</text>
+    <text x="810" y="143">6</text>
+  </g>
+
+  <!-- Elements: the ul and its three li -->
+  <g fill="#1e293b" stroke="#38bdf8" stroke-width="2.5">
+    <rect x="345" y="22" width="210" height="40" rx="8" />
+    <rect x="170" y="150" width="80" height="40" rx="8" />
+    <rect x="410" y="150" width="80" height="40" rx="8" />
+    <rect x="650" y="150" width="80" height="40" rx="8" />
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" font-weight="bold" fill="#38bdf8" text-anchor="middle">
+    <text x="450" y="49">&lt;ul id="party"&gt;</text>
+    <text x="210" y="177">&lt;li&gt;</text>
+    <text x="450" y="177">&lt;li&gt;</text>
+    <text x="690" y="177">&lt;li&gt;</text>
+  </g>
+
+  <!-- Text nodes: whitespace between the tags, and each li's name -->
+  <g fill="#1e293b" stroke="#facc15" stroke-width="2.5">
+    <rect x="40" y="150" width="100" height="40" rx="20" />
+    <rect x="280" y="150" width="100" height="40" rx="20" />
+    <rect x="520" y="150" width="100" height="40" rx="20" />
+    <rect x="760" y="150" width="100" height="40" rx="20" />
+    <rect x="160" y="240" width="100" height="40" rx="20" />
+    <rect x="400" y="240" width="100" height="40" rx="20" />
+    <rect x="640" y="240" width="100" height="40" rx="20" />
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#facc15" text-anchor="middle" style="white-space: pre">
+    <text x="90" y="177">"↵··"</text>
+    <text x="330" y="177">"↵··"</text>
+    <text x="570" y="177">"↵··"</text>
+    <text x="810" y="177">"↵"</text>
+    <text x="210" y="267">"Ada"</text>
+    <text x="450" y="267">"Grace"</text>
+    <text x="690" y="267">"Linus"</text>
+  </g>
+
+  <!-- Key -->
+  <g font-size="18" fill="#e2e8f0">
+    <rect x="40" y="306" width="22" height="22" rx="5" fill="#1e293b" stroke="#38bdf8" stroke-width="2.5" />
+    <text x="72" y="323">element</text>
+    <rect x="190" y="306" width="22" height="22" rx="11" fill="#1e293b" stroke="#facc15" stroke-width="2.5" />
+    <text x="222" y="323">text</text>
+    <text x="310" y="323" style="white-space: pre"><tspan font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#facc15">↵</tspan> a line break   <tspan font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#facc15">·</tspan> a space</text>
+  </g>
+</svg>

@@ -142,6 +142,30 @@ main.doc {
   background-color: rgba(3, 40, 55, 0.15);
 }
 
+/* The CS 213 schedule (cs213/schedule.html), a hand-written page. The table sits centered in
+   the column, and still scrolls sideways on a phone. Each week's topics are a list, so every
+   cell starts at the top of its row, and the dates stay on one line. */
+.doc table.schedule {
+  width: fit-content;
+  max-width: 100%;
+  margin: 24px auto;
+}
+
+.doc .schedule th,
+.doc .schedule td {
+  padding: 8px 12px;
+  vertical-align: top;
+}
+
+.doc .schedule td:first-child {
+  white-space: nowrap;
+}
+
+.doc .schedule ul {
+  margin: 4px 0;
+  padding-left: 20px;
+}
+
 /* The data page (cs230/data/index.md). A large link at the top downloads every file as one
    zip. Below it, each file is a box that opens to show the file, with a download arrow beside
    its name. The file sits flush in the box, which is already dark. */
