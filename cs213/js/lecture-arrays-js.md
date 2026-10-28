@@ -52,7 +52,7 @@ Last lecture's order book [kept each price in a key](lecture-loops-js.html#35), 
 
 An **array** holds an ordered list of values. Each value sits at a numbered position, counting from 0. (This is where the term _zero-indexed_ comes from.)
 
-Instead of an object, we should have used an **array of objects** where each value is an object, like one price level with its price and shares. We'll [rebuild this book](#27) that way, without any of these three problems.
+Instead of an object, we should have used an **array of objects** where each value is an object, like one price level with its price and shares. We'll [rebuild this book](#32) that way, without any of these three problems.
 
 ---
 
@@ -149,7 +149,7 @@ Only indexes 0 to `length - 1` hold items. Any other index gives `undefined`, th
 
 Python and Java stop with an error on an index that is too large. JavaScript's first version (1995) had no way to catch errors, so it gave `undefined` instead.
 
-Checking the index is up to us, or `undefined` [will break the program later on](#42).
+Checking the index is up to us, or `undefined` [will break the program later on](#47).
 
 ---
 
@@ -202,6 +202,96 @@ console.log(tickers); // ["WIDG", "BLIP"]
 ```
 
 `shift` removes the first item off and returns it. Every other item moves down one index. (The reverse of `pop`.)
+
+---
+
+## `unshift`
+
+```js
+let tickers = ["WIDG", "BLIP"];
+tickers.unshift("TEST");
+console.log(tickers); // ["TEST", "WIDG", "BLIP"]
+```
+
+`unshift` adds an item to the front of the array, where `push` adds to the end. Every other item moves up one index.
+
+---
+
+## `splice`
+
+```js
+let tickers = ["TEST", "BLIP"];
+tickers.splice(1, 0, "WIDG");
+console.log(tickers); // ["TEST", "WIDG", "BLIP"]
+```
+
+- `splice(index, deleteCount, item)` goes to `index`, removes `deleteCount` items there, and inserts `item` in their place.
+- `deleteCount` is how many items come out, not how many copies go in, so 0 removes nothing and `splice` only inserts.
+- It changes the array itself and returns the removed items in an array.
+
+---
+
+## `splice`: Inserting
+
+<!-- prettier-ignore -->
+```js
+// quizzes 1 and 4; the student was sick for quizzes 2 and 3
+let scores = [88, 75];
+let removed = scores.splice(1, 0, 82, 91);
+console.log(scores);  // [88, 82, 91, 75]
+console.log(removed); // []
+```
+
+Quiz 2 goes at index 1, since quizzes count from 1 and indexes count from 0. To insert two scores, list both after `deleteCount`. They go in once each, in order, and quiz 4's 75 moves up to index 3. Nothing came out, so `removed` is empty.
+
+---
+
+## `splice`: Removing
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
+
+<!-- prettier-ignore -->
+```js
+// the teacher drops quiz 2
+let scores = [88, 82, 91, 75];
+let dropped = scores.splice(1, 1);
+console.log(dropped); // [82]
+console.log(scores);  // [88, 91, 75]
+
+// take out quizzes 3 and 4 to regrade them
+let rest = scores.splice(1);
+console.log(rest);   // [91, 75]
+console.log(scores); // [88]
+```
+
+With no items after `deleteCount`, `splice` only removes. It returns an array even for one item, so the score itself is `dropped[0]`. Leaving out `deleteCount` too removes everything from `index` to the end.
+
+---
+
+## `splice`: Replacing
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
+
+<!-- prettier-ignore -->
+```js
+// the student retakes quiz 4 and scores 80
+let scores = [88, 82, 91, 75];
+let replaced = scores.splice(3, 1, 80);
+console.log(replaced); // [75]
+console.log(scores);   // [88, 82, 91, 80]
+
+// quizzes 2 and 3 become one project, worth 95
+let removed = scores.splice(1, 2, 95);
+console.log(removed); // [82, 91]
+console.log(scores);  // [88, 95, 80]
+```
+
+- `splice` removes first, then inserts. The retake swaps 1 score for 1, like `scores[3] = 80`, but `splice` also hands back the old score.
+- The two counts don't have to match: for the project, 2 scores came out and 1 went in.
 
 ---
 
@@ -492,7 +582,7 @@ prices.forEach(function (price) {
 
 - A [function](lecture-js.html#90) is a value, which means that we pass a function to another function as a parameter. `forEach` calls it once for each item, with that item as the argument.
 - There's no name after `function`, so it is an **anonymous function**. It needs no name, since only `forEach` calls it. The `)` after the `}` closes `forEach(`.
-- This prints every price, like [`for...of`](#15). `break` and `continue` are syntax errors inside `forEach`'s function, so use `for...of` when a loop might stop early.
+- This prints every price, like [`for...of`](#20). `break` and `continue` are syntax errors inside `forEach`'s function, so use `for...of` when a loop might stop early.
 
 ---
 
@@ -578,7 +668,7 @@ Today's page does more than last lecture's: it tracks today's trades, and its bu
 The watchlist shows a list of tickers, and its **Add** button calls `addTicker()`. Let's fill in the Watchlist section of `practice.js`.
 
 1. Search `practice.js` for `@1`, and put `"TEST"` and `"BLIP"` in the empty `watchlist`.
-2. In `showWatchList()`, replace the `?` with the tickers, separated by commas, using [`join`](#14).
+2. In `showWatchList()`, replace the `?` with the tickers, separated by commas, using [`join`](#19).
 3. In `addTicker()`, `push` the ticker in the box if `watchlist` doesn't include it yet, but make sure that it is [uppercase](lecture-loops-js.html#10). Then show the list again.
 4. What should happen when the box is empty?
 
@@ -620,7 +710,7 @@ showWatchList();
 pre { font-size: 0.75em; }
 </style>
 
-Today's range is the lowest and highest price so far: `$100.10 to $100.50`. Let's turn the pseudocode into code in the Today's Range section, looping with [`for...of`](#15).
+Today's range is the lowest and highest price so far: `$100.10 to $100.50`. Let's turn the pseudocode into code in the Today's Range section, looping with [`for...of`](#20).
 
 ```text
 set low to the first price
@@ -806,7 +896,7 @@ function sellAtMarket() {
 </div>
 </div>
 
-`best` and `bids[0]` are [one object](#20), so `best.shares -= toSell` changes the book itself. Adding `", "` after each fill would leave one dangling after the last. `join` puts commas only between fills.
+`best` and `bids[0]` are [one object](#25), so `best.shares -= toSell` changes the book itself. Adding `", "` after each fill would leave one dangling after the last. `join` puts commas only between fills.
 
 ---
 
@@ -921,7 +1011,7 @@ Once `bids` is empty, `bids[0]` is `undefined`, so `bids[0].price` stopped `draw
 
 Today's Trades should show the average price: `$100.31`. Let's find it in the Average Price section.
 
-1. Use [`forEach`](#23) with an [arrow function](#25) to add up `prices` in `priceSum`.
+1. Use [`forEach`](#28) with an [arrow function](#30) to add up `prices` in `priceSum`.
 2. Divide by the number of trades, and store it in `average`, with two decimal places.
 3. Uncomment the page line, and replace its `?` with `average`.
 
@@ -1001,7 +1091,7 @@ It shows each stock's move since the open, so `showMovers` would be a better nam
 The order form has **Price** and **Shares** boxes. **Place ask** already works: `placeAsk()` (above the Watchlist section) adds an ask and keeps `asks` lowest first. **Place bid** calls `placeBid()`. Let's fill it in, in the Place a Bid section.
 
 1. Uncomment the two page lines, and turn each box's value into a number with [`Number()`](lecture-js.html#68), as `placeAsk()` does.
-2. `push` a new level onto `bids`. Then [sort](#26) `bids` so the highest price comes first.
+2. `push` a new level onto `bids`. Then [sort](#31) `bids` so the highest price comes first.
 3. Call `drawBook()`.
 
 A bid for 300 shares at 100.10 should land between 100.25 and 100.00.
@@ -1049,6 +1139,7 @@ The HTML is the same as the starter's `index.html`, and `practice.js` starts wit
 - Arrays and strings index from 0 to `length - 1`. Any other index gives `undefined`.
 - `length` counts an array's items, or a string's characters.
 - `push` adds to the end, `pop` takes off the last item, and `shift` takes off the first.
+- `unshift` adds to the front, and `splice` removes or inserts items at any index.
 - `includes` checks for an item, and `join` glues the items into one string.
 - `for...of` gives each item, and `for` with an index can go backward.
 - An array of objects keeps whole records in order, like `bids[0].price`.

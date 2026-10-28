@@ -408,7 +408,7 @@ console.log(email.endsWith(".edu"));   // true
 console.log(email.includes("School")); // false
 ```
 
-Each one returns a boolean. [Like an array's `includes`](lecture-arrays-js.html#13), they look for an exact match, so `"School"` doesn't match `"school"`.
+Each one returns a boolean. [Like an array's `includes`](lecture-arrays-js.html#18), they look for an exact match, so `"School"` doesn't match `"school"`.
 
 ---
 
@@ -477,7 +477,7 @@ console.log(parts[parts.length - 1]); // Lovelace
 console.log("20:00".split(":"));      // ["20", "00"]
 ```
 
-`split` cuts a string at each match of its argument, and returns an array of the pieces. It's the reverse of [`join`](lecture-arrays-js.html#14). The pieces are strings, even `"20"`.
+`split` cuts a string at each match of its argument, and returns an array of the pieces. It's the reverse of [`join`](lecture-arrays-js.html#19). The pieces are strings, even `"20"`.
 
 ---
 
@@ -645,7 +645,7 @@ The header counts down to the show, like `Starts in 38 days`. `showTime`, at the
 2. Uncomment the page line, and replace its `?` with the number of days.
 3. What should the page say once the show has started?
 
-`setInterval(showCountdown, 1000)`, under the function, takes [a function as a value](lecture-arrays-js.html#23) and calls it every 1000 ms.
+`setInterval(showCountdown, 1000)`, under the function, takes [a function as a value](lecture-arrays-js.html#28) and calls it every 1000 ms.
 
 ---
 
@@ -760,7 +760,7 @@ else
     put "last, first" on the ticket
 ```
 
-Uncomment the page lines as you use them. `slice` works on arrays too, [negative indexes](#28) included, and [`join`](lecture-arrays-js.html#14) turns an array into one string.
+Uncomment the page lines as you use them. `slice` works on arrays too, [negative indexes](#28) included, and [`join`](lecture-arrays-js.html#19) turns an array into one string.
 
 ---
 
