@@ -79,6 +79,12 @@
         border-radius: 8px;
       }
 
+      /* Rows of controls. A div has no margin of its own, so this spaces them out. */
+      .card > div,
+      fieldset > div {
+        margin: 16px 0;
+      }
+
       legend,
       #chars-left {
         color: var(--secondary);
@@ -203,11 +209,11 @@
           <p id="bottom-text" class="photo-text"></p>
           <p id="photo-credit" hidden></p>
         </div>
-        <p>
+        <div>
           <label for="upload">Photo</label>
           <input id="upload" type="file" accept="image/*" onchange="showPhoto()" />
-        </p>
-        <p><button onclick="parsons1()">🎲</button></p>
+        </div>
+        <div><button onclick="parsons1()">🎲</button></div>
       </section>
     </main>
 

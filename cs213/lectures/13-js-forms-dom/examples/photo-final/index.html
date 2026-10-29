@@ -79,6 +79,12 @@
         border-radius: 8px;
       }
 
+      /* Rows of controls. A div has no margin of its own, so this spaces them out. */
+      .card > div,
+      fieldset > div {
+        margin: 16px 0;
+      }
+
       legend,
       #chars-left {
         color: var(--secondary);
@@ -181,15 +187,21 @@
         <h2>Edit</h2>
 
         <!-- Text -->
-        <p>
+        <div>
           <label for="text">Text</label>
           <textarea id="text" name="text" placeholder="Optional" oninput="showText()"></textarea>
           <span id="chars-left"></span>
-        </p>
-        <p>
+        </div>
+        <div>
           <label for="color">Text color</label>
-          <input id="color" name="color" type="color" value="#ffffff" oninput="showText()" />
-        </p>
+          <input
+            id="color"
+            name="color"
+            type="color"
+            value="rgb(255, 255, 255)"
+            oninput="showText()"
+          />
+        </div>
 
         <!-- Position -->
         <fieldset>
@@ -201,19 +213,19 @@
         </fieldset>
 
         <!-- Font -->
-        <p>
+        <div>
           <label for="font">Font</label>
           <select id="font" name="font" onchange="showText()">
             <option value="impact">Impact</option>
             <option value="georgia">Georgia</option>
             <option value="comic">Comic Sans</option>
           </select>
-        </p>
+        </div>
 
         <!-- Adjust -->
         <fieldset>
           <legend>Adjust</legend>
-          <p>
+          <div>
             <label for="brightness">Brightness</label>
             <input
               id="brightness"
@@ -225,8 +237,8 @@
               oninput="showAdjust()"
             />
             <span id="brightness-value"></span>
-          </p>
-          <p>
+          </div>
+          <div>
             <label for="contrast">Contrast</label>
             <input
               id="contrast"
@@ -238,8 +250,8 @@
               oninput="showAdjust()"
             />
             <span id="contrast-value"></span>
-          </p>
-          <p>
+          </div>
+          <div>
             <label for="saturation">Saturation</label>
             <input
               id="saturation"
@@ -251,12 +263,12 @@
               oninput="showAdjust()"
             />
             <span id="saturation-value"></span>
-          </p>
-          <p>
+          </div>
+          <div>
             <label for="hue">Hue</label>
             <input id="hue" name="hue" type="color" value="#3399ff" oninput="showAdjust()" />
-          </p>
-          <p>
+          </div>
+          <div>
             <label for="strength">Hue strength</label>
             <input
               id="strength"
@@ -269,8 +281,8 @@
               oninput="showAdjust()"
             />
             <span id="strength-value"></span>
-          </p>
-          <p>
+          </div>
+          <div>
             <label for="size">Text size</label>
             <input
               id="size"
@@ -282,24 +294,24 @@
               oninput="showAdjust()"
             />
             <span id="size-value"></span>
-          </p>
+          </div>
         </fieldset>
 
         <!-- Credit -->
-        <p>
+        <div>
           <label for="credit">Credit</label>
           <input id="credit" name="credit" oninput="showText()" />
-        </p>
-        <p>
+        </div>
+        <div>
           <input id="show-credit" name="show-credit" type="checkbox" onchange="showText()" />
           <label for="show-credit">Show credit on the photo</label>
-        </p>
+        </div>
 
         <!-- Export Button -->
-        <p>
+        <div>
           <button id="export" type="button" onclick="exportPhoto()">Export</button>
           <span id="message"></span>
-        </p>
+        </div>
       </form>
 
       <section class="card">
@@ -312,11 +324,11 @@
           <p id="bottom-text" class="photo-text"></p>
           <p id="photo-credit" hidden></p>
         </div>
-        <p>
+        <div>
           <label for="upload">Photo</label>
           <input id="upload" type="file" accept="image/*" onchange="showPhoto()" />
-        </p>
-        <p><button onclick="parsons1()">🎲</button></p>
+        </div>
+        <div><button onclick="parsons1()">🎲</button></div>
       </section>
     </main>
 

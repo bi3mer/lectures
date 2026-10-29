@@ -14,7 +14,7 @@ paginate: true
    would reach the live controls inside, so a .demo goes back to the browser's light one. */
 .demo { margin: 20px 12px 28px; color-scheme: light; }
 .demo p { margin: 0; }
-.demo p + p { margin-top: 8px; }
+.demo div + div { margin-top: 8px; }
 .demo input, .demo select, .demo button { font: inherit; }
 /* Answer choices for the Predict slides, all on one line. */
 .choices { display: flex; gap: 48px; }
@@ -64,8 +64,6 @@ A **form** collects what someone types or picks. Every login, search box, and ch
 <div class="demo"><label for="demo-credit">Credit</label> <input id="demo-credit" size="12" /> <button type="button">Export</button></div>
 </div>
 </div>
-
-`<form>` holds the controls. `<input>` is a box to type in, and like `<img>`, it has no closing tag.
 
 ---
 
@@ -133,73 +131,71 @@ A label's `for` matches its control's `id`. Clicking the label clicks the contro
 
 ## Setting Up the Starter
 
-Today's page is Shutterbug, a photo editor. Its starter has four files on GitHub: [index.html](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/13-js-forms-dom/examples/photo-starter/index.html), [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/13-js-forms-dom/examples/photo-starter/practice.js), [photo.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/13-js-forms-dom/examples/photo-starter/photo.js), and the photo, [lake.svg](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/13-js-forms-dom/examples/photo-starter/lake.svg). Set them up in WebStorm, in a new folder:
+Today's page is [Shutterbug](https://bi3mer.github.io/lectures/cs213/lectures/13-js-forms-dom/examples/photo-final/), a photo editor. Its starter has four files on GitHub: [index.html](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/13-js-forms-dom/examples/photo-starter/index.html), [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/13-js-forms-dom/examples/photo-starter/practice.js), [photo.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/13-js-forms-dom/examples/photo-starter/photo.js), and the photo, [lake.svg](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/13-js-forms-dom/examples/photo-starter/lake.svg). Set them up in WebStorm, in a new folder:
 
 1. Open each file, and click **Copy raw file**, the copy icon above the code.
 2. Paste each one into a new file in WebStorm with the same name.
 
-The form in `index.html` holds only a heading and comments, so we'll build it, and this time we write the page lines in `practice.js` ourselves. `photo.js` comes ready: it loads your own JPEG or PNG, and it exports the edited photo. Sit with a partner, and talk through each line before you type it.
-
 ---
 
-## Problem (Us): Text
-
-Like a meme, a photo can have text on it, which is optional. Let's add its controls under the Text comment in `index.html`, each in its own `<p>`.
-
-1. A [`<textarea>`](#5) whose `id` and `name` are `text`, with the label `Text` and the gray hint `Optional`. After it, add an empty `<span id="chars-left">` for a count.
-2. A color picker whose `id` and `name` are `color`, with the label `Text color`. It starts at white, `#ffffff`.
-3. Click each label. What happens?
-
----
-
-## Solution (Us): Text
+## Problem (You): Text
 
 <style scoped>
 pre { font-size: 0.75em; }
 </style>
 
+Like a meme, a photo can have optional text on it. Paste its controls under the Text comment in `index.html`, then tell me what each one does.
+
 ```html
-<p>
+<div>
   <label for="text">Text</label>
   <textarea id="text" name="text" placeholder="Optional"></textarea>
   <span id="chars-left"></span>
-</p>
-<p>
+</div>
+<div>
   <label for="color">Text color</label>
-  <input id="color" name="color" type="color" value="#ffffff" />
-</p>
+  <input id="color" name="color" type="color" value="rgb(255, 255, 255)" />
+</div>
 ```
 
-Clicking a label clicks its control, since its `for` matches the control's `id`. The `id` is for the label and our code, and the `name` is for [sending the form](#21). A color picker's `value` must be a hex color like `#ffffff`.
+- Click each label. What happens?
+- Why is the `<span>` empty?
+- Why does each control have both an `id` and a `name`?
+
+---
+
+## Solution (You): Text
+
+- Clicking a label clicks its control, since its `for` matches the control's `id`.
+- The `<span>` is a spot for a count that our code will add later: how many characters are left.
+- The `id` is for the label and our code, and the `name` is for [sending the form](#25).
 
 ---
 
 ## Problem (You): Credit
 
-Under the Credit comment, each in its own `<p>`, add:
+Paste these under the Credit comment, then tell me what each one does.
 
-1. A text box whose `id` and `name` are `credit`, with the label `Credit`.
-2. A checkbox whose `id` and `name` are `show-credit`, with the label `Show credit on the photo` after it.
+```html
+<div>
+  <label for="credit">Credit</label>
+  <input id="credit" name="credit" />
+</div>
+<div>
+  <input id="show-credit" name="show-credit" type="checkbox" />
+  <label for="show-credit">Show credit on the photo</label>
+</div>
+```
+
+- The credit box has no `type`. What kind of box is it?
+- Why does the checkbox come before its label?
 
 ---
 
 ## Solution (You): Credit
 
-```html
-<p>
-  <label for="credit">Credit</label>
-  <input id="credit" name="credit" />
-</p>
-```
-
-```html
-<p>
-  <input id="show-credit" name="show-credit" type="checkbox" />
-  <label for="show-credit">Show credit on the photo</label>
-</p>
-```
-
-An `<input>` with no `type` is a text box. The label comes after the checkbox, so the box sits at the start of the line.
+- A text box, since `text` is the default `type`.
+- Checkboxes and radio buttons go before their labels, so a stack of them lines up on the left.
 
 ---
 
@@ -254,7 +250,7 @@ Radio buttons that share a `name` are one group, so picking one unpicks the othe
 </div>
 <div>
 <p class="caption">Page</p>
-<div class="demo"><fieldset><legend>Adjust</legend><p><label for="demo-brightness">Brightness</label> <input id="demo-brightness" type="range" /></p><p><label for="demo-contrast">Contrast</label> <input id="demo-contrast" type="range" /></p></fieldset></div>
+<div class="demo"><fieldset><legend>Adjust</legend><div><label for="demo-brightness">Brightness</label> <input id="demo-brightness" type="range" /></div><div><label for="demo-contrast">Contrast</label> <input id="demo-contrast" type="range" /></div></fieldset></div>
 </div>
 </div>
 
@@ -262,18 +258,9 @@ A `<fieldset>` draws a box around controls that go together, and its `<legend>` 
 
 ---
 
-## Problem (You): Position and Font
+## Problem (You): Position
 
-1. Under the Position comment, add a [fieldset](#15) with the legend `Position`. In it, add two [radio buttons](#14) whose `name` is `position`: `Top`, whose `id` and value are `top`, and `Bottom`, whose `id` and value are `bottom`. Top starts picked.
-2. Under the Font comment, add a `<p>` with the label `Font` and a [`<select>`](#13) whose `id` and `name` are `font`. Its options are Impact, Georgia, and Comic Sans, with the values `impact`, `georgia`, and `comic`.
-
----
-
-## Solution (You): Position and Font
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
+Paste this under the Position comment, then tell me what each one does.
 
 ```html
 <fieldset>
@@ -283,68 +270,121 @@ pre { font-size: 0.75em; }
   <input id="bottom" name="position" type="radio" value="bottom" />
   <label for="bottom">Bottom</label>
 </fieldset>
-<p>
+```
+
+- Pick Bottom, then Top. Why can't both be picked?
+- Both buttons have the same `name`. Why does each need its own `id`?
+- Which one starts picked, and why?
+
+---
+
+## Solution (You): Position
+
+- Radio buttons that share a `name` are [one group](#14), so picking one unpicks the other.
+- Each label's `for` points at its own button's `id`.
+- Top, since it has `checked`.
+
+---
+
+## Problem (You): Font
+
+Paste this under the Font comment, then tell me what each one does.
+
+```html
+<div>
   <label for="font">Font</label>
   <select id="font" name="font">
     <option value="impact">Impact</option>
     <option value="georgia">Georgia</option>
     <option value="comic">Comic Sans</option>
   </select>
-</p>
+</div>
 ```
 
-Sharing the `name` `position` makes picking one button unpick the other. Our code will see each font's lowercase `value`.
+- Pick Comic Sans. What will our code see?
+- No option has `selected`. Which one starts picked?
+
+---
+
+## Solution (You): Font
+
+- The picked option's `value`, `comic`, not the `Comic Sans` it shows.
+- Impact, since with no `selected`, the [first option](#13) starts picked.
 
 ---
 
 ## Problem (You): Photo Sliders
 
 <style scoped>
-table { font-size: 0.8em; }
+pre { font-size: 0.65em; }
 </style>
 
-Under the Adjust comment, add a [fieldset](#15) with the legend `Adjust`. In it, add five sliders, each in its own `<p>` with a label:
-
-<center>
-
-| Label        | `id` and `name` | From | To  | Starts at |
-| ------------ | --------------- | ---- | --- | --------- |
-| Brightness   | `brightness`    | 0    | 200 | 100       |
-| Contrast     | `contrast`      | 0    | 200 | 100       |
-| Saturation   | `saturation`    | 0    | 200 | 100       |
-| Hue strength | `strength`      | 0    | 1   | 0         |
-| Text size    | `size`          | 16   | 48  | 32        |
-
-</center>
-
-The first three are percents, so 100 leaves the photo as it is. Hue strength moves in [steps](#7) of `0.01`. Before it, add a color picker labeled `Hue`, whose `id` and `name` are `hue`, starting at `#3399ff`.
-
----
-
-## Solution (You): Photo Sliders
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
+Paste this under the Adjust comment, then tell me what each one does.
 
 <!-- prettier-ignore -->
 ```html
 <fieldset>
   <legend>Adjust</legend>
-  <p>
+  <div>
     <label for="brightness">Brightness</label>
     <input id="brightness" name="brightness" type="range" min="0" max="200" value="100" />
-  </p>
-  <!-- Contrast and Saturation the same way -->
-  <p>
-    <label for="hue">Hue</label>
-    <input id="hue" name="hue" type="color" value="#3399ff" />
-  </p>
-  <!-- Hue strength, with step="0.01", and Text size the same way -->
+  </div>
+  <div>
+    <label for="contrast">Contrast</label>
+    <input id="contrast" name="contrast" type="range" min="0" max="200" value="100" />
+  </div>
+  <div>
+    <label for="saturation">Saturation</label>
+    <input id="saturation" name="saturation" type="range" min="0" max="200" value="100" />
+  </div>
 </fieldset>
 ```
 
-`min` and `max` stop each slider at its ends, and `value` sets where it starts when the page loads.
+- Drag Brightness. Why doesn't the photo change?
+- Why does each slider start at 100 and stop at 200?
+
+---
+
+## Solution (You): Photo Sliders
+
+- Nothing reads the sliders yet. A form only collects values, and our code will use them to change the photo.
+- They're percents: 100% leaves the photo as it is, and 200% doubles it.
+
+---
+
+## Problem (You): Hue and Text Size
+
+<style scoped>
+pre { font-size: 0.7em; }
+</style>
+
+Paste these in the Adjust fieldset, just before `</fieldset>`, then tell me what each one does.
+
+<!-- prettier-ignore -->
+```html
+<div>
+  <label for="hue">Hue</label>
+  <input id="hue" name="hue" type="color" value="#3399ff" />
+</div>
+<div>
+  <label for="strength">Hue strength</label>
+  <input id="strength" name="strength" type="range" min="0" max="1" step="0.01" value="0" />
+</div>
+<div>
+  <label for="size">Text size</label>
+  <input id="size" name="size" type="range" min="16" max="48" value="32" />
+</div>
+```
+
+- Why does Hue strength need `step="0.01"`?
+- What do 16, 48, and 32 mean for Text size?
+
+---
+
+## Solution (You): Hue and Text Size
+
+- A slider [steps](#7) by 1 unless told otherwise, so from 0 to 1 it would stop only at 0 and 1. `0.01` gives it 101 stops.
+- They're pixels: the text on the photo goes from 16px to 48px, and starts at 32px.
 
 ---
 
@@ -405,25 +445,31 @@ Only controls with a `name` are sent, a checkbox only when it's ticked, and a ra
 
 ## Problem (Us): Export Button
 
-Let's finish the form, under the Export Button comment.
+Paste this under the Export Button comment to finish the form.
 
-1. Add a `<p>` with a button whose `id` is `export`, which says `Export` and has no `type`. After it, add an empty `<span id="message">` for messages.
-2. Fill in the form. What will happen when we click **Export**? Vote, then click it.
-3. Read the query string in the address. Is every control there?
-4. The button should run our code later, not send the form. Fix it.
+```html
+<div>
+  <button id="export">Export</button>
+  <span id="message"></span>
+</div>
+```
+
+1. Fill in the form. What will happen when we click **Export**? Vote, then click it.
+2. Read the query string in the address. Is every control there?
+3. The button should run our code later, not send the form. Fix it.
 
 ---
 
 ## Solution (Us): Export Button
 
 ```html
-<p>
+<div>
   <button id="export" type="button">Export</button>
   <span id="message"></span>
-</p>
+</div>
 ```
 
-With no `type`, the button was a [submit button](#20): the page loaded again, empty, with the form in the address, starting `?text=Golden+hour&color=%23ffffff&position=top`. An unticked checkbox is never sent, and any other missing control has no `name`. Enter in the **Credit** box still sends the form, since a form with one text box sends itself on Enter.
+With no `type`, the button was a [submit button](#24): the page loaded again, empty, with the form in the address, starting `?text=Golden+hour&color=%23ffffff&position=top`. An unticked checkbox is never sent, and any other missing control has no `name`. Enter in the **Credit** box still sends the form, since a form with one text box sends itself on Enter.
 
 ---
 
@@ -601,7 +647,7 @@ What does it print? Vote, then convince a neighbor.
 
 ![w:900 The ul element with id albums had seven child nodes, at indexes 0 to 6. Indexes 0, 2, 4, and 6 were text nodes holding only whitespace: a line break and two spaces before each li, and a line break after the last one. Indexes 1, 3, and 5 were the li elements, whose text nodes held "Sunset", "Snow day", and "Tacos".](examples/diagrams/whitespace-text-nodes.svg)
 
-**D.** The line breaks and spaces between the tags are text too, so `<ul>` has a text node before each `<li>` and one after the last. To count only the `<li>`s, check each node's [`nodeType`](#31).
+**D.** The line breaks and spaces between the tags are text too, so `<ul>` has a text node before each `<li>` and one after the last. To count only the `<li>`s, check each node's [`nodeType`](#35).
 
 ---
 
@@ -783,10 +829,10 @@ These are **events**, which get their own lecture. Setting `value` from code cal
 
 The photo should show the text as we type it, at the top or the bottom.
 
-1. In `index.html`, have the **Text** box call `showText()` [as we type](#46), and each radio button when it's picked.
+1. In `index.html`, have the **Text** box call `showText()` [as we type](#50), and each radio button when it's picked.
 2. In the Text on the Photo section of `practice.js`, read the **Text** box, and [trim](../12-js-math-dates-strings/lecture.html#24) what's in it.
-3. If **Top** is [`checked`](#45), put the text in `top-text`, and empty `bottom-text`. If not, do the reverse.
-4. Type `<i>hi</i>` in the box. What does the photo show? What would it show with [`innerHTML`](#39)?
+3. If **Top** is [`checked`](#49), put the text in `top-text`, and empty `bottom-text`. If not, do the reverse.
+4. Type `<i>hi</i>` in the box. What does the photo show? What would it show with [`innerHTML`](#43)?
 
 ---
 
@@ -810,7 +856,7 @@ function showText() {
 }
 ```
 
-The **Text** box gets `oninput="showText()"`, and each radio button `onchange="showText()"`. `textContent` shows `<i>hi</i>` just as typed. `innerHTML` would put _hi_ in italics, and it would [run a typed `onerror`](#40) too.
+The **Text** box gets `oninput="showText()"`, and each radio button `onchange="showText()"`. `textContent` shows `<i>hi</i>` just as typed. `innerHTML` would put _hi_ in italics, and it would [run a typed `onerror`](#44) too.
 
 ---
 
@@ -818,8 +864,8 @@ The **Text** box gets `oninput="showText()"`, and each radio button `onchange="s
 
 The text on the photo should take the picked font and color.
 
-1. In `index.html`, have the font picker call `showText()` [when it changes](#46), and the **Text color** picker as it changes.
-2. In the Font and Color section, set the [`style.fontFamily`](#41) of `preview`, the box around the photo, to the picked font's entry in `fonts`.
+1. In `index.html`, have the font picker call `showText()` [when it changes](#50), and the **Text color** picker as it changes.
+2. In the Font and Color section, set the [`style.fontFamily`](#45) of `preview`, the box around the photo, to the picked font's entry in `fonts`.
 3. Set `preview`'s `style.color` to the **Text color**.
 
 `fonts` has a CSS font for each option value, so `fonts["georgia"]` is `"Georgia, serif"`. The text inside `preview` takes its font and color.
@@ -835,7 +881,7 @@ pre { font-size: 0.75em; }
 <!-- prettier-ignore -->
 ```html
 <select id="font" name="font" onchange="showText()">
-<input id="color" name="color" type="color" value="#ffffff" oninput="showText()" />
+<input id="color" name="color" type="color" value="rgb(255, 255, 255)" oninput="showText()" />
 ```
 
 ```js
@@ -856,7 +902,7 @@ Let's make the Adjust box change the photo, in the Adjust section.
 1. In `index.html`, have each slider and the **Hue** picker call `showAdjust()` as they change.
 2. Set the photo's `style.filter` from the first three sliders, like `brightness(120%) contrast(100%) saturate(100%)`. The photo's id is `photo`.
 3. `tint` is a box over the photo, and the photo takes its color as its hue. Set its `style.backgroundColor` to the **Hue** color, and its `style.opacity` to the hue strength.
-4. Set `preview`'s font size to the text size in pixels, like `32px`, and its line height to 4 pixels more. Read `size` [as a number](#44).
+4. Set `preview`'s font size to the text size in pixels, like `32px`, and its line height to 4 pixels more. Read `size` [as a number](#48).
 5. What does the page show if we leave out `Number()`?
 
 ---
@@ -939,7 +985,7 @@ else
 hide photo-credit unless showCredit is true
 ```
 
-[`hidden`](#41) can do the hiding.
+[`hidden`](#45) can do the hiding.
 
 ---
 
@@ -981,7 +1027,7 @@ else
   turn on the export button
 ```
 
-[Strings have `length`](../11-js-arrays/lecture.html#6), and [`style.color` and `disabled`](#41) can do the rest.
+[Strings have `length`](../11-js-arrays/lecture.html#6), and [`style.color` and `disabled`](#45) can do the rest.
 
 ---
 
@@ -1153,10 +1199,10 @@ In `index.html`, after the Text size slider:
 
 <!-- prettier-ignore -->
 ```html
-<p>
+<div>
   <label for="blur">Blur</label>
   <input id="blur" name="blur" type="range" min="0" max="10" value="0" oninput="showAdjust()" />
-</p>
+</div>
 ```
 
 At the end of `showAdjust()`, read it, and add it to the end of the filter:
