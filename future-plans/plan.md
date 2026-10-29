@@ -26,10 +26,9 @@ second, and revisit math last.
 | Chrome, driven by Marp's puppeteer-core | Prints the 22 deck PDFs | `build.sh`, `--pdf` | Phase 5, decision D3 |
 | Marp's default theme | Base type sizes, code colors, page numbers | `themes/lecture.css:20`, `@import 'default'` | Phase 3 |
 | MathJax, inside Marp | Renders the one formula | `cs230/02-variables-and-statements.md:379` | Phase 8 |
-| CodeMirror 5.65.16 from cdnjs | Code editor on the JavaScript exercises page | `cs213/js/exercises/index.html:9` and `:311-312`, `runner.js:21` | Phase 6 |
 | Umami from cloud.umami.is | Counts page views | `build.sh`, `analytics` | Decision D4 |
-| Bootstrap 5.3.8 and Bootswatch Minty from jsDelivr | Teaching examples | 38 HTML files under `cs213/`, `cs213/css/bootstrap.md` | Decision D5 |
-| YouTube thumbnail from img.youtube.com | One slide image | `cs213/js/lecture-js.md:108` | Phase 6 |
+| Bootstrap 5.3.8 and Bootswatch Minty from jsDelivr | Teaching examples | 36 HTML files under `cs213/`, `cs213/lectures/07-css-bootstrap/lecture.md` | Decision D5 |
+| YouTube thumbnail from img.youtube.com | One slide image | `cs213/lectures/08-js-intro/lecture.md:108` | Phase 6 |
 | GitHub Actions `checkout`, `setup-node`, `upload-pages-artifact`, `deploy-pages` | CI and deploy | `.github/workflows/pages.yml` | Phase 7, decision D6 |
 
 Three things that look like dependencies stay as they are:
@@ -109,9 +108,9 @@ and list it as the exception.
 
 ### D5: Bootstrap Examples
 
-The slides in `cs213/css/bootstrap.md` teach students to paste the jsDelivr links, and the 38
-example pages use those same links. Copying Bootstrap into the repository would make the examples
-disagree with the slides.
+The slides in `cs213/lectures/07-css-bootstrap/lecture.md` teach students to paste the jsDelivr
+links, and the 36 example pages use those same links. Copying Bootstrap into the repository would
+make the examples disagree with the slides.
 
 Recommendation: keep them. They are course content that shows the CDN workflow; the build does not
 use them.
@@ -123,14 +122,6 @@ by GitHub. Removing them means switching Pages to "Deploy from a branch" and pus
 `gh-pages` branch with plain `git` in a `run:` step. That also needs `contents: write`.
 
 Recommendation: keep the three actions. The site already depends on GitHub as its host.
-
-### D7: Exercise Editor
-
-CodeMirror gives the exercises page line numbers, Tab and Shift-Tab indenting, Ctrl-Enter or
-Cmd-Enter to run, bracket matching, and JavaScript highlighting. `runner.js:21` already falls back
-to the plain `<textarea>` when CodeMirror fails to load.
-
-Recommendation: write the keys and line numbers first, and add JavaScript-only highlighting later.
 
 ## Target Design
 
@@ -293,11 +284,8 @@ Done when a printed deck has one slide per page in the black-and-white theme.
 
 ### Phase 6: Other Runtime Dependencies
 
-- Replace CodeMirror with a `<textarea>` editor in `cs213/js/exercises/runner.js`: Tab and
-  Shift-Tab indent by two spaces, Ctrl-Enter or Cmd-Enter runs, and a gutter shows line numbers.
-  Delete the CDN tags (`index.html:9`, `:311-312`) and the `.CodeMirror` rules from line 103.
-- Replace the YouTube thumbnail at `cs213/js/lecture-js.md:108` with a local image or a text
-  link to the video.
+- Replace the YouTube thumbnail at `cs213/lectures/08-js-intro/lecture.md:108` with a local image
+  or a text link to the video.
 - Apply D4 to the analytics tag.
 
 Done when `grep -rhoE '(src|href)="https?://[^"]+"' _site --include='*.html'` lists only outbound
@@ -343,8 +331,8 @@ Recommendation: inline code, unless more formulas appear.
   is the guard.
 - **Fit.** Slides are fit by hand to 1280×720. A new scaling method can push a line of code past
   the slide edge (Phase 3).
-- **Maintenance.** The parser, highlighter, viewer, and editor become your code. Bugs that
-  markdown-it, highlight.js, and CodeMirror fix upstream become yours to fix.
+- **Maintenance.** The parser, highlighter, and viewer become your code. Bugs that markdown-it
+  and highlight.js fix upstream become yours to fix.
 
 ## Rough Size
 
@@ -356,4 +344,3 @@ These are guesses for sizing the work, not measurements.
 | Highlighter for five languages                         | 400 to 700     |
 | Copying, zips, parallel builds, `serve`                | 300 to 500     |
 | Slide viewer                                           | 200 to 300     |
-| Exercise editor                                        | 150 to 250     |

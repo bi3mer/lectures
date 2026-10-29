@@ -6,7 +6,8 @@
 #     plus a PDF of the deck for students to download
 #   - any other Markdown file becomes a web page (pandoc, templates/page.html)
 # Either way, foo.md becomes foo.html next to where foo.md was, so links like
-# `css/lecture-css.html` in the index pages work. A deck's PDF is foo.pdf.
+# `lectures/03-css-intro/lecture.html` in the index pages work. A deck's PDF
+# is foo.pdf.
 #
 # A course's data folder also becomes a zip next to it (cs230/data/ becomes
 # cs230/data.zip), so students can download every data file at once.
@@ -55,10 +56,18 @@ run_marp() {
 # Notes and drafts that aren't pages on the site.
 skip=(
   README.md
-  cs213/css/useful-but-not-covered.md
-  cs213/js/plans.md
-  cs213/js/temp.md
-  cs213/js/todo.md
+  cs213/lectures/00-html-intro/lecture.md
+  cs213/lectures/01-html-text/lecture.md
+  cs213/lectures/02-html-website/lecture.md
+  cs213/lectures/03-css-intro/useful-but-not-covered.md
+  cs213/lectures/08-js-intro/plans.md
+  cs213/lectures/08-js-intro/temp.md
+  cs213/lectures/08-js-intro/todo.md
+  cs213/lectures/14-js-dom/lecture.md
+  cs213/lectures/15-js-events/lecture.md
+  cs213/lectures/16-js-form-validation/lecture.md
+  cs213/lectures/17-js-web-api-typescript/lecture.md
+  cs213/lectures/18-wrap-up/lecture.md
   future-plans/plan.md
 )
 
@@ -71,7 +80,6 @@ tracked=(
   index.html
   cs213/index.html
   cs213/schedule.html
-  cs213/js/exercises/index.html
   cs230/index.html
 )
 
@@ -167,7 +175,7 @@ build_one() {
 
   echo "page    $md"
 
-  # Path back to the site root, e.g. "../../" for cs213/css/foo.md.
+  # Path back to the site root, e.g. "../../../" for cs213/lectures/03-css-intro/foo.md.
   local depth root course title
   depth=$(tr -cd '/' <<<"$md" | wc -c)
   root=$(printf '../%.0s' $(seq 1 "$depth"))
