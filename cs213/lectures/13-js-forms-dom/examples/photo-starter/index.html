@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shutterbug</title>
+    <style>
+      /* The lecture slides' colors: combination 151 from Sanzo Wada's "A Dictionary of Color
+         Combinations, Vol. 1", with shades of its blue for the cards and rules. */
+      :root {
+        --bg: #064f6e;
+        --text: #f5ecc2;
+        --accent: #f99d1b;
+        --secondary: #a8c1cc;
+        --rule: #38728b;
+        --card: #032837;
+        color-scheme: dark;
+      }
+
+      body {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 16px;
+        font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        accent-color: var(--accent);
+      }
+
+      header {
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 0;
+        font-size: 44px;
+      }
+
+      header p {
+        margin-top: 4px;
+        color: var(--secondary);
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .card {
+        margin-bottom: 16px;
+        padding: 0 16px;
+        border: 1px solid var(--rule);
+        border-radius: 12px;
+        background-color: var(--card);
+      }
+
+      /* Like a slide's heading: a rule underneath, with a short accent bar at its left end */
+      h2 {
+        position: relative;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      h2::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2.5px;
+        width: 2.5em;
+        height: 4px;
+        border-radius: 2px;
+        background-color: var(--accent);
+      }
+
+      fieldset {
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+      }
+
+      legend,
+      #chars-left {
+        color: var(--secondary);
+      }
+
+      textarea {
+        vertical-align: top;
+      }
+
+      #preview {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        font-family: Impact, sans-serif;
+        font-size: 32px;
+        line-height: 36px;
+        color: white;
+      }
+
+      #photo {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+      }
+
+      #tint {
+        position: absolute;
+        inset: 0;
+        mix-blend-mode: hue;
+        opacity: 0;
+      }
+
+      .photo-text {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 0 16px;
+        text-align: center;
+        overflow-wrap: break-word;
+      }
+
+      #top-text {
+        top: 12px;
+      }
+
+      #bottom-text {
+        bottom: 28px;
+      }
+
+      #photo-credit {
+        position: absolute;
+        right: 10px;
+        bottom: 6px;
+        margin: 0;
+        font: 14px sans-serif;
+        white-space: nowrap;
+        color: white;
+        text-shadow: 0 0 3px black;
+      }
+
+      input,
+      select,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      button {
+        padding: 4px 16px;
+        border: none;
+        border-radius: 6px;
+        background-color: var(--accent);
+        color: var(--card);
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      @media (max-width: 700px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Shutterbug</h1>
+      <p>Photo editor</p>
+    </header>
+
+    <main>
+      <form class="card">
+        <h2>Edit</h2>
+
+        <!-- Text -->
+
+        <!-- Position -->
+
+        <!-- Font -->
+
+        <!-- Adjust -->
+
+        <!-- Credit -->
+
+        <!-- Export Button -->
+      </form>
+
+      <section class="card">
+        <h2>Preview</h2>
+        <div id="preview">
+          <!-- layers, from the bottom up -->
+          <img id="photo" src="lake.svg" alt="A lake at sunset, with mountains behind it" />
+          <div id="tint"></div>
+          <p id="top-text" class="photo-text"></p>
+          <p id="bottom-text" class="photo-text"></p>
+          <p id="photo-credit" hidden></p>
+        </div>
+        <p>
+          <label for="upload">Photo</label>
+          <input id="upload" type="file" accept="image/*" onchange="showPhoto()" />
+        </p>
+        <p><button onclick="parsons1()">🎲</button></p>
+      </section>
+    </main>
+
+    <script src="photo.js"></script>
+    <script src="practice.js"></script>
+  </body>
+</html>

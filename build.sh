@@ -16,6 +16,8 @@
 # If Marp can't find the browser, point CHROME_PATH at it. Run it from anywhere:
 #   ./build.sh                              rebuild the whole site from scratch
 #   ./build.sh cs230/string-cheatsheet.md   rebuild only the named files
+#   ./build.sh --no-pdf [files]             either one, without the decks' PDFs,
+#                                           which take the longest to make
 #
 # Files build 4 at a time. Set JOBS to change that, e.g. JOBS=1 ./build.sh.
 set -euo pipefail
@@ -24,8 +26,13 @@ repo=$(cd "$(dirname "$0")" && pwd)
 
 # Named files, as paths from the repo root. Resolve them before the cd below,
 # so paths relative to wherever the script was run from still work.
+pdf=1
 targets=()
 for arg in "$@"; do
+  if [[ "$arg" == --no-pdf ]]; then
+    pdf=0
+    continue
+  fi
   if [[ "$arg" != *.md || ! -f "$arg" ]]; then
     echo "error: $arg is not a Markdown file" >&2
     exit 1
@@ -92,7 +99,7 @@ done
 
 # A full build starts from scratch so deleted files don't linger. A build of
 # named files leaves the rest of the site alone.
-if (( $# == 0 )); then
+if (( ${#targets[@]} == 0 )); then
   rm -rf "$out"
 fi
 mkdir -p "$out"
@@ -234,7 +241,9 @@ fi
 # PDFs and then decks go first since they take longest. xargs finishes the
 # other files after a failure, then exits non-zero.
 {
-  for md in "${slides[@]}"; do printf 'pdf\0%s\0' "$md"; done
+  if (( pdf )); then
+    for md in "${slides[@]}"; do printf 'pdf\0%s\0' "$md"; done
+  fi
   for md in "${slides[@]}"; do printf 'slides\0%s\0' "$md"; done
   for md in "${pages[@]}"; do printf 'page\0%s\0' "$md"; done
 } | xargs -0 -n 2 -P "$workers" bash -c 'set -euo pipefail; build_one "$@"' _ || {
@@ -242,4 +251,8 @@ fi
   exit 1
 }
 
-echo "built ${#slides[@]} slide decks (each with a PDF) and ${#pages[@]} pages into $out/"
+if (( pdf )); then
+  echo "built ${#slides[@]} slide decks (each with a PDF) and ${#pages[@]} pages into $out/"
+else
+  echo "built ${#slides[@]} slide decks (no PDFs) and ${#pages[@]} pages into $out/"
+fi
