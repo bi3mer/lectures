@@ -32,7 +32,7 @@ function dollars(amount) {
 
 // ----------------------------------- Size ------------------------------------
 function showSize() {
-  for (const box of document.getElementsByName("size")) {
+  for (let box of document.getElementsByName("size")) {
     if (box.checked) {
       const width = sizes[box.value].width;
       document.getElementById("pizza").style.width = `${width}px`;
@@ -83,7 +83,7 @@ function showTopping(name) {
       addPiece(name);
     }
   } else {
-    for (const piece of document.querySelectorAll(`.${name}`)) {
+    for (let piece of document.querySelectorAll(`.${name}`)) {
       piece.remove();
     }
   }
@@ -106,7 +106,7 @@ function showOrder() {
   addLine(sizes[size].label, sizes[size].price);
 
   const boxes = document.querySelectorAll('input[name="topping"]:checked');
-  for (const box of boxes) {
+  for (let box of boxes) {
     addLine(toppings[box.value].label, toppingPrice);
   }
 
@@ -142,7 +142,7 @@ function parsons1() {
   const fieldset = document.getElementById("topping-boxes");
   const boxes = fieldset.getElementsByTagName("input");
 
-  for (const box of boxes) {
+  for (let box of boxes) {
     box.checked = false;
   }
 

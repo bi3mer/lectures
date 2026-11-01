@@ -74,7 +74,7 @@ canvas.addEventListener("mouseleave", () => {
 });
 
 // ---------------------------------- Palette ----------------------------------
-for (const swatch of document.querySelectorAll(".swatch")) {
+for (let swatch of document.querySelectorAll(".swatch")) {
   swatch.addEventListener("click", (event) => {
     document.getElementById("color").value = event.target.value;
     showBrush();

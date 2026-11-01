@@ -26,14 +26,10 @@ Colan Biemer
 
 ---
 
-## Past
+## Outline
 
-```js
-document.getElementById("sign").hidden = true;
-let name = document.getElementById("name").value;
-```
-
-Previously, we never explained why the lines above work. In this lecture, we are going to begin focusing on the **document object model (DOM)**.
+- HTML Forms
+- The DOM
 
 ---
 
@@ -557,21 +553,47 @@ The browser builds the DOM from the top and runs each script when it gets there,
 
 ## `childNodes`
 
-<!-- prettier-ignore -->
+```html
+<p id="top-text">Golden <b>hour</b></p>
+```
+
 ```js
 const topText = document.getElementById("top-text");
 console.log(topText.childNodes.length); // 2
+```
 
-for (const node of topText.childNodes) {
+`childNodes` is the list of a node's children from [the tree](#30). This `<p>` has two: the text `"Golden "` and `<b>`.
+
+---
+
+## Indexes and `nodeName`
+
+<!-- prettier-ignore -->
+```js
+const topText = document.getElementById("top-text");
+console.log(topText.childNodes[0].nodeName); // #text
+console.log(topText.childNodes[1].nodeName); // B
+```
+
+`childNodes` is a [`NodeList`](https://developer.mozilla.org/en-US/docs/Web/API/NodeList), not a JavaScript array, though its indexes also start at 0. `nodeName` says what each child is: `"B"` for `<b>`, the tag's name in capital letters, and `"#text"` for text.
+
+---
+
+## Looping Over `childNodes`
+
+```js
+const topText = document.getElementById("top-text");
+
+for (let i = 0; i < topText.childNodes.length; i++) {
+  console.log(topText.childNodes[i].nodeName); // #text, then B
+}
+
+for (let node of topText.childNodes) {
   console.log(node.nodeName); // #text, then B
 }
 ```
 
-`childNodes` lists a node's children in order, with `length` and indexes, but it isn't an array, so `push` and `join` don't work. [`for...of`](../11-js-arrays/lecture.html#20) does, and each pass makes a new `node`, so it can be a `const`. `nodeName` is the tag in capitals, or `#text` for text.
-
----
-
-# Reading and Writing the Page
+These two loops do the same thing, [just as on an array](../11-js-arrays/lecture.html#20). The index loop counts up to `length`, and `for...of` hands the loop one child at a time.
 
 ---
 
@@ -598,7 +620,7 @@ topText.textContent = "Blue <b>hour</b>";
 <p class="caption">Page</p>
 <div class="demo"><p>Blue &lt;b&gt;hour&lt;/b&gt;</p></div>
 
-Reading gives all the text inside, with the tags left out. Setting replaces everything inside with one text node, so tags show up just as we typed them.
+`textContent` is the text inside an element, without its tags: `Golden hour`. Assigning a string to it puts in plain text, so `<b>` shows up just as we typed it.
 
 ---
 
@@ -613,7 +635,7 @@ topText.innerHTML = "Blue <b>hour</b>";
 <p class="caption">Page</p>
 <div class="demo"><p>Blue <b>hour</b></p></div>
 
-Reading gives the HTML inside, tags and all. Setting turns the string into nodes, so `<b>` becomes an element. `+=` adds HTML at the end, which is how [the trading desk drew its order book](../10-js-objects-loops/lecture.html#33).
+`innerHTML` is the HTML inside an element, tags and all: `Golden <b>hour</b>`. Assigning a string to it turns the HTML into elements, so `<b>` makes the text bold. `+=` adds HTML at the end, which is how [the trading desk drew its order book](../10-js-objects-loops/lecture.html#33).
 
 ---
 
@@ -749,10 +771,10 @@ These are **events**, which get [their own lecture](../15-js-events/lecture.html
 
 The photo should show the text as we type it, at the top or the bottom.
 
-1. In `index.html`, have the **Text** box call `showText()` [as we type](#45), and each radio button when it's picked.
+1. In `index.html`, have the **Text** box call `showText()` [as we type](#46), and each radio button when it's picked.
 2. In the Text on the Photo section of `practice.js`, read the **Text** box, and [trim](../12-js-math-dates-strings/lecture.html#24) what's in it.
-3. If **Top** is [`checked`](#44), put the text in `top-text`, and empty `bottom-text`. If not, do the reverse.
-4. Type `<i>hi</i>` in the box. What does the photo show? What would it show with [`innerHTML`](#38)?
+3. If **Top** is [`checked`](#45), put the text in `top-text`, and empty `bottom-text`. If not, do the reverse.
+4. Type `<i>hi</i>` in the box. What does the photo show? What would it show with [`innerHTML`](#39)?
 
 ---
 
@@ -776,7 +798,7 @@ function showText() {
 }
 ```
 
-The **Text** box gets `oninput="showText()"`, and each radio button `onchange="showText()"`. `textContent` shows `<i>hi</i>` just as typed. `innerHTML` would put _hi_ in italics, and it would [run a typed `onerror`](#39) too.
+The **Text** box gets `oninput="showText()"`, and each radio button `onchange="showText()"`. `textContent` shows `<i>hi</i>` just as typed. `innerHTML` would put _hi_ in italics, and it would [run a typed `onerror`](#40) too.
 
 ---
 
@@ -784,8 +806,8 @@ The **Text** box gets `oninput="showText()"`, and each radio button `onchange="s
 
 The text on the photo should take the picked font and color.
 
-1. In `index.html`, have the font picker call `showText()` [when it changes](#45), and the **Text color** picker as it changes.
-2. In the Font and Color section, set the [`style.fontFamily`](#40) of `preview`, the box around the photo, to the picked font's entry in `fonts`.
+1. In `index.html`, have the font picker call `showText()` [when it changes](#46), and the **Text color** picker as it changes.
+2. In the Font and Color section, set the [`style.fontFamily`](#41) of `preview`, the box around the photo, to the picked font's entry in `fonts`.
 3. Set `preview`'s `style.color` to the **Text color**.
 
 `fonts` has a CSS font for each option value, so `fonts["georgia"]` is `"Georgia, serif"`. The text inside `preview` takes its font and color.
@@ -822,7 +844,7 @@ Let's make the Adjust box change the photo, in the Adjust section.
 1. In `index.html`, have each slider and the **Hue** picker call `showAdjust()` as they change.
 2. Set the photo's `style.filter` from the first three sliders, like `brightness(120%) contrast(100%) saturate(100%)`. The photo's id is `photo`.
 3. `tint` is a box over the photo, and the photo takes its color as its hue. Set its `style.backgroundColor` to the **Hue** color, and its `style.opacity` to the hue strength.
-4. Set `preview`'s font size to the text size in pixels, like `32px`, and its line height to 4 pixels more. Read `size` [as a number](#43).
+4. Set `preview`'s font size to the text size in pixels, like `32px`, and its line height to 4 pixels more. Read `size` [as a number](#44).
 5. What does the page show if we leave out `Number()`?
 
 ---
@@ -905,7 +927,7 @@ else
 hide photo-credit unless showCredit is true
 ```
 
-[`hidden`](#40) can do the hiding.
+[`hidden`](#41) can do the hiding.
 
 ---
 
@@ -947,7 +969,7 @@ else
   turn on the export button
 ```
 
-[Strings have `length`](../11-js-arrays/lecture.html#6), and [`style.color` and `disabled`](#40) can do the rest.
+[Strings have `length`](../11-js-arrays/lecture.html#6), and [`style.color` and `disabled`](#41) can do the rest.
 
 ---
 

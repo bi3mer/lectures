@@ -98,7 +98,7 @@ console.log(buttons[1].checked); // true
 ```js
 const prices = document.getElementsByClassName("price");
 
-for (const price of prices) {
+for (let price of prices) {
   price.style.color = "tomato";
 }
 ```
@@ -139,7 +139,7 @@ What does the page show? Vote, then convince a neighbor.
 **C.** A collection isn't an element, so it has no `textContent` for the page to show. Setting it just gives the collection a new property, with no error. Set each element instead:
 
 ```js
-for (const price of document.getElementsByClassName("price")) {
+for (let price of document.getElementsByClassName("price")) {
   price.textContent = "Sold out";
 }
 ```
@@ -192,7 +192,7 @@ const size = document.querySelector('input[name="size"]:checked').value;
 ```js
 const specials = document.querySelectorAll("#menu .special");
 
-for (const special of specials) {
+for (let special of specials) {
   special.style.fontWeight = "bold";
 }
 ```
@@ -247,7 +247,7 @@ console.log(menu.style.color);    // tomato
 console.log(menu.style.fontSize); // an empty line, though the CSS sets 20px
 ```
 
-`style` sets [one CSS property](../13-js-forms-dom/lecture.html#40) as an inline style, which [wins over the page's CSS](../03-css-intro/lecture.html#22). Reading `style` sees only inline styles.
+`style` sets [one CSS property](../13-js-forms-dom/lecture.html#41) as an inline style, which [wins over the page's CSS](../03-css-intro/lecture.html#22). Reading `style` sees only inline styles.
 
 ---
 
@@ -377,7 +377,7 @@ item.textContent = name;
 menu.append(item);
 ```
 
-[`+=`](../13-js-forms-dom/lecture.html#38) turns every item back into HTML and builds new elements from it, and typed text can [run code](../13-js-forms-dom/lecture.html#39).
+[`+=`](../13-js-forms-dom/lecture.html#39) turns every item back into HTML and builds new elements from it, and typed text can [run code](../13-js-forms-dom/lecture.html#40).
 
 ---
 
@@ -386,7 +386,7 @@ menu.append(item);
 ```js
 document.getElementById("veggie").remove();
 
-for (const item of document.querySelectorAll(".sold-out")) {
+for (let item of document.querySelectorAll(".sold-out")) {
   item.remove();
 }
 ```
@@ -401,7 +401,7 @@ for (const item of document.querySelectorAll(".sold-out")) {
 // the menu holds four <li class="special"> items
 const specials = document.getElementsByClassName("special");
 
-for (const special of specials) {
+for (let special of specials) {
   special.remove();
 }
 
@@ -483,9 +483,9 @@ table { font-size: 0.7em; }
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- |
 | Find one       | [`getElementById`](../13-js-forms-dom/lecture.html#31)                                                                                                                                                 | [`querySelector`](#9)                                |
 | Find many      | [`childNodes`](../13-js-forms-dom/lecture.html#34)                                                                                                                                                     | [`getElementsBy...`](#13), [`querySelectorAll`](#11) |
-| Read and write | [`textContent`](../13-js-forms-dom/lecture.html#37), [`innerHTML`](../13-js-forms-dom/lecture.html#38), [`value`](../13-js-forms-dom/lecture.html#41), [`checked`](../13-js-forms-dom/lecture.html#44) |                                                      |
-| Style          | [`style`](../13-js-forms-dom/lecture.html#40)                                                                                                                                                          | [`className`](#15), [`classList`](#16)               |
-| Add            | [`innerHTML +=`](../13-js-forms-dom/lecture.html#38)                                                                                                                                                   | [`createElement`](#18), [`append`, `prepend`](#19)   |
+| Read and write | [`textContent`](../13-js-forms-dom/lecture.html#38), [`innerHTML`](../13-js-forms-dom/lecture.html#39), [`value`](../13-js-forms-dom/lecture.html#42), [`checked`](../13-js-forms-dom/lecture.html#45) |                                                      |
+| Style          | [`style`](../13-js-forms-dom/lecture.html#41)                                                                                                                                                          | [`className`](#15), [`classList`](#16)               |
+| Add            | [`innerHTML +=`](../13-js-forms-dom/lecture.html#39)                                                                                                                                                   | [`createElement`](#18), [`append`, `prepend`](#19)   |
 | Remove         |                                                                                                                                                                                                        | [`remove`](#23), [`replaceChildren()`](#27)          |
 | Replace        |                                                                                                                                                                                                        | [`replaceWith`](#26), [`replaceChildren`](#27)       |
 
@@ -525,7 +525,7 @@ The Size buttons call `showSize()` when one is picked. Let's fill it in, in the 
 
 ```js
 function showSize() {
-  for (const box of document.getElementsByName("size")) {
+  for (let box of document.getElementsByName("size")) {
     if (box.checked) {
       const width = sizes[box.value].width;
       document.getElementById("pizza").style.width = `${width}px`;
@@ -675,7 +675,7 @@ if (document.getElementById(name).checked) {
     addPiece(name);
   }
 } else {
-  for (const piece of document.querySelectorAll(`.${name}`)) {
+  for (let piece of document.querySelectorAll(`.${name}`)) {
     piece.remove();
   }
 }
@@ -716,7 +716,7 @@ function showOrder() {
   addLine(sizes[size].label, sizes[size].price);
 
   const boxes = document.querySelectorAll('input[name="topping"]:checked');
-  for (const box of boxes) {
+  for (let box of boxes) {
     addLine(toppings[box.value].label, toppingPrice);
   }
 }
@@ -808,7 +808,7 @@ pre { font-size: 0.75em; }
 
 <!-- prettier-ignore -->
 ```js
-for (const box of boxes) {
+for (let box of boxes) {
 const boxes = fieldset.getElementsByTagName("<input>");
 showOrder();
 }
@@ -837,7 +837,7 @@ function parsons1() {
   const fieldset = document.getElementById("topping-boxes");
   const boxes = fieldset.getElementsByTagName("input");
 
-  for (const box of boxes) {
+  for (let box of boxes) {
     box.checked = false;
   }
 

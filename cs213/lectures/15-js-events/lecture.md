@@ -22,7 +22,7 @@ Colan Biemer
 <button type="button" onclick="placeOrder()">Place order</button>
 ```
 
-Every page so far has called our code from an [event attribute](../13-js-forms-dom/lecture.html#45), like Pie Chart's `onclick`. Today, the JavaScript listens for events itself.
+Every page so far has called our code from an [event attribute](../13-js-forms-dom/lecture.html#46), like Pie Chart's `onclick`. Today, the JavaScript listens for events itself.
 
 ---
 
@@ -152,7 +152,7 @@ The browser calls each listener with an **event object**, which describes what h
 ## `event.target`
 
 ```js
-for (const box of document.querySelectorAll('input[name="topping"]')) {
+for (let box of document.querySelectorAll('input[name="topping"]')) {
   box.addEventListener("change", (event) => {
     showTopping(event.target.value);
   });
@@ -390,7 +390,7 @@ if (event.target.nodeName === "INPUT") {
 }
 ```
 
-[`nodeName`](../13-js-forms-dom/lecture.html#34) is the tag in capitals, and [`return`](../08-js-intro/lecture.html#98) ends the listener before the shortcuts.
+[`nodeName`](../13-js-forms-dom/lecture.html#35) is the tag in capitals, and [`return`](../08-js-intro/lecture.html#98) ends the listener before the shortcuts.
 
 ---
 
@@ -462,7 +462,7 @@ table { font-size: 0.75em; }
 
 </center>
 
-These are the events behind [`oninput` and `onchange`](../13-js-forms-dom/lecture.html#45). `focus` and `blur` don't bubble.
+These are the events behind [`oninput` and `onchange`](../13-js-forms-dom/lecture.html#46). `focus` and `blur` don't bubble.
 
 ---
 
@@ -697,7 +697,7 @@ Clicking a swatch should pick its color. Each swatch's `value` is its color, lik
 ## Solution (Us): Palette
 
 ```js
-for (const swatch of document.querySelectorAll(".swatch")) {
+for (let swatch of document.querySelectorAll(".swatch")) {
   swatch.addEventListener("click", (event) => {
     document.getElementById("color").value = event.target.value;
     showBrush();
@@ -705,7 +705,7 @@ for (const swatch of document.querySelectorAll(".swatch")) {
 }
 ```
 
-[`event.target`](#11) is the swatch that was clicked. [Setting `value` from code fires no event](../13-js-forms-dom/lecture.html#61), so the picker's `input` listener never runs.
+[`event.target`](#11) is the swatch that was clicked. [Setting `value` from code fires no event](../13-js-forms-dom/lecture.html#62), so the picker's `input` listener never runs.
 
 ---
 
@@ -783,7 +783,7 @@ if (event.key === "[") {
 }
 ```
 
-[Holding `[` repeats `keydown`](#17), and a slider keeps its value between its `min` and `max`, so the brush stops at 2. Without `Number()`, `size + 2` [glues `"122"`](../13-js-forms-dom/lecture.html#43), and the slider jumps to 40.
+[Holding `[` repeats `keydown`](#17), and a slider keeps its value between its `min` and `max`, so the brush stops at 2. Without `Number()`, `size + 2` [glues `"122"`](../13-js-forms-dom/lecture.html#44), and the slider jumps to 40.
 
 ---
 
@@ -841,7 +841,7 @@ window.addEventListener("beforeunload", (event) => {
 3. Put `Saved golden-hour.png` in `message`, and set `unsaved` to `false`.
 4. Press Enter in the **Title** box. What happens?
 
-`fileName()` turns a title like Golden hour into `golden-hour.png`, the way [Export named the photo](../13-js-forms-dom/lecture.html#59).
+`fileName()` turns a title like Golden hour into `golden-hour.png`, the way [Export named the photo](../13-js-forms-dom/lecture.html#60).
 
 ---
 
@@ -889,7 +889,7 @@ document.getElementById("title").addEventListener("blur", () => {
 });
 ```
 
-[`hidden`](../13-js-forms-dom/lecture.html#40) shows and hides the hint, as it did the brush.
+[`hidden`](../13-js-forms-dom/lecture.html#41) shows and hides the hint, as it did the brush.
 
 ---
 
