@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Where the mouse is</title>
+  <desc>A large box, the browser window, held a smaller box, the canvas, toward its bottom right. The mouse was a dot inside the canvas. A dashed blue line ran from the window's top-left corner to the mouse, labeled clientX: 276, clientY: 152. A dashed yellow line ran from the canvas's top-left corner to the mouse, labeled offsetX: 100, offsetY: 80.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="640" height="280" rx="18" fill="#0f1b2d" />
+  <rect width="640" height="280" rx="18" fill="url(#grid)" />
+
+  <!-- Blue is measured from the window, and yellow from the canvas. -->
+
+  <!-- The window, with its top-left corner marked -->
+  <rect x="24" y="24" width="592" height="232" rx="10" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+  <text x="40" y="240" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" font-weight="bold" fill="#38bdf8">window</text>
+
+  <!-- The canvas, inside the window -->
+  <rect x="200" y="96" width="392" height="140" rx="6" fill="#1e293b" stroke="#facc15" stroke-width="2.5" />
+  <text x="214" y="224" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" font-weight="bold" fill="#facc15">canvas</text>
+
+  <!-- A dashed line from each corner to the mouse -->
+  <path d="M24 24 L300 176" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="8 6" />
+  <path d="M200 96 L300 176" stroke="#facc15" stroke-width="2.5" stroke-dasharray="8 6" />
+  <circle cx="24" cy="24" r="7" fill="#38bdf8" />
+  <circle cx="200" cy="96" r="7" fill="#facc15" />
+
+  <!-- The mouse, and how far it is from each corner -->
+  <circle cx="300" cy="176" r="8" fill="#e2e8f0" />
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="17">
+    <text x="318" y="168" fill="#38bdf8">clientX: 276, clientY: 152</text>
+    <text x="318" y="194" fill="#facc15">offsetX: 100, offsetY: 80</text>
+  </g>
+</svg>
