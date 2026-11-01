@@ -1796,7 +1796,7 @@ It replaces `bootstrap.min.css`, so we don't link both. We also leave out Bootst
 ## Summary: Bootstrap
 
 - Bootstrap solves problems we've solved by hand: browser defaults, columns, and phones
-- `.container` → `.row` → `.col-*`, 12 units per row
+- `.container` -> `.row` -> `.col-*`, 12 units per row
 - Gutters are padding: color a box inside the column, and keep rows in a container
 - Mobile first: `col-md-4` applies from a breakpoint up
 - Components: `btn`, `navbar`, and `table`, with colors named by purpose (`primary`, `danger`)

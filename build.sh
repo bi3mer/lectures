@@ -70,9 +70,6 @@ skip=(
   cs213/lectures/08-js-intro/plans.md
   cs213/lectures/08-js-intro/temp.md
   cs213/lectures/08-js-intro/todo.md
-  cs213/lectures/14-js-dom/lecture.md
-  cs213/lectures/15-js-events/lecture.md
-  cs213/lectures/16-js-form-validation/lecture.md
   cs213/lectures/17-js-web-api-typescript/lecture.md
   cs213/lectures/18-wrap-up/lecture.md
   future-plans/plan.md

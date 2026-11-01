@@ -200,7 +200,7 @@ We don't need to install Node.js for today. Every browser already has a **consol
 | Firefox       | `Ctrl` + `Shift` + `K` | `Cmd` + `Option` + `K` |
 | Safari        |                        | `Cmd` + `Option` + `C` |
 
-Safari needs **Settings → Advanced → Show features for web developers** turned on first. In any browser, we can also right-click the page, pick **Inspect**, then click the **Console** tab.
+Safari needs **Settings -> Advanced -> Show features for web developers** turned on first. In any browser, we can also right-click the page, pick **Inspect**, then click the **Console** tab.
 
 ---
 

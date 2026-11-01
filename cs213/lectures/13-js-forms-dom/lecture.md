@@ -26,16 +26,14 @@ Colan Biemer
 
 ---
 
-## The Lines We Copied
-
-Since [the `if` lecture](../09-js-if/lecture.html#2), every starter has come with page lines like these, and we copied them without asking how they work:
+## Past
 
 ```js
 document.getElementById("sign").hidden = true;
 let name = document.getElementById("name").value;
 ```
 
-Today we take them apart: `document`, `getElementById`, and properties like `hidden` and `value`. First, though, we build a form for lines like these to read.
+Previously, we never explained why the lines above work. In this lecture, we are going to begin focusing on the **document object model (DOM)**.
 
 ---
 
@@ -67,7 +65,17 @@ A **form** collects what someone types or picks. Every login, search box, and ch
 
 ---
 
+## The `type` Attribute
+
+![w:900 Four input tags were the same except for their type attribute, which was "text", "range", "checkbox", and "color". Each one pointed to the control it made on the page: a text box, a slider, a ticked checkbox, and an orange color swatch.](examples/diagrams/type-attribute.svg)
+
+An `<input>`'s `type` attribute picks what kind of control it is.
+
+---
+
 ## Input Types
+
+<!-- TODO: Colan to look at this slide. -->
 
 <style scoped>
 table { font-size: 0.7em; }
@@ -75,16 +83,16 @@ table { font-size: 0.7em; }
 
 <center>
 
-| `type`     | Shows                                  | Try it                                    |
-| ---------- | -------------------------------------- | ----------------------------------------- |
-| `text`     | a one-line box, the default            | <input type="text" size="12" />           |
-| `number`   | a box for numbers, with arrows         | <input type="number" value="3" />         |
-| `password` | a box that hides what's typed          | <input type="password" value="hunter2" /> |
-| `email`    | a box that wants an `@` when it's sent | <input type="email" size="12" />          |
-| `checkbox` | a box to tick                          | <input type="checkbox" />                 |
-| `range`    | a slider                               | <input type="range" />                    |
-| `color`    | a color picker                         | <input type="color" value="#f99d1b" />    |
-| `date`     | a date picker                          | <input type="date" />                     |
+| `type`     | Shows                          | Try it                                    |
+| ---------- | ------------------------------ | ----------------------------------------- |
+| `text`     | a one-line box, the default    | <input type="text" size="12" />           |
+| `number`   | a box for numbers, with arrows | <input type="number" value="3" />         |
+| `password` | a box that hides what's typed  | <input type="password" value="hunter2" /> |
+| `email`    | a box for an email address     | <input type="email" size="12" />          |
+| `checkbox` | a box to tick                  | <input type="checkbox" />                 |
+| `range`    | a slider                       | <input type="range" />                    |
+| `color`    | a color picker                 | <input type="color" value="#f99d1b" />    |
+| `date`     | a date picker                  | <input type="date" />                     |
 
 </center>
 
@@ -94,20 +102,7 @@ For many lines of text, `<textarea>` makes a bigger box. Unlike `<input>`, it ha
 
 ## `<label>`
 
-<div class="side-by-side">
-<div>
-
-```html
-<input id="show-credit" type="checkbox" />
-<label for="show-credit">Show credit</label>
-```
-
-</div>
-<div>
-<p class="caption">Page: click the words</p>
-<div class="demo"><input id="demo-show-credit" type="checkbox" /> <label for="demo-show-credit">Show credit</label></div>
-</div>
-</div>
+![w:1040 An input tag with the id "show-credit" sat above a label tag whose for was "show-credit". An arrow ran from the label's for value up to the matching id value. On the page, a pointer clicked the words Show credit, and an arrow ran from the words to the checkbox, which was ticked.](examples/diagrams/label-for-id.svg)
 
 A label's `for` matches its control's `id`. Clicking the label clicks the control, which makes a small checkbox easier to hit. A screen reader reads the label aloud when the control is selected, so every control except a button needs one.
 
@@ -154,7 +149,7 @@ Like a meme, a photo can have optional text on it. Paste its controls under the 
 </div>
 <div>
   <label for="color">Text color</label>
-  <input id="color" name="color" type="color" value="rgb(255, 255, 255)" />
+  <input id="color" name="color" type="color" value="#ffffff" />
 </div>
 ```
 
@@ -168,13 +163,36 @@ Like a meme, a photo can have optional text on it. Paste its controls under the 
 
 - Clicking a label clicks its control, since its `for` matches the control's `id`.
 - The `<span>` is a spot for a count that our code will add later: how many characters are left.
-- The `id` is for the label and our code, and the `name` is for [sending the form](#25).
+- The `id` is for the label and our code, and the `name` is for [submitting the form](#23).
+
+<div class="footnote">Color inputs took only hex, like <code>#ffffff</code>, until 2025, when Safari 18.4 and Firefox 143 began taking <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/color">any CSS color</a>. Chrome still turns any other value into black, <code>#000000</code>. If you're curious about hex, see <a href="https://www.pluralsight.com/resources/blog/upskilling/understanding-hexadecimal-colors-simple">Hexadecimal Colors Explained</a>.</div>
+
+---
+
+## Problem (You): Find the Bug
+
+**There is a bug** in this HTML. Find it.
+
+```html
+<div>
+  <label for="credit">Credit</label>
+  <input id="credit" name="credit" />
+</div>
+<div>
+  <input id="show-credit" name="show-credit" type="checkbox" />
+  <label for="credit">Show credit on the photo</label>
+</div>
+```
 
 ---
 
 ## Problem (You): Credit
 
-Paste these under the Credit comment, then tell me what each one does.
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
+
+The second label's `for` should be `show-credit`, [the checkbox's `id`](#7). Paste the fixed HTML under the Credit comment, then tell me what happens.
 
 ```html
 <div>
@@ -186,16 +204,6 @@ Paste these under the Credit comment, then tell me what each one does.
   <label for="show-credit">Show credit on the photo</label>
 </div>
 ```
-
-- The credit box has no `type`. What kind of box is it?
-- Why does the checkbox come before its label?
-
----
-
-## Solution (You): Credit
-
-- A text box, since `text` is the default `type`.
-- Checkboxes and radio buttons go before their labels, so a stack of them lines up on the left.
 
 ---
 
@@ -280,13 +288,13 @@ Paste this under the Position comment, then tell me what each one does.
 
 ## Solution (You): Position
 
-- Radio buttons that share a `name` are [one group](#14), so picking one unpicks the other.
+- Radio buttons that share a `name` are [one group](#15), so picking one unpicks the other.
 - Each label's `for` points at its own button's `id`.
 - Top, since it has `checked`.
 
 ---
 
-## Problem (You): Font
+## Font
 
 Paste this under the Font comment, then tell me what each one does.
 
@@ -306,14 +314,7 @@ Paste this under the Font comment, then tell me what each one does.
 
 ---
 
-## Solution (You): Font
-
-- The picked option's `value`, `comic`, not the `Comic Sans` it shows.
-- Impact, since with no `selected`, the [first option](#13) starts picked.
-
----
-
-## Problem (You): Photo Sliders
+## Photo Sliders
 
 <style scoped>
 pre { font-size: 0.65em; }
@@ -345,14 +346,7 @@ Paste this under the Adjust comment, then tell me what each one does.
 
 ---
 
-## Solution (You): Photo Sliders
-
-- Nothing reads the sliders yet. A form only collects values, and our code will use them to change the photo.
-- They're percents: 100% leaves the photo as it is, and 200% doubles it.
-
----
-
-## Problem (You): Hue and Text Size
+## Hue and Text Size
 
 <style scoped>
 pre { font-size: 0.7em; }
@@ -383,23 +377,8 @@ Paste these in the Adjust fieldset, just before `</fieldset>`, then tell me what
 
 ## Solution (You): Hue and Text Size
 
-- A slider [steps](#7) by 1 unless told otherwise, so from 0 to 1 it would stop only at 0 and 1. `0.01` gives it 101 stops.
+- A slider [steps](#8) by 1 unless told otherwise, so from 0 to 1 it would stop only at 0 and 1. `0.01` gives it 101 stops.
 - They're pixels: the text on the photo goes from 16px to 48px, and starts at 32px.
-
----
-
-## Button Types
-
-<!-- prettier-ignore -->
-```html
-<button type="submit">Export</button>
-<button type="reset">Start Over</button>
-<button type="button" onclick="showText()">Preview</button>
-```
-
-- `submit` sends the form. It's the default, so a `<button>` in a form with no `type` sends it.
-- `reset` puts every control in the form back to its starting value.
-- `button` does nothing on its own, only what its `onclick` says.
 
 ---
 
@@ -414,7 +393,7 @@ Paste these in the Adjust fieldset, just before `</fieldset>`, then tell me what
 
 <form class="demo" action="https://www.google.com/search" target="_blank"><input name="q" value="sunset" /> <button>Search</button></form>
 
-Before JavaScript, a form was how a page [talked to the server](../08-js-intro/lecture.html#8): clicking **Search** loads the `action` address with what we typed, like `https://www.google.com/search?q=sunset`. With no `action`, it loads the same page again.
+**Submitting** a form loads its `action` address with what we typed, so clicking **Search** loads `https://www.google.com/search?q=sunset`. With no `action`, submitting loads the same page again. Before JavaScript, it was how a page [talked to the server](../08-js-intro/lecture.html#8).
 
 ---
 
@@ -439,13 +418,28 @@ index.html?text=Golden+hour&color=%23ffffff&position=top&…&credit=ada&show-cre
 
 </center>
 
-Only controls with a `name` are sent, a checkbox only when it's ticked, and a radio group as its picked button's value. `method="post"` sends the pairs inside the request instead, so passwords stay out of the address.
+Only controls with a `name` are submitted, a checkbox only when it's ticked, and a radio group as its picked button's value.
+
+---
+
+## Button Types
+
+<!-- prettier-ignore -->
+```html
+<button type="submit">Export</button>
+<button type="reset">Start Over</button>
+<button type="button" onclick="showText()">Preview</button>
+```
+
+- `submit` [submits the form](#23). It's the default.
+- `reset` puts every control back to its starting value.
+- `button` calls the function in its `onclick`.
 
 ---
 
 ## Problem (Us): Export Button
 
-Paste this under the Export Button comment to finish the form.
+Paste this under the Export Button comment.
 
 ```html
 <div>
@@ -454,9 +448,9 @@ Paste this under the Export Button comment to finish the form.
 </div>
 ```
 
-1. Fill in the form. What will happen when we click **Export**? Vote, then click it.
-2. Read the query string in the address. Is every control there?
-3. The button should run our code later, not send the form. Fix it.
+1. Type `cs213` in the **Text** box. What will happen when we click **Export**?
+2. Click **Export**. What happened to the page, and to the address?
+3. **Export** should call `exportPhoto()`, not submit the form. Fix it.
 
 ---
 
@@ -464,12 +458,14 @@ Paste this under the Export Button comment to finish the form.
 
 ```html
 <div>
-  <button id="export" type="button">Export</button>
+  <button id="export" type="button" onclick="exportPhoto()">Export</button>
   <span id="message"></span>
 </div>
 ```
 
-With no `type`, the button was a [submit button](#24): the page loaded again, empty, with the form in the address, starting `?text=Golden+hour&color=%23ffffff&position=top`. An unticked checkbox is never sent, and any other missing control has no `name`. Enter in the **Credit** box still sends the form, since a form with one text box sends itself on Enter.
+- With no `type`, **Export** was a [submit button](#25). Clicking it loaded the page again, so the **Text** box was empty.
+- The address now ends with the [query string](#24), starting `?text=cs213`.
+- With `type="button"`, **Export** only calls `exportPhoto()`, which is empty until later.
 
 ---
 
@@ -483,7 +479,7 @@ When the browser loads a page, it turns the HTML into objects: one for each tag,
 
 - `document` is the object for the whole page. We reach every other object through it.
 - Changing an object changes the page right away. The file doesn't change, so reloading starts over.
-- Right-click → **Inspect** shows the DOM as it is now. **View Page Source** shows the file.
+- Right-click -> **Inspect** shows the DOM as it is now. **View Page Source** shows the file.
 
 ---
 
@@ -501,8 +497,6 @@ When the browser loads a page, it turns the HTML into objects: one for each tag,
 ```
 
 Each object is a **node**. A node's **children** hang below it, and its **parent** sits above it, so `<p>` is the parent of `"Golden "` and `<b>`.
-
-This tree leaves out the spaces between the tags. We'll come back to them.
 
 </div>
 
@@ -561,42 +555,6 @@ The browser builds the DOM from the top and runs each script when it gets there,
 
 ---
 
-## Node Types
-
-<center>
-
-| Node     | Example             | `nodeType` | `nodeName`                 |
-| -------- | ------------------- | ---------- | -------------------------- |
-| Element  | `<p id="top-text">` | `1`        | `"P"`, the tag in capitals |
-| Text     | `Golden `           | `3`        | `"#text"`                  |
-| Comment  | `<!-- the text -->` | `8`        | `"#comment"`               |
-| Document | `document`          | `9`        | `"#document"`              |
-
-</center>
-
-`Node.ELEMENT_NODE` is another name for `1`, `Node.TEXT_NODE` for `3`, and `Node.COMMENT_NODE` for `8`. `node.nodeType === Node.ELEMENT_NODE` says what it checks, and `node.nodeType === 1` doesn't.
-
-<div class="footnote">Attributes have node types too, but they aren't children in the tree.</div>
-
----
-
-## Moving Around the Tree
-
-<!-- prettier-ignore -->
-```js
-const topText = document.getElementById("top-text");
-console.log(topText.nodeName);             // P
-console.log(topText.parentNode.nodeName);  // BODY
-console.log(topText.firstChild.nodeName);  // #text
-console.log(topText.firstChild.nodeValue); // Golden
-console.log(topText.lastChild.nodeName);   // B
-console.log(document.nodeType);            // 9
-```
-
-`parentNode` is a node's parent, and `firstChild` and `lastChild` are its first and last children. A text node's `nodeValue` is its text, here `"Golden "`, with its space. An element's `nodeValue` is `null`.
-
----
-
 ## `childNodes`
 
 <!-- prettier-ignore -->
@@ -609,45 +567,7 @@ for (const node of topText.childNodes) {
 }
 ```
 
-`childNodes` lists a node's children in order, with `length` and indexes, but it isn't an array, so `push` and `join` don't work. [`for...of`](../11-js-arrays/lecture.html#20) does, and each pass makes a new `node`, so it can be a `const`.
-
----
-
-## Predict: How Many Children?
-
-```html
-<ul id="albums">
-  <li>Sunset</li>
-  <li>Snow day</li>
-  <li>Tacos</li>
-</ul>
-```
-
-```js
-console.log(document.getElementById("albums").childNodes.length);
-```
-
-What does it print? Vote, then convince a neighbor.
-
-<div class="choices">
-
-**A.** `3`
-
-**B.** `4`
-
-**C.** `6`
-
-**D.** `7`
-
-</div>
-
----
-
-## Answer: How Many Children?
-
-![w:900 The ul element with id albums had seven child nodes, at indexes 0 to 6. Indexes 0, 2, 4, and 6 were text nodes holding only whitespace: a line break and two spaces before each li, and a line break after the last one. Indexes 1, 3, and 5 were the li elements, whose text nodes held "Sunset", "Snow day", and "Tacos".](examples/diagrams/whitespace-text-nodes.svg)
-
-**D.** The line breaks and spaces between the tags are text too, so `<ul>` has a text node before each `<li>` and one after the last. To count only the `<li>`s, check each node's [`nodeType`](#35).
+`childNodes` lists a node's children in order, with `length` and indexes, but it isn't an array, so `push` and `join` don't work. [`for...of`](../11-js-arrays/lecture.html#20) does, and each pass makes a new `node`, so it can be a `const`. `nodeName` is the tag in capitals, or `#text` for text.
 
 ---
 
@@ -821,7 +741,7 @@ table { font-size: 0.8em; }
 <input id="credit" name="credit" oninput="showText()" />
 ```
 
-These are **events**, which get their own lecture. Setting `value` from code calls neither.
+These are **events**, which get [their own lecture](../15-js-events/lecture.html). Setting `value` from code calls neither.
 
 ---
 
@@ -829,10 +749,10 @@ These are **events**, which get their own lecture. Setting `value` from code cal
 
 The photo should show the text as we type it, at the top or the bottom.
 
-1. In `index.html`, have the **Text** box call `showText()` [as we type](#50), and each radio button when it's picked.
+1. In `index.html`, have the **Text** box call `showText()` [as we type](#45), and each radio button when it's picked.
 2. In the Text on the Photo section of `practice.js`, read the **Text** box, and [trim](../12-js-math-dates-strings/lecture.html#24) what's in it.
-3. If **Top** is [`checked`](#49), put the text in `top-text`, and empty `bottom-text`. If not, do the reverse.
-4. Type `<i>hi</i>` in the box. What does the photo show? What would it show with [`innerHTML`](#43)?
+3. If **Top** is [`checked`](#44), put the text in `top-text`, and empty `bottom-text`. If not, do the reverse.
+4. Type `<i>hi</i>` in the box. What does the photo show? What would it show with [`innerHTML`](#38)?
 
 ---
 
@@ -856,7 +776,7 @@ function showText() {
 }
 ```
 
-The **Text** box gets `oninput="showText()"`, and each radio button `onchange="showText()"`. `textContent` shows `<i>hi</i>` just as typed. `innerHTML` would put _hi_ in italics, and it would [run a typed `onerror`](#44) too.
+The **Text** box gets `oninput="showText()"`, and each radio button `onchange="showText()"`. `textContent` shows `<i>hi</i>` just as typed. `innerHTML` would put _hi_ in italics, and it would [run a typed `onerror`](#39) too.
 
 ---
 
@@ -864,8 +784,8 @@ The **Text** box gets `oninput="showText()"`, and each radio button `onchange="s
 
 The text on the photo should take the picked font and color.
 
-1. In `index.html`, have the font picker call `showText()` [when it changes](#50), and the **Text color** picker as it changes.
-2. In the Font and Color section, set the [`style.fontFamily`](#45) of `preview`, the box around the photo, to the picked font's entry in `fonts`.
+1. In `index.html`, have the font picker call `showText()` [when it changes](#45), and the **Text color** picker as it changes.
+2. In the Font and Color section, set the [`style.fontFamily`](#40) of `preview`, the box around the photo, to the picked font's entry in `fonts`.
 3. Set `preview`'s `style.color` to the **Text color**.
 
 `fonts` has a CSS font for each option value, so `fonts["georgia"]` is `"Georgia, serif"`. The text inside `preview` takes its font and color.
@@ -881,7 +801,7 @@ pre { font-size: 0.75em; }
 <!-- prettier-ignore -->
 ```html
 <select id="font" name="font" onchange="showText()">
-<input id="color" name="color" type="color" value="rgb(255, 255, 255)" oninput="showText()" />
+<input id="color" name="color" type="color" value="#ffffff" oninput="showText()" />
 ```
 
 ```js
@@ -902,7 +822,7 @@ Let's make the Adjust box change the photo, in the Adjust section.
 1. In `index.html`, have each slider and the **Hue** picker call `showAdjust()` as they change.
 2. Set the photo's `style.filter` from the first three sliders, like `brightness(120%) contrast(100%) saturate(100%)`. The photo's id is `photo`.
 3. `tint` is a box over the photo, and the photo takes its color as its hue. Set its `style.backgroundColor` to the **Hue** color, and its `style.opacity` to the hue strength.
-4. Set `preview`'s font size to the text size in pixels, like `32px`, and its line height to 4 pixels more. Read `size` [as a number](#48).
+4. Set `preview`'s font size to the text size in pixels, like `32px`, and its line height to 4 pixels more. Read `size` [as a number](#43).
 5. What does the page show if we leave out `Number()`?
 
 ---
@@ -985,7 +905,7 @@ else
 hide photo-credit unless showCredit is true
 ```
 
-[`hidden`](#45) can do the hiding.
+[`hidden`](#40) can do the hiding.
 
 ---
 
@@ -1027,7 +947,7 @@ else
   turn on the export button
 ```
 
-[Strings have `length`](../11-js-arrays/lecture.html#6), and [`style.color` and `disabled`](#45) can do the rest.
+[Strings have `length`](../11-js-arrays/lecture.html#6), and [`style.color` and `disabled`](#40) can do the rest.
 
 ---
 
@@ -1060,7 +980,7 @@ if (left < 0) {
 pre { font-size: 0.75em; }
 </style>
 
-In `index.html`, have the **Export** button call `exportPhoto()` when it's clicked. Then turn the pseudocode into code in the Export section.
+**Export** [already calls `exportPhoto()`](#27). Turn the pseudocode into code in the Export section.
 
 ```text
 set text to the text box's value, without spaces at either end
@@ -1080,10 +1000,6 @@ put "Exported name.png" in message
 <style scoped>
 pre { font-size: 0.75em; }
 </style>
-
-```html
-<button id="export" type="button" onclick="exportPhoto()">Export</button>
-```
 
 ```js
 function exportPhoto() {
@@ -1152,7 +1068,6 @@ Done early? Pick any of these. Their solutions come after **Questions?**.
 
 - **Blur.** Add a Blur slider, from 0 to 10, to the Adjust box. At 3, the photo's filter should end with `blur(3px)`.
 - **Both.** Add a third Position button, Both, that puts the text at the top and the bottom.
-- **Node report.** Add a `<p id="node-report">` under the preview. Show how many of each node type `preview` has in it, like `Elements: 5, text: 7, comments: 1`.
 
 ---
 
@@ -1176,8 +1091,7 @@ Every solution from today, together:
 - A form collects input with `<input>`, `<select>`, and `<textarea>`, each labeled.
 - A form's `<button>` submits by default, reloading the page. Use `type="button"`.
 - Submitting sends each named control as `name=value` in the query string.
-- The DOM is a tree: elements (1), text (3), comments (8), and the document (9).
-- Whitespace between tags is text, so `childNodes` holds more than the tags.
+- The DOM is a tree of nodes: elements, text, and comments.
 - `getElementById` returns one element, or `null` when no `id` matches.
 - `value` is always a string. `checked` is a checkbox's or radio button's boolean.
 - `textContent` writes text. Typed text never goes in `innerHTML`.
@@ -1241,32 +1155,4 @@ if (document.getElementById("top").checked) {
   document.getElementById("top-text").textContent = text;
   document.getElementById("bottom-text").textContent = text;
 }
-```
-
----
-
-## Extras: Node Report
-
-<style scoped>
-pre { font-size: 0.65em; }
-</style>
-
-After the preview's `</div>` in `index.html`, add `<p id="node-report"></p>`. At the end of `practice.js`:
-
-```js
-const preview = document.getElementById("preview");
-let elements = 0;
-let texts = 0;
-let comments = 0;
-for (const node of preview.childNodes) {
-  if (node.nodeType === Node.ELEMENT_NODE) {
-    elements++;
-  } else if (node.nodeType === Node.TEXT_NODE) {
-    texts++;
-  } else if (node.nodeType === Node.COMMENT_NODE) {
-    comments++;
-  }
-}
-document.getElementById("node-report").textContent =
-  `Elements: ${elements}, text: ${texts}, comments: ${comments}`;
 ```
