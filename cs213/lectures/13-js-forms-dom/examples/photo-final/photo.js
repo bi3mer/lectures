@@ -46,7 +46,8 @@ function savePhoto(name) {
   }
 
   const link = document.createElement("a");
-  link.download = name;
+  // a line break typed in the Text box becomes a dash, like a space
+  link.download = name.replace(/\s+/g, "-");
   link.href = canvas.toDataURL("image/png");
   link.click();
 }

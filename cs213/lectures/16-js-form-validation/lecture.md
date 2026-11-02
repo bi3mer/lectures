@@ -38,7 +38,7 @@ table { font-size: 0.75em; }
 
 </center>
 
-**Validation** is checking what was typed before the form is [submitted](../13-js-forms-dom/lecture.html#23). The browser does the checks we ask for in HTML, and our JavaScript does the rest.
+**Validation** is checking what was typed before the form is [submitted](../13-js-forms-dom/lecture.html#27). The browser does the checks we ask for in HTML, and our JavaScript does the rest.
 
 ---
 
@@ -55,7 +55,7 @@ table { font-size: 0.75em; }
 <p class="caption">Page</p>
 <form class="demo" onsubmit="return false"><label for="demo-name">Name</label> <input id="demo-name" required /> <button>Order</button></form>
 
-`required` needs no value, like [`checked`](../13-js-forms-dom/lecture.html#8). Submitting with the box empty stops the submit, and the browser shows a message by the box.
+`required` needs no value, like [`checked`](../13-js-forms-dom/lecture.html#9). Submitting with the box empty stops the submit, and the browser shows a message by the box.
 
 ---
 
@@ -96,7 +96,7 @@ We type three spaces in **Name** and click **Order**. What happens? Vote, then c
 <p class="caption">Page</p>
 <form class="demo" onsubmit="return false"><label for="demo-plate">Plate</label> <input id="demo-plate" minlength="2" maxlength="7" /> <button>Order</button></form>
 
-`maxlength` stops typing at 7 characters, and `minlength` stops the submit under 2. An empty box passes both, unless it's also `required`. [Shutterbug counted characters itself](../13-js-forms-dom/lecture.html#59).
+`maxlength` stops typing at 7 characters, and `minlength` stops the submit under 2. An empty box passes both, unless it's also `required`. [Shutterbug counted characters itself](../13-js-forms-dom/lecture.html#62).
 
 ---
 
@@ -563,7 +563,7 @@ The order form's boxes have no checks yet. Let's add some in `index.html`.
 ```
 
 - **Plate**: the browser goes down the form and shows the first box that fails.
-- [A space passes `required`](#5), so the form is submitted, and the page reloads with a [query string](../13-js-forms-dom/lecture.html#24).
+- [A space passes `required`](#5), so the form is submitted, and the page reloads with a [query string](../13-js-forms-dom/lecture.html#28).
 
 ---
 

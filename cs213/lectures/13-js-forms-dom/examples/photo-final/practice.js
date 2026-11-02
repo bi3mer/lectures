@@ -99,8 +99,8 @@ function exportPhoto() {
   document.getElementById("message").textContent = `Exported ${name}.png`;
 }
 
-// --------------------------------- Parsons 1 ---------------------------------
-function parsons1() {
+// --------------------------------- Parsons 3 ---------------------------------
+function parsons3() {
   const look = looks[Math.floor(Math.random() * looks.length)];
 
   document.getElementById("brightness").value = look.brightness;

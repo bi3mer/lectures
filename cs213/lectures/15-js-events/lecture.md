@@ -22,7 +22,7 @@ Colan Biemer
 <button type="button" onclick="placeOrder()">Place order</button>
 ```
 
-Every page so far has called our code from an [event attribute](../13-js-forms-dom/lecture.html#46), like Pie Chart's `onclick`. Today, the JavaScript listens for events itself.
+Every page so far has called our code from an [event attribute](../13-js-forms-dom/lecture.html#50), like Pie Chart's `onclick`. Today, the JavaScript listens for events itself.
 
 ---
 
@@ -350,7 +350,7 @@ pre { font-size: 0.75em; }
 input#title -> form#tools -> main -> body -> html -> document -> window
 ```
 
-After the listeners on its target run, an event **bubbles**: it goes up the [DOM tree](../13-js-forms-dom/lecture.html#30), running each parent's listeners. `event.target` still names where it started.
+After the listeners on its target run, an event **bubbles**: it goes up the [DOM tree](../13-js-forms-dom/lecture.html#34), running each parent's listeners. `event.target` still names where it started.
 
 ---
 
@@ -390,7 +390,7 @@ if (event.target.nodeName === "INPUT") {
 }
 ```
 
-[`nodeName`](../13-js-forms-dom/lecture.html#35) is the tag in capitals, and [`return`](../08-js-intro/lecture.html#98) ends the listener before the shortcuts.
+[`nodeName`](../13-js-forms-dom/lecture.html#42) is the tag in capitals, and [`return`](../08-js-intro/lecture.html#98) ends the listener before the shortcuts.
 
 ---
 
@@ -412,7 +412,7 @@ table { font-size: 0.75em; }
 
 </center>
 
-These go on `window`, except `DOMContentLoaded`, which goes on `document`. A script in `<head>` can wait for it, since [it runs before the body exists](../13-js-forms-dom/lecture.html#33).
+These go on `window`, except `DOMContentLoaded`, which goes on `document`. A script in `<head>` can wait for it, since [it runs before the body exists](../13-js-forms-dom/lecture.html#37).
 
 ---
 
@@ -462,7 +462,7 @@ table { font-size: 0.75em; }
 
 </center>
 
-These are the events behind [`oninput` and `onchange`](../13-js-forms-dom/lecture.html#46). `focus` and `blur` don't bubble.
+These are the events behind [`oninput` and `onchange`](../13-js-forms-dom/lecture.html#50). `focus` and `blur` don't bubble.
 
 ---
 
@@ -497,7 +497,7 @@ document.getElementById("tools").addEventListener("submit", (event) => {
 });
 ```
 
-A form fires `submit` when it's sent, by its submit button or by Enter in a text box, so listen on the form. `preventDefault()` stops [the reload](../13-js-forms-dom/lecture.html#23).
+A form fires `submit` when it's sent, by its submit button or by Enter in a text box, so listen on the form. `preventDefault()` stops [the reload](../13-js-forms-dom/lecture.html#27).
 
 ---
 
@@ -705,7 +705,7 @@ for (let swatch of document.querySelectorAll(".swatch")) {
 }
 ```
 
-[`event.target`](#11) is the swatch that was clicked. [Setting `value` from code fires no event](../13-js-forms-dom/lecture.html#62), so the picker's `input` listener never runs.
+[`event.target`](#11) is the swatch that was clicked. [Setting `value` from code fires no event](../13-js-forms-dom/lecture.html#66), so the picker's `input` listener never runs.
 
 ---
 
@@ -783,7 +783,7 @@ if (event.key === "[") {
 }
 ```
 
-[Holding `[` repeats `keydown`](#17), and a slider keeps its value between its `min` and `max`, so the brush stops at 2. Without `Number()`, `size + 2` [glues `"122"`](../13-js-forms-dom/lecture.html#44), and the slider jumps to 40.
+[Holding `[` repeats `keydown`](#17), and a slider keeps its value between its `min` and `max`, so the brush stops at 2. Without `Number()`, `size + 2` [glues `"122"`](../13-js-forms-dom/lecture.html#48), and the slider jumps to 40.
 
 ---
 
@@ -841,7 +841,7 @@ window.addEventListener("beforeunload", (event) => {
 3. Put `Saved golden-hour.png` in `message`, and set `unsaved` to `false`.
 4. Press Enter in the **Title** box. What happens?
 
-`fileName()` turns a title like Golden hour into `golden-hour.png`, the way [Export named the photo](../13-js-forms-dom/lecture.html#60).
+`fileName()` turns a title like Golden hour into `golden-hour.png`, the way [Export named the photo](../13-js-forms-dom/lecture.html#64).
 
 ---
 
@@ -889,7 +889,7 @@ document.getElementById("title").addEventListener("blur", () => {
 });
 ```
 
-[`hidden`](../13-js-forms-dom/lecture.html#41) shows and hides the hint, as it did the brush.
+[`hidden`](../13-js-forms-dom/lecture.html#45) shows and hides the hint, as it did the brush.
 
 ---
 

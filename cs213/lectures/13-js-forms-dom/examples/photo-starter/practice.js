@@ -42,4 +42,4 @@ function exportPhoto() {
   // a file name from the text, like golden-hour.png, for savePhoto, and a message
 }
 
-// --------------------------------- Parsons 1 ---------------------------------
+// --------------------------------- Parsons 3 ---------------------------------

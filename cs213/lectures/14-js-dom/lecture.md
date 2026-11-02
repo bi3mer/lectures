@@ -30,7 +30,7 @@ document.getElementById("contrast").value = look.contrast;
 document.getElementById("saturation").value = look.saturation;
 ```
 
-[`getElementById`](../13-js-forms-dom/lecture.html#31) finds one element, so Shutterbug's 🎲 took a line per slider. Today we find many elements at once, restyle them with classes, and add, remove, and replace elements.
+[`getElementById`](../13-js-forms-dom/lecture.html#35) finds one element, so Shutterbug's 🎲 took a line per slider. Today we find many elements at once, restyle them with classes, and add, remove, and replace elements.
 
 ---
 
@@ -89,7 +89,7 @@ console.log(buttons.length);     // 3
 console.log(buttons[1].checked); // true
 ```
 
-`getElementsByName` returns every element whose `name` attribute matches, so it finds all the buttons in [a radio group](../13-js-forms-dom/lecture.html#15).
+`getElementsByName` returns every element whose `name` attribute matches, so it finds all the buttons in [a radio group](../13-js-forms-dom/lecture.html#17).
 
 ---
 
@@ -103,7 +103,7 @@ for (let price of prices) {
 }
 ```
 
-A **collection** is a list of elements in page order, with `length` and indexes, like [`childNodes`](../13-js-forms-dom/lecture.html#34). It isn't an array, so `push` and `join` don't work, but [`for...of`](../11-js-arrays/lecture.html#20) does. When nothing matches, it's empty, never `null`.
+A **collection** is a list of elements in page order, with `length` and indexes, like [`childNodes`](../13-js-forms-dom/lecture.html#41). It isn't an array, so `push` and `join` don't work, but [`for...of`](../11-js-arrays/lecture.html#20) does. When nothing matches, it's empty, never `null`.
 
 ---
 
@@ -155,7 +155,7 @@ const special = document.querySelector(".special"); // the first special
 const none = document.querySelector("#pizzas");     // null
 ```
 
-`querySelector` takes a CSS selector and returns the first element that matches, or `null` when none does. It's a selector, so an id needs the `#` that [`getElementById`](../13-js-forms-dom/lecture.html#31) leaves off.
+`querySelector` takes a CSS selector and returns the first element that matches, or `null` when none does. It's a selector, so an id needs the `#` that [`getElementById`](../13-js-forms-dom/lecture.html#35) leaves off.
 
 ---
 
@@ -247,7 +247,7 @@ console.log(menu.style.color);    // tomato
 console.log(menu.style.fontSize); // an empty line, though the CSS sets 20px
 ```
 
-`style` sets [one CSS property](../13-js-forms-dom/lecture.html#41) as an inline style, which [wins over the page's CSS](../03-css-intro/lecture.html#22). Reading `style` sees only inline styles.
+`style` sets [one CSS property](../13-js-forms-dom/lecture.html#45) as an inline style, which [wins over the page's CSS](../03-css-intro/lecture.html#22). Reading `style` sees only inline styles.
 
 ---
 
@@ -377,7 +377,7 @@ item.textContent = name;
 menu.append(item);
 ```
 
-[`+=`](../13-js-forms-dom/lecture.html#39) turns every item back into HTML and builds new elements from it, and typed text can [run code](../13-js-forms-dom/lecture.html#40).
+[`+=`](../13-js-forms-dom/lecture.html#40) turns every item back into HTML and builds new elements from it.
 
 ---
 
@@ -481,11 +481,11 @@ table { font-size: 0.7em; }
 
 | Job            | [Forms and the DOM](../13-js-forms-dom/lecture.html)                                                                                                                                                   | Today                                                |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- |
-| Find one       | [`getElementById`](../13-js-forms-dom/lecture.html#31)                                                                                                                                                 | [`querySelector`](#9)                                |
-| Find many      | [`childNodes`](../13-js-forms-dom/lecture.html#34)                                                                                                                                                     | [`getElementsBy...`](#13), [`querySelectorAll`](#11) |
-| Read and write | [`textContent`](../13-js-forms-dom/lecture.html#38), [`innerHTML`](../13-js-forms-dom/lecture.html#39), [`value`](../13-js-forms-dom/lecture.html#42), [`checked`](../13-js-forms-dom/lecture.html#45) |                                                      |
-| Style          | [`style`](../13-js-forms-dom/lecture.html#41)                                                                                                                                                          | [`className`](#15), [`classList`](#16)               |
-| Add            | [`innerHTML +=`](../13-js-forms-dom/lecture.html#39)                                                                                                                                                   | [`createElement`](#18), [`append`, `prepend`](#19)   |
+| Find one       | [`getElementById`](../13-js-forms-dom/lecture.html#35)                                                                                                                                                 | [`querySelector`](#9)                                |
+| Find many      | [`childNodes`](../13-js-forms-dom/lecture.html#41)                                                                                                                                                     | [`getElementsBy...`](#13), [`querySelectorAll`](#11) |
+| Read and write | [`textContent`](../13-js-forms-dom/lecture.html#39), [`innerHTML`](../13-js-forms-dom/lecture.html#40), [`value`](../13-js-forms-dom/lecture.html#46), [`checked`](../13-js-forms-dom/lecture.html#49) |                                                      |
+| Style          | [`style`](../13-js-forms-dom/lecture.html#45)                                                                                                                                                          | [`className`](#15), [`classList`](#16)               |
+| Add            | [`innerHTML +=`](../13-js-forms-dom/lecture.html#40)                                                                                                                                                   | [`createElement`](#18), [`append`, `prepend`](#19)   |
 | Remove         |                                                                                                                                                                                                        | [`remove`](#23), [`replaceChildren()`](#27)          |
 | Replace        |                                                                                                                                                                                                        | [`replaceWith`](#26), [`replaceChildren`](#27)       |
 
