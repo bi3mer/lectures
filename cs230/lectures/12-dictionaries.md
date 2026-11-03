@@ -638,5 +638,5 @@ ul { font-size: 0.85em; }
 ## Next Up: Records and Sets
 
 - [Records and Sets](13-records-and-sets.html)
-- [Dictionaries and Sets Cheat Sheet](dictionaries-and-sets-cheatsheet.html)
+- [Dictionaries and Sets Cheat Sheet](../dictionaries-and-sets-cheatsheet.html)
 - [Practice Problem: Coffee Cart](https://bi3mer.github.io/autograder/cs230/dictionary-0.html)

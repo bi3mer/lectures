@@ -1,6 +1,6 @@
 # Dictionaries and Sets Cheatsheet
 
-A **dictionary** stores **key**: **value** pairs and looks up each value by its key. A **set** holds distinct items in no particular order. This sheet collects the [Dictionaries](12-dictionaries.html) and [Records and Sets](13-records-and-sets.html) lectures in one place. Every example can be pasted into a file and run. The file examples expect the `data` folder from [data.zip](data.zip) next to your program. The [Data Files](data/index.html) page shows what is in each file.
+A **dictionary** stores **key**: **value** pairs and looks up each value by its key. A **set** holds distinct items in no particular order. This sheet collects the [Dictionaries](lectures/12-dictionaries.html) and [Records and Sets](lectures/13-records-and-sets.html) lectures in one place. Every example can be pasted into a file and run. The file examples expect the `data` folder from [data.zip](data.zip) next to your program. The [Data Files](data/index.html) page shows what is in each file.
 
 ## Creating a Dictionary
 

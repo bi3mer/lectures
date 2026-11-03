@@ -12,13 +12,13 @@ Every file the lectures read.
 
 <p class="download-all"><a class="download" href="../data.zip" download><svg><use href="#download-icon" /></svg> Download every file (data.zip)</a></p>
 
-Unzip `data.zip` next to your program. It makes the `data` folder from [Files for Today](../11-os-module.html#5), with `months` inside.
+Unzip `data.zip` next to your program. It makes the `data` folder from [Files for Today](../lectures/11-os-module.html#5), with `months` inside.
 
 To look at one file, click its name. To download just that file, click the arrow beside it.
 
 ## The `data` Folder
 
-From [Exceptions and Files](../10-exceptions-and-files.html).
+From [Exceptions and Files](../lectures/10-exceptions-and-files.html).
 
 <details>
 <summary><code>measures.txt</code><a class="download" href="measures.txt" download title="Download measures.txt" aria-label="Download measures.txt"><svg><use href="#download-icon" /></svg></a></summary>
@@ -108,7 +108,7 @@ Barbara,68
 
 ## The `data/months` Folder
 
-From [The `os` Module](../11-os-module.html).
+From [The `os` Module](../lectures/11-os-module.html).
 
 <details>
 <summary><code>2023-01.csv</code><a class="download" href="months/2023-01.csv" download title="Download 2023-01.csv" aria-label="Download 2023-01.csv"><svg><use href="#download-icon" /></svg></a></summary>

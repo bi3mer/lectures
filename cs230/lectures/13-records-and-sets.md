@@ -338,8 +338,8 @@ ul { font-size: 0.85em; }
 
 ---
 
-## Next Up: TBA
+## Next Up: Web Apps with Streamlit
 
-- TBA
-- The [Dictionaries and Sets Cheat Sheet](dictionaries-and-sets-cheatsheet.html) has both lectures' tools in one place, with more examples.
+- [Web Apps with Streamlit](14-streamlit.html)
+- The [Dictionaries and Sets Cheat Sheet](../dictionaries-and-sets-cheatsheet.html) has both lectures' tools in one place, with more examples.
 - [Practice Problem: Course Planner](https://bi3mer.github.io/autograder/cs230/set-0.html)

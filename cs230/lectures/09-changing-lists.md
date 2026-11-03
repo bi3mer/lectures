@@ -40,7 +40,7 @@ print(scores)   # [90, 85, 77, 100, 68]
 ```
 
 <center>
-<img src="./images/slice.svg" width="760">
+<img src="../images/slice.svg" width="760">
 </center>
 
 `middle` is a new list holding two of the items. `scores` keeps all five.
@@ -113,7 +113,7 @@ print(names)
 </div>
 <div>
 
-<img src="./images/insert.svg" width="520">
+<img src="../images/insert.svg" width="520">
 
 </div>
 </div>
@@ -170,7 +170,7 @@ names = []
 names.pop() # IndexError
 ```
 
-Check `in` before `remove` and `len` before `pop`: [Look Before You Leap](patterns.html#look-before-you-leap).
+Check `in` before `remove` and `len` before `pop`: [Look Before You Leap](../patterns.html#look-before-you-leap).
 
 ---
 
@@ -317,7 +317,7 @@ print(b)   # [1, 2, 3, 4]
 </div>
 <div>
 
-<img src="./images/shared-list.svg" width="520">
+<img src="../images/shared-list.svg" width="520">
 
 </div>
 </div>
@@ -343,7 +343,7 @@ print(b)   # [1, 2, 3, 4]
 </div>
 <div>
 
-<img src="./images/copied-list.svg" width="520">
+<img src="../images/copied-list.svg" width="520">
 
 </div>
 </div>
@@ -489,7 +489,7 @@ print(mystery(prices))
 print(prices)
 ```
 
-`mystery` returns the [median](changing-lists-cheatsheet.html#median). The extra line was `ordered = nums.sort()`: `sort` returns `None`, so `len(ordered)` raises a `TypeError`.
+`mystery` returns the [median](../changing-lists-cheatsheet.html#median). The extra line was `ordered = nums.sort()`: `sort` returns `None`, so `len(ordered)` raises a `TypeError`.
 
 ---
 

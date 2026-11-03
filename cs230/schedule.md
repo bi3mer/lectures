@@ -17,10 +17,10 @@ One table per section. Each row is a week of class: what to read, which practice
 | 7     | Oct 19 / Oct 21 | Ch 6: Lists, continued<br>Ch 7: Files, Exceptions                     | 7.1, 7.2, and 7.3                | Program 3                             |        |
 | 8     | Oct 26 / Oct 28 | Ch 7: OS Module<br>Ch 9: Dictionaries and Sets                        | 8.1, 8.2, and 8.3                | Program 3 due Nov 1<br>Program 4      |        |
 | 9     | Nov 2 / Nov 4   | Ch 9: Dictionaries                                                    | 9.1, 9.2, and 9.3                | Program 4                             |        |
-| 10    | Nov 9 / Nov 11  | Review and Quiz 2                                                     |                                  | Program 4 due Nov 15<br>Final Project | Quiz 2 |
-| 11    | Nov 16 / Nov 18 | Streamlit<br>Ch 10: Pandas                                            | TBD                              | Final Project                         |        |
-| 12    | Nov 16 / Nov 18 | Ch 10: Pandas<br>Ch 16: Visualization                                 | TBD                              | Final Project                         |        |
-| 13    | Nov 23 / Nov 25 | Ch 16: Visualization<br>**Thanksgiving Break**                        | TBD                              | Final Project                         |        |
+| 10    | Nov 9 / Nov 11  | Review and Quiz 2                                                     |                                  | Program 4<br>Final Project            | Quiz 2 |
+| 11    | Nov 16 / Nov 18 | Streamlit<br>Ch 10: Pandas                                            | TBD                              | Program 4<br>Final Project            |        |
+| 12    | Nov 16 / Nov 18 | Ch 10: Pandas<br>Ch 16: Visualization                                 | TBD                              | Program 4<br>Final Project            |        |
+| 13    | Nov 23 / Nov 25 | Ch 16: Visualization<br>**Thanksgiving Break**                        | TBD                              | Program 4 due Nov 24<br>Final Project |        |
 | 14    | Nov 30 / Dec 2  | Ch 11: Pandas for Data Preparation                                    | TBD                              | Final Project                         |        |
 | 15    | Dec 7           | Ch 11: Pandas for Data Preparation                                    | TBD                              |                                       |        |
 | Final | TBA             | Final exam week: projects                                             |                                  | Final Project due                     |        |

@@ -37,7 +37,7 @@ IndexError: list index out of range
 IndexError: pop from empty list
 ```
 
-Strings raise the same error, as in [Last Character: Empty Input](06-strings-and-format-strings.html#38).
+Strings raise the same error, as in [Last Character: Empty Input](lectures/06-strings-and-format-strings.html#38).
 
 ### `ValueError`
 
@@ -77,7 +77,7 @@ ValueError: max() iterable argument is empty
 ValueError: list.remove(x): x not in list
 ```
 
-`isdecimal` is the check that matches `int`. `"²".isdigit()` is `True`, but `int("²")` crashes ([A Bug We Didn't Handle](w4p1-helper.html#a-bug-we-didnt-handle)). `isdecimal` also rejects `"-5"`, which `int` accepts. [Enter a Valid Integer](06-strings-and-format-strings.html#81) slices off the minus sign before the check.
+`isdecimal` is the check that matches `int`. `"²".isdigit()` is `True`, but `int("²")` crashes ([A Bug We Didn't Handle](w4p1-helper.html#a-bug-we-didnt-handle)). `isdecimal` also rejects `"-5"`, which `int` accepts. [Enter a Valid Integer](lectures/06-strings-and-format-strings.html#81) slices off the minus sign before the check.
 
 ### `ZeroDivisionError`
 
@@ -138,7 +138,7 @@ Without the check, formatting `None` crashes:
 TypeError: unsupported format string passed to NoneType.__format__
 ```
 
-The function checks too: its `len` check prevents the `ZeroDivisionError` above. [Solution: Average of Scores](08-lists.html#30) uses both checks.
+The function checks too: its `len` check prevents the `ZeroDivisionError` above. [Solution: Average of Scores](lectures/08-lists.html#30) uses both checks.
 
 ### `FileNotFoundError`
 
@@ -171,7 +171,7 @@ For files, [Easier to Ask for Forgiveness than Permission](#easier-to-ask-for-fo
 
 ## Easier to Ask for Forgiveness than Permission
 
-**Easier to Ask for Forgiveness than Permission** means running a line of code that can raise an exception inside [`try`](10-exceptions-and-files.html#4) and handling the exception in `except`. The [Python glossary](https://docs.python.org/3/glossary.html#term-EAFP) calls it EAFP. Each section below names an exception and the `except` that catches it.
+**Easier to Ask for Forgiveness than Permission** means running a line of code that can raise an exception inside [`try`](lectures/10-exceptions-and-files.html#4) and handling the exception in `except`. The [Python glossary](https://docs.python.org/3/glossary.html#term-EAFP) calls it EAFP. Each section below names an exception and the `except` that catches it.
 
 ### `IndexError`
 
@@ -290,4 +290,4 @@ When `scores.csv` is not next to the program:
 Could not find scores.csv
 ```
 
-[`FileNotFoundError`](10-exceptions-and-files.html#24) in the exceptions lecture reads every line of the file the same way.
+[`FileNotFoundError`](lectures/10-exceptions-and-files.html#24) in the exceptions lecture reads every line of the file the same way.

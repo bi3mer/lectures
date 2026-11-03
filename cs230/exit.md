@@ -2,7 +2,7 @@
 
 TO be filled in. Right now, just look at [Python's documentation](https://docs.python.org/3/library/sys.html#sys.exit).
 
-<!--A Python program usually ends when it runs out of lines. Sometimes it has to stop sooner, such as when a file it needs is missing. [`break`](04-while-loops.html#17) leaves a loop, and [`return`](07-functions.html#13) leaves a function. Leaving the whole program takes `sys.exit`. Python also has `exit()`, `quit()`, and `os._exit()`, and this page explains why a program should use `sys.exit` instead.
+<!--A Python program usually ends when it runs out of lines. Sometimes it has to stop sooner, such as when a file it needs is missing. [`break`](lectures/04-while-loops.html#17) leaves a loop, and [`return`](lectures/07-functions.html#13) leaves a function. Leaving the whole program takes `sys.exit`. Python also has `exit()`, `quit()`, and `os._exit()`, and this page explains why a program should use `sys.exit` instead.
 
 ## Stopping Early with `sys.exit`
 
@@ -25,7 +25,7 @@ with open(path, "r") as f:
 No file named orders.csv in data.
 ```
 
-The program checks for the file with [`os.path.isfile`](11-os-module.html#19). When the file is missing, `sys.exit(1)` ends the program on that line, and the `with` block never runs. Without `sys.exit`, the rest of the program would have to sit inside an `else`. The `1` is the program's [exit status](#the-exit-status).
+The program checks for the file with [`os.path.isfile`](lectures/11-os-module.html#19). When the file is missing, `sys.exit(1)` ends the program on that line, and the `with` block never runs. Without `sys.exit`, the rest of the program would have to sit inside an `else`. The `1` is the program's [exit status](#the-exit-status).
 
 ## `exit` Belongs to the Interactive Shell
 
@@ -46,7 +46,7 @@ Before Python 2.5 (2006), `exit` and `quit` were strings. Typing `quit` at the p
 
 ## `sys.exit` Raises an Exception
 
-`sys.exit` does not stop Python on the spot. It raises an exception named `SystemExit`, and the program ends when nothing catches it. Cleanup still happens on the way out: [`finally`](10-exceptions-and-files.html#19) blocks run, and `with` closes its files.
+`sys.exit` does not stop Python on the spot. It raises an exception named `SystemExit`, and the program ends when nothing catches it. Cleanup still happens on the way out: [`finally`](lectures/10-exceptions-and-files.html#19) blocks run, and `with` closes its files.
 
 ```python
 import sys
@@ -81,7 +81,7 @@ Caught it.
 Still running.
 ```
 
-With `except Exception:` in place of `except:`, the program prints nothing and ends. Python 2.5 set that up on purpose. It added a class named `BaseException` above `Exception` and moved two exceptions directly under it. One is `SystemExit`. The other is `KeyboardInterrupt`, which Python raises when you press `Ctrl+C` to stop [a loop that never ends](04-while-loops.html#14). The [release notes](https://docs.python.org/3/whatsnew/2.5.html#pep-352-exceptions-as-new-style-classes) give the reason: "KeyboardInterrupt and SystemExit aren't errors, though, and usually represent an explicit action such as the user hitting Control-C or code calling sys.exit()."
+With `except Exception:` in place of `except:`, the program prints nothing and ends. Python 2.5 set that up on purpose. It added a class named `BaseException` above `Exception` and moved two exceptions directly under it. One is `SystemExit`. The other is `KeyboardInterrupt`, which Python raises when you press `Ctrl+C` to stop [a loop that never ends](lectures/04-while-loops.html#14). The [release notes](https://docs.python.org/3/whatsnew/2.5.html#pep-352-exceptions-as-new-style-classes) give the reason: "KeyboardInterrupt and SystemExit aren't errors, though, and usually represent an explicit action such as the user hitting Control-C or code calling sys.exit()."
 
 ## The Exit Status
 
@@ -119,7 +119,7 @@ Other programs use the status to decide whether to keep going. In a Mac terminal
 
 ## `os._exit` Skips the Cleanup
 
-`os._exit` is the one way out that does not raise `SystemExit`. It ends the program at once, so no `finally` block runs and no file gets closed. That matters because [until `close` runs, what a program wrote may not be in the file yet](10-exceptions-and-files.html#18). These two programs differ only in how they stop:
+`os._exit` is the one way out that does not raise `SystemExit`. It ends the program at once, so no `finally` block runs and no file gets closed. That matters because [until `close` runs, what a program wrote may not be in the file yet](lectures/10-exceptions-and-files.html#18). These two programs differ only in how they stop:
 
 ```python
 import sys

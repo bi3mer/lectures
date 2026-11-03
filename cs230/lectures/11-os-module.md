@@ -67,9 +67,9 @@ pre { font-size: 0.75em; }
 <div class="cols">
 <div>
 
-Download [data.zip](data.zip) and unzip it next to your program. It makes the `data` folder on the right.
+Download [data.zip](../data.zip) and unzip it next to your program. It makes the `data` folder on the right.
 
-Each file is also on the [Data Files](data/index.html) page.
+Each file is also on the [Data Files](../data/index.html) page.
 
 </div>
 <div>
@@ -505,7 +505,7 @@ except FileNotFoundError:
 </div>
 </div>
 
-Both print `Could not find data/nmaes.txt`. Left: [Look Before You Leap](patterns.html#filenotfounderror). Right: [Easier to Ask for Forgiveness](patterns.html#filenotfounderror-1), the safer choice for files.
+Both print `Could not find data/nmaes.txt`. Left: [Look Before You Leap](../patterns.html#filenotfounderror). Right: [Easier to Ask for Forgiveness](../patterns.html#filenotfounderror-1), the safer choice for files.
 
 ---
 
@@ -717,5 +717,5 @@ ul { font-size: 0.85em; }
 ## Next Up: Dictionaries
 
 - [Dictionaries](12-dictionaries.html)
-- [`os` Module Cheat Sheet](os-module-cheatsheet.html)
+- [`os` Module Cheat Sheet](../os-module-cheatsheet.html)
 - [Practice Problem: Search My Notes](https://bi3mer.github.io/autograder/cs230/os-0.html)

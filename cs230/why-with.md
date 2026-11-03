@@ -11,7 +11,7 @@ Opening paragraph: a program that opens something has to close it, even when som
 
 ## Opening Something Means Closing It
 
-- Opening a file borrows something from the operating system; `close` gives it back and makes sure what the program wrote reaches the file ([Without `with`](10-exceptions-and-files.html#18)).
+- Opening a file borrows something from the operating system; `close` gives it back and makes sure what the program wrote reaches the file ([Without `with`](lectures/10-exceptions-and-files.html#18)).
 - The bug: an exception, a `return`, or a `break` between `open` and `close` skips the `close`.
 - Example to write: a loop that writes a report and hits a `ValueError` halfway through, leaving the file open and partly written.
 - Files are one case of a general shape, setup then cleanup:
@@ -22,7 +22,7 @@ Opening paragraph: a program that opens something has to close it, even when som
 
 ## `finally`: Cleanup That Always Runs
 
-- What Python had before `with`: `try` and `finally` ([`finally`](10-exceptions-and-files.html#19)).
+- What Python had before `with`: `try` and `finally` ([`finally`](lectures/10-exceptions-and-files.html#19)).
 - `finally` runs whether the `try` block finishes, raises, or returns.
 - Example: `open`, then `try` around the loop, then `close` in `finally`.
 - What goes wrong with writing it by hand:
@@ -44,7 +44,7 @@ Opening paragraph: a program that opens something has to close it, even when som
 - The value after `with` is a **context manager**: an object with an `__enter__` method and an `__exit__` method.
 - `__enter__` runs before the block. What it gives back is the value `as` names; a file's `__enter__` gives back the file itself.
 - `__exit__` runs when the block ends, the way `finally` does, and it is told which exception (if any) ended the block. A file's `__exit__` calls `close`.
-- Show PEP 343's translation of `with EXPR as VAR: BLOCK`, simplified, next to the slide's `try`/`finally` version ([What `with` Does Underneath](10-exceptions-and-files.html#20)).
+- Show PEP 343's translation of `with EXPR as VAR: BLOCK`, simplified, next to the slide's `try`/`finally` version ([What `with` Does Underneath](lectures/10-exceptions-and-files.html#20)).
 - `__exit__` can stop an exception by giving back `True`; that is how `contextlib.suppress` works.
 
 ## `with` Beyond Files
@@ -52,10 +52,10 @@ Opening paragraph: a program that opens something has to close it, even when som
 - `threading.Lock()`: takes the lock, releases it after the block.
 - `tempfile.TemporaryDirectory()`: creates a folder, deletes it after the block.
 - `contextlib.suppress(FileNotFoundError)`: a `with` version of `try`/`except`/`pass` ([Easier to Ask for Forgiveness](patterns.html#easier-to-ask-for-forgiveness-than-permission)).
-- `contextlib.chdir("data")` (Python 3.11): changes the current folder and changes it back; ties to `os.getcwd` in the [`os` module](11-os-module.html).
+- `contextlib.chdir("data")` (Python 3.11): changes the current folder and changes it back; ties to `os.getcwd` in the [`os` module](lectures/11-os-module.html).
 - `contextlib.redirect_stdout(f)`: sends `print` into a file for the block.
 - A `sqlite3` connection: commits the transaction if the block succeeds and undoes it if the block raises, but does **not** close the connection. A good example of reading what a context manager's cleanup actually is.
-- One `with` can open two files: `with open(a) as f_in, open(b) as f_out:`, next to the nested version in [Raise the Prices](10-exceptions-and-files.html#38).
+- One `with` can open two files: `with open(a) as f_in, open(b) as f_out:`, next to the nested version in [Raise the Prices](lectures/10-exceptions-and-files.html#38).
 
 ## Writing Your Own
 

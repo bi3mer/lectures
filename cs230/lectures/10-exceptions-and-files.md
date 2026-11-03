@@ -46,7 +46,7 @@ Notice the colons and the indentation, just like `if` and `else`.
 <div class="cols">
 <div>
 
-<img src="./images/try-except-flow.svg" width="560">
+<img src="../images/try-except-flow.svg" width="560">
 
 </div>
 <div>
@@ -261,14 +261,14 @@ The extra line was `return None`. `mystery` has to ask again, and `return None` 
 <div class="cols">
 <div>
 
-Download [data.zip](data.zip) and unzip it next to your program. It makes the `data` folder on the right.
+Download [data.zip](../data.zip) and unzip it next to your program. It makes the `data` folder on the right.
 
 ```python
 "data/names.txt"     # Mac
 "data\\names.txt"    # Windows
 ```
 
-The slides use the Mac path, which Windows also accepts; the [cheat sheet](exceptions-and-files-cheatsheet.html#paths-on-a-mac-and-on-windows) explains why Windows has two. The next lecture has Python pick the separator.
+The slides use the Mac path, which Windows also accepts; the [cheat sheet](../exceptions-and-files-cheatsheet.html#paths-on-a-mac-and-on-windows) explains why Windows has two. The next lecture has Python pick the separator.
 
 </div>
 <div>
@@ -357,7 +357,7 @@ finally:
 </div>
 </div>
 
-Both do the same thing: `close` sits in `finally`, so it runs even if the block raises. [Python added `with` in 2006](why-with.html) to replace this pattern.
+Both do the same thing: `close` sits in `finally`, so it runs even if the block raises. [Python added `with` in 2006](../why-with.html) to replace this pattern.
 
 ---
 
@@ -467,7 +467,7 @@ ValueError: could not convert string to float: '\n'
             total += float(line)
 ```
 
-`float("10.1\n")` works, since `float` ignores spaces and newlines around the number ([Converting Text to Numbers](exceptions-and-files-cheatsheet.html#converting-text-to-numbers)). The last line is only `"\n"`, with no number to convert. Skip blank lines before converting, and the program prints `Total: 29.8`.
+`float("10.1\n")` works, since `float` ignores spaces and newlines around the number ([Converting Text to Numbers](../exceptions-and-files-cheatsheet.html#converting-text-to-numbers)). The last line is only `"\n"`, with no number to convert. Skip blank lines before converting, and the program prints `Total: 29.8`.
 
 ---
 
@@ -806,7 +806,7 @@ ul { font-size: 0.85em; }
 
 [The `os` Module](11-os-module.html)
 
-The [Exceptions and Files Cheat Sheet](exceptions-and-files-cheatsheet.html) has today's tools in one place, with more examples and the textbook's `readline` loop.
+The [Exceptions and Files Cheat Sheet](../exceptions-and-files-cheatsheet.html) has today's tools in one place, with more examples and the textbook's `readline` loop.
 
 <!--
 If time: the textbook's while loop over readline() (program 7-2), which stops when readline()

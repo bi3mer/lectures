@@ -24,7 +24,7 @@ Colan Biemer
 "A computer program takes input, processes it in a desired way, and provides output."
 
 <center>
-<img src="./images/ipo.png"width=500px></img>
+<img src="../images/ipo.png"width=500px></img>
 </center>
 
 ---
@@ -66,7 +66,7 @@ Colan Biemer
 Python is a general purpose scripting language, and it is one of the most popular programming languages in the world.
 
 <center>
-    <img src="./images/Python-logo.png" width=300px"></img>
+    <img src="../images/Python-logo.png" width=300px"></img>
 </center>
 
 ---

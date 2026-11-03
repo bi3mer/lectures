@@ -35,7 +35,7 @@ scores = [90, 85, 77, 100, 68]
 ```
 
 <center> 
-<img src="./images/list.svg" width="900">
+<img src="../images/list.svg" width="900">
 </center>
 <br/>
 
@@ -139,7 +139,7 @@ print(len(names))   # 2
 </div>
 <div>
 
-<img src="./images/append.svg" width="520">
+<img src="../images/append.svg" width="520">
 
 </div>
 </div>
@@ -481,7 +481,7 @@ print(nums)   # [1, 2, 3]
 </div>
 <div>
 
-<img src="./images/loop-variable.svg" width="480">
+<img src="../images/loop-variable.svg" width="480">
 
 </div>
 </div>
@@ -586,7 +586,7 @@ else:
     print(f"Average: {result:.2f}")
 ```
 
-The guard returns `None` for an empty list ([Look Before You Leap](patterns.html#look-before-you-leap)), like `split_bill` in week 5. The loop is the week 3 accumulator, now walking through a list.
+The guard returns `None` for an empty list ([Look Before You Leap](../patterns.html#look-before-you-leap)), like `split_bill` in week 5. The loop is the week 3 accumulator, now walking through a list.
 
 ---
 
@@ -783,7 +783,7 @@ ValueError: max() iterable argument is empty
 TypeError: unsupported operand type(s) for +: 'int' and 'str'
 ```
 
-Each line crashes on its own. An empty list has no largest item, so check `len` first ([Look Before You Leap](patterns.html#look-before-you-leap)). The second list holds strings, which is what you get when you `append` an `input` without `int`.
+Each line crashes on its own. An empty list has no largest item, so check `len` first ([Look Before You Leap](../patterns.html#look-before-you-leap)). The second list holds strings, which is what you get when you `append` an `input` without `int`.
 
 ---
 
