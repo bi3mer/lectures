@@ -1376,7 +1376,7 @@ st.dataframe(sales[sales["product"] == product])
 st.bar_chart(sales.groupby("product")["revenue"].sum())
 ```
 
-[`st.dataframe`](14-streamlit.html#31) and `st.bar_chart` take a DataFrame or a Series as is. `unique` lists each product once.
+[`st.dataframe`](14-streamlit.html#32) and `st.bar_chart` take a DataFrame or a Series as is. `unique` lists each product once.
 
 ---
 

@@ -18,9 +18,10 @@ Colan Biemer
 
 ## What We Can Build
 
-[Earthquakes This Week](https://bi3mer-230-streamlit-earthquake-example-app-vlrwj8.streamlit.app/)
+- [Tip Calculator](https://230-app-example-tip-app-4mzdzanoh7kt3yvvjsmbtp.streamlit.app/), with its [code on GitHub](https://github.com/bi3mer/230-streamlit-example-tip-app)
+- [Earthquakes This Week](https://bi3mer-230-streamlit-earthquake-example-app-vlrwj8.streamlit.app/), with its [code on GitHub](https://github.com/bi3mer/230-streamlit-earthquake-example)
 
-We will build this page today. Its code is [on GitHub](https://github.com/bi3mer/230-streamlit-earthquake-example).
+We will build both pages today.
 
 ---
 
@@ -320,6 +321,12 @@ if st.checkbox("Split the bill"):
 if st.button("Pay"):
     st.balloons()
 ```
+
+---
+
+## The Finished Tip Calculator
+
+[Tip Calculator](https://230-app-example-tip-app-4mzdzanoh7kt3yvvjsmbtp.streamlit.app/) is the finished page, and [`app.py`](https://github.com/bi3mer/230-streamlit-example-tip-app/blob/main/app.py) is its full code.
 
 ---
 
