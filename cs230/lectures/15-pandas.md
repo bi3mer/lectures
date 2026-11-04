@@ -59,7 +59,7 @@ import pandas as pd
 print(pd.__version__)   # 3.1.0
 ```
 
-**pandas** is a library for tables of data. [Streamlit installed it](14-streamlit.html#3); if it is missing, run `python3 -m pip install pandas` (Mac) or `py -m pip install pandas` (Windows). `as pd` names the module `pd`.
+**pandas** is a library for tables of data. [Streamlit installed it](14-streamlit.html#5); if it is missing, run `python3 -m pip install pandas` (Mac) or `py -m pip install pandas` (Windows). `as pd` names the module `pd`.
 
 ---
 
@@ -1376,7 +1376,7 @@ st.dataframe(sales[sales["product"] == product])
 st.bar_chart(sales.groupby("product")["revenue"].sum())
 ```
 
-[`st.dataframe`](14-streamlit.html#29) and `st.bar_chart` take a DataFrame or a Series as is. `unique` lists each product once.
+[`st.dataframe`](14-streamlit.html#31) and `st.bar_chart` take a DataFrame or a Series as is. `unique` lists each product once.
 
 ---
 

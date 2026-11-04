@@ -10,13 +10,27 @@ Colan Biemer
 
 ---
 
-## Your First App
+## What Is Streamlit?
+
+**Streamlit** is a Python library that turns a script into a web page. We write only Python, and Streamlit draws the page and keeps it up to date.
+
+---
+
+## What We Can Build
+
+[Earthquakes This Week](https://bi3mer-230-streamlit-earthquake-example-app-vlrwj8.streamlit.app/)
+
+We will build this page today. Its code is [on GitHub](https://github.com/bi3mer/230-streamlit-earthquake-example).
+
+---
+
+## The Basics
 
 ---
 
 ## Installing Streamlit
 
-**Streamlit** is a Python library that turns a script into a web page. Install it in the terminal in VS Code (**Terminal > New Terminal**):
+Install Streamlit in the terminal in VS Code (**Terminal > New Terminal**):
 
 ```
 python3 -m pip install streamlit      # Mac
@@ -32,8 +46,8 @@ py -m pip install streamlit           # Windows
 ```python
 import streamlit as st
 
-st.title("Coffee Cart")
-st.write("Open from 8 to 11.")
+st.title("My First App")
+st.write("Hello from Python.")
 ```
 
 Save this as `app.py`. Each `st.` call adds one thing to the page, top to bottom.
@@ -84,66 +98,76 @@ Then open `app.py` and press **F5** (**Run > Start Debugging**). The run arrow i
 
 ---
 
-## Text on the Page
+## `st.title`, `st.header`, and `st.write`
 
 ```python
 import streamlit as st
 
-st.title("Coffee Cart")
-st.header("Menu")
-st.write("Coffee: $3.00")
-st.markdown("**Tea** is $2.50.")
-st.markdown("*Bagels* are $2.75.")
+scores = [90, 85, 77]
+
+st.title("My First App")
+st.header("Scores")
+st.write("The scores and their total:")
+st.write(scores)
+st.write(sum(scores))
 ```
 
-`st.title` and `st.header` write headings. `st.markdown` reads `**bold**` and `*italics*`, as these slides do. Text between two `$` signs shows as a math formula, so each price gets its own line.
+`st.title` and `st.header` write headings. `st.write` shows strings, numbers, lists, and dictionaries, each in a form that fits it.
 
 ---
 
-## `st.write` Shows Any Value
+## Tip Calculator
+
+---
+
+## The Bill: `st.number_input`
 
 ```python
 import streamlit as st
 
-menu = {"coffee": 3.00, "tea": 2.50, "bagel": 2.75}
-sales = [50, 75, 60]
+st.title("Tip Calculator")
 
-st.write(sum(sales))
-st.write(sales)
-st.write(menu)
-st.write(f"Best day: {max(sales)}")
+bill = st.number_input("Bill ($)", min_value=0.0, value=40.00, step=0.25)
+st.write(f"Bill: ${bill:.2f}")
 ```
 
-`st.write` shows numbers, strings, lists, and dictionaries, each in a form that fits it.
+A [**widget**](https://docs.streamlit.io/develop/api-reference/widgets) is a control on the page that the user changes. `st.number_input` draws a number box and returns what is in it, and the box accepts only numbers in the range.
 
 ---
 
-## Widgets
-
----
-
-## `st.text_input`
+## The Tax: `st.selectbox`
 
 ```python
-import streamlit as st
+rates = {"Pennsylvania": 6.0, "New Jersey": 6.625, "Delaware": 0.0}
 
-name = st.text_input("Your name")
-if name != "":
-    st.write(f"Hello, {name}!")
+state = st.selectbox("State", rates.keys())
+tax = bill * rates[state] / 100
+st.write(f"Tax: ${tax:.2f}")
 ```
 
-A **widget** is a control on the page that the user changes, like a text box. `st.text_input` draws a text box and returns what is in it, `""` at first.
+`st.selectbox` returns the option the user picked. The options are the dictionary's keys, so the [lookup](12-dictionaries.html#12) never raises a `KeyError`.
+
+---
+
+## The Tip: `st.slider`
+
+```python
+percent = st.slider("Tip (%)", 0, 30, 20)
+tip = bill * percent / 100
+total = bill + tax + tip
+
+st.write(f"Tip: ${tip:.2f}")
+st.write(f"Total: ${total:.2f}")
+```
+
+The three numbers are the smallest value, the largest, and where the slider starts.
 
 ---
 
 ## The Whole Script Reruns
 
 ```python
-import streamlit as st
-
 print("The script ran")
-name = st.text_input("Your name")
-st.write(f"Hello, {name}!")
 ```
 
 ```
@@ -156,449 +180,275 @@ Each time a widget changes, Streamlit runs the whole script again, top to bottom
 
 ---
 
-## `st.number_input`
+## Raw Strings: `r""`
 
 ```python
-import streamlit as st
-
-count = st.number_input("How many?", min_value=1, max_value=12, value=1)
-price = st.number_input("Price ($)", min_value=0.0, value=3.00, step=0.25)
-
-st.write(f"Total: ${count * price:.2f}")
+print("C:\new\table")
+print(r"C:\new\table")
 ```
 
-The box accepts only numbers in the range, so no [`try`/`except`](10-exceptions-and-files.html#5) is needed. Whole-number arguments return an `int`, and decimal ones like `0.0` return a `float`; mixing the two raises an error.
+```
+C:
+ew	able
+C:\new\table
+```
+
+Python reads `\n` as a new line and `\t` as a tab. An `r` before the quotes makes a **raw string**, which keeps each `\` as typed.
 
 ---
 
-## `st.slider`
+## The Math: `st.latex`
+
+<style scoped>
+pre { font-size: 0.7em; }
+</style>
 
 ```python
-import streamlit as st
-
-percent = st.slider("Tip (%)", 0, 30, 15)
-st.write(f"Tip: {percent}%")
+st.latex(rf"\text{{tip}} = {bill:.2f} \times \dfrac{{{percent}}}{{100}} = {tip:.2f}")
+st.latex(rf"\text{{total}} = {bill:.2f} + {tax:.2f} + {tip:.2f} = {total:.2f}")
 ```
 
-The three numbers are the smallest value, the largest, and where the slider starts.
+`st.latex` draws math written in **LaTeX**<sup>1</sup>, and the numbers update with every rerun. LaTeX commands start with `\`, so `rf` makes a [raw string](14-streamlit.html#15) that is also an f-string, and `{{` writes one `{`.
+
+<div class="footnote">1. Overleaf's <a href="https://www.overleaf.com/learn/latex/Mathematical_expressions">Mathematical expressions</a> guide shows how to write math in LaTeX.</div>
 
 ---
 
-## `st.selectbox`
+## Tip on the Tax: `st.radio`
 
 ```python
-import streamlit as st
-
-menu = {"coffee": 3.00, "tea": 2.50, "bagel": 2.75}
-
-item = st.selectbox("Item", menu.keys())
-st.write(f"{item}: ${menu[item]:.2f}")
+choice = st.radio("Tip on", ["Bill", "Bill plus tax"])
+amount = bill
+if choice == "Bill plus tax":
+    amount = bill + tax
+tip = amount * percent / 100
 ```
 
-`st.selectbox` returns the option the user picked. The options are the menu's keys, so the [lookup](12-dictionaries.html#12) never raises a `KeyError`.
+`st.radio` returns the option picked, like `st.selectbox`. These lines replace the old `tip` line, and `amount` replaces `bill` in the formula.
 
 ---
 
-## `st.checkbox` and `st.radio`
+## Side by Side: `st.metric` and `st.columns`
 
 ```python
-import streamlit as st
-
-size = st.radio("Size", ["Small", "Large"])
-to_go = st.checkbox("To go")
-
-st.write(f"A {size.lower()} coffee")
-if to_go:
-    st.write("In a paper cup")
-```
-
-`st.radio` returns the option picked, like `st.selectbox`. `st.checkbox` returns `True` when checked.
-
----
-
-## `st.button`
-
-```python
-import streamlit as st
-
-name = st.text_input("Your name")
-if st.button("Say hello"):
-    st.write(f"Hello, {name}!")
-```
-
-A click reruns the script, and `st.button` returns `True` on that one rerun only. Typing a new name reruns it with `False`, so the greeting disappears.
-
----
-
-## Problem: Tip Calculator (us)
-
-```python
-# Build a tip calculator. Ask for the bill and a tip from 0 to 30
-# percent, then show the tip and the total, to the cent.
-```
-
-With a bill of `40.00` and a tip of `20`, the page shows:
-
-```
-Tip: $8.00
-Total: $48.00
-```
-
-- Which widget fits the bill, and which fits the tip?
-- What type does each one return?
-
----
-
-## Solution: Tip Calculator (us)
-
-```python
-import streamlit as st
-
-st.title("Tip Calculator")
-bill = st.number_input("Bill ($)", min_value=0.0, value=40.0)
-percent = st.slider("Tip (%)", 0, 30, 20)
-
-tip = bill * percent / 100
-st.write(f"Tip: ${tip:.2f}")
-st.write(f"Total: ${bill + tip:.2f}")
-```
-
-`min_value=0.0` makes the bill a `float`. Moving the slider reruns the script, which updates the totals.
-
----
-
-## Parsons Problem #1 (you)
-
-**One line does not belong.**
-
-```python
-st.write(f"{degrees + 273.15:.1f} K")
-degrees = st.text_input("Degrees C")
-import streamlit as st
-st.write(f"{degrees * 9 / 5 + 32:.1f} F")
-else:
-unit = st.radio("Convert to", ["Fahrenheit", "Kelvin"])
-degrees = st.number_input("Degrees C", value=20.0)
-if unit == "Fahrenheit":
-```
-
----
-
-## Solution: Parsons Problem #1 (you)
-
-```python
-import streamlit as st
-
-degrees = st.number_input("Degrees C", value=20.0)
-unit = st.radio("Convert to", ["Fahrenheit", "Kelvin"])
-if unit == "Fahrenheit":
-    st.write(f"{degrees * 9 / 5 + 32:.1f} F")
-else:
-    st.write(f"{degrees + 273.15:.1f} K")
-```
-
-The extra line was `degrees = st.text_input("Degrees C")`. It returns a string, so `degrees * 9 / 5` raises a `TypeError`.
-
----
-
-## Showing Results
-
----
-
-## Messages
-
-```python
-import streamlit as st
-
-age = st.number_input("Age", min_value=0, max_value=120, value=18)
-if age >= 21:
-    st.success("Welcome in.")
-elif age >= 18:
-    st.warning("No drinks from the bar.")
-else:
-    st.error("You must be 18 or older.")
-st.info("Bring a photo ID.")
-```
-
-Each one shows a colored box: green, yellow, red, and blue.
-
----
-
-## `st.metric`
-
-```python
-import streamlit as st
-
-sales = [50, 75, 60, 90, 40]
-
-st.metric("Total sales", f"${sum(sales)}")
-st.metric("Best day", f"${max(sales)}")
-```
-
-`st.metric` shows one number in large type, with a small label above it.
-
----
-
-## Side by Side: `st.columns`
-
-```python
-import streamlit as st
-
-sales = [50, 75, 60, 90, 40]
-
-left, right = st.columns(2)
+left, middle, right = st.columns(3)
 with left:
-    st.metric("Total sales", f"${sum(sales)}")
+    st.metric("Tax", f"${tax:.2f}")
+with middle:
+    st.metric("Tip", f"${tip:.2f}")
 with right:
-    st.metric("Best day", f"${max(sales)}")
+    st.metric("Total", f"${total:.2f}")
 ```
 
-`st.columns(2)` returns two columns. Anything inside a column's `with` block lands in that column, as [`with open`](10-exceptions-and-files.html#17) scoped a file.
+`st.metric` shows one value in large type. Anything inside a column's `with` block lands in that column, as [`with open`](10-exceptions-and-files.html#17) scoped a file.
 
 ---
 
-## The Sidebar
+## Split the Bill: `st.checkbox`
 
 ```python
-import streamlit as st
-
-with st.sidebar:
-    st.header("Options")
-    size = st.radio("Size", ["Small", "Large"])
-
-st.title("Coffee Cart")
-st.write(f"Size: {size}")
+if st.checkbox("Split the bill"):
+    people = st.number_input("People", min_value=2, max_value=12, value=2)
+    st.write(f"Each person pays ${total / people:.2f}")
 ```
 
-The sidebar is a panel down the left edge of the page. Anything inside `with st.sidebar:` goes there.
+`st.checkbox` returns `True` when checked, so the box for people appears only then. Whole-number arguments make `st.number_input` return an `int`.
 
 ---
 
-## Problem: Coffee Order (us)
+## Pay: `st.button`
 
 ```python
-# Build an order page: pick a drink and how many, side by side.
-# Show the total as a metric, and warn when it is over $20.
-menu = {"coffee": 3.00, "latte": 4.50, "tea": 2.50}
+if st.button("Pay"):
+    st.balloons()
 ```
 
-Five lattes show a total of `$22.50` and the warning.
-
-- Which widget fits each choice?
-- How do we turn the drink into its price?
+A click reruns the script, and `st.button` returns `True` on that one rerun only.
 
 ---
 
-## Solution: Coffee Order (us)
-
-```python
-import streamlit as st
-
-menu = {"coffee": 3.00, "latte": 4.50, "tea": 2.50}
-
-st.title("Coffee Order")
-left, right = st.columns(2)
-with left:
-    drink = st.selectbox("Drink", menu.keys())
-with right:
-    count = st.number_input("How many?", min_value=1, max_value=10, value=1)
-
-total = menu[drink] * count
-st.metric("Total", f"${total:.2f}")
-if total > 20:
-    st.warning("That is a lot of coffee.")
-```
-
----
-
-## Tables and Charts
-
----
-
-## `st.dataframe`
-
-```python
-import streamlit as st
-
-table = {
-    "name": ["Ada", "Grace", "Alan"],
-    "score": [90, 85, 77],
-}
-
-st.dataframe(table)
-```
-
-`st.dataframe` draws a [dictionary of lists](13-records-and-sets.html#8) as a table: each key names a column, and its list fills that column. Clicking a column's name sorts by it.
-
----
-
-## A Table from a File
+## The Full Tip Calculator: Inputs
 
 <style scoped>
 pre { font-size: 0.75em; }
 </style>
 
 ```python
-import os
 import streamlit as st
 
-names = []
-scores = []
-path = os.path.join("data", "scores.csv")
-try:
-    with open(path, "r") as f:
-        f.readline()
-        for line in f:
-            fields = line.strip().split(",")
-            names.append(fields[0])
-            scores.append(int(fields[1]))
-    st.dataframe({"name": names, "score": scores})
-except FileNotFoundError as error:
-    st.error(error)
-```
+rates = {"Pennsylvania": 6.0, "New Jersey": 6.625, "Delaware": 0.0}
 
-`f.readline()` [skips the header](10-exceptions-and-files.html#29), and each line splits into a name and a score. A missing file shows a red box in place of the table.
+st.title("Tip Calculator")
+
+bill = st.number_input("Bill ($)", min_value=0.0, value=40.00, step=0.25)
+state = st.selectbox("State", rates.keys())
+tax = bill * rates[state] / 100
+
+percent = st.slider("Tip (%)", 0, 30, 20)
+choice = st.radio("Tip on", ["Bill", "Bill plus tax"])
+amount = bill
+if choice == "Bill plus tax":
+    amount = bill + tax
+tip = amount * percent / 100
+total = bill + tax + tip
+```
 
 ---
 
-## `st.bar_chart`
+## The Full Tip Calculator: Results
+
+<style scoped>
+pre { font-size: 0.7em; }
+</style>
 
 ```python
-import streamlit as st
+st.latex(rf"\text{{tip}} = {amount:.2f} \times \dfrac{{{percent}}}{{100}} = {tip:.2f}")
+st.latex(rf"\text{{total}} = {bill:.2f} + {tax:.2f} + {tip:.2f} = {total:.2f}")
 
-table = {
-    "name": ["Ada", "Grace", "Alan"],
-    "score": [90, 85, 77],
-}
+left, middle, right = st.columns(3)
+with left:
+    st.metric("Tax", f"${tax:.2f}")
+with middle:
+    st.metric("Tip", f"${tip:.2f}")
+with right:
+    st.metric("Total", f"${total:.2f}")
 
-st.bar_chart(table, x="name", y="score")
+if st.checkbox("Split the bill"):
+    people = st.number_input("People", min_value=2, max_value=12, value=2)
+    st.write(f"Each person pays ${total / people:.2f}")
+
+if st.button("Pay"):
+    st.balloons()
 ```
-
-`x` names the column along the bottom, and `y` names the column that sets each bar's height.
 
 ---
 
-## Parsons Problem #2 (you)
+## Earthquakes
 
-**One line does not belong.**
+---
+
+## A Preview of pandas
+
+**pandas** is a library for working with tables of data. We use it here for convenience: it reads and filters this file in a few lines.
+
+Treat those lines as a preview. [The next lecture](15-pandas.html) explains how they work.
+
+---
+
+## Reading Live Data
+
+<style scoped>
+pre { font-size: 0.75em; }
+</style>
 
 ```python
-st.bar_chart({"item": items, "price": prices}, x="item", y="price")
-items.append(item)
-for item, price in menu.items():
-prices.append(price)
-st.bar_chart(menu, x="item", y="price")
+import pandas as pd
 import streamlit as st
-items = []
-prices = []
-menu = {"coffee": 3.00, "tea": 2.50, "bagel": 2.75}
+
+url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.csv"
+quakes = pd.read_csv(url)
+quakes = quakes[quakes["type"] == "earthquake"]
 ```
+
+The US Geological Survey publishes this CSV file, and `pd.read_csv` reads it straight from the URL. The file also lists events like quarry blasts, so the last line keeps only earthquakes.
 
 ---
 
-## Solution: Parsons Problem #2 (you)
+## The Title
+
+<style scoped>
+pre { font-size: 0.7em; }
+</style>
 
 ```python
-import streamlit as st
-
-menu = {"coffee": 3.00, "tea": 2.50, "bagel": 2.75}
-
-items = []
-prices = []
-for item, price in menu.items():
-    items.append(item)
-    prices.append(price)
-
-st.bar_chart({"item": items, "price": prices}, x="item", y="price")
+st.title("Earthquakes This Week")
+first = quakes["time"].min()[:10]
+last = quakes["time"].max()[:10]
+st.write(f"Every earthquake the US Geological Survey recorded from {first} to {last}.")
 ```
 
-The extra line was `st.bar_chart(menu, x="item", y="price")`. `menu` has no `"item"` or `"price"` key, so Streamlit cannot find those columns.
+Each time is a string like `2026-11-04T12:53:43.253Z`, so `[:10]` keeps the date.
 
 ---
 
-## Remembering Between Reruns
-
----
-
-## Problem: Find the Bug
+## Filters: `st.sidebar` and `st.text_input`
 
 ```python
-import streamlit as st
+with st.sidebar:
+    st.header("Filters")
+    smallest = st.slider("Smallest magnitude", 0.0, 7.0, 2.5, step=0.1)
+    place = st.text_input("Place")
 
-count = 0
-if st.button("Add one"):
-    count += 1
-
-st.write(f"Count: {count}")
+shown = quakes[quakes["mag"] >= smallest]
+shown = shown[shown["place"].str.contains(place, case=False, regex=False)]
 ```
 
-Click **Add one** three times. What does the page show?
+Anything inside `with st.sidebar:` goes in the panel down the left edge. `st.text_input` draws a text box and returns what is in it, `""` at first.
 
 ---
 
-## Solution: Find the Bug
-
-```
-Count: 1
-```
-
-Each click reruns the whole script, and the rerun sets `count = 0` again. A variable lasts one run.
-
----
-
-## `st.session_state`
+## No Matches: `st.warning`
 
 ```python
-import streamlit as st
-
-if "count" not in st.session_state:
-    st.session_state["count"] = 0
-
-if st.button("Add one"):
-    st.session_state["count"] += 1
-
-st.write(f"Count: {st.session_state['count']}")
+if len(shown) == 0:
+    st.warning("No earthquakes match.")
+else:
+    left, right = st.columns(2)
+    with left:
+        st.metric("Earthquakes", len(shown))
+    with right:
+        st.metric("Strongest", shown["mag"].max())
 ```
 
-`st.session_state` works like a dictionary that keeps its keys across reruns. Check with [`in`](12-dictionaries.html#8) so only the first run sets the count to 0.
+`st.warning` shows a yellow box. Everything from here on goes inside the `else`.
 
 ---
 
-## Parsons Problem #3 (you)
-
-**One line does not belong.**
+## The Map: `st.map`
 
 ```python
-for name in st.session_state["names"]:
-if "names" not in st.session_state:
-name = st.text_input("Name")
-st.session_state["names"] = st.session_state["names"].append(name)
-st.write(name)
-st.session_state["names"].append(name)
-import streamlit as st
-st.session_state["names"] = []
-if st.button("Add"):
+quakes["size"] = 30 * 10 ** (0.75 * quakes["mag"])
 ```
+
+```python
+st.map(shown, size="size", zoom=0)
+```
+
+`st.map` finds the `latitude` and `longitude` columns and draws a dot for each row. `size` names the column that sets each dot's radius, so a dot's area grows with the energy of its earthquake.
 
 ---
 
-## Solution: Parsons Problem #3 (you)
+## The Chart: `st.bar_chart`
 
 ```python
-import streamlit as st
-
-if "names" not in st.session_state:
-    st.session_state["names"] = []
-
-name = st.text_input("Name")
-if st.button("Add"):
-    st.session_state["names"].append(name)
-
-for name in st.session_state["names"]:
-    st.write(name)
+st.header("Magnitude")
+magnitudes = range(0, round(quakes["mag"].max()) + 1)
+counts = shown["mag"].round().astype(int).value_counts()
+st.bar_chart(
+    counts.reindex(magnitudes, fill_value=0),
+    x_label="Magnitude",
+    y_label="Earthquakes",
+)
 ```
 
-The extra line stored what [`append` gives back](08-lists.html#10), `None`, so the next loop raises a `TypeError`.
+`counts` holds how many earthquakes fall at each whole magnitude, and `reindex` adds a zero for any magnitude with none.
+
+---
+
+## The Table: `st.dataframe`
+
+```python
+st.header("The Data")
+st.dataframe(shown[["time", "place", "mag", "depth"]])
+```
+
+`st.dataframe` draws a table. Clicking a column's name sorts by it.
+
+---
+
+## The Full Earthquake App
+
+[Earthquakes This Week](https://bi3mer-230-streamlit-earthquake-example-app-vlrwj8.streamlit.app/) is the finished page, and [`app.py`](https://github.com/bi3mer/230-streamlit-earthquake-example/blob/main/app.py) is its full code.
 
 ---
 
@@ -609,14 +459,13 @@ ul { font-size: 0.85em; }
 </style>
 
 - **Streamlit** turns a script into a web page; start it with `python3 -m streamlit run app.py`
-- `st.title`, `st.header`, `st.write`, and `st.markdown` put text on the page
-- A **widget** returns its current value: `st.text_input` a string, `st.number_input` and `st.slider` a number, `st.selectbox` and `st.radio` the option picked, `st.checkbox` a `bool`
+- `st.title`, `st.header`, and `st.write` put text on the page, and `st.latex` draws math
+- A **widget** returns its current value: `st.number_input` and `st.slider` a number, `st.text_input` a string, `st.selectbox` and `st.radio` the option picked, `st.checkbox` a `bool`
 - `st.button` is `True` only on the rerun right after a click
 - Every widget change reruns the whole script, top to bottom
-- `st.success`, `st.warning`, `st.error`, and `st.info` show messages; `st.metric` shows one number
+- `st.metric` shows one value, and `st.warning` shows a yellow box
 - `st.columns` and `st.sidebar` lay out the page with `with` blocks
-- `st.dataframe` and `st.bar_chart` draw a dictionary of lists
-- `st.session_state` works like a dictionary that lasts across reruns
+- `st.map`, `st.bar_chart`, and `st.dataframe` draw data
 
 ---
 
