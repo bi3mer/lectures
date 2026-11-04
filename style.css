@@ -166,6 +166,17 @@ main.doc {
   padding-left: 20px;
 }
 
+/* The CS 230 schedule (cs230/schedule.md). Its tables fill the column. A table only stretches
+   with display: table, which cannot scroll, so the div around it scrolls sideways on a phone. */
+.doc .full-width {
+  overflow-x: auto;
+}
+
+.doc .full-width table {
+  display: table;
+  width: 100%;
+}
+
 /* The data page (cs230/data/index.md). A large link at the top downloads every file as one
    zip. Below it, each file is a box that opens to show the file, with a download arrow beside
    its name. The file sits flush in the box, which is already dark. */
