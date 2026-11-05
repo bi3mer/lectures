@@ -17,7 +17,6 @@
 | Nov 2 / Nov 4   | Ch 9: [Dictionaries](lectures/12-dictionaries.html)                                                                                                |
 | Nov 9 / Nov 11  | Review and Quiz 2                                                                                                                                  |
 | Nov 16 / Nov 18 | [Streamlit](lectures/14-streamlit.html)<br>Ch 10: [Pandas](lectures/15-pandas.html)                                                                |
-| Nov 16 / Nov 18 | Ch 10: [Pandas](lectures/15-pandas.html)<br>Ch 16: Visualization                                                                                   |
 | Nov 23 / Nov 25 | Ch 16: Visualization<br>**Thanksgiving Break**                                                                                                     |
 | Nov 30 / Dec 2  | Ch 11: Pandas for Data Preparation                                                                                                                 |
 | Dec 7           | Ch 11: Pandas for Data Preparation                                                                                                                 |
