@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" width="200" height="300" preserveAspectRatio="none">
+  <!-- preserveAspectRatio="none" lets the bag stretch, so a wrong height is easy to see. -->
+  <path d="M30 50 L30 22 L37 14 L44 22 L51 14 L58 22 L65 14 L72 22 L79 14 L86 22 L93 14 L100 22 L107 14 L114 22 L121 14 L128 22 L135 14 L142 22 L149 14 L156 22 L163 14 L170 22 L170 50 Z" fill="#7a4e2b" />
+  <path d="M30 50 L170 50 L182 280 Q182 290 172 290 L28 290 Q18 290 18 280 Z" fill="#b07a4a" />
+  <path d="M150 50 L170 50 L182 280 Q182 290 172 290 L160 290 Z" fill="#9a6a3f" />
+  <rect x="30" y="50" width="140" height="8" fill="#7a4e2b" />
+  <rect x="45" y="120" width="110" height="120" rx="10" fill="#f5ecc2" />
+  <text x="100" y="158" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="22" fill="#064f6e">COFFEE</text>
+  <g transform="rotate(25 100 200)">
+    <ellipse cx="100" cy="200" rx="15" ry="21" fill="#5b3a1e" />
+    <path d="M94 183 Q105 200 95 217" stroke="#f5ecc2" stroke-width="3" fill="none" />
+  </g>
+</svg>

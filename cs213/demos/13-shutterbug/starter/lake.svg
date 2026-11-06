@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <title>A lake at sunset</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b1e5c" />
+      <stop offset="0.45" stop-color="#b8487a" />
+      <stop offset="0.8" stop-color="#f28c45" />
+      <stop offset="1" stop-color="#ffc861" />
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f08a4b" />
+      <stop offset="0.35" stop-color="#9c3f72" />
+      <stop offset="1" stop-color="#1d1846" />
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#ffe9a8" stop-opacity="0.9" />
+      <stop offset="1" stop-color="#ffe9a8" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Sky, the sun's glow, and the sun, which the mountains hide below its middle -->
+  <rect width="600" height="380" fill="url(#sky)" />
+  <circle cx="300" cy="320" r="170" fill="url(#glow)" />
+  <circle cx="300" cy="320" r="64" fill="#ffe08a" />
+
+  <!-- Far mountains, with a valley where the sun sets -->
+  <path d="M0 290 L70 230 L150 280 L220 240 L270 320 L300 345 L330 320 L380 250 L450 300 L520 220 L600 270 L600 380 L0 380 Z" fill="#8a3f7f" />
+
+  <!-- Near hills on each shore -->
+  <path d="M0 330 Q120 300 220 355 L250 380 L0 380 Z" fill="#3d2257" />
+  <path d="M600 325 Q480 305 380 360 L350 380 L600 380 Z" fill="#3d2257" />
+
+  <!-- Pines on the left hill -->
+  <g fill="#24143d">
+    <polygon points="28,348 44,296 60,348" />
+    <polygon points="54,344 72,284 90,344" />
+    <polygon points="84,350 98,310 112,350" />
+  </g>
+
+  <!-- Water, and the sun's reflection fading toward the shore -->
+  <rect y="380" width="600" height="220" fill="url(#water)" />
+  <g fill="#ffd98a">
+    <rect x="225" y="392" width="150" height="6" rx="3" opacity="0.9" />
+    <rect x="240" y="412" width="120" height="6" rx="3" opacity="0.75" />
+    <rect x="252" y="434" width="96" height="6" rx="3" opacity="0.6" />
+    <rect x="265" y="458" width="70" height="6" rx="3" opacity="0.45" />
+    <rect x="276" y="484" width="48" height="6" rx="3" opacity="0.35" />
+    <rect x="285" y="512" width="30" height="6" rx="3" opacity="0.25" />
+  </g>
+
+  <!-- Two birds -->
+  <g fill="none" stroke="#3a2459" stroke-width="3" stroke-linecap="round">
+    <path d="M400 150 q10 -10 20 0 q10 -10 20 0" />
+    <path d="M450 120 q7 -7 14 0 q7 -7 14 0" />
+  </g>
+</svg>

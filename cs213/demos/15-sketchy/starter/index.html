@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sketchy</title>
+    <style>
+      /* The lecture slides' colors: combination 151 from Sanzo Wada's "A Dictionary of Color
+         Combinations, Vol. 1", with shades of its blue for the cards and rules. */
+      :root {
+        --bg: #064f6e;
+        --text: #f5ecc2;
+        --accent: #f99d1b;
+        --secondary: #a8c1cc;
+        --rule: #38728b;
+        --card: #032837;
+        color-scheme: dark;
+      }
+
+      body {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 16px;
+        font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        accent-color: var(--accent);
+      }
+
+      header {
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 0;
+        font-size: 44px;
+      }
+
+      header p {
+        margin-top: 4px;
+        color: var(--secondary);
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .card {
+        margin-bottom: 16px;
+        padding: 0 16px;
+        border: 1px solid var(--rule);
+        border-radius: 12px;
+        background-color: var(--card);
+      }
+
+      /* Like a slide's heading: a rule underneath, with a short accent bar at its left end */
+      h2 {
+        position: relative;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      h2::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2.5px;
+        width: 2.5em;
+        height: 4px;
+        border-radius: 2px;
+        background-color: var(--accent);
+      }
+
+      fieldset {
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+      }
+
+      legend {
+        color: var(--secondary);
+      }
+
+      /* Rows of controls. A div has no margin of its own, so this spaces them out. */
+      .card > div,
+      .card > fieldset {
+        margin: 16px 0;
+      }
+
+      input,
+      select,
+      button {
+        font: inherit;
+      }
+
+      #title {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 4px;
+      }
+
+      .hint {
+        margin: 4px 0 0;
+        color: var(--secondary);
+        font-size: 14px;
+      }
+
+      button {
+        padding: 4px 16px;
+        border: none;
+        border-radius: 6px;
+        background-color: var(--accent);
+        color: var(--card);
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      /* Each swatch's own color comes from its style attribute. */
+      .swatch {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: 2px solid var(--text);
+        color: white;
+        text-shadow: 0 0 3px black;
+      }
+
+      .swatch:hover {
+        outline: 3px solid var(--accent);
+      }
+
+      .keys {
+        margin: 0;
+        padding-left: 20px;
+        line-height: 1.8;
+      }
+
+      kbd {
+        padding: 1px 6px;
+        border: 1px solid var(--rule);
+        border-radius: 4px;
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+      }
+
+      /* The board holds the canvas and the brush. The canvas has no border of its own, so the
+         mouse's offsetX and offsetY count from the drawing's own corner. */
+      #board {
+        position: relative;
+        margin-top: 16px;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      #canvas {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        background-color: white;
+        cursor: crosshair;
+      }
+
+      /* The brush is a circle centered on its spot, which starts in the middle. pointer-events:
+         none lets the mouse reach the canvas under it. */
+      #brush {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        box-sizing: border-box;
+        border: 1px solid #8a8a8a;
+        border-radius: 50%;
+        opacity: 0.6;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      #where {
+        min-height: 1.2em;
+        color: var(--secondary);
+      }
+
+      @media (max-width: 700px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Sketchy</h1>
+      <p>Hold the mouse button down and drag to draw</p>
+    </header>
+
+    <main>
+      <!-- autocomplete="off" keeps a reload from bringing back the last picks -->
+      <form id="tools" class="card" autocomplete="off">
+        <h2>Tools</h2>
+
+        <!-- Title -->
+        <div>
+          <label for="title">Title</label>
+          <input id="title" name="title" placeholder="sketchy" />
+          <p id="hint" class="hint" hidden>Shortcuts are off while you type.</p>
+        </div>
+
+        <!-- Color -->
+        <div>
+          <label for="color">Color</label>
+          <input id="color" name="color" type="color" value="#1d1d1d" />
+        </div>
+
+        <!-- Palette -->
+        <fieldset>
+          <legend>Palette</legend>
+          <button
+            type="button"
+            class="swatch"
+            value="#1d1d1d"
+            style="background-color: #1d1d1d"
+          >
+            1
+          </button>
+          <button
+            type="button"
+            class="swatch"
+            value="#c8371d"
+            style="background-color: #c8371d"
+          >
+            2
+          </button>
+          <button
+            type="button"
+            class="swatch"
+            value="#f99d1b"
+            style="background-color: #f99d1b"
+          >
+            3
+          </button>
+          <button
+            type="button"
+            class="swatch"
+            value="#3a8f5f"
+            style="background-color: #3a8f5f"
+          >
+            4
+          </button>
+          <button
+            type="button"
+            class="swatch"
+            value="#2b6cb0"
+            style="background-color: #2b6cb0"
+          >
+            5
+          </button>
+        </fieldset>
+
+        <!-- Size -->
+        <div>
+          <label for="size">Size</label>
+          <input
+            id="size"
+            name="size"
+            type="range"
+            min="2"
+            max="40"
+            step="2"
+            value="12"
+          />
+          <span id="size-value"></span>
+        </div>
+
+        <!-- Shortcuts -->
+        <fieldset>
+          <legend>Shortcuts</legend>
+          <ul class="keys">
+            <li><kbd>1</kbd> to <kbd>5</kbd> pick a color</li>
+            <li><kbd>[</kbd> and <kbd>]</kbd> change the size</li>
+            <li><kbd>c</kbd> clears the canvas</li>
+          </ul>
+        </fieldset>
+
+        <!-- Save -->
+        <div>
+          <button id="save" type="submit">Save</button>
+          <span id="message"></span>
+        </div>
+      </form>
+
+      <section class="card">
+        <h2>Canvas</h2>
+        <div id="board">
+          <canvas id="canvas"></canvas>
+          <div id="brush"></div>
+        </div>
+        <p id="where"></p>
+      </section>
+    </main>
+
+    <script src="draw.js"></script>
+    <script src="practice.js"></script>
+  </body>
+</html>
