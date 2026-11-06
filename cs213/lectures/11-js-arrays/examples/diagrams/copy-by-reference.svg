@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 456" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title>Copy by reference</title>
-  <desc>Step 1: bids[0] held a reference, an arrow to an object with price 100.25 and shares 600. Step 2: let best = bids[0] copied the reference into best, so best's arrow pointed to the same object. Step 3: best.shares -= 100 changed that object's shares from 600 to 500. Step 4: console.log(bids[0].shares) followed bids[0]'s arrow to the same object and printed 500.</desc>
+  <desc>Step 1: players[0] held a reference, an arrow to an object with name Ada and points 600. Step 2: let first = players[0] copied the reference into first, so first's arrow pointed to the same object. Step 3: first.points -= 100 changed that object's points from 600 to 500. Step 4: console.log(players[0].points) followed players[0]'s arrow to the same object and printed 500.</desc>
   <defs>
     <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
@@ -17,7 +17,7 @@
   <rect width="540" height="456" rx="18" fill="#0f1b2d" />
   <rect width="540" height="456" rx="18" fill="url(#grid)" />
 
-  <!-- bids[0] and best are boxes: name in the header, a reference in the body. The object is the
+  <!-- players[0] and best are boxes: name in the header, a reference in the body. The object is the
        box on the right, and the console runs along the bottom. -->
   <g fill="#1e293b" stroke="#64748b" stroke-width="2">
     <rect x="30" y="96" width="140" height="92" rx="10" />
@@ -32,15 +32,15 @@
     <path d="M24 400 V376 a10 10 0 0 1 10 -10 H506 a10 10 0 0 1 10 10 V400 z" />
   </g>
   <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-weight="bold" text-anchor="middle">
-    <text x="100" y="120" font-size="18" fill="#e2e8f0">bids[0]</text>
-    <text x="100" y="260" font-size="18" fill="#e2e8f0">best</text>
+    <text x="100" y="120" font-size="18" fill="#e2e8f0">players[0]</text>
+    <text x="100" y="260" font-size="18" fill="#e2e8f0">first</text>
     <text x="375" y="120" font-size="18" fill="#94a3b8">object</text>
   </g>
 
   <!-- The object's properties. Its shares went from 600 to 500, so 600 is gray and crossed out. -->
   <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-weight="bold">
-    <text x="304" y="172" font-size="17" fill="#e2e8f0">price: 100.25</text>
-    <text x="304" y="222" font-size="17" fill="#e2e8f0">shares:</text>
+    <text x="304" y="172" font-size="17" fill="#e2e8f0">name: "Ada"</text>
+    <text x="304" y="222" font-size="17" fill="#e2e8f0">points:</text>
     <text x="420" y="222" font-size="20" fill="#64748b" text-anchor="middle">600</text>
     <text x="420" y="282" font-size="28" fill="#facc15" text-anchor="middle">500</text>
   </g>
@@ -62,7 +62,7 @@
     <text x="42" y="428" font-size="20">500</text>
   </g>
 
-  <!-- Arrows: the reference is copied down into best, shares changes, and 500 goes to the console -->
+  <!-- Arrows: the reference is copied down into first, shares changes, and 500 goes to the console -->
   <g stroke="#38bdf8" stroke-width="4" marker-end="url(#head)">
     <line x1="100" y1="194" x2="100" y2="226" />
     <line x1="420" y1="230" x2="420" y2="250" />
@@ -83,7 +83,7 @@
     <text x="392" y="353">4</text>
   </g>
   <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc">
-    <text x="62" y="39">bids[0] refers to an object</text>
+    <text x="62" y="39">players[0] refers to an object</text>
     <text x="162" y="218" font-size="18">copy</text>
     <text x="500" y="292" font-size="16" text-anchor="middle">-= 100</text>
     <text x="370" y="353" font-size="18" text-anchor="end">printed</text>

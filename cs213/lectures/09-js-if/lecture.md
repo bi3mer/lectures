@@ -9,19 +9,8 @@ paginate: true
 .side-by-side { display: grid; grid-template-columns: 560px minmax(0, 1fr); gap: 24px; align-items: start; }
 .side-by-side p { margin: 0; }
 .caption { font-size: 20px; color: var(--secondary); }
-/* What the page showed, one column for each value we tried. */
-.runs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 24px; }
-.runs p { margin: 0; }
 /* A table on its own, centered across the slide. */
 .centered table { margin-left: auto; margin-right: auto; }
-/* The theme draws a .demo as a white panel whose 12px edge is a shadow, so the margins keep
-   that edge clear of the caption above and the slide's sides. */
-.demo { margin: 20px 12px 28px; }
-.demo p { margin: 0; }
-/* Pieces of the Colan's Coffee page, drawn small inside a .demo. */
-.demo .sign { padding: 2px 10px; border-radius: 6px; background-color: dimgray; color: white; }
-.demo .card { padding: 4px 12px; border: 4px solid lightgray; border-radius: 8px; }
-.demo img { vertical-align: middle; }
 </style>
 
 # `if`
@@ -30,19 +19,18 @@ Colan Biemer
 
 ---
 
-## Working with the DOM
-
-JavaScript changes a webpage through the **DOM** (Document Object Model), e.g.:
-
-```js
-document.getElementById("sign").hidden = true;
-```
-
-We are going to use lines like this throughout the lecture, but I won't explain how these lines work. Copy them as given, and focus on the JavaScript part for now.
+# Comparisons
 
 ---
 
-# Comparisons
+## Every Line Runs
+
+```js
+let score = 45;
+console.log("You passed!");
+```
+
+Every program so far runs every line, from top to bottom, so a 45 still passes. How can a program decide what to do?
 
 ---
 
@@ -72,6 +60,8 @@ let freeShipping = total >= 50; // true
 
 A comparison always gives a boolean.
 
+`=` is already taken, so why three equals signs?
+
 ---
 
 ## `=` vs. `===`
@@ -100,95 +90,131 @@ The second line has both: `===` asked the question, and `=` put the answer in `i
 
 ---
 
-## Let's Build Colan's Coffee
+## Setting Up
 
-Today's exercises build a page for a coffee shop. Its starter has two files on GitHub: [index.html](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/09-js-if/examples/if-starter/index.html) and [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/09-js-if/examples/if-starter/practice.js). Set them up in WebStorm, in a new folder:
-
-1. Open each file, and click **Copy raw file**, the copy icon above the code.
-2. Paste each one into a new file in WebStorm with the same name.
-
-`index.html` already links to `practice.js` with `<script src="practice.js"></script>`.
-
----
-
-## Problem (Me): Open Sign
-
-The sign next to the shop's name says `Open`. The shop closes at 6 PM, which is hour 18 on a 24-hour clock. `hour` (`practice.js`, line 1) holds the current hour, from 0 to 23.
-
-In the Open Sign section, hide the sign from hour 18 on, with the page line for Open Sign.
-
----
-
-## Solution (Me): Open Sign
-
-```js
-document.getElementById("sign").hidden = hour >= 18;
-```
-
-`hidden` takes a boolean, so the comparison's answer goes straight in. To see the sign at another hour for testing, change `new Date().getHours()` on line 1 to a number, like 20.
-
----
-
-## Problem (Us): Sold Out
-
-Let's turn off the **Buy** button for the beans when the shop runs out. `bagsLeft` (`practice.js`, line 2) holds how many bags are left.
-
-1. In the Sold Out section, turn off the button when none are left, with the section's page line.
-2. How can we test if there are no bags left?
-
----
-
-## Solution (Us): Sold Out
-
-```js
-document.getElementById("buy").disabled = bagsLeft === 0;
-```
-
-The last line uses both: `===` asks whether `bagsLeft` is 0, and `=` puts the answer in `disabled`.
-
----
-
-## Problem (You): Parsons 1
-
-The page calls `parsons1()` from this input:
+Make these two files in a new WebStorm folder:
 
 ```html
-<input id="age" type="number" oninput="parsons1()" />
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Practice</title>
+  </head>
+  <body>
+    <script src="practice.js"></script>
+  </body>
+</html>
 ```
 
-```js
-let age = Number(document.getElementById("age").value);
-}
-document.getElementById("latte").disabled = age < 12;
-function parsons1() {
-```
-
-- Assemble the program in the Parsons 1 section of `practice.js`.
-- What does `parsons1` do? What should it be named?
+`practice.js` starts empty. Open the page and its console, and clear `practice.js` before each problem.
 
 ---
 
-## Solution (You): Parsons 1
+## Problem: Passed (us)
 
 ```js
-function parsons1() {
-  let age = Number(document.getElementById("age").value);
-
-  document.getElementById("latte").disabled = age < 12;
-}
+let score = 72;
+// Store whether score is 60 or more in passed, then print it.
 ```
 
-What does `parsons1` do? What should it be named?
+<p class="caption">Console</p>
+
+```text
+true
+```
+
+- Which comparison operator do we need?
+- What type of value does it give?
 
 ---
 
-## Solution (You): Parsons 1 (Continued)
+## Solution: Passed (us)
 
-Drinks with caffeine are for ages 12 and up. Every time the age changes, `parsons1()` turns the latte's **Order** button off for anyone under 12 and on for anyone 12 or older, so `checkAge` would be a better name.
+```js
+let score = 72;
+let passed = score >= 60;
+console.log(passed);
+```
+
+`>=` asks the question, and `=` stores the answer.
+
+---
+
+## Pseudocode
+
+**Pseudocode** is a plan for a program, written in plain English but laid out like code. Your problems use it.
+
+<div class="side-by-side">
+<div>
+
+<p class="caption">Pseudocode</p>
+
+```text
+set first to "Ada"
+print first
+```
+
+</div>
+<div>
+
+<p class="caption">JavaScript</p>
+
+```js
+let first = "Ada";
+console.log(first);
+```
+
+</div>
+</div>
+
+Pseudocode drops the `let`, `;`, and `( )`. We write the plan first, then turn each line into code.
+
+---
+
+## Problem: Same Name (you)
+
+```text
+set first to "Ada"
+set second to "Grace"
+set same to whether first and second are equal
+print same
+```
+
+<p class="caption">Console</p>
+
+```text
+false
+```
+
+---
+
+## Solution: Same Name (you)
+
+```js
+let first = "Ada";
+let second = "Grace";
+let same = first === second;
+console.log(same);
+```
+
+`===` compares strings as well as numbers.
 
 ---
 
 # `if` and `else`
+
+---
+
+## Knowing Is Not Enough
+
+```js
+let score = 45;
+let passed = score >= 60; // false
+console.log("You passed!");
+```
+
+`passed` holds the right answer, but the last line runs anyway. How do we run a line only when something is `true`?
 
 ---
 
@@ -206,32 +232,48 @@ if (condition) {
 
 ---
 
-## Example: Espresso Shots
+## Example: Passing Score
 
 <div class="side-by-side">
 <div>
 
 ```js
-let shots = 4;
+let score = 45;
 let warning = "";
 
-if (shots > 3) {
-  warning = "Too much caffeine!";
+if (score < 60) {
+  warning = "Below passing";
 }
 ```
 
 </div>
 <div>
 
-| `shots` | `warning`              |
-| ------- | ---------------------- |
-| 4       | `"Too much caffeine!"` |
-| 2       | `""`                   |
+| `score` | `warning`         |
+| ------- | ----------------- |
+| 45      | `"Below passing"` |
+| 80      | `""`              |
 
 </div>
 </div>
 
-For 2, `2 > 3` was `false`, so the code inside of the if-statement brackets (`{ ... }`) was never run.
+For 80, `80 < 60` was `false`, so the code inside of the if-statement brackets (`{ ... }`) was never run.
+
+---
+
+## Two Questions
+
+```js
+if (score >= 60) {
+  console.log("Pass");
+}
+
+if (score < 60) {
+  console.log("Fail");
+}
+```
+
+These two checks ask the same question twice. How do we say "otherwise"?
 
 ---
 
@@ -266,58 +308,66 @@ if (total >= 50) {
 
 ---
 
-## Problem (Me): Open or Closed
+## Problem: Even or Odd (us)
 
-A missing sign doesn't tell anyone we're closed. In the Open Sign section, let's replace the `hidden` line with an `if`:
+```js
+let number = 7;
+// Print "even" if number is even. Otherwise, print "odd".
+```
 
-1. Before hour 18, make the sign green.
-2. Otherwise, the sign says `Closed` on red, and the page turns gray.
+<p class="caption">Console</p>
 
-Use the page lines for Open or Closed.
+```text
+odd
+```
+
+- How can the [remainder](../08-js-intro/lecture.html#72) tell us?
 
 ---
 
-## Solution (Me): Open or Closed
+## Solution: Even or Odd (us)
 
 ```js
-if (hour < 18) {
-  document.getElementById("sign").style.backgroundColor = "green";
+let number = 7;
+
+if (number % 2 === 0) {
+  console.log("even");
 } else {
-  document.getElementById("sign").textContent = "Closed";
-  document.getElementById("sign").style.backgroundColor = "red";
-  document.body.style.backgroundColor = "gray";
+  console.log("odd");
 }
 ```
 
-Each block can hold as many lines as we need. `document.body` is the page's `<body>`, so it needs no id.
+An even number has a remainder of 0 when divided by 2.
 
 ---
 
-## Problem (Us): Member Name
+## Problem: Guest (you)
 
-Let's put the member's name on the rewards card. The card has a name box, and it calls `showName()` every time the name in it changes:
-
-```html
-<input id="name" oninput="showName()" />
+```text
+set name to ""
+if name is empty
+  print "Guest"
+else
+  print name
 ```
 
-1. In the Member Name section, write the `showName()` function.
-2. Inside it, get the name with the section's first page line.
-3. If the box is empty, show `Guest`. Otherwise, show their name. The section's second page line shows `Guest`.
+<p class="caption">Console</p>
+
+```text
+Guest
+```
 
 ---
 
-## Solution (Us): Member Name
+## Solution: Guest (you)
 
 ```js
-function showName() {
-  let name = document.getElementById("name").value;
+let name = "";
 
-  if (name === "") {
-    document.getElementById("member").textContent = "Guest";
-  } else {
-    document.getElementById("member").textContent = name;
-  }
+if (name === "") {
+  console.log("Guest");
+} else {
+  console.log(name);
 }
 ```
 
@@ -325,33 +375,21 @@ function showName() {
 
 ---
 
-## Problem (You): Low Stock
-
-Let's warn customers when the beans run low. In the Low Stock section:
-
-1. Under 5 bags, the stock line says `Only 3 left!` in orange, with the real count.
-2. Otherwise, it says `In stock.`
-
-Use the page lines for Low Stock.
+# `else if`
 
 ---
 
-## Solution (You): Low Stock
+## Only Two Paths
 
 ```js
-if (bagsLeft < 5) {
-  document.getElementById("stock").textContent = `Only ${bagsLeft} left!`;
-  document.getElementById("stock").style.color = "orange";
+if (score >= 80) {
+  grade = "A";
 } else {
-  document.getElementById("stock").textContent = "In stock.";
+  grade = "F";
 }
 ```
 
-`bagsLeft` already exists on line 2, so there's no second `let`. `Only 0 left!` needs a third choice, which comes next.
-
----
-
-# `else if`
+`if` and `else` give two paths, but a 75 is neither an A nor an F. How do we choose from three?
 
 ---
 
@@ -371,33 +409,33 @@ JavaScript checks the conditions from top to bottom. It runs the block under the
 
 ---
 
-## Example: Cup Sizes
+## Example: Letter Grades
 
 <div class="side-by-side">
 <div>
 
 ```js
-let ounces = 10;
-let size;
+let score = 75;
+let grade;
 
-if (ounces <= 8) {
-  size = "Small";
-} else if (ounces <= 12) {
-  size = "Medium";
+if (score < 60) {
+  grade = "F";
+} else if (score < 80) {
+  grade = "C";
 } else {
-  size = "Large";
+  grade = "A";
 }
 ```
 
 </div>
 <div>
 
-![w:530 ounces held 10. Step 1 checked ounces <= 8. 10 <= 8 was false, so JavaScript skipped the block that stored "Small". Step 2 checked ounces <= 12. 10 <= 12 was true, so JavaScript ran the block that stored "Medium". Step 3 skipped the else block, since a check above it was true. size held "Medium".](examples/diagrams/else-if-chain.svg)
+![w:530 score held 75. Step 1 checked score < 60. 75 < 60 was false, so JavaScript skipped the block that stored "F". Step 2 checked score < 80. 75 < 80 was true, so JavaScript ran the block that stored "C". Step 3 skipped the else block, since a check above it was true. grade held "C".](examples/diagrams/else-if-chain.svg)
 
 </div>
 </div>
 
-Reaching the `else if` already means `ounces > 8`, so we don't check it again.
+Reaching the `else if` already means `score >= 60`, so we don't check it again.
 
 ---
 
@@ -407,21 +445,21 @@ Reaching the `else if` already means `ounces > 8`, so we don't check it again.
 <div>
 
 ```js
-if (ounces <= 12) {
-  size = "Medium";
-} else if (ounces <= 8) {
-  size = "Small";
+if (score < 80) {
+  grade = "C";
+} else if (score < 60) {
+  grade = "F";
 } else {
-  size = "Large";
+  grade = "A";
 }
 ```
 
 </div>
 <div>
 
-We swapped the first two checks from Cup Sizes. For a 6-ounce cup, `6 <= 12` was `true`, so JavaScript ran the first block and skipped the rest.
+We swapped the first two checks from Letter Grades. For a score of 40, `40 < 80` was `true`, so JavaScript ran the first block and skipped the rest.
 
-Every number that's `<= 8` is also `<= 12`, so `size` can never be `"Small"`.
+Every number that's `< 60` is also `< 80`, so `grade` can never be `"F"`.
 
 </div>
 </div>
@@ -430,148 +468,94 @@ Put the narrowest check first.
 
 ---
 
-## Problem (Me): Reward Levels
-
-Each member gets a badge for their reward points. The rewards card has a points box that starts at 320, and it calls `showRewards()` every time the points in it change:
-
-```html
-<input id="points" type="number" value="320" oninput="showRewards()" />
-```
-
-1. In the Reward Levels section, write the `showRewards()` function.
-2. Inside it, get the points as a number.
-3. Set the badge and the color of the card's border, with the page lines for Reward Levels:
-   - 500 and up: 🥇 with a `gold` border
-   - 200 to 499: 🥈 with a `silver` border
-   - Below 200: 🥉 with a `tan` border
-
----
-
-## Solution (Me): Reward Levels
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
+## Problem: Weather (us)
 
 ```js
-function showRewards() {
-  let points = Number(document.getElementById("points").value);
-
-  if (points >= 500) {
-    document.getElementById("badge").textContent = "🥇";
-    document.getElementById("rewards").style.borderColor = "gold";
-  } else if (points >= 200) {
-    document.getElementById("badge").textContent = "🥈";
-    document.getElementById("rewards").style.borderColor = "silver";
-  } else {
-    document.getElementById("badge").textContent = "🥉";
-    document.getElementById("rewards").style.borderColor = "tan";
-  }
-}
-
-showRewards();
+let temperature = 75;
+// Below 50, print "Cold". Below 80, print "Warm". Otherwise, print "Hot".
 ```
 
----
+<p class="caption">Console</p>
 
-## Problem (Us): Stock Levels
+```text
+Warm
+```
 
-`Only 0 left!` should say `Sold out.` Let's replace the code in the Low Stock section with three levels:
-
-- 0: `Sold out.` in red, and the bag fades to `0.3` opacity
-- 1 to 4: `Only 3 left!` in orange, with the real count
-- 5 or more: `In stock.`
-
-Which check should go first? Use the page lines for Stock Levels, in the Low Stock section.
+- Which check should go first?
 
 ---
 
-## Solution (Us): Stock Levels
+## Solution: Weather (us)
 
 ```js
-if (bagsLeft === 0) {
-  document.getElementById("stock").textContent = "Sold out.";
-  document.getElementById("stock").style.color = "red";
-  document.getElementById("bag").style.opacity = "0.3";
-} else if (bagsLeft < 5) {
-  document.getElementById("stock").textContent = `Only ${bagsLeft} left!`;
-  document.getElementById("stock").style.color = "orange";
+let temperature = 75;
+
+if (temperature < 50) {
+  console.log("Cold");
+} else if (temperature < 80) {
+  console.log("Warm");
 } else {
-  document.getElementById("stock").textContent = "In stock.";
+  console.log("Hot");
 }
 ```
 
-`0 < 5` is also `true`, so the `=== 0` check had to come first.
+Reaching the `else if` already means `temperature` is 50 or more.
 
 ---
 
-## Problem (You): Parsons 2
+## Problem: Sign of a Number (you)
 
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
+```text
+set number to -4
+if number is above 0
+  print "positive"
+else if number is below 0
+  print "negative"
+else
+  print "zero"
+```
 
-<!-- prettier-ignore -->
+<p class="caption">Console</p>
+
+```text
+negative
+```
+
+---
+
+## Solution: Sign of a Number (you)
+
 ```js
-} else (hour >= 18) {
+let number = -4;
+
+if (number > 0) {
+  console.log("positive");
+} else if (number < 0) {
+  console.log("negative");
 } else {
-document.getElementById("greeting").textContent = "Good afternoon! 🌤️";
-parsons2();
-document.getElementById("greeting").textContent = "Good morning! ☀️";
-} else if hour < 18 {
+  console.log("zero");
 }
-function parsons2() {
-} else if (hour < 18) {
-}
-if (hour < 12) {
-document.getElementById("greeting").textContent = "Good evening! 🌙";
 ```
 
-- Assemble the program in the Parsons 2 section of `practice.js`. Two of the lines are wrong.
-- What does `parsons2` do? What should it be named?
-
----
-
-## Solution (You): Parsons 2
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```js
-function parsons2() {
-  if (hour < 12) {
-    document.getElementById("greeting").textContent = "Good morning! ☀️";
-  } else if (hour < 18) {
-    document.getElementById("greeting").textContent = "Good afternoon! 🌤️";
-  } else {
-    document.getElementById("greeting").textContent = "Good evening! 🌙";
-  }
-}
-
-parsons2();
-```
-
-<div class="runs">
-<div>
-<p class="caption">Hour 9</p>
-<div class="demo"><p>Good morning! ☀️</p></div>
-</div>
-<div>
-<p class="caption">Hour 14</p>
-<div class="demo"><p>Good afternoon! 🌤️</p></div>
-</div>
-<div>
-<p class="caption">Hour 20</p>
-<div class="demo"><p>Good evening! 🌙</p></div>
-</div>
-</div>
-
-It greets the visitor for the time of day, so `showGreeting` would be a better name.
+The `else` catches the one number left: 0.
 
 ---
 
 # Combining Conditions
+
+---
+
+## One Question Inside Another
+
+```js
+if (score >= 90) {
+  if (absences < 3) {
+    console.log("Honor roll");
+  }
+}
+```
+
+Each new rule adds another level, and an `else` would need to go in both. How do we ask two questions at once?
 
 ---
 
@@ -654,53 +638,53 @@ let getsDiscount = total >= 10 && isMember;
 
 ---
 
-## Example: Plant Milk
+## Example: Vowels
 
-Oat milk and almond milk cost 50 cents extra.
+Say we only care about two letters, `a` and `e`.
 
 ```js
-let milk = "oat";
-let costsExtra = milk === "oat" || milk === "almond";
+let letter = "a";
+let isMatch = letter === "a" || letter === "e";
 ```
 
 <div class="centered">
 
-| `milk`     | `costsExtra` |
-| ---------- | ------------ |
-| `"oat"`    | `true`       |
-| `"almond"` | `true`       |
-| `"whole"`  | `false`      |
+| `letter` | `isMatch` |
+| -------- | --------- |
+| `"a"`    | `true`    |
+| `"e"`    | `true`    |
+| `"z"`    | `false`   |
 
 </div>
 
-Each side of `||` needs its own `milk ===`. For `"whole"`, `milk === "oat" || "almond"` gives `"almond"`, not `false`, and an `if` treats that string as `true`, so every milk would cost extra.
+Each side of `||` needs its own `letter ===`. For `"z"`, `letter === "a" || "e"` gives `"e"`, not `false`, and an `if` treats that string as `true`, so every letter would match.
 
 ---
 
-## Example: Not Sold Out
+## Example: Not Failing
 
-A customer can order a bag when it's **not** sold out. `bagsLeft` is on line 2 of `practice.js`.
+A student passes when they are **not** failing.
 
 <div class="side-by-side">
 <div>
 
 ```js
-let isSoldOut = bagsLeft === 0;
-let canOrder = !isSoldOut;
+let isFailing = score < 60;
+let passed = !isFailing;
 ```
 
 </div>
 <div>
 
-| `bagsLeft` | `isSoldOut` | `canOrder` |
-| ---------- | ----------- | ---------- |
-| 0          | `true`      | `false`    |
-| 3          | `false`     | `true`     |
+| `score` | `isFailing` | `passed` |
+| ------- | ----------- | -------- |
+| 45      | `true`      | `false`  |
+| 80      | `false`     | `true`   |
 
 </div>
 </div>
 
-`!` flips the boolean right after it, so `!isSoldOut` reads as "not sold out."
+`!` flips the boolean right after it, so `!isFailing` reads as "not failing."
 
 ---
 
@@ -734,91 +718,89 @@ A range takes two comparisons, joined with `&&`.
 
 ---
 
-## Problem (Me): Opening Hours
+## Problem: Honor Roll (us)
 
-Our sign says `Open` at 3 AM. The shop opens at 7 and closes at 18. Let's change the condition from Open or Closed, in the Open Sign section:
+```js
+let score = 95;
+let absences = 1;
+// With a score of 90 or more and under 3 absences, print "Honor roll".
+// Otherwise, print "Keep going".
+```
 
-1. From 7 up to 18, the sign is green.
-2. Otherwise, it says `Closed` on red, and the page turns gray.
+<p class="caption">Console</p>
+
+```text
+Honor roll
+```
+
+- Do we need `&&` or `||`?
 
 ---
 
-## Solution (Me): Opening Hours
+## Solution: Honor Roll (us)
 
 ```js
-if (hour >= 7 && hour < 18) {
-  document.getElementById("sign").style.backgroundColor = "green";
+let score = 95;
+let absences = 1;
+
+if (score >= 90 && absences < 3) {
+  console.log("Honor roll");
 } else {
-  document.getElementById("sign").textContent = "Closed";
-  document.getElementById("sign").style.backgroundColor = "red";
-  document.body.style.backgroundColor = "gray";
+  console.log("Keep going");
 }
+```
+
+Both rules have to hold, so we join them with `&&`.
+
+---
+
+## Problem: Weekend (you)
+
+```text
+set day to "Sunday"
+if day is "Saturday" or day is "Sunday"
+  print "Weekend"
+else
+  print "Weekday"
+```
+
+<p class="caption">Console</p>
+
+```text
+Weekend
 ```
 
 ---
 
-## Problem (Us): Free Pastry
-
-Early birds (before hour 9) and Gold members (500 points or more) get a free pastry.
-
-1. At the end of `showRewards()`, in the Reward Levels section, show the pastry note on the rewards card if either rule applies.
-2. The note starts out hidden. When neither rule applies, do we need an `else`?
-
-Use the page line for Free Pastry, in the Reward Levels section.
-
----
-
-## Solution (Us): Free Pastry
+## Solution: Weekend (you)
 
 ```js
-function showRewards() {
-  // The Reward Levels code stays here.
+let day = "Sunday";
 
-  if (hour < 9 || points >= 500) {
-    document.getElementById("pastry").hidden = false;
-  } else {
-    document.getElementById("pastry").hidden = true;
-  }
+if (day === "Saturday" || day === "Sunday") {
+  console.log("Weekend");
+} else {
+  console.log("Weekday");
 }
 ```
 
-<div class="runs">
-<div>
-<p class="caption">Hour 8, 40 points</p>
-<div class="demo"><div class="card" style="border-color: tan"><p>🥉 Sam</p><p>🥐 Free pastry!</p></div></div>
-</div>
-<div>
-<p class="caption">Hour 14, 650 points</p>
-<div class="demo"><div class="card" style="border-color: gold"><p>🥇 Sam</p><p>🥐 Free pastry!</p></div></div>
-</div>
-<div>
-<p class="caption">Hour 14, 40 points</p>
-<div class="demo"><div class="card" style="border-color: tan"><p>🥉 Sam</p></div></div>
-</div>
-</div>
+Each side of `||` needs its own `day ===`.
 
 ---
 
-## Problem (You): Happy Hour
-
-From 2 PM until 4 PM (hours 14 and 15), lattes are half price.
-
-1. In the Happy Hour section, during happy hour, cross out `$4.50` in red and show `$2.25` in green.
-2. Outside happy hour, leave it at `$4.50`.
-
-Use the section's page lines.
-
----
-
-## Solution (You): Happy Hour
+## Five Lines for One Word
 
 ```js
-if (hour >= 14 && hour < 16) {
-  document.getElementById("latte-price").style.textDecoration = "line-through";
-  document.getElementById("latte-price").style.color = "red";
-  document.getElementById("happy-price").hidden = false;
+let result;
+
+if (score >= 60) {
+  result = "Pass";
+} else {
+  result = "Fail";
 }
 ```
+
+All of this picks one of two values. Is there a shorter way?
 
 ---
 
@@ -830,76 +812,33 @@ The ternary operator fits an `if`/`else` on one line. _Ternary_ means three part
 
 ---
 
-## Problem (Me): Parsons 3
+## Problem: Pass or Fail (you)
 
-<!-- prettier-ignore -->
-```js
-function parsons3() {
-let ordered = false;
-}
-ordered = !ordered;
-document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
+```text
+set score to 72
+set result to "Pass" if score is 60 or more, otherwise "Fail"
+print result
 ```
 
-- Assemble the program in the Parsons 3 section of `practice.js`.
-- What does `parsons3` do? What should it be named?
+<p class="caption">Console</p>
+
+```text
+Pass
+```
+
+Use the ternary operator.
 
 ---
 
-## Solution (Me): Parsons 3
+## Solution: Pass or Fail (you)
 
 ```js
-let ordered = false;
-
-function parsons3() {
-  ordered = !ordered;
-  document.getElementById("latte").textContent = ordered ? "Cancel" : "Order";
-}
+let score = 72;
+let result = score >= 60 ? "Pass" : "Fail";
+console.log(result);
 ```
 
-Each click on the latte's **Order** button switches it to `Cancel` and back, so `toggleOrder` would be a better name.
-
----
-
-## Problem (You): Parsons 4
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-<!-- prettier-ignore -->
-```js
-document.getElementById("buy").disabled = isSoldOut;
-document.getElementById("stock").textContent = message;
-let message = isSoldOut ? "Sold out." : `Only ${bagsLeft} left!`;
-document.getElementById("bag").style.opacity = isSoldOut ? "0.3" : "1";
-let isSoldOut = bagsLeft === 0;
-}
-document.getElementById("stock").style.color = isSoldOut ? "red" : "orange";
-function parsons4() {
-bagsLeft = bagsLeft - 1;
-```
-
-- Assemble the program in the Parsons 4 section of `practice.js`.
-- What does `parsons4` do? What should it be named?
-
----
-
-## Solution (You): Parsons 4
-
-```js
-function parsons4() {
-  bagsLeft = bagsLeft - 1;
-  let isSoldOut = bagsLeft === 0;
-  let message = isSoldOut ? "Sold out." : `Only ${bagsLeft} left!`;
-  document.getElementById("stock").textContent = message;
-  document.getElementById("stock").style.color = isSoldOut ? "red" : "orange";
-  document.getElementById("bag").style.opacity = isSoldOut ? "0.3" : "1";
-  document.getElementById("buy").disabled = isSoldOut;
-}
-```
-
-Each click on **Buy** takes away a bag and updates the stock line, the bag's fade, and the button, so `buyBag` would be a better name.
+Both branches only pick a value, so the ternary fits.
 
 ---
 
@@ -907,12 +846,9 @@ Each click on **Buy** takes away a bag and updates the stock line, the bag's fad
 
 ---
 
-## The Finished Page
+## Build It Yourself
 
-- [Colan's Coffee](https://bi3mer.github.io/lectures/cs213/lectures/09-js-if/examples/if-final/), running live.
-- [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/09-js-if/examples/if-final/practice.js) on GitHub.
-
-The HTML is the same as the starter's `index.html`, and `practice.js` starts with the starter's code. The page uses the real hour, so to see another time of day, change `new Date().getHours()` to a number, like 20.
+[Colan's Coffee](../../demos/09-coffee/instruction.html) is a full page built from today's `if` statements, with step-by-step instructions.
 
 ---
 
@@ -923,5 +859,11 @@ The HTML is the same as the starter's `index.html`, and `practice.js` starts wit
 - `if` runs its block when the condition is `true`, and `else` runs when it's `false`.
 - `else if` checks from top to bottom and runs only the first match, so order matters.
 - `&&` needs both sides `true`, `||` needs one, and `!` flips a boolean.
-- A range takes two comparisons: `hour >= 7 && hour < 18`.
+- A range takes two comparisons: `age >= 13 && age <= 19`.
 - `condition ? a : b` picks between two values on one line.
+
+---
+
+## Next Up: Objects and Loops
+
+[Objects and Loops](../10-js-objects-loops/lecture.html) groups related values together and repeats code.

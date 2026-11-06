@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 386" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title>An else if chain</title>
-  <desc>ounces held 10. Step 1 checked ounces &lt;= 8. 10 &lt;= 8 was false, so JavaScript skipped the block that stored "Small". Step 2 checked ounces &lt;= 12. 10 &lt;= 12 was true, so JavaScript ran the block that stored "Medium". Step 3 skipped the else block, since a check above it was true. size held "Medium".</desc>
+  <desc>score held 75. Step 1 checked score &lt; 60. 75 &lt; 60 was false, so JavaScript skipped the block that stored "F". Step 2 checked score &lt; 80. 75 &lt; 80 was true, so JavaScript ran the block that stored "C". Step 3 skipped the else block, since a check above it was true. grade held "C".</desc>
   <defs>
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
@@ -22,17 +22,17 @@
 
   <!-- Each block's check, and the value it would store in size -->
   <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="18" style="font-variant-ligatures: none; white-space: pre">
-    <text x="40" y="76" fill="#94a3b8">if (ounces &lt;= 8)</text>
-    <text x="500" y="76" fill="#94a3b8" text-anchor="end">"Small"</text>
-    <text x="40" y="168" fill="#e2e8f0">else if (ounces &lt;= 12)</text>
-    <text x="500" y="168" fill="#facc15" text-anchor="end">"Medium"</text>
+    <text x="40" y="76" fill="#94a3b8">if (score &lt; 60)</text>
+    <text x="500" y="76" fill="#94a3b8" text-anchor="end">"F"</text>
+    <text x="40" y="168" fill="#e2e8f0">else if (score &lt; 80)</text>
+    <text x="500" y="168" fill="#facc15" text-anchor="end">"C"</text>
     <text x="40" y="260" fill="#94a3b8">else</text>
-    <text x="500" y="260" fill="#94a3b8" text-anchor="end">"Large"</text>
+    <text x="500" y="260" fill="#94a3b8" text-anchor="end">"A"</text>
   </g>
 
   <!-- What size held after the chain -->
   <rect x="24" y="300" width="492" height="70" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="2" />
-  <text x="40" y="343" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="22" fill="#e2e8f0" style="white-space: pre">size held <tspan fill="#facc15">"Medium"</tspan></text>
+  <text x="40" y="343" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="22" fill="#e2e8f0" style="white-space: pre">size held <tspan fill="#facc15">"C"</tspan></text>
 
   <!-- Step numbers, in the order JavaScript checked -->
   <g fill="#38bdf8">
@@ -46,8 +46,8 @@
     <text x="36" y="217">3</text>
   </g>
   <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#7dd3fc" style="font-variant-ligatures: none">
-    <text x="62" y="33">10 &lt;= 8 was false</text>
-    <text x="62" y="125">10 &lt;= 12 was true, so it ran</text>
+    <text x="62" y="33">75 &lt; 60 was false</text>
+    <text x="62" y="125">75 &lt; 80 was true, so it ran</text>
     <text x="62" y="217">skipped, a check above was true</text>
   </g>
 </svg>

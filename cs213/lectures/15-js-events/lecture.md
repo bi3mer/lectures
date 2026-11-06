@@ -19,10 +19,12 @@ Colan Biemer
 ## Calling Our Code, So Far
 
 ```html
-<button type="button" onclick="placeOrder()">Place order</button>
+<button type="button" onclick="sayHello()">Say hello</button>
 ```
 
-Every page so far has called our code from an [event attribute](../13-js-forms-dom/lecture.html#50), like Pie Chart's `onclick`. Today, the JavaScript listens for events itself.
+Every page so far has called our code from an [event attribute](../13-js-forms-dom/lecture.html#49), like `onclick`. Today, the JavaScript listens for events itself.
+
+What is the browser telling us when a button is clicked?
 
 ---
 
@@ -42,17 +44,19 @@ Today's events come in four kinds: mouse, keyboard, window, and form.
 
 ```js
 const clear = document.getElementById("clear");
-clear.addEventListener("click", clearCanvas);
+clear.addEventListener("click", clearList);
 ```
 
-`addEventListener` takes the event's name, with no `on`, and the function to call. Like [`setInterval`](../12-js-math-dates-strings/lecture.html#42), it takes the function as a value, with no `()`.
+`addEventListener` takes the event's name, with no `on`, and the function to call. Like [`setInterval`](../12-js-math-dates-strings/lecture.html#27), it takes the function as a value, with no `()`.
+
+What happens if we add the `()`?
 
 ---
 
 ## Predict: Calling the Listener
 
 ```js
-clear.addEventListener("click", clearCanvas());
+clear.addEventListener("click", clearList());
 ```
 
 What happens when we click **Clear**? Vote, then convince a neighbor.
@@ -73,11 +77,13 @@ What happens when we click **Clear**? Vote, then convince a neighbor.
 
 ## Answer: Calling the Listener
 
-**B.** `clearCanvas()` runs as the line runs, and gives back `undefined`. That's what gets passed, so nothing listens for clicks, and the browser shows no error.
+**B.** `clearList()` runs as the line runs, and gives back `undefined`. That's what gets passed, so nothing listens for clicks, and the browser shows no error.
 
 ```js
-clear.addEventListener("click", clearCanvas);
+clear.addEventListener("click", clearList);
 ```
+
+Does the listener have to be a named function?
 
 ---
 
@@ -85,12 +91,14 @@ clear.addEventListener("click", clearCanvas);
 
 ```js
 clear.addEventListener("click", () => {
-  clearCanvas();
+  clearList();
   document.getElementById("message").textContent = "Cleared";
 });
 ```
 
-Code that only one listener uses can be an [arrow function](../11-js-arrays/lecture.html#30), written right in the call.
+Code that only one listener uses can be an [arrow function](../11-js-arrays/lecture.html#34), written right in the call.
+
+We already had `onclick`. Why change?
 
 ---
 
@@ -102,15 +110,17 @@ table { font-size: 0.7em; }
 
 <center>
 
-| Way to listen                                   | Written in | Listeners per event                       |
-| ----------------------------------------------- | ---------- | ----------------------------------------- |
-| `onclick="clearCanvas()"`                       | HTML       | one                                       |
-| `clear.onclick = clearCanvas;`                  | JavaScript | one, and setting it again replaces it     |
-| `clear.addEventListener("click", clearCanvas);` | JavaScript | as many as we add, run in the order added |
+| Way to listen                                 | Written in | Listeners per event                       |
+| --------------------------------------------- | ---------- | ----------------------------------------- |
+| `onclick="clearList()"`                       | HTML       | one                                       |
+| `clear.onclick = clearList;`                  | JavaScript | one, and setting it again replaces it     |
+| `clear.addEventListener("click", clearList);` | JavaScript | as many as we add, run in the order added |
 
 </center>
 
 From today on, listeners go in the JavaScript, so the HTML only says what's on the page.
+
+How do we stop listening?
 
 ---
 
@@ -118,14 +128,14 @@ From today on, listeners go in the JavaScript, so the HTML only says what's on t
 
 <!-- prettier-ignore -->
 ```js
-clear.addEventListener("click", clearCanvas);
-clear.removeEventListener("click", clearCanvas);         // Clear does nothing now
+clear.addEventListener("click", clearList);
+clear.removeEventListener("click", clearList);         // Clear does nothing now
 
-clear.addEventListener("click", () => clearCanvas());
-clear.removeEventListener("click", () => clearCanvas()); // Clear still clears
+clear.addEventListener("click", () => clearList());
+clear.removeEventListener("click", () => clearList()); // Clear still clears
 ```
 
-`removeEventListener` needs the same function that's listening. [Functions are references](../11-js-arrays/lecture.html#26), and each arrow we write makes a new one, so the second arrow isn't the one listening.
+`removeEventListener` needs the same function that's listening. [Functions are references](../11-js-arrays/lecture.html#30), and each arrow we write makes a new one, so the second arrow isn't the one listening.
 
 ---
 
@@ -147,19 +157,117 @@ click
 
 The browser calls each listener with an **event object**, which describes what happened. `type` is the event's name, and `target` is the element it happened to.
 
+Why is `target` useful?
+
 ---
 
 ## `event.target`
 
 ```js
-for (let box of document.querySelectorAll('input[name="topping"]')) {
+for (let box of document.querySelectorAll('input[name="color"]')) {
   box.addEventListener("change", (event) => {
-    showTopping(event.target.value);
+    showColor(event.target.value);
   });
 }
 ```
 
-Pie Chart wrote [each topping's name in its `onchange`](../14-js-dom/lecture.html#41). With `event.target`, one function serves every box, since it reads the name from the box that changed.
+With `event.target`, one function serves every box, since it reads the value from the box that changed.
+
+---
+
+## Setting Up
+
+Make these two files in a new WebStorm folder:
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Practice</title>
+  </head>
+  <body>
+    <!-- each problem's HTML goes here -->
+    <script src="practice.js"></script>
+  </body>
+</html>
+```
+
+`practice.js` starts empty. Before each problem, clear it and paste in the new HTML.
+
+---
+
+## Problem: Click Counter (us)
+
+```html
+<button id="add" type="button">Add</button>
+<p id="count">0</p>
+```
+
+```js
+// Each click of Add adds 1 to the number on the page.
+```
+
+<p class="caption">Page</p>
+
+```text
+3
+```
+
+- Where should `count` live?
+
+---
+
+## Solution: Click Counter (us)
+
+```js
+let count = 0;
+
+document.getElementById("add").addEventListener("click", () => {
+  count++;
+  document.getElementById("count").textContent = count;
+});
+```
+
+`count` sits outside the listener, so it keeps its value between clicks.
+
+---
+
+## Problem: Which Button (you)
+
+```html
+<button class="pick" type="button">Ada</button>
+<button class="pick" type="button">Grace</button>
+<p id="picked"></p>
+```
+
+```text
+for each element with the class pick
+  when it is clicked
+    put the clicked button's text in picked
+```
+
+<p class="caption">Page</p>
+
+```text
+Grace
+```
+
+---
+
+## Solution: Which Button (you)
+
+```js
+for (let button of document.querySelectorAll(".pick")) {
+  button.addEventListener("click", (event) => {
+    document.getElementById("picked").textContent = event.target.textContent;
+  });
+}
+```
+
+`event.target` is the button that was clicked, so one function serves both.
+
+So far we only click. What else can the mouse do?
 
 ---
 
@@ -222,6 +330,8 @@ dblclick
 
 **C.** A double click is two clicks first, then a `dblclick`. A page that listens for both runs the `click` code twice before the `dblclick` code.
 
+How do we know where the mouse is?
+
 ---
 
 ## Where the Mouse Is
@@ -231,33 +341,111 @@ pre { font-size: 0.75em; }
 </style>
 
 ```js
-canvas.addEventListener("mousemove", (event) => {
+box.addEventListener("mousemove", (event) => {
   console.log(event.offsetX, event.offsetY);
   console.log(event.clientX, event.clientY);
 });
 ```
 
-![w:540 A large box, the browser window, held a smaller box, the canvas, toward its bottom right. The mouse was a dot inside the canvas. A dashed blue line ran from the window's top-left corner to the mouse, labeled clientX: 276, clientY: 152. A dashed yellow line ran from the canvas's top-left corner to the mouse, labeled offsetX: 100, offsetY: 80.](examples/diagrams/mouse-position.svg)
+![w:540 A large box, the browser window, held a smaller box toward its bottom right. The mouse was a dot inside the smaller box. A dashed blue line ran from the window's top-left corner to the mouse, labeled clientX: 276, clientY: 152. A dashed yellow line ran from the smaller box's top-left corner to the mouse, labeled offsetX: 100, offsetY: 80.](examples/diagrams/mouse-position.svg)
 
 Both are in pixels. `offsetX` and `offsetY` count from the target's top-left corner, and `clientX` and `clientY` from the window's.
+
+When do we need code, and when is CSS enough?
 
 ---
 
 ## `mouseenter` or `:hover`?
 
 ```css
-.swatch:hover {
+.card:hover {
   outline: 3px solid orange;
 }
 ```
 
 ```js
-canvas.addEventListener("mouseenter", () => {
-  document.getElementById("message").textContent = "Drag to draw";
+box.addEventListener("mouseenter", () => {
+  document.getElementById("message").textContent = "Hello";
 });
 ```
 
 A look that changes on hover goes in the CSS, with [`:hover`](../03-css-intro/lecture.html#100). When code has to run, like changing the page's text, listen for `mouseenter` and `mouseleave`.
+
+---
+
+## Problem: Mouse Position (us)
+
+```html
+<div id="box" style="height: 200px; background: lightblue"></div>
+<p id="where"></p>
+```
+
+```js
+// As the mouse moves over the box, show where it is, like 40, 120.
+```
+
+<p class="caption">Page</p>
+
+```text
+40, 120
+```
+
+- Which pair of properties counts from the box?
+
+---
+
+## Solution: Mouse Position (us)
+
+```js
+document.getElementById("box").addEventListener("mousemove", (event) => {
+  document.getElementById("where").textContent =
+    `${event.offsetX}, ${event.offsetY}`;
+});
+```
+
+`offsetX` and `offsetY` count from the box's top-left corner.
+
+---
+
+## Problem: In or Out (you)
+
+```html
+<div id="box" style="height: 200px; background: lightblue"></div>
+<p id="status">Out</p>
+```
+
+```text
+when the mouse enters the box
+  put "In" in status
+when the mouse leaves the box
+  put "Out" in status
+```
+
+<p class="caption">Page</p>
+
+```text
+In
+```
+
+---
+
+## Solution: In or Out (you)
+
+```js
+const box = document.getElementById("box");
+
+box.addEventListener("mouseenter", () => {
+  document.getElementById("status").textContent = "In";
+});
+
+box.addEventListener("mouseleave", () => {
+  document.getElementById("status").textContent = "Out";
+});
+```
+
+Changing the text takes code, so `:hover` cannot do this.
+
+What about the keyboard?
 
 ---
 
@@ -326,6 +514,8 @@ document.addEventListener("keydown", (event) => {
 
 A **default action** is what the browser does on its own after an event, like scrolling on Space, opening a clicked link, or reloading on submit. `preventDefault()` stops it.
 
+Where does a key press go after its listener runs?
+
 ---
 
 ## Events Bubble Up
@@ -337,7 +527,7 @@ pre { font-size: 0.75em; }
 ```html
 <body>
   <main>
-    <form id="tools">
+    <form id="signup">
       <input id="title" name="title" />
     </form>
   </main>
@@ -347,10 +537,10 @@ pre { font-size: 0.75em; }
 <p class="caption">A key typed in the Title box runs the listeners on</p>
 
 ```text
-input#title -> form#tools -> main -> body -> html -> document -> window
+input#title -> form#signup -> main -> body -> html -> document -> window
 ```
 
-After the listeners on its target run, an event **bubbles**: it goes up the [DOM tree](../13-js-forms-dom/lecture.html#34), running each parent's listeners. `event.target` still names where it started.
+After the listeners on its target run, an event **bubbles**: it goes up the [DOM tree](../13-js-forms-dom/lecture.html#29), running each parent's listeners. `event.target` still names where it started.
 
 ---
 
@@ -359,12 +549,12 @@ After the listeners on its target run, an event **bubbles**: it goes up the [DOM
 ```js
 document.addEventListener("keydown", (event) => {
   if (event.key === "c") {
-    clearCanvas();
+    clearList();
   }
 });
 ```
 
-We type `cat` in the **Title** box. Does the drawing clear, and what does the box say? Vote, then convince a neighbor.
+We type `cat` in the **Title** box. Does the list clear, and what does the box say? Vote, then convince a neighbor.
 
 <div class="choices">
 
@@ -382,7 +572,7 @@ We type `cat` in the **Title** box. Does the drawing clear, and what does the bo
 
 ## Answer: Typing a Shortcut
 
-**B.** The `c` bubbles up from the box to `document`, which clears the drawing. Nothing stopped the default action, so the box still gets its `c`. A listener can skip keys typed in a box:
+**B.** The `c` bubbles up from the box to `document`, which clears the list. Nothing stopped the default action, so the box still gets its `c`. A listener can skip keys typed in a box:
 
 ```js
 if (event.target.nodeName === "INPUT") {
@@ -390,7 +580,77 @@ if (event.target.nodeName === "INPUT") {
 }
 ```
 
-[`nodeName`](../13-js-forms-dom/lecture.html#42) is the tag in capitals, and [`return`](../08-js-intro/lecture.html#98) ends the listener before the shortcuts.
+[`nodeName`](../13-js-forms-dom/lecture.html#37) is the tag in capitals, and [`return`](../08-js-intro/lecture.html#98) ends the listener before the shortcuts.
+
+---
+
+## Problem: Last Key (us)
+
+```html
+<p id="key">Press a key</p>
+```
+
+```js
+// Show the last key pressed anywhere on the page.
+```
+
+<p class="caption">Page</p>
+
+```text
+Enter
+```
+
+- Which element should we listen on?
+
+---
+
+## Solution: Last Key (us)
+
+```js
+document.addEventListener("keydown", (event) => {
+  document.getElementById("key").textContent = event.key;
+});
+```
+
+Listening on `document` hears keys from the whole page.
+
+---
+
+## Problem: Escape Clears (you)
+
+```html
+<input id="note" />
+```
+
+```text
+when a key goes down in the note box
+  if the key is Escape
+    empty the box
+```
+
+<p class="caption">Page</p>
+
+```text
+[        ]
+```
+
+---
+
+## Solution: Escape Clears (you)
+
+```js
+const note = document.getElementById("note");
+
+note.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    note.value = "";
+  }
+});
+```
+
+`event.key` is `"Escape"` for the Escape key.
+
+Some events belong to the whole window.
 
 ---
 
@@ -412,7 +672,7 @@ table { font-size: 0.75em; }
 
 </center>
 
-These go on `window`, except `DOMContentLoaded`, which goes on `document`. A script in `<head>` can wait for it, since [it runs before the body exists](../13-js-forms-dom/lecture.html#37).
+These go on `window`, except `DOMContentLoaded`, which goes on `document`. A script in `<head>` can wait for it, since [it runs before the body exists](../13-js-forms-dom/lecture.html#32).
 
 ---
 
@@ -427,6 +687,8 @@ window.addEventListener("resize", () => {
 
 `innerWidth` and `innerHeight` are the window's size in pixels. Dragging the window's edge fires `resize` many times, once for each step.
 
+How do we warn someone before they leave?
+
 ---
 
 ## `beforeunload`
@@ -440,6 +702,72 @@ window.addEventListener("beforeunload", (event) => {
 ```
 
 For `beforeunload`, `preventDefault()` makes the browser ask before the page closes or reloads. The browser writes the question, and asks only once we've clicked or typed on the page.
+
+---
+
+## Problem: Window Size (us)
+
+```html
+<p id="size"></p>
+```
+
+```js
+// Show the window's width each time the window changes size.
+```
+
+<p class="caption">Page</p>
+
+```text
+1024
+```
+
+---
+
+## Solution: Window Size (us)
+
+```js
+window.addEventListener("resize", () => {
+  document.getElementById("size").textContent = window.innerWidth;
+});
+```
+
+Drag the window's edge: `resize` fires many times.
+
+---
+
+## Problem: Unsaved Note (you)
+
+```html
+<textarea id="note"></textarea>
+```
+
+```text
+when the page is about to close or reload
+  if the note is not empty
+    make the browser ask first
+```
+
+<p class="caption">Page</p>
+
+```text
+Leave site?
+```
+
+---
+
+## Solution: Unsaved Note (you)
+
+```js
+window.addEventListener("beforeunload", (event) => {
+  if (document.getElementById("note").value !== "") {
+    event.preventDefault();
+  }
+});
+```
+
+Type something, then reload to test it.
+
+Forms have events of their own.
 
 ---
 
@@ -462,7 +790,7 @@ table { font-size: 0.75em; }
 
 </center>
 
-These are the events behind [`oninput` and `onchange`](../13-js-forms-dom/lecture.html#50). `focus` and `blur` don't bubble.
+These are the events behind [`oninput` and `onchange`](../13-js-forms-dom/lecture.html#49). `focus` and `blur` don't bubble.
 
 ---
 
@@ -476,7 +804,7 @@ pre { font-size: 0.75em; }
 const title = document.getElementById("title");
 
 title.addEventListener("focus", () => {
-  document.getElementById("message").textContent = "Name your drawing";
+  document.getElementById("message").textContent = "Add a title";
 });
 
 title.addEventListener("blur", () => {
@@ -486,18 +814,100 @@ title.addEventListener("blur", () => {
 
 `focus` fires when we click or Tab into a box, and `blur` when we leave it, a good time to tidy what was typed.
 
+How do we run code when the form is sent?
+
 ---
 
 ## `submit`
 
 ```js
-document.getElementById("tools").addEventListener("submit", (event) => {
+document.getElementById("signup").addEventListener("submit", (event) => {
   event.preventDefault();
   document.getElementById("message").textContent = "Saved";
 });
 ```
 
-A form fires `submit` when it's sent, by its submit button or by Enter in a text box, so listen on the form. `preventDefault()` stops [the reload](../13-js-forms-dom/lecture.html#27).
+A form fires `submit` when it's sent, by its submit button or by Enter in a text box, so listen on the form. `preventDefault()` stops [the reload](../13-js-forms-dom/lecture.html#22).
+
+---
+
+## Problem: Say Hello (us)
+
+```html
+<form id="hello">
+  <input id="name" />
+  <button>Say hello</button>
+</form>
+<p id="message"></p>
+```
+
+```js
+// On submit, stop the reload and show "Hello, " and the name.
+```
+
+<p class="caption">Page</p>
+
+```text
+Hello, Ada
+```
+
+- Press Enter in the box. What happens?
+
+---
+
+## Solution: Say Hello (us)
+
+```js
+document.getElementById("hello").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const name = document.getElementById("name").value;
+  document.getElementById("message").textContent = `Hello, ${name}`;
+});
+```
+
+Enter in the box submits too, so we listen on the form, not the button.
+
+---
+
+## Problem: Hint (you)
+
+```html
+<input id="name" />
+<p id="hint" hidden>First name only</p>
+```
+
+```text
+when the box gets focus
+  show the hint
+when the box loses focus
+  hide the hint
+```
+
+<p class="caption">Page</p>
+
+```text
+First name only
+```
+
+---
+
+## Solution: Hint (you)
+
+```js
+const name = document.getElementById("name");
+
+name.addEventListener("focus", () => {
+  document.getElementById("hint").hidden = false;
+});
+
+name.addEventListener("blur", () => {
+  document.getElementById("hint").hidden = true;
+});
+```
+
+`focus` and `blur` each go on the box itself.
+
+That is a lot of events. Which one do we need?
 
 ---
 
@@ -527,429 +937,13 @@ Each one is an `addEventListener` call, on the element where the event happens o
 
 ---
 
-# Building Sketchy
-
----
-
-## Setting Up the Starter
-
-Today's page is [Sketchy](https://bi3mer.github.io/lectures/cs213/lectures/15-js-events/examples/sketch-final/), a drawing pad. Its starter has three files on GitHub: [index.html](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/15-js-events/examples/sketch-starter/index.html), [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/15-js-events/examples/sketch-starter/practice.js), and [draw.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/15-js-events/examples/sketch-starter/draw.js). Set them up in WebStorm, in a new folder:
-
-1. Open each file, and click **Copy raw file**, the copy icon above the code.
-2. Paste each one into a new file in WebStorm with the same name.
-
-Nothing in `index.html` calls our code, so every listener goes in `practice.js`. `draw.js` draws on the canvas, ready-made.
-
----
-
-## Problem (Us): Brush Size
-
-The brush, the circle in the middle of the canvas, should take the brush's size and color. Let's fill in `showBrush()`, in the Brush Size section.
-
-1. Put the size slider's value in `size-value`, in pixels, like `12px`.
-2. Set the brush's `style.width` and `style.height` to that size, and its `style.backgroundColor` to the **Color** picker's value. The brush's id is `brush`.
-3. Under `showBrush();`, have the size slider and the **Color** picker call `showBrush` on each `input`.
-4. Why does `showBrush` have no `()` there?
-
----
-
-## Solution (Us): Brush Size
-
-<style scoped>
-pre { font-size: 0.7em; }
-</style>
-
-```js
-function showBrush() {
-  const size = document.getElementById("size").value;
-  const color = document.getElementById("color").value;
-
-  document.getElementById("size-value").textContent = `${size}px`;
-  document.getElementById("brush").style.width = `${size}px`;
-  document.getElementById("brush").style.height = `${size}px`;
-  document.getElementById("brush").style.backgroundColor = color;
-}
-
-showBrush();
-document.getElementById("size").addEventListener("input", showBrush);
-document.getElementById("color").addEventListener("input", showBrush);
-```
-
-The browser calls `showBrush` on each `input`. [With `()`](#5), it would run once, now.
-
----
-
-## Problem (Us): Draw
-
-Holding the mouse button down and dragging should draw. Let's fill in the Draw section.
-
-1. `startDrawing`: set `drawing` to `true`, and `lastX` and `lastY` to [where the mouse is](#15) on the canvas.
-2. `keepDrawing`: while `drawing`, call `drawLine(lastX, lastY, x, y)`, from `draw.js`, to where the mouse is now. Then move `lastX` and `lastY` there, and set `unsaved` to `true`.
-3. Under them, have `canvas` call `startDrawing` on each `mousedown`, and `keepDrawing` on each `mousemove`.
-
-`drawLine` draws in the picked color and size.
-
----
-
-## Solution (Us): Draw
-
-<style scoped>
-pre { font-size: 0.7em; }
-</style>
-
-```js
-function startDrawing(event) {
-  drawing = true;
-  lastX = event.offsetX;
-  lastY = event.offsetY;
-}
-
-function keepDrawing(event) {
-  if (drawing) {
-    drawLine(lastX, lastY, event.offsetX, event.offsetY);
-    lastX = event.offsetX;
-    lastY = event.offsetY;
-    unsaved = true;
-  }
-}
-
-canvas.addEventListener("mousedown", startDrawing);
-canvas.addEventListener("mousemove", keepDrawing);
-```
-
-Each `mousemove` adds a short line, and together they make a stroke.
-
----
-
-## Problem (You): Stop Drawing
-
-Nothing stops drawing yet. Write the Stop Drawing section.
-
-1. When the mouse button is let go over the canvas, set `drawing` to `false`.
-2. Press on the canvas, drag off its edge, let go, and come back. What happens? Fix it so letting go anywhere stops drawing.
-
----
-
-## Solution (You): Stop Drawing
-
-```js
-window.addEventListener("mouseup", () => {
-  drawing = false;
-});
-```
-
-A `mouseup` off the canvas happens on another element, so a listener on `canvas` never hears it, and `drawing` stays `true`. [Every `mouseup` bubbles up](#20) to `window`.
-
----
-
-## Problem (You): Brush Preview
-
-The brush should follow the mouse. Turn the pseudocode into code in the Brush Preview section.
-
-```text
-when the mouse moves over the canvas
-  move the brush's left and top to the mouse, in pixels
-when the mouse enters the canvas
-  show the brush
-when the mouse leaves the canvas
-  hide the brush
-```
-
-The CSS centers the brush on its spot, and lets the mouse reach the canvas through it.
-
----
-
-## Solution (You): Brush Preview
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```js
-canvas.addEventListener("mousemove", (event) => {
-  document.getElementById("brush").style.left = `${event.offsetX}px`;
-  document.getElementById("brush").style.top = `${event.offsetY}px`;
-});
-
-canvas.addEventListener("mouseenter", () => {
-  document.getElementById("brush").hidden = false;
-});
-
-canvas.addEventListener("mouseleave", () => {
-  document.getElementById("brush").hidden = true;
-});
-```
-
-`canvas` now has two `mousemove` listeners, and each one runs, in the order they were added.
-
----
-
-## Problem (Us): Palette
-
-Clicking a swatch should pick its color. Each swatch's `value` is its color, like `#c8371d`. Let's write the Palette section.
-
-1. Loop over every element with the class `swatch`, found with [`querySelectorAll`](../14-js-dom/lecture.html#11).
-2. On each one's `click`, set the **Color** picker to the clicked swatch's `value`.
-3. Why do we have to call `showBrush()` ourselves?
-
----
-
-## Solution (Us): Palette
-
-```js
-for (let swatch of document.querySelectorAll(".swatch")) {
-  swatch.addEventListener("click", (event) => {
-    document.getElementById("color").value = event.target.value;
-    showBrush();
-  });
-}
-```
-
-[`event.target`](#11) is the swatch that was clicked. [Setting `value` from code fires no event](../13-js-forms-dom/lecture.html#66), so the picker's `input` listener never runs.
-
----
-
-## Problem (Us): Shortcuts
-
-Keys should work as shortcuts anywhere on the page. Let's fill in the Shortcuts section of `useShortcut`.
-
-1. Under the function, have `document` call `useShortcut` on each `keydown`.
-2. If the key is `c`, call `clearCanvas()`, from `draw.js`.
-3. If the key is `1` to `5`, set the **Color** picker to that color in `colors`, and call `showBrush()`. [`includes`](../12-js-math-dates-strings/lecture.html#26) can check `"12345"`.
-4. Type `cat` in the **Title** box. What happens? [Fix it](#22).
-
----
-
-## Solution (Us): Shortcuts
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```js
-function useShortcut(event) {
-  if (event.target.nodeName === "INPUT") {
-    return;
-  }
-
-  if (event.key === "c") {
-    clearCanvas();
-  } else if ("12345".includes(event.key)) {
-    document.getElementById("color").value = colors[Number(event.key) - 1];
-    showBrush();
-  }
-}
-
-document.addEventListener("keydown", useShortcut);
-```
-
-`Number("2") - 1` is index 1, the second color. The `if` that skips typed keys goes first, so they never reach a shortcut.
-
----
-
-## Problem (You): Brush Keys
-
-Turn the pseudocode into code in `useShortcut`'s Brush Keys section.
-
-```text
-set size to the size slider's value, as a number
-if the key is [
-  set the size slider to size minus 2
-  show the brush
-else if the key is ]
-  set the size slider to size plus 2
-  show the brush
-```
-
-Hold `[` down. Where does the brush stop?
-
----
-
-## Solution (You): Brush Keys
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```js
-const size = Number(document.getElementById("size").value);
-
-if (event.key === "[") {
-  document.getElementById("size").value = size - 2;
-  showBrush();
-} else if (event.key === "]") {
-  document.getElementById("size").value = size + 2;
-  showBrush();
-}
-```
-
-[Holding `[` repeats `keydown`](#17), and a slider keeps its value between its `min` and `max`, so the brush stops at 2. Without `Number()`, `size + 2` [glues `"122"`](../13-js-forms-dom/lecture.html#48), and the slider jumps to 40.
-
----
-
-## Problem (Us): Fit the Window
-
-1. Make the browser window narrower, then draw. Where does the line land? Why?
-2. `fitCanvas()`, from `draw.js`, gives the canvas as many pixels as the page shows it with, and draws every line again. In the Fit the Window section, have `window` call it on each `resize`.
-
----
-
-## Solution (Us): Fit the Window
-
-```js
-window.addEventListener("resize", fitCanvas);
-```
-
-The canvas kept the pixels it had at load, and the browser shrank them to fit the page, so each line landed toward the corner. Now each `resize` fits the canvas again.
-
----
-
-## Problem (You): Unsaved Drawing
-
-Turn the pseudocode into code in the Unsaved Drawing section.
-
-```text
-when the page is about to close or reload
-  if unsaved is true
-    make the browser ask first
-```
-
-[`preventDefault`](#25) can make the browser ask. Draw something, then reload to test it.
-
----
-
-## Solution (You): Unsaved Drawing
-
-```js
-window.addEventListener("beforeunload", (event) => {
-  if (unsaved) {
-    event.preventDefault();
-  }
-});
-```
-
-`keepDrawing` sets `unsaved` to `true`, and the next problem's **Save** sets it back to `false`, so a saved drawing closes without asking.
-
----
-
-## Problem (Us): Save
-
-**Save** is the form's submit button. Let's write the Save section.
-
-1. Listen for the `submit` of the form whose id is `tools`.
-2. [Stop the reload](#28), and save the drawing as `fileName()`. `saveDrawing(name)`, from `draw.js`, downloads it.
-3. Put `Saved golden-hour.png` in `message`, and set `unsaved` to `false`.
-4. Press Enter in the **Title** box. What happens?
-
-`fileName()` turns a title like Golden hour into `golden-hour.png`, the way [Export named the photo](../13-js-forms-dom/lecture.html#64).
-
----
-
-## Solution (Us): Save
-
-```js
-document.getElementById("tools").addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const name = fileName();
-  saveDrawing(name);
-  document.getElementById("message").textContent = `Saved ${name}`;
-  unsaved = false;
-});
-```
-
-Enter in **Title** sends the form too, so it saves the drawing. Without `preventDefault()`, the page would reload, and the drawing would be gone.
-
----
-
-## Problem (You): Title Hint
-
-Turn the pseudocode into code in the Title Hint section.
-
-```text
-when the title box gets focus
-  show the hint
-when the title box loses focus
-  hide the hint
-```
-
-The hint, whose id is `hint`, says shortcuts are off while we type.
-
----
-
-## Solution (You): Title Hint
-
-```js
-document.getElementById("title").addEventListener("focus", () => {
-  document.getElementById("hint").hidden = false;
-});
-
-document.getElementById("title").addEventListener("blur", () => {
-  document.getElementById("hint").hidden = true;
-});
-```
-
-[`hidden`](../13-js-forms-dom/lecture.html#45) shows and hides the hint, as it did the brush.
-
----
-
-## Problem (You): Parsons 1
-
-<!-- prettier-ignore -->
-```js
-canvas.addEventListener("mousemove", parsons1());
-const y = Math.round(event.offsetY);
-}
-canvas.addEventListener("mousemove", parsons1);
-function parsons1(event) {
-document.getElementById("where").textContent = `${x}, ${y}`;
-canvas.addEventListener("onmousemove", parsons1);
-const x = Math.round(event.offsetX);
-```
-
-- Assemble the program in the Parsons 1 section of `practice.js`. Two of the lines are wrong.
-- What does `parsons1` do? What should it be named?
-
----
-
-## Solution (You): Parsons 1
-
-```js
-function parsons1(event) {
-  const x = Math.round(event.offsetX);
-  const y = Math.round(event.offsetY);
-  document.getElementById("where").textContent = `${x}, ${y}`;
-}
-
-canvas.addEventListener("mousemove", parsons1);
-```
-
-It shows where the mouse is on the canvas, like `120, 48`, so `showPosition` would be a better name. `"onmousemove"` names no event, and `parsons1()` passes `undefined`.
-
----
-
-## Problem (You): Extras
-
-Done early? Pick any of these. Their solutions come after **Questions?**.
-
-- **Eraser.** `e` should set the **Color** picker to white, and the next `e` should set it back to the color before.
-- **Wheel size.** Scrolling over the canvas should change the brush size, without scrolling the page.
-- **Touch.** Drawing should work with a finger or a pen too.
-
----
-
 # Conclusion
 
 ---
 
-## The Finished Page
+## Build It Yourself
 
-Every solution from today, together:
-
-- [Sketchy](https://bi3mer.github.io/lectures/cs213/lectures/15-js-events/examples/sketch-final/), running live
-- [index.html](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/15-js-events/examples/sketch-final/index.html), [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/15-js-events/examples/sketch-final/practice.js), and [draw.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/15-js-events/examples/sketch-final/draw.js) on GitHub, with every section filled in
-
-`index.html` and `draw.js` are the same as the starter's. The extras aren't in it.
+[Sketchy](../../demos/15-sketchy/instruction.html) is a drawing pad built from today's events, with step-by-step instructions.
 
 ---
 
@@ -965,74 +959,10 @@ Every solution from today, together:
 
 ---
 
+## Next Up: Form Validation
+
+[Form Validation](../16-js-form-validation/lecture.html)
+
+---
+
 # Questions?
-
----
-
-## Extras: Eraser
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-At the top of `practice.js`, add `let inkColor = colors[0];`. Then, in `useShortcut`:
-
-```js
-if (event.key === "e") {
-  const color = document.getElementById("color");
-
-  if (color.value === "#ffffff") {
-    color.value = inkColor;
-  } else {
-    inkColor = color.value;
-    color.value = "#ffffff";
-  }
-
-  showBrush();
-}
-```
-
-The canvas is white, so drawing in white erases.
-
----
-
-## Extras: Wheel Size
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```js
-canvas.addEventListener("wheel", (event) => {
-  event.preventDefault();
-  const size = Number(document.getElementById("size").value);
-
-  if (event.deltaY < 0) {
-    document.getElementById("size").value = size + 2;
-  } else {
-    document.getElementById("size").value = size - 2;
-  }
-
-  showBrush();
-});
-```
-
-`deltaY` is below 0 when the wheel scrolls up. `preventDefault()` keeps the page from scrolling while the mouse is over the canvas.
-
----
-
-## Extras: Touch
-
-<center>
-
-| Mouse event  | Pointer event  |
-| ------------ | -------------- |
-| `mousedown`  | `pointerdown`  |
-| `mousemove`  | `pointermove`  |
-| `mouseup`    | `pointerup`    |
-| `mouseenter` | `pointerenter` |
-| `mouseleave` | `pointerleave` |
-
-</center>
-
-**Pointer events** come from a mouse, a pen, or a finger, with the same `offsetX` and `offsetY`. Swap each mouse event for its pointer event, and add `touch-action: none;` to `#canvas`, so a finger draws instead of scrolling the page.

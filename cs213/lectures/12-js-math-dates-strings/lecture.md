@@ -23,7 +23,9 @@ console.log(0.1 + 0.2 === 0.3); // false
 console.log(127.5 * 0.12);      // 15.299999999999999
 ```
 
-JavaScript [stores every number in binary](#56). Most decimals, like 0.1, have no exact binary form, just as 1/3 has no exact decimal form (0.333...).
+JavaScript [stores every number in binary](#53). Most decimals, like 0.1, have no exact binary form, just as 1/3 has no exact decimal form (0.333...).
+
+How can we tell what kind of number we have?
 
 ---
 
@@ -43,6 +45,8 @@ console.log(Number.isInteger(NaN)); // false
 - [`NaN`](../08-js-intro/lecture.html#69) is the only value that isn't equal to itself, so `=== NaN` is always `false`. `Number.isNaN` checks for it.
 - `Number.isInteger` is `true` only for whole numbers, so it rules out `NaN` too.
 
+How do we show a number in a form people can read?
+
 ---
 
 ## `toLocaleString`
@@ -58,6 +62,8 @@ console.log(total.toLocaleString("en-US", money)); // $1,234.50
 
 With no arguments, it follows the browser's language, so a German browser shows `1.234,5`. `"en-US"` and the options in `money` give dollars and cents. Like [`toFixed(2)`](../08-js-intro/lecture.html#78), it returns a string.
 
+To change the number itself, JavaScript has a `Math` object.
+
 ---
 
 ## The `Math` Object
@@ -71,6 +77,8 @@ console.log(Math.pow(2, 10)); // 1024
 ```
 
 **`Math`** is an object built into JavaScript. Its properties are constants, like `Math.PI`, and functions, like `Math.sqrt`. `Math.pow(2, 10)` is the same as [`2 ** 10`](../08-js-intro/lecture.html#71).
+
+How do we round?
 
 ---
 
@@ -89,6 +97,8 @@ console.log(Math.pow(2, 10)); // 1024
 
 `round` goes to the nearest whole number. `floor` always goes down and `ceil` always goes up, so `Math.floor(-4.2)` is `-5`.
 
+These give whole numbers. How do we round to cents?
+
 ---
 
 ## Rounding to Decimal Places
@@ -102,6 +112,8 @@ console.log(Math.round(Math.PI * 1000) / 1000); // 3.142
 ```
 
 To keep 1, 2, or 3 decimal places, multiply by 10, 100, or 1000, round, and divide by the same number. Keeping two places rounds dollars to cents.
+
+How do we find the smaller or larger of two numbers?
 
 ---
 
@@ -119,19 +131,23 @@ console.log(count); // 8
 
 Both take any number of arguments. `Math.min(count, 8)` gives 8 whenever `count` is larger, so it keeps `count` at 8 or less. `Math.max(count, 1)` keeps it at 1 or more.
 
+What if the numbers are in an array?
+
 ---
 
 ## Spreading an Array: `...`
 
 <!-- prettier-ignore -->
 ```js
-let prices = [35, 52.5, 89.5];
-console.log(Math.max(prices));    // NaN
-console.log(Math.max(...prices)); // 89.5
-console.log(Math.min(...prices)); // 35
+let scores = [35, 52.5, 89.5];
+console.log(Math.max(scores));    // NaN
+console.log(Math.max(...scores)); // 89.5
+console.log(Math.min(...scores)); // 35
 ```
 
-`Math.max` takes numbers, not an array. `...` **spreads** an array, passing each item as its own argument, so `Math.max(...prices)` is `Math.max(35, 52.5, 89.5)`.
+`Math.max` takes numbers, not an array. `...` **spreads** an array, passing each item as its own argument, so `Math.max(...scores)` is `Math.max(35, 52.5, 89.5)`.
+
+How do we get a number we can't predict?
 
 ---
 
@@ -145,6 +161,8 @@ console.log(Math.random()); // 0.5139022791366285
 ```
 
 Each call gives a new number from 0 up to, but not including, 1, so your numbers will differ. It takes no arguments.
+
+How do we turn this into a dice roll?
 
 ---
 
@@ -169,6 +187,90 @@ This rolls a die. Without the `+ 1`, it gives 0 to 5, which is a random [index](
 
 ---
 
+## Setting Up
+
+Make these two files in a new WebStorm folder:
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Practice</title>
+  </head>
+  <body>
+    <script src="practice.js"></script>
+  </body>
+</html>
+```
+
+`practice.js` starts empty. Open the page and its console, and clear `practice.js` before each problem. From here on, any variable we never reassign is a [`const`](../08-js-intro/lecture.html#43), even without an all-caps name like `TAX_RATE`.
+
+---
+
+## Problem: Round to Cents (us)
+
+```js
+const amount = 40.375;
+// Round amount to the nearest cent, then print it.
+```
+
+<p class="caption">Console</p>
+
+```text
+40.38
+```
+
+- Why not use `toFixed(2)`, which gives a string?
+
+---
+
+## Solution: Round to Cents (us)
+
+```js
+const amount = 40.375;
+const rounded = Math.round(amount * 100) / 100;
+console.log(rounded);
+```
+
+Multiplying by 100 moves the cents in front of the decimal point.
+
+---
+
+## Problem: Keep in Range (you)
+
+```text
+set count to 20.5
+round count down to a whole number
+keep count at 1 or more
+keep count at 8 or less
+print count
+```
+
+<p class="caption">Console</p>
+
+```text
+8
+```
+
+---
+
+## Solution: Keep in Range (you)
+
+```js
+let count = 20.5;
+count = Math.floor(count);
+count = Math.max(count, 1);
+count = Math.min(count, 8);
+console.log(count);
+```
+
+`Math.max` keeps the low side, and `Math.min` keeps the high side.
+
+Dates are numbers too, underneath. How do we get one?
+
+---
+
 ## `new Date()`
 
 ```js
@@ -184,13 +286,15 @@ Tue Oct 27 2026 09:30:00 GMT-0400 (Eastern Daylight Time)
 
 A **`Date`** is an object that holds one moment in time. `new` makes a new object, so `new Date()` makes a Date for the moment that line ran.
 
+How do we make a date other than now?
+
 ---
 
 ## A Date of Our Choosing
 
 ```js
-let show = new Date(2026, 11, 4, 20, 0);
-console.log(show);
+let date = new Date(2026, 11, 4, 20, 0);
+console.log(date);
 ```
 
 <p class="caption">Console</p>
@@ -219,16 +323,18 @@ Source: Allen Wirfs-Brock and Brendan Eich, [JavaScript: The First 20 Years](htt
 
 <!-- prettier-ignore -->
 ```js
-let show = new Date(2026, 11, 4, 20, 0);
-console.log(show.getFullYear()); // 2026
-console.log(show.getMonth());    // 11
-console.log(show.getDate());     // 4
-console.log(show.getDay());      // 5
-console.log(show.getHours());    // 20
-console.log(show.getMinutes());  // 0
+let date = new Date(2026, 11, 4, 20, 0);
+console.log(date.getFullYear()); // 2026
+console.log(date.getMonth());    // 11
+console.log(date.getDate());     // 4
+console.log(date.getDay());      // 5
+console.log(date.getHours());    // 20
+console.log(date.getMinutes());  // 0
 ```
 
 `getMonth` counts from 0, as it did going in. `getDate` is the day of the month, and `getDay` is the day of the week, from 0 (Sunday) to 6 (Saturday).
+
+How do we compare two dates?
 
 ---
 
@@ -236,12 +342,14 @@ console.log(show.getMinutes());  // 0
 
 <!-- prettier-ignore -->
 ```js
-let show = new Date(2026, 11, 4, 20, 0);
-console.log(show.getTime()); // 1796432400000
+let date = new Date(2026, 11, 4, 20, 0);
+console.log(date.getTime()); // 1796432400000
 console.log(Date.now());     // 1793107800000
 ```
 
 Inside, a Date is one number: the milliseconds since midnight on January 1, 1970, in UTC, the world's reference time. `Date.now()` gives that number for right now.
+
+What happens if we subtract two dates?
 
 ---
 
@@ -257,6 +365,8 @@ console.log(due < now); // false
 ```
 
 `-` and `<` turn each date into its milliseconds, so `due - now` is the time between them. `+` [glues strings](../08-js-intro/lecture.html#74) instead, so `due + now` is one long string.
+
+How do we turn milliseconds into something readable?
 
 ---
 
@@ -285,15 +395,17 @@ pre { font-size: 0.75em; }
 
 <!-- prettier-ignore -->
 ```js
-let show = new Date(2026, 11, 4, 20, 0);
+let date = new Date(2026, 11, 4, 20, 0);
 let short = { hour: "numeric", minute: "2-digit" };
 
-console.log(show.toLocaleDateString());               // 12/4/2026
-console.log(show.toLocaleTimeString());               // 8:00:00 PM
-console.log(show.toLocaleTimeString("en-US", short)); // 8:00 PM
+console.log(date.toLocaleDateString());               // 12/4/2026
+console.log(date.toLocaleTimeString());               // 8:00:00 PM
+console.log(date.toLocaleTimeString("en-US", short)); // 8:00 PM
 ```
 
 Like [`toLocaleString`](#4), they follow the browser's language, so a British browser shows the date as `04/12/2026`. `"en-US"` and an options object pick the format.
+
+How do we get the names of days and months?
 
 ---
 
@@ -305,17 +417,19 @@ pre { font-size: 0.75em; }
 
 <!-- prettier-ignore -->
 ```js
-let show = new Date(2026, 11, 4, 20, 0);
+let date = new Date(2026, 11, 4, 20, 0);
 let month = { month: "long" };
 let weekday = { weekday: "long" };
 let full = { weekday: "long", month: "long", day: "numeric" };
 
-console.log(show.toLocaleDateString("en-US", month));   // December
-console.log(show.toLocaleDateString("en-US", weekday)); // Friday
-console.log(show.toLocaleDateString("en-US", full));    // Friday, December 4
+console.log(date.toLocaleDateString("en-US", month));   // December
+console.log(date.toLocaleDateString("en-US", weekday)); // Friday
+console.log(date.toLocaleDateString("en-US", full));    // Friday, December 4
 ```
 
 `"long"` spells out a name, and `"short"` gives `Dec` or `Fri`. The browser knows the names in other languages too, so `"es-ES"` gives `viernes, 4 de diciembre`.
+
+How do we move a date forward?
 
 ---
 
@@ -333,7 +447,96 @@ console.log(due);
 Mon Nov 02 2026 17:00:00 GMT-0500 (Eastern Standard Time)
 ```
 
-Each `get` method we've seen, except `getDay`, has a `set` partner. October (`9`, since [months start at 0](#14)) has 31 days, so day 33 rolls over to November 2. `setDate` changes the Date itself.
+Each `get` method we've seen, except `getDay`, has a `set` partner. October (`9`, since [months start at 0](#19)) has 31 days, so day 33 rolls over to November 2. `setDate` changes the Date itself.
+
+What if the page should keep updating, like a clock?
+
+---
+
+## `setInterval`
+
+```js
+function showTime() {
+  console.log(new Date().toLocaleTimeString());
+}
+
+setInterval(showTime, 1000);
+```
+
+<p class="caption">Console</p>
+
+```text
+8:00:00 PM
+8:00:01 PM
+8:00:02 PM
+```
+
+`setInterval` takes [a function as a value](../11-js-arrays/lecture.html#32), with no `()`, and calls it every 1000 milliseconds until the page closes.
+
+---
+
+## Problem: Days Until (us)
+
+```js
+const start = new Date(2026, 11, 4);
+const end = new Date(2026, 11, 25);
+// Print the whole days from start to end.
+```
+
+<p class="caption">Console</p>
+
+```text
+21
+```
+
+- How many milliseconds are in a day?
+
+---
+
+## Solution: Days Until (us)
+
+```js
+const start = new Date(2026, 11, 4);
+const end = new Date(2026, 11, 25);
+const ms = end - start;
+console.log(Math.floor(ms / (1000 * 60 * 60 * 24)));
+```
+
+Subtracting dates gives milliseconds.
+
+---
+
+## Problem: Full Date (you)
+
+```text
+set date to December 4, 2026, at 8 PM
+set day to its weekday, month, and day
+set time to its time, like 8:00 PM
+print "day at time"
+```
+
+<p class="caption">Console</p>
+
+```text
+Friday, December 4 at 8:00 PM
+```
+
+---
+
+## Solution: Full Date (you)
+
+```js
+const date = new Date(2026, 11, 4, 20, 0);
+const full = { weekday: "long", month: "long", day: "numeric" };
+const short = { hour: "numeric", minute: "2-digit" };
+const day = date.toLocaleDateString("en-US", full);
+const time = date.toLocaleTimeString("en-US", short);
+console.log(`${day} at ${time}`);
+```
+
+Each method takes `"en-US"` and an options object.
+
+Strings have methods too, with one catch.
 
 ---
 
@@ -349,7 +552,9 @@ name = name.toUpperCase();
 console.log(name); // LOVELACE
 ```
 
-A string is **immutable**, which means no method can change it. [`toUpperCase`](../10-js-objects-loops/lecture.html#10) returns a new, uppercase string. `.toLowerCase()` works the same way.
+A string is **immutable**, which means no method can change it. [`toUpperCase`](../10-js-objects-loops/lecture.html#11) returns a new, uppercase string. `.toLowerCase()` works the same way.
+
+Which methods can we call on what?
 
 ---
 
@@ -382,6 +587,8 @@ console.log(`[${typed.trim()}]`); // [ada  lovelace]
 
 `trim` removes the spaces at both ends, but not the ones in the middle. People type stray spaces into boxes, so trim what a box gives us.
 
+Can we call two methods in a row?
+
 ---
 
 ## Chaining Methods
@@ -394,6 +601,8 @@ console.log(name); // LOVELACE
 ```
 
 Calling a method on the result of another method is **chaining**. It runs left to right: `trim` gives `"lovelace"`, and `toUpperCase` runs on that.
+
+How do we search inside a string?
 
 ---
 
@@ -408,7 +617,9 @@ console.log(email.endsWith(".edu"));   // true
 console.log(email.includes("School")); // false
 ```
 
-Each one returns a boolean. [Like an array's `includes`](../11-js-arrays/lecture.html#18), they look for an exact match, so `"School"` doesn't match `"school"`.
+Each one returns a boolean. [Like an array's `includes`](../11-js-arrays/lecture.html#21), they look for an exact match, so `"School"` doesn't match `"school"`.
+
+How do we cut out a piece?
 
 ---
 
@@ -465,6 +676,8 @@ console.log(code.substr(-4));   // 0042
 
 `substr(start, length)` copies `length` characters from `start`, so its second argument is a count, where `slice`'s is an end index. [MDN marks `substr` deprecated](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr): expect it in older code, and write `slice`.
 
+How do we break a string into words?
+
 ---
 
 ## `split`
@@ -477,7 +690,9 @@ console.log(parts[parts.length - 1]); // Lovelace
 console.log("20:00".split(":"));      // ["20", "00"]
 ```
 
-`split` cuts a string at each match of its argument, and returns an array of the pieces. It's the reverse of [`join`](../11-js-arrays/lecture.html#19). The pieces are strings, even `"20"`.
+`split` cuts a string at each match of its argument, and returns an array of the pieces. It's the reverse of [`join`](../11-js-arrays/lecture.html#23). The pieces are strings, even `"20"`.
+
+How do we swap one piece of text for another?
 
 ---
 
@@ -493,6 +708,8 @@ console.log("1,250,000".replace(",", ""));      // 1250,000
 
 `replaceAll` swaps every match of its first argument for its second, and `""` deletes them. `replace` swaps only the first match.
 
+How do we make every number the same width?
+
 ---
 
 ## `padStart`
@@ -506,9 +723,11 @@ console.log(String(45).padStart(2, "0"));      // 45
 console.log(minutes.padStart(2, "0"));         // TypeError
 ```
 
-`padStart(length, pad)` adds `pad` to the front of a string until it is `length` characters long. With no `pad`, it adds spaces. A string that is already long enough comes back unchanged. [A number has no `padStart`](#23), so it needs [`String()`](../08-js-intro/lecture.html#75) first.
+`padStart(length, pad)` adds `pad` to the front of a string until it is `length` characters long. With no `pad`, it adds spaces. A string that is already long enough comes back unchanged. [A number has no `padStart`](#33), so it needs [`String()`](../08-js-intro/lecture.html#75) first.
 
 There is also a [`padEnd`](cheatsheet.html#padding-and-repeating-padstart-padend-and-repeat), which adds to the end.
+
+How do we repeat a string?
 
 ---
 
@@ -520,322 +739,71 @@ console.log("█".repeat(6));                 // ██████
 console.log("★".repeat(4) + "☆".repeat(1)); // ★★★★☆
 ```
 
-`repeat(n)` glues `n` copies of a string together, so `"█".repeat(6)` draws [`depthBar(600)`](../10-js-objects-loops/lecture.html#32) without a loop.
+`repeat(n)` glues `n` copies of a string together, so `"█".repeat(6)` draws a six-block bar without a loop.
 
 ---
 
-# Building the Ticket Page
-
----
-
-## Setting Up the Starter
-
-Today's page sells tickets to a concert by The Semicolons. Its starter has two files on GitHub: [index.html](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/12-js-math-dates-strings/examples/tickets-starter/index.html) and [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/12-js-math-dates-strings/examples/tickets-starter/practice.js). Set them up in WebStorm, in a new folder:
-
-1. Open each file, and click **Copy raw file**, the copy icon above the code.
-2. Paste each one into a new file in WebStorm with the same name.
-
-`practice.js` starts with `price`, `percentOff`, and `dollars(amount)`, which formats a number with [`toLocaleString`](#4). From here on, any variable we never reassign is a [`const`](../08-js-intro/lecture.html#43), even without an all-caps name like `TAX_RATE`.
-
----
-
-## Problem (You): To Cents
-
-Order Total will round each amount to cents. Fill in `toCents(amount)` in the To Cents section, so it returns `amount` [rounded to cents](#7).
-
-<!-- prettier-ignore -->
-```js
-console.log(toCents(15.299999999999999)); // 15.3
-console.log(toCents(40.375));             // 40.38
-console.log(toCents(42.5));               // 42.5
-```
-
-Check it with these calls, under the function.
-
----
-
-## Solution (You): To Cents
+## Problem: Course Number (us)
 
 ```js
-function toCents(amount) {
-  return Math.round(amount * 100) / 100;
-}
+const code = "  CS213 ";
+// Trim code. If it starts with CS, print the number after CS.
 ```
 
-Make sure to delete the tests once you have the function working.
-
----
-
-## Problem (Us): Order Total
-
-The **Tickets** box calls `showTotal()` when its number changes. Let's update the function, which is in the Order Total section.
-
-1. `count` holds the box's value. Turn it into a number.
-2. Take `percentOff` percent off the tickets (it stays 0 until Promo Code).
-3. Find the 12% fee on that amount.
-4. Uncomment the last three page lines, and replace each `?` with an amount, passed to `dollars()`, rounded with [`toCents`](#37).
-
-The box starts at 2 tickets, which should cost $85.00, plus a $10.20 fee.
-
----
-
-## Solution (Us): Order Total
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```js
-function showTotal() {
-  let count = Number(document.getElementById("count").value);
-
-  const subtotal = toCents(count * price * (1 - percentOff / 100));
-  const fee = toCents(subtotal * 0.12);
-  const total = toCents(subtotal + fee);
-
-  document.getElementById("subtotal").textContent = dollars(subtotal);
-  document.getElementById("fee").textContent = dollars(fee);
-  document.getElementById("total").textContent = dollars(total);
-}
-```
-
-Rounding each amount before adding keeps the page's lines adding up to the total. Without `toCents`, one ticket with 5% off shows $40.38 plus a $4.85 fee, but a $45.22 total.
-
----
-
-## Problem (You): Ticket Limit
-
-Typing 20 in the box sells 20 tickets, and 2.5 sells two and a half. Turn the pseudocode into code in `showTotal()`'s Ticket Limit section.
+<p class="caption">Console</p>
 
 ```text
-round count down to a whole number
-keep count at 1 or more
-keep count at 8 or less
-put count back in the box
+213
 ```
 
-For the last line, uncomment the page line, and replace its `?` with `count`. [`Math.min` and `Math.max`](#8) can each keep one side.
+- Which method gets the part after `CS`?
 
 ---
 
-## Solution (You): Ticket Limit
+## Solution: Course Number (us)
 
 ```js
-function showTotal() {
-  let count = Number(document.getElementById("count").value);
+const code = "  CS213 ";
+const trimmed = code.trim();
 
-  count = Math.floor(count);
-  count = Math.max(count, 1);
-  count = Math.min(count, 8);
-  document.getElementById("count").value = count;
-
-  // the subtotal, fee, and total, from Order Total
+if (trimmed.startsWith("CS")) {
+  console.log(Number(trimmed.slice(2)));
 }
 ```
 
-`Math.max(count, 1)` gives 1 whenever `count` is smaller. An empty box gives `Number("")`, which is `0`, so it becomes 1.
+`slice(2)` starts after the two letters.
 
 ---
 
-## Problem (Us): Countdown
-
-The header counts down to the show, like `Starts in 38 days`. `showTime`, at the top of `practice.js`, holds [when the show starts](#13). Let's write it in the Countdown section.
-
-1. In `showCountdown()`, find the milliseconds from now until `showTime`, and [turn them into whole days](#18).
-2. Uncomment the page line, and replace its `?` with the number of days.
-3. What should the page say once the show has started?
-
-`setInterval(showCountdown, 1000)`, under the function, takes [a function as a value](../11-js-arrays/lecture.html#28) and calls it every 1000 ms.
-
----
-
-## Solution (Us): Countdown
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```js
-function showCountdown() {
-  const ms = showTime - new Date();
-  const days = Math.floor(ms / (1000 * 60 * 60 * 24));
-
-  if (ms > 0) {
-    document.getElementById("countdown").textContent = `Starts in ${days} days`;
-  } else {
-    document.getElementById("countdown").textContent = "The show has started";
-  }
-}
-```
-
-After the show, `ms` is negative, so the `else` keeps the countdown from going below zero.
-
----
-
-## Problem (You): Show Date
-
-The header should say when the show is: `Friday, December 4 at 8:00 PM`. Turn the pseudocode into code in the Show Date section.
+## Problem: Last Name First (you)
 
 ```text
-set date to showTime's weekday, month, and day, like Friday, December 4
-set time to showTime's time, like 8:00 PM
-put "date at time" on the page
+set name to "ada lovelace"
+set parts to name, split at each space
+set first to the first part
+set last to the second part, all uppercase
+print "last, first"
 ```
 
-For the last line, uncomment the page line, and replace its `?`. [`toLocaleDateString`](#20) can write the names, and [`toLocaleTimeString`](#19) can format the time.
-
----
-
-## Solution (You): Show Date
-
-```js
-const full = { weekday: "long", month: "long", day: "numeric" };
-const date = showTime.toLocaleDateString("en-US", full);
-const short = { hour: "numeric", minute: "2-digit" };
-const time = showTime.toLocaleTimeString("en-US", short);
-
-document.getElementById("when").textContent = `${date} at ${time}`;
-```
-
-The options pick the parts, and `"en-US"` puts the month before the day. A British browser would show `Friday 4 December` without it.
-
----
-
-## Problem (Us): Promo Code
-
-A code like `21310` takes 10% off the tickets, and `21310` with stray spaces should work too. The **Apply** button calls `applyCode()`. Let's fill it in, in the Promo Code section.
-
-1. Uncomment the first page line, and [trim](#24) the code.
-2. The number after `213` is the percent. Get it with [`slice`](#27), as a number.
-3. If the code starts with `213` and the percent is from 1 to 50, set `percentOff`, and show the first message. Otherwise, set `percentOff` to 0, and show the second.
-
----
-
-## Solution (Us): Promo Code
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```js
-function applyCode() {
-  const code = document.getElementById("code").value.trim();
-  const percent = Number(code.slice(3));
-
-  if (code.startsWith("213") && percent >= 1 && percent <= 50) {
-    percentOff = percent;
-    document.getElementById("code-message").textContent = `${percent}% off`;
-  } else {
-    percentOff = 0;
-    document.getElementById("code-message").textContent = "Unknown code";
-  }
-
-  showTotal();
-}
-```
-
-`213X` makes `percent` `NaN`, and every comparison with `NaN` is `false`, so it is unknown. `percentOff` sits outside the function, so `showTotal()` sees its new value.
-
----
-
-## Problem (You): Name on Ticket
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-The **Name** box calls `showName()` as we type. Turn the pseudocode into code in the Name on Ticket section.
+<p class="caption">Console</p>
 
 ```text
-set name to the box's value, without spaces at either end
-if name is empty
-  put "GUEST" on the ticket
-else
-  set parts to name, split at each space
-  if parts has only one item
-    put name, all uppercase, on the ticket
-  else
-    set first to every part but the last, joined with spaces
-    set last to the last part, all uppercase
-    put "last, first" on the ticket
-```
-
-Uncomment the page lines as you use them. `slice` works on arrays too, [negative indexes](#28) included, and [`join`](../11-js-arrays/lecture.html#19) turns an array into one string.
-
----
-
-## Solution (You): Name on Ticket
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```js
-function showName() {
-  const name = document.getElementById("name").value.trim();
-
-  if (name === "") {
-    document.getElementById("ticket-name").textContent = "GUEST";
-  } else {
-    const parts = name.split(" ");
-    if (parts.length === 1) {
-      document.getElementById("ticket-name").textContent = name.toUpperCase();
-    } else {
-      const first = parts.slice(0, -1).join(" ");
-      const last = parts[parts.length - 1].toUpperCase();
-      document.getElementById("ticket-name").textContent = `${last}, ${first}`;
-    }
-  }
-}
+LOVELACE, ada
 ```
 
 ---
 
-## Problem (You): Parsons 1
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-<!-- prettier-ignore -->
-```js
-const seat = Math.floor(Math.random()) * 20 + 1;
-document.getElementById("confirmation").textContent = `Row ${row}, seat ${seat}, ${code}`;
-const number = Math.floor(Math.random() * 10000);
-function parsons1() {
-const code = "SC-" + number.padStart(4, "0");
-const rows = "ABCDEFGH";
-}
-const seat = Math.floor(Math.random() * 20) + 1;
-const row = rows[Math.floor(Math.random() * rows.length)];
-const code = "SC-" + String(number).padStart(4, "0");
-```
-
-- Assemble the program in the Parsons 1 section of `practice.js`. Two of the lines are wrong.
-- What does `parsons1` do? What should it be named?
-
----
-
-## Solution (You): Parsons 1
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
+## Solution: Last Name First (you)
 
 ```js
-function parsons1() {
-  const rows = "ABCDEFGH";
-  const row = rows[Math.floor(Math.random() * rows.length)];
-  const seat = Math.floor(Math.random() * 20) + 1;
-  const number = Math.floor(Math.random() * 10000);
-  const code = "SC-" + String(number).padStart(4, "0");
-
-  document.getElementById("confirmation").textContent =
-    `Row ${row}, seat ${seat}, ${code}`;
-}
+const name = "ada lovelace";
+const parts = name.split(" ");
+const first = parts[0];
+const last = parts[1].toUpperCase();
+console.log(`${last}, ${first}`);
 ```
 
-Each click on **Buy** gives the ticket a random row, seat, and confirmation code, so `assignSeat` would be a better name.
+`split` gives an array, so each part has an index.
 
 ---
 
@@ -843,14 +811,9 @@ Each click on **Buy** gives the ticket a random row, seat, and confirmation code
 
 ---
 
-## The Finished Page
+## Build It Yourself
 
-Every solution from today, together:
-
-- [The Semicolons: Live](https://bi3mer.github.io/lectures/cs213/lectures/12-js-math-dates-strings/examples/tickets-final/), running live
-- [practice.js](https://github.com/bi3mer/lectures/blob/main/cs213/lectures/12-js-math-dates-strings/examples/tickets-final/practice.js) on GitHub, with every section filled in
-
-The HTML is the same as the starter's `index.html`, and `practice.js` starts with the starter's code.
+The [ticket page](../../demos/12-tickets/instruction.html) is a full page built from today's methods, with step-by-step instructions.
 
 ---
 
@@ -860,12 +823,18 @@ The HTML is the same as the starter's `index.html`, and `practice.js` starts wit
 - `=== NaN` is always `false`. Check with `Number.isNaN` or `Number.isInteger`.
 - `toLocaleString` adds commas, and its options can show dollars and cents.
 - `round`, `floor`, and `ceil` make whole numbers. `min` and `max` set limits.
-- `...` spreads an array into separate arguments: `Math.max(...prices)`.
+- `...` spreads an array into separate arguments: `Math.max(...scores)`.
 - `Math.floor(Math.random() * n) + 1` is a random whole number from 1 to `n`.
 - Months and weekdays count from 0, so `new Date(2026, 11, 4)` is December 4.
 - Subtracting dates gives milliseconds. Split them up with `floor` and `%`.
 - String methods return new strings and can chain: `.trim().toUpperCase()`.
 - `slice` copies part of a string, `split` cuts it into an array, and `padStart` pads it.
+
+---
+
+## Next Up: Forms and the DOM
+
+[Forms and the DOM](../13-js-forms-dom/lecture.html)
 
 ---
 

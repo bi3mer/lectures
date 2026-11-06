@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 234" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title>A label's for matches its control's id</title>
-  <desc>An input tag with the id "show-credit" sat above a label tag whose for was "show-credit". An arrow ran from the label's for value up to the matching id value. On the page, a pointer clicked the words Show credit, and an arrow ran from the words to the checkbox, which was ticked.</desc>
+  <desc>An input tag with the id "subscribe" sat above a label tag whose for was "subscribe". An arrow ran from the label's for value up to the matching id value. On the page, a pointer clicked the words Subscribe, and an arrow ran from the words to the checkbox, which was ticked.</desc>
   <defs>
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
@@ -32,8 +32,8 @@
   <!-- id and for are blue, and their values yellow. textLength holds every character to
        14.4px, so the boxes below line up with the values in any monospace font. -->
   <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" fill="#e2e8f0" style="font-variant-ligatures: none; white-space: pre">
-    <text x="50" y="86" textLength="604.8">&lt;input <tspan fill="#38bdf8" font-weight="bold">id</tspan>=<tspan fill="#facc15">"show-credit"</tspan> type="checkbox" /&gt;</text>
-    <text x="50" y="186" textLength="633.6">&lt;label <tspan fill="#38bdf8" font-weight="bold">for</tspan>=<tspan fill="#facc15">"show-credit"</tspan>&gt;Show credit&lt;/label&gt;</text>
+    <text x="50" y="86" textLength="604.8">&lt;input <tspan fill="#38bdf8" font-weight="bold">id</tspan>=<tspan fill="#facc15">"subscribe"</tspan> type="checkbox" /&gt;</text>
+    <text x="50" y="186" textLength="633.6">&lt;label <tspan fill="#38bdf8" font-weight="bold">for</tspan>=<tspan fill="#facc15">"subscribe"</tspan>&gt;Subscribe&lt;/label&gt;</text>
   </g>
 
   <!-- A box around each value: characters 10 to 22 of the input line, 11 to 23 of the label's -->
@@ -52,7 +52,7 @@
   <!-- The checkbox, ticked, and its label's words -->
   <rect x="826" y="130" width="24" height="24" rx="4" fill="#0075ff" />
   <path d="M832 142 L837 147 L845 136" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-  <text x="862" y="150" font-size="22" fill="#111111">Show credit</text>
+  <text x="862" y="150" font-size="22" fill="#111111">Subscribe</text>
 
   <!-- Clicking the words ticks the box -->
   <path d="M912 122 Q876 72 840 124" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow-click)" />

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 340" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The list as a tree</title>
+  <desc>The ul element was the root of this tree. Its two children were li elements. The first li's one child was the text node "Ada", and the second li's one child was the text node "Grace". Elements were blue and text nodes yellow.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="480" height="340" rx="18" fill="#0f1b2d" />
+  <rect width="480" height="340" rx="18" fill="url(#grid)" />
+
+  <!-- Node types have one color each: elements blue, text yellow. -->
+
+  <!-- Lines from each parent's bottom edge to each child's top edge -->
+  <g stroke="#64748b" stroke-width="2" fill="none">
+    <path d="M240 62 L120 122" />
+    <path d="M240 62 L360 122" />
+    <path d="M120 162 L120 222" />
+    <path d="M360 162 L360 222" />
+  </g>
+
+  <!-- Elements -->
+  <g fill="#1e293b" stroke="#38bdf8" stroke-width="2.5">
+    <rect x="195" y="22" width="90" height="40" rx="8" />
+    <rect x="80" y="122" width="80" height="40" rx="8" />
+    <rect x="320" y="122" width="80" height="40" rx="8" />
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" font-weight="bold" fill="#38bdf8" text-anchor="middle">
+    <text x="240" y="49">&lt;ul&gt;</text>
+    <text x="120" y="149">&lt;li&gt;</text>
+    <text x="360" y="149">&lt;li&gt;</text>
+  </g>
+
+  <!-- Text nodes -->
+  <g fill="#1e293b" stroke="#facc15" stroke-width="2.5">
+    <rect x="60" y="222" width="120" height="40" rx="20" />
+    <rect x="300" y="222" width="120" height="40" rx="20" />
+  </g>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" fill="#facc15" text-anchor="middle">
+    <text x="120" y="249">"Ada"</text>
+    <text x="360" y="249">"Grace"</text>
+  </g>
+
+  <!-- Key -->
+  <g font-size="18" fill="#e2e8f0">
+    <rect x="130" y="294" width="22" height="22" rx="5" fill="#1e293b" stroke="#38bdf8" stroke-width="2.5" />
+    <text x="162" y="311">element</text>
+    <rect x="280" y="294" width="22" height="22" rx="11" fill="#1e293b" stroke="#facc15" stroke-width="2.5" />
+    <text x="312" y="311">text</text>
+  </g>
+</svg>
