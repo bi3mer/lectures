@@ -13,8 +13,6 @@ paginate: true
    that edge clear of the caption above and the slide's sides. */
 .demo { margin: 20px 12px 28px; color-scheme: light; }
 .demo ul { margin: 0; }
-/* Answer choices for the Predict slides, all on one line. */
-.choices { display: flex; gap: 48px; }
 </style>
 
 # The Document Object Model
@@ -294,176 +292,6 @@ for (let list of lists) {
 
 ---
 
-## Problem: Different Kinds of Lists
-
-Now the page lists our sponsors too, but we only want to select for teams:
-
-<div class="side-by-side">
-<div>
-
-```html
-<h1>Team 1</h1>
-<ul>
-  ...
-</ul>
-<h1>Team 2</h1>
-<ul>
-  ...
-</ul>
-<h1>Sponsors</h1>
-<ul>
-  ...
-</ul>
-```
-
-</div>
-<div>
-
-<!-- prettier-ignore -->
-```js
-const lists =
-  document.getElementsByTagName("ul");
-
-for (let list of lists) { ... }
-```
-
-The sponsors list would also be affected by the code above, because all three are a `<ul>`. How can we change the HTML so the JS can tell them apart?
-
-</div>
-</div>
-
----
-
-## `getElementsByClassName`
-
-Give the team lists a class, then search for that class. The sponsors have no class, so they stay out:
-
-<!-- prettier-ignore -->
-```html
-<ul class="team">...</ul>
-<ul class="team">...</ul>
-<ul>...</ul> <!-- the sponsors -->
-```
-
-<!-- prettier-ignore -->
-```js
-const teams = document.getElementsByClassName("team");
-console.log(teams.length);      // 2
-console.log(teams[0].nodeName); // UL
-```
-
-[`document.getElementsByClassName`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName) returns every element with that class.
-
----
-
-## Problem: Reading the Vote
-
-The page now lets visitors vote for a team, and we want to know which button is picked.
-
-```html
-<input name="vote" type="radio" value="Team 1" />
-<input name="vote" type="radio" value="Team 2" checked />
-```
-
-We could add a class to each button, but do we need to? What do these buttons already share?
-
----
-
-## `getElementsByName`
-
-The buttons in [a radio group](../13-js-forms-dom/lecture.html#16) already share a `name`, so the HTML can stay as it is:
-
-```js
-const buttons = document.getElementsByName("vote");
-
-for (let button of buttons) {
-  if (button.checked) {
-    console.log(button.value); // Team 2
-  }
-}
-```
-
-[`document.getElementsByName`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByName) returns every element with that `name`.
-
----
-
-## Collections
-
-`length`, indexes, and `for...of` have worked on the result of every search, because all three return the same kind of thing:
-
-```js
-const lists = document.getElementsByTagName("ul");
-const teams = document.getElementsByClassName("team");
-const buttons = document.getElementsByName("vote");
-```
-
-Each one is a **collection**, a list of elements in page order. Loop over it with [`for...of`](../11-js-arrays/lecture.html#20).
-
----
-
-## Predict: Setting a Collection's Text
-
-A loop for every change is a lot of typing. Can we skip it and set the whole collection at once?
-
-```html
-<ul class="team">...</ul>
-<ul class="team">...</ul>
-```
-
-```js
-document.getElementsByClassName("team").textContent = "No team";
-```
-
-What does the page show? Vote, then convince a neighbor.
-
-<div class="choices">
-
-**A.** Both say No team
-
-**B.** The first says No team
-
-**C.** Nothing changes
-
-**D.** `TypeError`
-
-</div>
-
----
-
-## Answer: Setting a Collection's Text
-
-**C.** A collection isn't an element, so the page doesn't change. Set each element instead:
-
-```js
-for (let team of document.getElementsByClassName("team")) {
-  team.textContent = "No team";
-}
-```
-
----
-
-## Setting Up
-
-Time to try these. Make two files in a new WebStorm folder:
-
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Practice</title>
-  </head>
-  <body>
-    <!-- each problem's HTML goes here -->
-    <script src="practice.js"></script>
-  </body>
-</html>
-```
-
-`practice.js` starts empty. Before each problem, clear it and paste in the new HTML.
-
----
-
 ## Problem: Count the Names
 
 ```html
@@ -498,7 +326,7 @@ const count = document.getElementById("count");
 count.textContent = `${items.length} names`;
 ```
 
-A collection's `length` is how many elements it holds.
+`length` is how many elements the search found.
 
 ---
 
@@ -538,6 +366,209 @@ for (let item of document.getElementsByTagName("li")) {
 ```
 
 `textContent` reads the old text and writes the new text.
+
+---
+
+## Problem: Different Kinds of Lists
+
+Now the page lists sponsors as well, but we only want to select for teams:
+
+<div class="side-by-side">
+<div>
+
+```html
+<h1>Team 1</h1>
+<ul>
+  ...
+</ul>
+<h1>Team 2</h1>
+<ul>
+  ...
+</ul>
+<h1>Sponsors</h1>
+<ul>
+  ...
+</ul>
+```
+
+</div>
+<div>
+
+<!-- prettier-ignore -->
+```js
+const lists =
+  document.getElementsByTagName("ul");
+
+for (let list of lists) { ... }
+```
+
+The sponsors list would also be affected by the code above, because all three are a `<ul>`. How can we change the HTML so the JS can tell them apart?
+
+</div>
+</div>
+
+---
+
+## `getElementsByClassName`
+
+Give the team lists a class, then search for that class. The sponsors have no class (or some other class), so they stay out:
+
+<!-- prettier-ignore -->
+```html
+<ul class="team">...</ul>
+<ul class="team">...</ul>
+<ul>...</ul> <!-- the sponsors -->
+```
+
+<!-- prettier-ignore -->
+```js
+const teams = document.getElementsByClassName("team");
+console.log(teams.length);      // 2
+console.log(teams[0].nodeName); // UL
+```
+
+[`document.getElementsByClassName`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName) returns every element with that class.
+
+---
+
+## Problem: Percent Scores
+
+```html
+<p class="score">90</p>
+<p class="score">85</p>
+<p>Ada</p>
+```
+
+```text
+for each element with the class score
+  add % to the end of its text
+```
+
+<p class="caption">Page</p>
+
+```text
+90%
+85%
+Ada
+```
+
+---
+
+## Solution: Percent Scores
+
+```js
+for (let score of document.getElementsByClassName("score")) {
+  score.textContent += "%";
+}
+```
+
+The last paragraph has no `score` class, so the search skips it.
+
+---
+
+## Problem: Reading the Vote
+
+Say that we want to allow visitors to vote for a team, and we want to know which radio input is picked.
+
+<!-- prettier-ignore -->
+```html
+<form>
+  <fieldset>
+    <legend>Vote for a Team</legend>
+    <input id="team-1" name="vote" type="radio" value="Team 1" />
+    <label for="team-1">Team 1</label>
+    <input id="team-2" name="vote" type="radio" value="Team 2" checked />
+    <label for="team-2">Team 2</label>
+  </fieldset>
+  <button type="submit">Vote</button>
+</form>
+```
+
+We could add a class to each input, but do we need to? What do these inputs already share?
+
+---
+
+## `getElementsByName`
+
+They share a `name`, and we can use that:
+
+```js
+const radios = document.getElementsByName("vote");
+
+for (let radio of radios) {
+  if (radio.checked) {
+    console.log(radio.value); // Team 2
+  }
+}
+```
+
+[`document.getElementsByName`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByName) returns every element with that `name`.
+
+---
+
+## Problem: Pick a Size
+
+```html
+<input id="small" name="size" type="radio" value="Small" />
+<label for="small">Small</label>
+<input id="large" name="size" type="radio" value="Large" checked />
+<label for="large">Large</label>
+<p id="picked"></p>
+```
+
+```text
+for each radio input named size
+  if it is checked, put its value in the paragraph
+```
+
+<p class="caption">Page</p>
+
+```text
+Large
+```
+
+---
+
+## Solution: Pick a Size
+
+```js
+const picked = document.getElementById("picked");
+
+for (let radio of document.getElementsByName("size")) {
+  if (radio.checked) {
+    picked.textContent = radio.value;
+  }
+}
+```
+
+`getElementsByName` finds both inputs, and `checked` tells them apart.
+
+---
+
+## `HTMLCollection` and `NodeList`
+
+`length`, indexes, and `for...of` have worked on the result of every search, because each one is a list of elements in page order:
+
+<!-- prettier-ignore -->
+```js
+const lists = document.getElementsByTagName("ul");      // HTMLCollection
+const teams = document.getElementsByClassName("team");  // HTMLCollection
+const radios = document.getElementsByName("vote");      // NodeList
+```
+
+Loop over an [`HTMLCollection`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection) or a [`NodeList`](https://developer.mozilla.org/en-US/docs/Web/API/NodeList) with [`for...of`](../11-js-arrays/lecture.html#20).
+
+---
+
+## `HTMLCollection` vs. `NodeList`
+
+|                | `HTMLCollection`                                 | `NodeList`                        |
+| -------------- | ------------------------------------------------ | --------------------------------- |
+| **Comes from** | `getElementsByTagName`, `getElementsByClassName` | `childNodes`, `getElementsByName` |
+| **Holds**      | Elements only                                    | Any node, including text          |
+| **`forEach`**  | No                                               | Yes                               |
+
+<div class="footnote">The <a href="https://dom.spec.whatwg.org/#old-style-collections">DOM Standard</a> calls both "old-style collections," and calls <code>HTMLCollection</code> "a historical artifact we cannot rid the web of."</div>
 
 ---
 
@@ -592,13 +623,52 @@ for (let player of players) {
 }
 ```
 
-It takes a CSS selector and returns a collection of every match.
+It takes a CSS selector and returns a `NodeList` of every match.
+
+---
+
+## Problem: Only One List
+
+```html
+<ul id="first">
+  <li>Ada</li>
+  <li>Grace</li>
+</ul>
+<ul id="second">
+  <li>Alan</li>
+</ul>
+```
+
+```text
+for each li inside first
+  add ! to the end of its text
+```
+
+<p class="caption">Page</p>
+
+```text
+Ada!
+Grace!
+Alan
+```
+
+---
+
+## Solution: Only One List
+
+```js
+for (let item of document.querySelectorAll("#first li")) {
+  item.textContent += "!";
+}
+```
+
+`#first li` means an `<li>` inside `#first`, so Alan stays the same.
 
 ---
 
 ## `querySelector`
 
-Team 1's first player is the captain, and we want that one element, not a collection:
+Team 1's first player is the captain, and we want that one element, not a `NodeList`:
 
 <!-- prettier-ignore -->
 ```js
@@ -643,45 +713,6 @@ result.textContent = `First: ${first.textContent}`;
 ```
 
 `querySelector` returns one element, so it has a `textContent`.
-
----
-
-## Problem: Only One List
-
-```html
-<ul id="first">
-  <li>Ada</li>
-  <li>Grace</li>
-</ul>
-<ul id="second">
-  <li>Alan</li>
-</ul>
-```
-
-```text
-for each li inside first
-  add ! to the end of its text
-```
-
-<p class="caption">Page</p>
-
-```text
-Ada!
-Grace!
-Alan
-```
-
----
-
-## Solution: Only One List
-
-```js
-for (let item of document.querySelectorAll("#first li")) {
-  item.textContent += "!";
-}
-```
-
-`#first li` means an `<li>` inside `#first`, so Alan stays the same.
 
 ---
 
@@ -917,23 +948,6 @@ It takes an element off the page, with everything inside it.
 
 ---
 
-## `replaceWith`
-
-If every player leaves, `remove` would leave an empty list on the page. A message can take the list's place instead:
-
-```js
-const message = document.createElement("p");
-message.textContent = "No players yet";
-document.querySelector(".team").replaceWith(message);
-```
-
-<p class="caption">Page</p>
-<div class="demo"><p>No players yet</p></div>
-
-It puts a new element where the old one was.
-
----
-
 ## Problem: Remove the Late
 
 ```html
@@ -968,6 +982,42 @@ for (let student of document.querySelectorAll(".late")) {
 ```
 
 `querySelectorAll` finds both, and the loop removes each one.
+
+---
+
+## Remove, Hide, or Disable
+
+`remove` is one of three ways to take something away from the user. The other two are [`hidden` and `disabled`](../13-js-forms-dom/lecture.html#41):
+
+<!-- prettier-ignore -->
+```js
+document.getElementById("note").remove();
+document.getElementById("note").hidden = true;
+document.getElementById("next").disabled = true;
+```
+
+| Code              | On the page? | Visible? | Usable? |
+| ----------------- | ------------ | -------- | ------- |
+| `remove()`        | No           | No       | No      |
+| `hidden = true`   | Yes          | No       | No      |
+| `disabled = true` | Yes          | Yes      | No      |
+
+---
+
+## `replaceWith`
+
+If every player leaves, `remove` would leave an empty list on the page. A message can take the list's place instead:
+
+```js
+const message = document.createElement("p");
+message.textContent = "No players yet";
+document.querySelector(".team").replaceWith(message);
+```
+
+<p class="caption">Page</p>
+<div class="demo"><p>No players yet</p></div>
+
+It puts a new element where the old one was.
 
 ---
 
@@ -1011,9 +1061,9 @@ document.getElementById("names").replaceWith(message);
 
 ## Summary
 
-- `getElementsByTagName`, `getElementsByClassName`, and `getElementsByName` return a collection.
-- Loop over a collection with `for...of` to change each element.
-- `querySelectorAll` takes a CSS selector and returns a collection of every match.
+- `getElementsByTagName` and `getElementsByClassName` return an `HTMLCollection`; `getElementsByName` returns a `NodeList`.
+- Loop over either one with `for...of` to change each element.
+- `querySelectorAll` takes a CSS selector and returns a `NodeList` of every match.
 - `querySelector` returns the first match, or `null`.
 - `classList` adds, removes, and toggles one class at a time.
 - `createElement` makes an element, and `append` or `prepend` puts it on the page.
