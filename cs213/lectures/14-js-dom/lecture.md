@@ -15,6 +15,8 @@ paginate: true
    that edge clear of the caption above and the slide's sides. */
 .demo { margin: 20px 12px 28px; color-scheme: light; }
 .demo ul { margin: 0; }
+/* Answer choices for the Predict slides, all on one line. */
+.choices { display: flex; gap: 48px; }
 </style>
 
 # The Document Object Model
@@ -50,7 +52,7 @@ When the browser loads a page, it turns the HTML into objects, and places them i
 
 ## Problem: A Class of 30
 
-With 30 students, we would need 30 ids and 30 lines of code to get each with `document.getElementById`. How can we avoid writing 30 of code to get each name?
+With 30 students, we would need 30 ids and 30 lines of code to get each with `document.getElementById`. How can we avoid writing 30 lines of code to get each name?
 
 ```html
 <ul>
@@ -114,6 +116,8 @@ And use [`childNodes`](../13-js-forms-dom/lecture.html#36):
 ```js
 for (const name of names.childNodes) { ... }
 ```
+
+The loop also visits the line breaks between the `<li>`s, since they're text nodes. We'll handle those soon.
 
 ---
 
@@ -244,7 +248,7 @@ for (let i = 3; i < teams.childNodes.length; i += 4) {
 | ---------- | ------- | ---- | ------- | -------- | ------- | ---- | ------- | -------- | ------- |
 | `nodeName` | `#text` | `H1` | `#text` | **`UL`** | `#text` | `H1` | `#text` | **`UL`** | `#text` |
 
-The [spaces and line breaks between tags](../13-js-forms-dom/lecture.html#36) are text nodes, so `childNodes` holds more than the tags we wrote. The first `<ul>` is at index 3, and each list after it is 4 nodes later.
+The [spaces and line breaks between tags](../13-js-forms-dom/lecture.html#36) are text nodes, so `childNodes` holds more than the tags we wrote. The first `<ul>` is at index 3, and each list after it is 4 nodes later. [This example](examples/getting-around-it.html) logs each `<ul>`'s index to the console.
 
 ---
 
@@ -295,7 +299,7 @@ for (let list of lists) {
 }
 ```
 
-[`document.getElementsByTagName`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByTagName) returns every element with that tag. This is great for the problem we've been working on, but not if there are other lists which we don't want to modify.
+[`document.getElementsByTagName`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByTagName) returns every element with that tag. This is great for the problem we've been working on, but not if there are other lists which we don't want to modify.
 
 ---
 
@@ -365,7 +369,7 @@ ALAN
 ## Solution: Capitals
 
 ```js
-for (let item of document.getElementsByTagName("li")) {
+for (const item of document.getElementsByTagName("li")) {
   item.textContent = item.textContent.toUpperCase();
 }
 ```
@@ -519,7 +523,7 @@ Ada
 ## Solution: Percent Scores
 
 ```js
-for (let score of document.getElementsByClassName("score")) {
+for (const score of document.getElementsByClassName("score")) {
   score.textContent += "%";
 }
 ```
@@ -545,7 +549,7 @@ console.log(team1.name); // vote
 
 ## Problem: Reading the Vote
 
-Say that we want to allow visitors to vote for a team, and we want to know which radio input is picked. Hint: we can grab elements by tag name.
+Say that we want to allow visitors to vote for a team, and we want to know which radio input is picked. Hint: `getElementsByTagName`.
 
 <!-- prettier-ignore -->
 ```html
@@ -572,7 +576,7 @@ Team 2
 ## Solution: Reading the Vote
 
 ```js
-for (let input of document.getElementsByTagName("input")) {
+for (const input of document.getElementsByTagName("input")) {
   if (input.name === "vote" && input.checked) {
     console.log(input.value); // Team 2
     break;
@@ -649,7 +653,7 @@ const teams = document.getElementsByClassName("team");  // HTMLCollection
 const radios = document.getElementsByName("vote");      // NodeList
 ```
 
-Loop over an [`HTMLCollection`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection) or a [`NodeList`](https://developer.mozilla.org/en-US/docs/Web/API/NodeList) with [`for...of`](../11-js-arrays/lecture.html#20).
+Loop over an [`HTMLCollection`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection) or a [`NodeList`](https://developer.mozilla.org/en-US/docs/Web/API/NodeList) with [`for...of`](../11-js-arrays/lecture.html#24).
 
 ---
 
@@ -662,6 +666,24 @@ Loop over an [`HTMLCollection`](https://developer.mozilla.org/en-US/docs/Web/API
 | **`forEach`**  | No                                               | Yes                               |
 
 <div class="footnote">The <a href="https://dom.spec.whatwg.org/#old-style-collections">DOM Standard</a> calls both "old-style collections," and calls <code>HTMLCollection</code> "a historical artifact we cannot rid the web of."</div>
+
+---
+
+## Searching Inside an Element
+
+`getElementsByTagName` and `getElementsByClassName` also work on an element. Called on an element, they only search inside it:
+
+<!-- prettier-ignore -->
+```html
+<ul class="team"><li>Ada</li><li>Grace</li></ul>
+<ul class="team"><li>Alan</li><li>Linus</li></ul>
+```
+
+<!-- prettier-ignore -->
+```js
+const team = document.getElementsByClassName("team")[0];
+const players = team.getElementsByTagName("li"); // Ada, Grace
+```
 
 ---
 
@@ -696,23 +718,49 @@ A [**selector**](../03-css-intro/lecture.html#18) is the part of a CSS rule that
 
 </center>
 
-These are the [selectors from CSS](../03-css-intro/lecture.html#64), and JavaScript can search with them too.
+These are some of the [selectors from CSS](../03-css-intro/lecture.html#128), and JavaScript can search with them too.
 
 ---
 
 ## `querySelectorAll`
 
-One selector can replace both loops:
+Bolding every player would take two loops: one over the teams, and one over each team's `<li>`s. One selector replaces both:
 
+<div class="side-by-side">
+<div>
+
+<!-- prettier-ignore -->
 ```js
-const players = document.querySelectorAll(".team li");
+const teams =
+  document.getElementsByClassName("team");
 
-for (let player of players) {
+for (const team of teams) {
+  const players =
+    team.getElementsByTagName("li");
+
+  for (const player of players) {
+    player.style.fontWeight = "bold";
+  }
+}
+```
+
+</div>
+<div>
+
+<!-- prettier-ignore -->
+```js
+const players =
+  document.querySelectorAll(".team li");
+
+for (const player of players) {
   player.style.fontWeight = "bold";
 }
 ```
 
-It takes a CSS selector and returns a `NodeList` of every match.
+</div>
+</div>
+
+`querySelectorAll` takes a CSS selector and returns a `NodeList` of every match.
 
 ---
 
@@ -746,7 +794,7 @@ Alan
 ## Solution: Only One List
 
 ```js
-for (let item of document.querySelectorAll("#first li")) {
+for (const item of document.querySelectorAll("#first li")) {
   item.textContent += "!";
 }
 ```
@@ -853,9 +901,10 @@ Either line finds the same paragraph. `querySelector` returns one element, so it
 ```js
 const team = document.querySelector(".team"); // team
 team.classList.add("winner");                 // team winner
+team.classList.add("winner");                 // team winner
 ```
 
-The element's other classes stay.
+The element's other classes are not modified. Adding a class that is already there does nothing, so the class is never listed twice.
 
 ---
 
@@ -872,9 +921,10 @@ The element's other classes stay.
 ```js
 const team = document.querySelector(".team"); // team winner
 team.classList.remove("winner");              // team
+team.classList.remove("winner");              // team
 ```
 
-The element's other classes stay. Removing a class that isn't there does nothing.
+The element's other classes are not modified. Removing a class that is not there does nothing, and there is no error.
 
 ---
 
@@ -896,64 +946,38 @@ team.classList.toggle("winner");              // team
 
 ---
 
-## Problem: Add a Class
-
-```html
-<style>
-  .done {
-    text-decoration: line-through;
-  }
-</style>
-<p id="ada" class="student">Ada</p>
-```
-
-```js
-// Give ada the class done, and keep the class student.
-```
-
-<p class="caption">Page</p>
-
-```text
-Ada, crossed out
-```
-
-- Which `classList` method adds a class?
-
----
-
-## Solution: Add a Class
-
-```js
-document.getElementById("ada").classList.add("done");
-```
-
-`classList.add` keeps `student`.
-
----
-
-# Adding Elements
-
----
-
 ## `createElement`
 
-Everything so far changes elements already in the HTML. A new player has no `<li>` to find, and [we don't know how many will join](#3), so the JS has to make one:
+Everything so far changes elements already in the HTML. [`document.createElement`](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement) takes a tag name and makes a new element with that tag:
 
 <!-- prettier-ignore -->
 ```js
-const player = document.createElement("li");
-player.textContent = "Linus Torvalds";
-player.classList.add("captain");
-console.log(player); // <li class="captain">Linus Torvalds</li>
+const item = document.createElement("li");       // <li></li>
+const paragraph = document.createElement("p");   // <p></p>
+const button = document.createElement("button"); // <button></button>
 ```
 
-It makes a new element, which isn't on the page yet.
+The new element works like one we found, so we can set its text and classes:
+
+<!-- prettier-ignore -->
+```js
+item.textContent = "Ada";
+item.classList.add("captain");
+console.log(item); // <li class="captain">Ada</li>
+```
+
+The new element isn't on the page yet.
 
 ---
 
-## `append` and `prepend`
+## `append`
 
 To show the new element, we put it inside one that's already on the page:
+
+<!-- prettier-ignore -->
+```html
+<ul class="team"><li>John Carmack</li></ul>
+```
 
 ```js
 const player = document.createElement("li");
@@ -964,45 +988,22 @@ document.querySelector(".team").append(player);
 <p class="caption">Page</p>
 <div class="demo"><ul><li>John Carmack</li><li>Linus Torvalds</li></ul></div>
 
-`append` adds to the end of an element, and `prepend` adds to the start.
+`append` adds to the end of an element.
 
 ---
 
-## Problem: Add a Name
+## `prepend`
 
-```html
-<ul id="names">
-  <li>Ada</li>
-  <li>Grace</li>
-</ul>
-```
+`prepend` adds to the start of an element instead:
 
 ```js
-// Add Alan to the end of the list.
+const captain = document.createElement("li");
+captain.textContent = "Ada Lovelace";
+document.querySelector(".team").prepend(captain);
 ```
 
 <p class="caption">Page</p>
-
-```text
-Ada
-Grace
-Alan
-```
-
-- Which tag do we make?
-- What finds the parent?
-
----
-
-## Solution: Add a Name
-
-```js
-const item = document.createElement("li");
-item.textContent = "Alan";
-document.getElementById("names").append(item);
-```
-
-Nothing shows until `append` puts the new element on the page.
+<div class="demo"><ul><li>Ada Lovelace</li><li>John Carmack</li><li>Linus Torvalds</li></ul></div>
 
 ---
 
@@ -1016,8 +1017,8 @@ Nothing shows until `append` puts the new element on the page.
 ```
 
 ```text
-set more to ["Alan", "Linus"]
-for each name in more
+set newNames to ["Alan", "Linus"]
+for each name in newNames
   make an li with that name
   append it to the list
 ```
@@ -1036,9 +1037,9 @@ Linus
 ## Solution: Add Each Name
 
 ```js
-const more = ["Alan", "Linus"];
+const newNames = ["Alan", "Linus"];
 
-for (let name of more) {
+for (const name of newNames) {
   const item = document.createElement("li");
   item.textContent = name;
   document.getElementById("names").append(item);
@@ -1057,12 +1058,17 @@ for (let name of more) {
 
 When a player retires, their `<li>` should come off the page:
 
-```js
-document.querySelector(".team li").remove();
+<!-- prettier-ignore -->
+```html
+<ul class="team">
+  <li>Ada</li>
+  <li class="retired">Grace</li>
+  <li>Alan</li>
+</ul>
+```
 
-for (let player of document.querySelectorAll(".retired")) {
-  player.remove();
-}
+```js
+document.querySelector(".retired").remove();
 ```
 
 It takes an element off the page, with everything inside it.
@@ -1089,31 +1095,73 @@ It takes an element off the page, with everything inside it.
 Grace
 ```
 
-- What selector finds the late students?
-- Which method takes an element off the page?
-
 ---
 
 ## Solution: Remove the Late
 
 ```js
-for (let student of document.querySelectorAll(".late")) {
+for (const student of document.querySelectorAll(".late")) {
   student.remove();
 }
 ```
 
-`querySelectorAll` finds both, and the loop removes each one.
+`querySelectorAll` finds both, and the loop removes each one. Would `getElementsByClassName` work too?
+
+---
+
+## Predict: Removing by Class
+
+```html
+<ul>
+  <li class="late">Ada</li>
+  <li>Grace</li>
+  <li class="late">Alan</li>
+</ul>
+```
+
+```js
+for (const student of document.getElementsByClassName("late")) {
+  student.remove();
+}
+```
+
+What does the page show?
+
+<div class="choices">
+
+**A.** Grace
+
+**B.** Grace, Alan
+
+**C.** Ada, Grace
+
+**D.** Nothing
+
+</div>
+
+---
+
+## Answer: Removing by Class
+
+**B.** `getElementsByClassName` returns a **live** `HTMLCollection`, which changes as the page changes. The loop reads it by index:
+
+| Step | The collection holds | The loop reads index | So                     |
+| ---- | -------------------- | -------------------- | ---------------------- |
+| 1    | Ada, Alan            | 0                    | Ada is removed         |
+| 2    | Alan                 | 1                    | past the end, it stops |
+
+Every `getElementsBy` search, and `childNodes`, is live. `querySelectorAll` returns a snapshot that never changes, so loop over it when removing.
 
 ---
 
 ## Remove, Hide, or Disable
 
-`remove` is one of three ways to take something away from the user. The other two are [`hidden` and `disabled`](../13-js-forms-dom/lecture.html#41):
+`remove` is one of three ways to take something away from the user. The other two are [`hidden` and `disabled`](../13-js-forms-dom/lecture.html#40):
 
 <!-- prettier-ignore -->
 ```js
 document.getElementById("note").remove();
-document.getElementById("note").hidden = true;
+document.getElementById("hint").hidden = true;
 document.getElementById("next").disabled = true;
 ```
 
@@ -1127,18 +1175,19 @@ document.getElementById("next").disabled = true;
 
 ## `replaceWith`
 
-If every player leaves, `remove` would leave an empty list on the page. A message can take the list's place instead:
+[`replaceWith`](https://developer.mozilla.org/en-US/docs/Web/API/Element/replaceWith) takes an element off the page and puts another in its place:
 
-```js
-const message = document.createElement("p");
-message.textContent = "No players yet";
-document.querySelector(".team").replaceWith(message);
+```html
+<h2 id="status">Loading...</h2>
 ```
 
-<p class="caption">Page</p>
-<div class="demo"><p>No players yet</p></div>
+```js
+const done = document.createElement("h1");
+done.textContent = "Done!";
+document.getElementById("status").replaceWith(done);
+```
 
-It puts a new element where the old one was.
+The `<h2>` is gone, and the `<h1>` sits where it was.
 
 ---
 
@@ -1146,14 +1195,14 @@ It puts a new element where the old one was.
 
 ```html
 <ul id="names">
-  <li>Ada</li>
-  <li>Grace</li>
 </ul>
 ```
 
 ```text
-make a p that says No names yet
-replace the list with the p
+get the element with id names
+if it has no li inside it
+  make a p that says No names yet
+  replace the list with the p
 ```
 
 <p class="caption">Page</p>
@@ -1167,28 +1216,41 @@ No names yet
 ## Solution: Replace the List
 
 ```js
-const message = document.createElement("p");
-message.textContent = "No names yet";
-document.getElementById("names").replaceWith(message);
+const names = document.getElementById("names");
+
+if (names.getElementsByTagName("li").length === 0) {
+  const message = document.createElement("p");
+  message.textContent = "No names yet";
+  names.replaceWith(message);
+}
 ```
 
-`replaceWith` takes the whole list off the page, with its items.
-
----
-
-# Conclusion
+`names.childNodes.length` would be 1, not 0: the line break inside the `<ul>` is a text node. Counting the `<li>`s skips it.
 
 ---
 
 ## Summary
 
-- `getElementsByTagName` and `getElementsByClassName` return an `HTMLCollection`; `getElementsByName` returns a `NodeList`.
-- Loop over either one with `for...of` to change each element.
-- `querySelectorAll` takes a CSS selector and returns a `NodeList` of every match.
-- `querySelector` returns the first match, or `null`.
-- `classList` adds, removes, and toggles one class at a time.
-- `createElement` makes an element, and `append` or `prepend` puts it on the page.
-- `remove` takes an element off the page, and `replaceWith` swaps it for another.
+| Function                                         | What it does                                          |
+| ------------------------------------------------ | ----------------------------------------------------- |
+| `getElementsByTagName`                           | Every element with a tag (`HTMLCollection`)           |
+| `getElementsByClassName`                         | Every element with a class (`HTMLCollection`)         |
+| `getElementsByName`                              | Every element with a `name` (`NodeList`)              |
+| `querySelectorAll`                               | Every element that matches a selector (`NodeList`)    |
+| `querySelector`                                  | The first element that matches a selector, or `null`  |
+| `classList.contains`                             | Checks whether an element has a class                 |
+
+---
+
+## Summary (continued)
+
+| Function                                         | What it does                                          |
+| ------------------------------------------------ | ----------------------------------------------------- |
+| `classList.add`, `remove`, `toggle`              | Adds, removes, or flips one class                     |
+| `createElement`                                  | Makes a new element that isn't on the page yet        |
+| `append`, `prepend`                              | Puts an element at the end or start of another        |
+| `remove`                                         | Takes an element off the page                         |
+| `replaceWith`                                    | Puts another element in an element's place            |
 
 ---
 
@@ -1196,6 +1258,3 @@ document.getElementById("names").replaceWith(message);
 
 [Events](../15-js-events/lecture.html)
 
----
-
-# Questions?
