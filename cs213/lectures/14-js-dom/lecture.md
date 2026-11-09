@@ -9,6 +9,8 @@ paginate: true
 .side-by-side { display: grid; grid-template-columns: 560px minmax(0, 1fr); gap: 24px; align-items: start; }
 .side-by-side p { margin: 0; }
 .caption { font-size: 20px; color: var(--secondary); }
+/* Shrinks a code block that would crowd its column. */
+.small-code pre { font-size: 0.8em; }
 /* The theme draws a .demo as a white panel whose 12px edge is a shadow, so the margins keep
    that edge clear of the caption above and the slide's sides. */
 .demo { margin: 20px 12px 28px; color-scheme: light; }
@@ -23,7 +25,7 @@ Colan Biemer
 
 ## The DOM
 
-When the browser loads a page, it turns the HTML into objects, called the [**DOM**](../13-js-forms-dom/lecture.html#28). The objects form a tree, and changing one changes the page.
+When the browser loads a page, it turns the HTML into objects, and places them in the [**DOM**](../13-js-forms-dom/lecture.html#28). The objects form a tree, and changing one changes the page.
 
 <div class="side-by-side">
 <div>
@@ -46,24 +48,9 @@ When the browser loads a page, it turns the HTML into objects, called the [**DOM
 
 ---
 
-## One Element at a Time
-
-```js
-document.getElementById("name1").textContent = "Present";
-document.getElementById("name2").textContent = "Present";
-document.getElementById("name3").textContent = "Present";
-```
-
-- What about a class of 30?
-- What if we don't know how many students there will be?
-
-[`getElementById`](../13-js-forms-dom/lecture.html#30) finds one element. We need another way...
-
----
-
 ## Problem: A Class of 30
 
-With 30 students, we need 30 ids and 30 lines of code to get each with `document.getElementById`. How can we avoid writing 30 of code to get each name?
+With 30 students, we would need 30 ids and 30 lines of code to get each with `document.getElementById`. How can we avoid writing 30 of code to get each name?
 
 ```html
 <ul>
@@ -78,12 +65,32 @@ With 30 students, we need 30 ids and 30 lines of code to get each with `document
 
 ## Solution 1: String Building
 
+<div class="side-by-side">
+<div class="small-code">
+
+```html
+<ul>
+  <li id="name1">Ada</li>
+  <li id="name2">Grace</li>
+  <!-- ... -->
+  <li id="name30">Alan</li>
+</ul>
+```
+
+</div>
+<div>
+
 ```js
 for (let i = 1; i <= 30; ++i) {
   const name = document.getElementById(`name${i}`);
   // ...
 }
 ```
+
+</div>
+</div>
+
+How could we accomplish this with only one call of `.getElementById`? Hint: We would need to modify the HTML.
 
 ---
 
@@ -353,8 +360,6 @@ GRACE
 ALAN
 ```
 
-[`toUpperCase`](../10-js-objects-loops/lecture.html#11) returns a string in capitals.
-
 ---
 
 ## Solution: Capitals
@@ -402,16 +407,73 @@ const lists =
 for (let list of lists) { ... }
 ```
 
-The sponsors list would also be affected by the code above, because all three are a `<ul>`. How can we change the HTML so the JS can tell them apart?
+The sponsors list would also be affected by the code above, because all three are a `<ul>`.
 
 </div>
 </div>
 
 ---
 
+## `classList`
+
+Give the team lists a class. An element's [`classList`](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) holds its classes, and `contains` checks for one of them:
+
+<!-- prettier-ignore -->
+```html
+<ul class="team">...</ul>
+<ul class="team">...</ul>
+<ul>...</ul> <!-- the sponsors -->
+```
+
+```js
+const lists = document.getElementsByTagName("ul");
+console.log(lists[0].classList.contains("team")); // true
+console.log(lists[2].classList.contains("team")); // false
+```
+
+---
+
+## Problem: Count the Teams
+
+<!-- prettier-ignore -->
+```html
+<ul class="team">...</ul>
+<ul class="team">...</ul>
+<ul>...</ul> <!-- the sponsors -->
+<p id="count"></p>
+```
+
+```js
+// Put the number of teams in the paragraph.
+```
+
+<p class="caption">Page</p>
+
+```text
+2 teams
+```
+
+---
+
+## Solution: Count the Teams
+
+```js
+let count = 0;
+for (let list of document.getElementsByTagName("ul")) {
+  if (list.classList.contains("team")) {
+    ++count;
+  }
+}
+document.getElementById("count").textContent = `${count} teams`;
+```
+
+This works, but it would be better if we could get elements by class.
+
+---
+
 ## `getElementsByClassName`
 
-Give the team lists a class, then search for that class. The sponsors have no class (or some other class), so they stay out:
+The browser can do the check for us and search for the class directly. The sponsors have no `team` class, so they stay out:
 
 <!-- prettier-ignore -->
 ```html
@@ -466,38 +528,71 @@ The last paragraph has no `score` class, so the search skips it.
 
 ---
 
-## Problem: Reading the Vote
+## `name`
 
-Say that we want to allow visitors to vote for a team, and we want to know which radio input is picked.
+An input's `name` attribute is also a property we can read:
 
-<!-- prettier-ignore -->
 ```html
-<form>
-  <fieldset>
-    <legend>Vote for a Team</legend>
-    <input id="team-1" name="vote" type="radio" value="Team 1" />
-    <label for="team-1">Team 1</label>
-    <input id="team-2" name="vote" type="radio" value="Team 2" checked />
-    <label for="team-2">Team 2</label>
-  </fieldset>
-  <button type="submit">Vote</button>
-</form>
+<input id="team-1" name="vote" type="radio" value="Team 1" />
 ```
 
-We could add a class to each input, but do we need to? What do these inputs already share?
+```js
+const team1 = document.getElementById("team-1");
+console.log(team1.name); // vote
+```
 
 ---
 
-## `getElementsByName`
+## Problem: Reading the Vote
 
-They share a `name`, and we can use that:
+Say that we want to allow visitors to vote for a team, and we want to know which radio input is picked. Hint: we can grab elements by tag name.
+
+<!-- prettier-ignore -->
+```html
+<input id="subscribe" name="subscribe" type="checkbox" checked />
+<label for="subscribe">Email me the results</label>
+<input id="team-1" name="vote" type="radio" value="Team 1" />
+<label for="team-1">Team 1</label>
+<input id="team-2" name="vote" type="radio" value="Team 2" checked />
+<label for="team-2">Team 2</label>
+```
 
 ```js
-const radios = document.getElementsByName("vote");
+// Log the value of the checked input named vote.
+```
 
-for (let radio of radios) {
-  if (radio.checked) {
-    console.log(radio.value); // Team 2
+<p class="caption">Console</p>
+
+```text
+Team 2
+```
+
+---
+
+## Solution: Reading the Vote
+
+```js
+for (let input of document.getElementsByTagName("input")) {
+  if (input.name === "vote" && input.checked) {
+    console.log(input.value); // Team 2
+    break;
+  }
+}
+```
+
+The checkbox comes first and is checked too, so without the `name` check we would log `on`.
+
+---
+
+## A Better Way: `getElementsByName`
+
+```js
+const inputs = document.getElementsByName("vote");
+
+for (let input of inputs) {
+  if (input.checked) {
+    console.log(input.value); // Team 2
+    break;
   }
 }
 ```
@@ -516,10 +611,7 @@ for (let radio of radios) {
 <p id="picked"></p>
 ```
 
-```text
-for each radio input named size
-  if it is checked, put its value in the paragraph
-```
+Place the selected size in the paragraph with id `picked`.
 
 <p class="caption">Page</p>
 
@@ -534,9 +626,10 @@ Large
 ```js
 const picked = document.getElementById("picked");
 
-for (let radio of document.getElementsByName("size")) {
+for (const radio of document.getElementsByName("size")) {
   if (radio.checked) {
     picked.textContent = radio.value;
+    break;
   }
 }
 ```
@@ -576,21 +669,17 @@ Loop over an [`HTMLCollection`](https://developer.mozilla.org/en-US/docs/Web/API
 
 ---
 
-## A Loop Inside a Loop
+## What is a selector?
 
-Now we want every player in bold, but not the sponsors. Each method searches by one thing, so reaching every `<li>` in the team lists takes two loops:
+A [**selector**](../03-css-intro/lecture.html#18) is the part of a CSS rule that picks which elements the rule applies to:
 
-```js
-for (let team of document.getElementsByClassName("team")) {
-  for (let child of team.childNodes) {
-    if (child.nodeName === "LI") {
-      // make whatever changes we wanted to
-    }
-  }
+```css
+.team li {
+  font-weight: bold;
 }
 ```
 
-CSS already has a short way to say this: `.team li`.
+`.team li` picks every `<li>` inside an element with the class `team`.
 
 ---
 
@@ -668,7 +757,15 @@ for (let item of document.querySelectorAll("#first li")) {
 
 ## `querySelector`
 
-Team 1's first player is the captain, and we want that one element, not a `NodeList`:
+[`document.querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector), without the `All`, returns only the **first** element that matches. Team 1's first player is the captain:
+
+<!-- prettier-ignore -->
+```html
+<div id="teams">
+  <ul class="team"><li>Ada</li><li>Grace</li></ul>
+  <ul class="team"><li>Alan</li><li>Linus</li></ul>
+</div>
+```
 
 <!-- prettier-ignore -->
 ```js
@@ -677,7 +774,7 @@ const teams = document.querySelector("#teams");     // like getElementById("team
 const none = document.querySelector("#people");     // null
 ```
 
-It returns the first match, or `null` when there is none.
+`querySelectorAll` returns a `NodeList` of every match; `querySelector` returns one element, or `null` when nothing matches.
 
 ---
 
@@ -708,11 +805,34 @@ First: 90
 
 ```js
 const first = document.querySelector(".score");
-const result = document.getElementById("result");
+```
+
+<div class="side-by-side">
+<div>
+
+<!-- prettier-ignore -->
+```js
+const result =
+  document.getElementById("result");
+```
+
+</div>
+<div>
+
+<!-- prettier-ignore -->
+```js
+const result =
+  document.querySelector("#result");
+```
+
+</div>
+</div>
+
+```js
 result.textContent = `First: ${first.textContent}`;
 ```
 
-`querySelector` returns one element, so it has a `textContent`.
+Either line finds the same paragraph. `querySelector` returns one element, so it has a `textContent`.
 
 ---
 
@@ -720,20 +840,59 @@ result.textContent = `First: ${first.textContent}`;
 
 ---
 
-## `classList`
+## `add`
 
-Team 1 wins, so its list should turn gold, bold, and larger. That's three `style` lines, but one class can hold them all, so the CSS decides the look and the JS only changes the class:
+`classList.add`, another method on [`classList`](#17), puts a class on an element:
+
+<!-- prettier-ignore -->
+```html
+<ul class="team">...</ul>
+```
 
 <!-- prettier-ignore -->
 ```js
-const team = document.querySelector(".team");   // team
-team.classList.add("winner");                   // team winner
-team.classList.remove("winner");                // team
-team.classList.toggle("winner");                // team winner
-console.log(team.classList.contains("winner")); // true
+const team = document.querySelector(".team"); // team
+team.classList.add("winner");                 // team winner
 ```
 
-It changes one class and leaves the others alone.
+The element's other classes stay.
+
+---
+
+## `remove`
+
+`classList.remove` takes a class off an element:
+
+<!-- prettier-ignore -->
+```html
+<ul class="team winner">...</ul>
+```
+
+<!-- prettier-ignore -->
+```js
+const team = document.querySelector(".team"); // team winner
+team.classList.remove("winner");              // team
+```
+
+The element's other classes stay. Removing a class that isn't there does nothing.
+
+---
+
+## `toggle`
+
+`classList.toggle` adds a class when it's missing and removes it when it's there:
+
+<!-- prettier-ignore -->
+```html
+<ul class="team">...</ul>
+```
+
+<!-- prettier-ignore -->
+```js
+const team = document.querySelector(".team"); // team
+team.classList.toggle("winner");              // team winner
+team.classList.toggle("winner");              // team
+```
 
 ---
 
@@ -769,44 +928,6 @@ document.getElementById("ada").classList.add("done");
 ```
 
 `classList.add` keeps `student`.
-
----
-
-## Problem: Toggle Every Name
-
-```html
-<style>
-  .done {
-    text-decoration: line-through;
-  }
-</style>
-<p class="done">Ada</p>
-<p>Grace</p>
-```
-
-```text
-for each p on the page
-  toggle its done class
-```
-
-<p class="caption">Page</p>
-
-```text
-Ada
-Grace, crossed out
-```
-
----
-
-## Solution: Toggle Every Name
-
-```js
-for (let name of document.querySelectorAll("p")) {
-  name.classList.toggle("done");
-}
-```
-
-`toggle` adds `done` where it's missing, and removes it where it's there.
 
 ---
 

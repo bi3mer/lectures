@@ -1,0 +1,21 @@
+<div id="teams">
+  <h1>Team 1</h1>
+  <ul>
+    <li>John Carmack</li>
+    ...
+  </ul>
+
+  <h1>Team 2</h1>
+  <ul>
+    <li>Claude Shannon</li>
+    ...
+  </ul>
+</div>
+<script>
+  const teams = document.getElementById("teams").childNodes;
+  for (let i = 0; i < teams.length; i++) {
+    if (teams[i].nodeName === "UL") {
+      console.log(i, teams[i]);
+    }
+  }
+</script>
