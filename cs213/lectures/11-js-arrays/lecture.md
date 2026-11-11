@@ -591,7 +591,7 @@ pre { font-size: 0.75em; }
 <!-- prettier-ignore -->
 ```js
 let watchList = ["Alan", "Anna"];
-let list = watchlist;
+let list = watchList;
 list.push("Mary");
 console.log(watchList); // ["Alan", "Anna", "Mary"]
 ```

@@ -7,3 +7,9 @@ Links in other decks that point at the wrong slide. Fix them once deck 14 settle
 | Link text | Links to | Should be |
 | --- | --- | --- |
 | `for...of` | `11-js-arrays#20` | `#24` |
+
+## Links Into Deck 15
+
+| Link text | Links to | Should be |
+| --- | --- | --- |
+| `submit` (deck 16) | `15-js-events#45` | `#49` |

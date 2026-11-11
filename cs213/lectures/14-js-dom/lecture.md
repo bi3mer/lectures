@@ -1193,6 +1193,7 @@ The `<h2>` is gone, and the `<h1>` sits where it was.
 
 ## Problem: Replace the List
 
+<!-- prettier-ignore -->
 ```html
 <ul id="names">
 </ul>
