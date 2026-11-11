@@ -35,15 +35,19 @@ function sayHello() {
 }
 ```
 
-Every page so far has called our code from an [event attribute](../13-js-forms-dom/lecture.html#49), like `onclick`. Today, the JavaScript listens for events itself.
+Every page so far has called our code from an [event attribute](../13-js-forms-dom/lecture.html#49), like `onclick`. Instead, we can write code that "listens" for _events_.
 
 ---
 
 ## Events
 
-An **event** is a message the browser sends when something happens on the page, like a click, a key press, or the page finishing loading. A **listener** is a function the browser calls each time a given event happens to a given element.
+An **event** is a message the browser emits when something happens (e.g. mouse press, key press, page loaded, etc.). We are going to only cover a few, but there are [many events](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Events).
 
-Today's events come in four kinds: mouse, keyboard, window, and form. There are [many more](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Events).
+---
+
+## Listener
+
+A **listener** is a function subscribed to one event on one element, like clicks on a button. Each time that event happens, the browser calls the function.
 
 ---
 
@@ -55,33 +59,44 @@ Today's events come in four kinds: mouse, keyboard, window, and form. There are 
 ```
 
 ```js
-const hello = document.getElementById("hello");
-hello.addEventListener("click", sayHello);
+const hello = document.getElementById("hello")
+hello.addEventListener("click", (event) => {
+  alert("Hello!");
+});
 ```
 
-[`addEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) takes the event's name, with no `on`, and the function to call. Like [`setInterval`](../12-js-math-dates-strings/lecture.html#27), it takes the function as a value, with no `()`.
-
-What happens if we add the `()`?
+[`addEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) takes the event's name and the subscribing function as arguments. In the example above, when someone clicks the button, the browser will call the [arrow function](../11-js-arrays/lecture.html#34), which will run `alert("Hello!")`.
 
 ---
 
 ## Predict: Calling the Listener
 
+```html
+<button id="hello" type="button">Say hello</button>
+<p id="message"></p>
+```
+
 ```js
+function sayHello() { 
+  alert("Hello!"); 
+}
+
+const hello = document.getElementById("hello")
 hello.addEventListener("click", sayHello());
 ```
 
-What happens when we click **Say hello**?
+
+What happens when the page loads and we click **Say hello**?
 
 <div class="choices">
 
-**A.** Hello on each click
+**A.** Alert on each click
 
-**B.** Hello once, at load
+**B.** Alert once, at load
 
 **C.** `TypeError`
 
-**D.** Never says hello
+**D.** Never alerts
 
 </div>
 
@@ -97,20 +112,7 @@ hello.addEventListener("click", sayHello);
 
 ---
 
-## Arrow Functions as Listeners
-
-```js
-hello.addEventListener("click", () => {
-  sayHello();
-  hello.disabled = true;
-});
-```
-
-Code that only one listener uses can be an [arrow function](../11-js-arrays/lecture.html#34), written right in the call.
-
----
-
-## Attributes or `addEventListener`?
+## Attributes and `addEventListener`?
 
 <div class="small-table">
 <center>
@@ -124,7 +126,36 @@ Code that only one listener uses can be an [arrow function](../11-js-arrays/lect
 </center>
 </div>
 
-From today on, listeners go in the JavaScript, so the HTML only says what's on the page.
+---
+
+## Problem: Fade on Click
+
+```html
+<button id="fade" type="button" style="opacity: 1">Fade</button>
+```
+
+```js
+document.getElementById("fade").addEventListener("click", (event) => {
+  // fill in here
+});
+````
+
+Fill in the code so that when the button is pressed, it's opacity is reduced by `0.05`. 
+
+---
+
+## Solution: Fade on Click
+
+```js
+const fade = document.getElementById("fade");
+
+fade.addEventListener("click", () => {
+  fade.style.opacity -= 0.05;
+});
+```
+
+<p class="caption">Try it</p>
+<div class="demo"><button type="button" style="opacity: 1" onclick="this.style.opacity -= 0.05">Fade</button> <button type="button" onclick="this.previousElementSibling.style.opacity = 1">Reset</button></div>
 
 ---
 
