@@ -29,16 +29,26 @@ We will build both pages today.
 
 ---
 
-## Installing Streamlit
+## Installing Streamlit: Terminal
 
 Install Streamlit in the terminal in VS Code (**Terminal > New Terminal**):
 
-```
-python3 -m pip install streamlit      # Mac
-py -m pip install streamlit           # Windows
+```bash
+python3 -m pip install streamlit
 ```
 
 `pip` downloads a library and installs it. Streamlit brings pandas with it, which we use next lecture.
+
+---
+
+## Installing Streamlit: VS Code
+
+A **virtual environment** (**venv**) is a folder, `.venv`, that holds one project's own copy of Python and its libraries. VS Code makes one and installs Streamlit in it:
+
+1. Open the Command Palette: **Cmd+Shift+P** (Mac) or **Ctrl+Shift+P** (Windows)
+2. Run **Python: Select Interpreter**, pick **+ Create Virtual Environment**, then **Quick Create**
+3. Open the Command Palette again
+4. Run **Python Envs: Manage Packages**, search for `streamlit`, and select it
 
 ---
 
@@ -72,7 +82,7 @@ Run it from the folder that holds `app.py`, the [current working directory](11-o
 
 ---
 
-## Running from VS Code
+## Running from VS Code: `launch.json`
 
 <style scoped>
 pre { font-size: 0.75em; }
@@ -85,17 +95,35 @@ Save this as `.vscode/launch.json` in your project folder:
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Streamlit",
+      "name": "Streamlit: current file",
       "type": "debugpy",
       "request": "launch",
       "module": "streamlit",
-      "args": ["run", "${file}"]
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": ["run", "${file}"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true
     }
   ]
 }
 ```
 
-Then open `app.py` and press **F5** (**Run > Start Debugging**). The run arrow ignores this file and opens no page.
+---
+
+## Running from VS Code: Starting the App
+
+Two options:
+
+1. Open `app.py` and press **F5** (**Run > Start Debugging**). The run arrow ignores this file and opens no page.
+2. Alternatively, use the debug window (**CMD + shift + d** on mac and **CTRL + shift + d** on windows). Select "Streamlit: current file" on the left dropdown, and then press the left green play button.
+
+---
+
+## Streamlit's Documentation
+
+- [Documentation](https://docs.streamlit.io) 
+- [API Reference](https://docs.streamlit.io/develop/api-reference) 
+- [Widgets](https://docs.streamlit.io/develop/api-reference/widgets)
 
 ---
 
@@ -209,7 +237,7 @@ st.latex(rf"\text{{tip}} = {bill:.2f} \times \dfrac{{{percent}}}{{100}} = {tip:.
 st.latex(rf"\text{{total}} = {bill:.2f} + {tax:.2f} + {tip:.2f} = {total:.2f}")
 ```
 
-`st.latex` draws math written in **LaTeX**<sup>1</sup>, and the numbers update with every rerun. LaTeX commands start with `\`, so `rf` makes a [raw string](14-streamlit.html#15) that is also an f-string, and `{{` writes one `{`.
+`st.latex` draws math written in **LaTeX**<sup>1</sup>, and the numbers update with every rerun. LaTeX commands start with `\`, so `rf` makes a [raw string](14-streamlit.html#18) that is also an f-string, and `{{` writes one `{`.
 
 <div class="footnote">1. Overleaf's <a href="https://www.overleaf.com/learn/latex/Mathematical_expressions">Mathematical expressions</a> guide shows how to write math in LaTeX.</div>
 
@@ -280,9 +308,7 @@ A click reruns the script, and `st.button` returns `True` on that one rerun only
 
 ## A Preview of pandas
 
-**pandas** is a library for working with tables of data. We use it here for convenience: it reads and filters this file in a few lines.
-
-Treat those lines as a preview. [The next lecture](15-pandas.html) explains how they work.
+[**pandas**](https://pandas.pydata.org/) is a library for working with tables of data. We use it here for convenience: it reads and filters this file in a few lines. [The next lecture](15-pandas.html) will cover pandas.
 
 ---
 

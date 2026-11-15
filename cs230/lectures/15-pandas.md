@@ -219,44 +219,40 @@ print(len(prices[prices > 2.60]))
 
 ---
 
-## Parsons Problem #1 (you)
-
-**One line does not belong.**
+## Problem: Slow Days (you)
 
 ```python
-average = amounts.mean()
-return amounts[amounts > average]
-print(mystery(sales))
-days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
-return amounts > average
 import pandas as pd
-def mystery(amounts):
+
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
 sales = pd.Series([50, 75, 60, 90, 40], index=days)
+
+# Print the days with sales under 55, then the day
+# with the lowest sales.
+```
+
+```
+Mon    50
+Fri    40
+dtype: int64
+Lowest: Fri
 ```
 
 ---
 
-## Solution: Parsons Problem #1 (you)
+## Solution: Slow Days (you)
 
 ```python
 import pandas as pd
 
-def mystery(amounts):
-    average = amounts.mean()
-    return amounts[amounts > average]
-
 days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
 sales = pd.Series([50, 75, 60, 90, 40], index=days)
-print(mystery(sales))
+
+print(sales[sales < 55])
+print(f"Lowest: {sales.idxmin()}")
 ```
 
-```
-Tue    75
-Thu    90
-dtype: int64
-```
-
-The extra line, `return amounts > average`, returns `True` or `False` for every day in place of the days themselves.
+`sales < 55` marks each day `True` or `False`, and the brackets keep the `True` days. `idxmin` gives the label, not the value.
 
 ---
 
@@ -797,39 +793,39 @@ print(f"At or above average: {list(above['name'])}")
 
 ---
 
-## Parsons Problem #2 (you)
-
-**One line does not belong.**
+## Problem: Pricey Products (you)
 
 ```python
-cheap = upgrades[upgrades["price"] < 8]
-import pandas as pd
-print(list(cheap["product-id"]))
-upgrades = products[products["product-id"].str.endswith("x")]
-products = pd.read_csv(os.path.join("data", "products.csv"))
-upgrades = products["product-id"].str.endswith("x")
-import os
+# Read data/products.csv and print the product-id and price
+# of every product that costs more than 10.
 ```
+
+```
+  product-id  price
+4      P-010  10.25
+5     P-010x  10.75
+6      Q-011  11.50
+7     Q-011x  11.95
+```
+
+- How do we keep only some rows?
+- How do we keep only two columns?
 
 ---
 
-## Solution: Parsons Problem #2 (you)
+## Solution: Pricey Products (you)
 
 ```python
 import os
 import pandas as pd
 
 products = pd.read_csv(os.path.join("data", "products.csv"))
-upgrades = products[products["product-id"].str.endswith("x")]
-cheap = upgrades[upgrades["price"] < 8]
-print(list(cheap["product-id"]))
+
+expensive = products[products["price"] > 10]
+print(expensive[["product-id", "price"]])
 ```
 
-```
-['P-001x', 'P-002x']
-```
-
-The extra line made `upgrades` the Series of `True` and `False`, not the rows. It has no `"price"`, so `upgrades["price"]` raises a `KeyError`.
+Filter the rows first, then pick the columns with a list of names. The rows keep their old labels, 4 to 7.
 
 ---
 
@@ -1052,37 +1048,55 @@ prices.to_csv("new_prices.csv", index=False)
 
 ---
 
-## Parsons Problem #3 (you)
-
-**One line does not belong.**
+## Problem: Curve the Scores (you)
 
 ```python
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-top.head(3).to_csv("top_sales.csv", index=False)
-import pandas as pd
-top = top.drop("date")
-top = top.drop(columns=["date"])
-import os
-top = sales.sort_values("revenue", ascending=False)
-sales["revenue"] = (sales["price"] * sales["quantity"]).round(2)
+# Copy scores.csv (left) to curved.csv (right) with a new
+# curved column, 5 points over each score, highest first.
 ```
+
+<div class="cols">
+<div>
+
+```
+name,score
+Ada,90
+Grace,85
+Alan,77
+Linus,100
+Barbara,68
+```
+
+</div>
+<div>
+
+```
+name,score,curved
+Linus,100,105
+Ada,90,95
+Grace,85,90
+Alan,77,82
+Barbara,68,73
+```
+
+</div>
+</div>
 
 ---
 
-## Solution: Parsons Problem #3 (you)
+## Solution: Curve the Scores (you)
 
 ```python
 import os
 import pandas as pd
 
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-sales["revenue"] = (sales["price"] * sales["quantity"]).round(2)
-top = sales.sort_values("revenue", ascending=False)
-top = top.drop(columns=["date"])
-top.head(3).to_csv("top_sales.csv", index=False)
+scores = pd.read_csv(os.path.join("data", "scores.csv"))
+scores["curved"] = scores["score"] + 5
+scores = scores.sort_values("curved", ascending=False)
+scores.to_csv("curved.csv", index=False)
 ```
 
-The extra line was `top = top.drop("date")`. Without `columns=`, `drop` looks for a row labeled `"date"` and raises a `KeyError`.
+`sort_values` gives back a new table, so assign it before writing. `index=False` keeps the row labels out of the file.
 
 ---
 
@@ -1317,47 +1331,40 @@ print(f"All months: ${sales['revenue'].sum():.2f}")
 
 ---
 
-## Parsons Problem #4 (you)
-
-**One line does not belong.**
+## Problem: Priciest by Division (you)
 
 ```python
-print(mystery(sales, "product"))
-totals = table.groupby(column)["revenue"].sum()
-import pandas as pd
-sales["revenue"] = sales["price"] * sales["quantity"]
-def mystery(table, column):
-return totals.sort_values(ascending=False)
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-totals = table.groupby("column")["revenue"].sum()
-import os
+# Read data/products.csv. Print the highest price in each
+# division, then the division with the priciest product.
 ```
+
+```
+division
+diva     6.95
+divb    11.95
+Name: price, dtype: float64
+Priciest: divb
+```
+
+- Which column do we group by, and which do we summarize?
+- The result is a Series. Which method gives its label?
 
 ---
 
-## Solution: Parsons Problem #4 (you)
+## Solution: Priciest by Division (you)
 
 ```python
 import os
 import pandas as pd
 
-def mystery(table, column):
-    totals = table.groupby(column)["revenue"].sum()
-    return totals.sort_values(ascending=False)
+products = pd.read_csv(os.path.join("data", "products.csv"))
 
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-sales["revenue"] = sales["price"] * sales["quantity"]
-print(mystery(sales, "product"))
+highest = products.groupby("division")["price"].max()
+print(highest)
+print(f"Priciest: {highest.idxmax()}")
 ```
 
-```
-product
-P-01    99.1
-P-02    52.8
-Name: revenue, dtype: float64
-```
-
-The extra line groups by `"column"`, a column the table does not have, so it raises `KeyError: 'column'`.
+`groupby` gives back a Series indexed by division, so `idxmax` gives the division, as it gave the day [on a Series](#8).
 
 ---
 
@@ -1376,7 +1383,7 @@ st.dataframe(sales[sales["product"] == product])
 st.bar_chart(sales.groupby("product")["revenue"].sum())
 ```
 
-[`st.dataframe`](14-streamlit.html#30) and `st.bar_chart` take a DataFrame or a Series as is. `unique` lists each product once.
+[`st.dataframe`](14-streamlit.html#33) and `st.bar_chart` take a DataFrame or a Series as is. `unique` lists each product once.
 
 ---
 
