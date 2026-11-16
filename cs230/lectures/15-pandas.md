@@ -10,18 +10,17 @@ Colan Biemer
 
 ---
 
-## Series
-
----
-
 ## Sales by Product, Again
 
 <div class="cols">
 <div>
 
 ```python
+import os
+
 totals = {}
-with open("data/sales.csv", "r") as f:
+path = os.path.join("data", "sales.csv")
+with open(path, "r") as f:
     f.readline()
     for line in f:
         fields = line.strip().split(",")
@@ -38,9 +37,11 @@ print(totals)
 <div>
 
 ```python
+import os
 import pandas as pd
 
-sales = pd.read_csv("data/sales.csv")
+path = os.path.join("data", "sales.csv")
+sales = pd.read_csv(path)
 print(sales.groupby("product")["quantity"].sum())
 ```
 
@@ -59,7 +60,11 @@ import pandas as pd
 print(pd.__version__)   # 3.1.1
 ```
 
-**pandas** is a library for tables of data. [Streamlit installed it](14-streamlit.html#5); if it is missing, run `python3 -m pip install pandas` (Mac) or `py -m pip install pandas` (Windows). `as pd` names the module `pd`.
+**pandas** is a library for tables of data. Install it once from the terminal with `python3 -m pip install pandas` (Mac) or `py -m pip install pandas` (Windows). `as pd` names the module `pd`.
+
+---
+
+## Series
 
 ---
 
@@ -128,7 +133,7 @@ Fri     80
 dtype: int64
 ```
 
-`sales * 2` doubles every value with no loop and gives back a new Series. `+`, `-`, `/`, and `round` work the same way.
+`sales * 2` doubles every value with no loop and gives back a new Series. `+`, `-`, and `/` work the same way, and `.round(2)` rounds every value to two places.
 
 ---
 
@@ -279,7 +284,7 @@ print(scores)
 2   Alan     77
 ```
 
-A **DataFrame** is a table: rows with an index, and columns with names. Each column is a Series. It is built from a [dictionary of lists](13-records-and-sets.html#8).
+A **DataFrame** is a table: rows with an index, and named columns that are each a Series. Each key in the [dictionary of lists](13-records-and-sets.html#8) becomes a column.
 
 ---
 
@@ -319,7 +324,7 @@ print(sales.shape)           # (5, 4)
 print(list(sales.columns))   # ['product', 'date', 'price', 'quantity']
 ```
 
-`len` counts the rows. `shape` is a tuple of the rows and the columns.
+`len` counts the rows, and `shape` is a [tuple](09-changing-lists.html#37) of the rows and the columns. `columns` holds the column names.
 
 ---
 
@@ -344,7 +349,7 @@ print(sales.tail(2))
 4    P-01  2023-01-05   9.95         1
 ```
 
-`head(2)` gives the first two rows and `tail(2)` the last two, a quick look at a file too long to print.
+`head(2)` gives the first two rows and `tail(2)` the last two. With no number, each gives five rows, a quick look at a file too long to print.
 
 ---
 
@@ -540,7 +545,7 @@ Name: price, dtype: float64
 </div>
 </div>
 
-One name gives a Series. A list of names, with two sets of brackets, gives a smaller DataFrame.
+One name gives a Series. A list of names gives a smaller DataFrame: the inner brackets make the list, and the outer brackets pick the columns.
 
 ---
 
@@ -622,7 +627,7 @@ by_name = scores.set_index("name")
 print(by_name.loc["Grace", "score"])   # 85
 ```
 
-`loc[row, column]` reads one value by its labels. `set_index("name")` makes the names the index, so a row can be found by name.
+`loc[row, column]` reads one value by its labels, as `iloc[row, column]` does by positions. `set_index("name")` makes the names the labels, so a row can be found by name.
 
 ---
 
@@ -741,7 +746,7 @@ print(products[upgrades])
 7     Q-011x     divb  11.95
 ```
 
-`.str` runs a [string method](06-strings-and-format-strings.html#90) on every value in the column. `startswith`, `lower`, and `strip` work too.
+`.str` runs a [string method](06-strings-and-format-strings.html#90) on every value in the column, and `.str[:5]` [slices](06-strings-and-format-strings.html#77) every value. `startswith`, `lower`, and `strip` work too.
 
 ---
 
@@ -951,13 +956,13 @@ import pandas as pd
 sales = pd.read_csv(os.path.join("data", "sales.csv"))
 
 sales.sort_values("quantity")
-print(sales["quantity"].tolist())   # [5, 2, 4, 3, 1]
+print(list(sales["quantity"]))   # [5, 2, 4, 3, 1]
 
 sales = sales.sort_values("quantity")
-print(sales["quantity"].tolist())   # [1, 2, 3, 4, 5]
+print(list(sales["quantity"]))   # [1, 2, 3, 4, 5]
 ```
 
-`sort_values`, `dropna`, and `head` leave the table alone, as [`sorted`](09-changing-lists.html#25) left a list alone. Assign the result to keep it.
+Assigning to a column changes the table. Methods such as `sort_values`, `dropna`, and `head` leave it alone, as [`sorted`](09-changing-lists.html#25) left a list alone, so assign the result to keep it.
 
 ---
 
@@ -1158,7 +1163,7 @@ P-02     5
 Name: quantity, dtype: int64
 ```
 
-`groupby("product")` splits the rows into one group per product. `["quantity"].sum()` adds up each group's quantities, and the results come back as a Series indexed by product.
+`groupby("product")` makes one group of rows per product. `["quantity"]` picks the column to add up, and `sum` adds each group's values into a Series indexed by product.
 
 ---
 
@@ -1187,7 +1192,7 @@ P-02: 2, 3     ->   5
 </div>
 </div>
 
-Split the rows by product, sum each group's quantities, then combine the sums into one Series. The [slide that opened today](#3) does the same with a dictionary.
+Split the rows by product, sum each group's quantities, then combine the sums into one Series. The [slide that opened today](#2) does the same with a dictionary.
 
 ---
 
@@ -1251,7 +1256,7 @@ P-01           10     99.1
 P-02            5     52.8
 ```
 
-A list of columns gives back a DataFrame indexed by product, with the same numbers as the [`totals` dictionary](12-dictionaries.html#30).
+[A list of columns](#26) gives back a DataFrame indexed by product, with the same numbers as the [`totals` dictionary](12-dictionaries.html#30).
 
 ---
 
@@ -1286,6 +1291,43 @@ print(by_division.agg(["count", "min", "max"]))
 ```
 
 `count` counts each group's rows. One `agg` gives all three summaries.
+
+---
+
+## Problem: Priciest by Division (you)
+
+```python
+# Read data/products.csv. Print the highest price in each
+# division, then the division with the priciest product.
+```
+
+```
+division
+diva     6.95
+divb    11.95
+Name: price, dtype: float64
+Priciest: divb
+```
+
+- Which column do we group by, and which do we summarize?
+- The result is a Series. Which method gives its label?
+
+---
+
+## Solution: Priciest by Division (you)
+
+```python
+import os
+import pandas as pd
+
+products = pd.read_csv(os.path.join("data", "products.csv"))
+
+highest = products.groupby("division")["price"].max()
+print(highest)
+print(f"Priciest: {highest.idxmax()}")
+```
+
+`groupby` gives back a Series indexed by division, so `idxmax` gives the division, as it gave the day [on a Series](#8).
 
 ---
 
@@ -1355,63 +1397,7 @@ print(sales.groupby("month")["revenue"].sum())
 print(f"All months: ${sales['revenue'].sum():.2f}")
 ```
 
-`.str[:7]` [slices](06-strings-and-format-strings.html#77) every date to its first seven characters.
-
----
-
-## Problem: Priciest by Division (you)
-
-```python
-# Read data/products.csv. Print the highest price in each
-# division, then the division with the priciest product.
-```
-
-```
-division
-diva     6.95
-divb    11.95
-Name: price, dtype: float64
-Priciest: divb
-```
-
-- Which column do we group by, and which do we summarize?
-- The result is a Series. Which method gives its label?
-
----
-
-## Solution: Priciest by Division (you)
-
-```python
-import os
-import pandas as pd
-
-products = pd.read_csv(os.path.join("data", "products.csv"))
-
-highest = products.groupby("division")["price"].max()
-print(highest)
-print(f"Priciest: {highest.idxmax()}")
-```
-
-`groupby` gives back a Series indexed by division, so `idxmax` gives the division, as it gave the day [on a Series](#8).
-
----
-
-## pandas in Streamlit
-
-```python
-import os
-import pandas as pd
-import streamlit as st
-
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-sales["revenue"] = sales["price"] * sales["quantity"]
-
-product = st.selectbox("Product", sales["product"].unique())
-st.dataframe(sales[sales["product"] == product])
-st.bar_chart(sales.groupby("product")["revenue"].sum())
-```
-
-[`st.dataframe`](14-streamlit.html#33) and `st.bar_chart` take a DataFrame or a Series as is. `unique` lists each product once.
+`.str[:7]` [slices every date](#35) to its first seven characters, the month.
 
 ---
 
@@ -1424,9 +1410,9 @@ ul { font-size: 0.8em; }
 - A **Series** is one column of values with an index; math and comparisons run on every value
 - A **DataFrame** is a table of named columns, each a Series; `pd.read_csv` reads one from a file
 - `head`, `tail`, `shape`, `dtypes`, and `describe` give a first look; `NaN` marks a missing value
-- `df["col"]` picks a column, `df[["a", "b"]]` several, `iloc` rows by position, and `loc` by label
-- `df[condition]` keeps the rows where the condition is `True`; join conditions with `&` and `|`, each in parentheses
-- `df["new"] = ...` adds or replaces a column; `.str` runs string methods on a column
+- `sales["price"]` picks a column, `sales[["product", "price"]]` several, `iloc` rows by position, and `loc` by label
+- `sales[condition]` keeps the rows where the condition is `True`; join conditions with `&` and `|`, each in parentheses
+- `sales["revenue"] = ...` adds or replaces a column; `.str` runs string methods on a column
 - `sort_values`, `dropna`, `drop`, and `rename` give back a new table, so assign the result
 - `value_counts` counts, and `groupby(...)[...].sum()` adds up each group
 - `pd.concat` stacks tables; `to_csv(..., index=False)` writes one
