@@ -136,6 +136,43 @@ dtype: int64
 
 ---
 
+## Any Function on Every Value: `apply`
+
+<div class="cols">
+<div>
+
+```python
+import pandas as pd
+
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+sales = pd.Series([50, 75, 60, 90, 40], index=days)
+
+def dollars(s):
+    return f"${s:.2f}"
+
+print(sales.apply(dollars))
+print(sales.apply(lambda s: f"${s:.2f}"))
+```
+
+</div>
+<div>
+
+```
+Mon    $50.00
+Tue    $75.00
+Wed    $60.00
+Thu    $90.00
+Fri    $40.00
+dtype: str
+```
+
+</div>
+</div>
+
+`apply` calls a [function](07-functions.html) on every value and gives back a new Series. Both lines print the same thing. A **`lambda`** is a function with no name: it takes `s` and gives back the expression after the colon.
+
+---
+
 ## Summing Up a Series
 
 ```python
@@ -545,47 +582,106 @@ print(measures["measure"].sum())   # 29.8
 
 ---
 
-## Reading Some Columns: `usecols`
+## Problem: What Is the Output?
+
+<div class="cols">
+<div>
+
+```
+item;count;price
+coffee;12;3.00
+bagel;30;2.50
+muffin;8;2.80
+```
+
+</div>
+<div>
 
 ```python
-import os
 import pandas as pd
 
-path = os.path.join("data", "sales.csv")
-sales = pd.read_csv(path, usecols=["product", "quantity"])
-print(sales.head(3))
+inventory = pd.read_csv("inventory.txt")
+print(inventory.shape)
+print(list(inventory.columns))
 ```
 
-```
-  product  quantity
-0    P-01         5
-1    P-02         2
-2    P-01         4
-```
+</div>
+</div>
 
-`usecols` reads only the listed columns and skips the rest. They keep the file's order, whatever the order of the list.
+`inventory.txt` is on the left.
 
 ---
 
-## A Missing File
+## Solution: What Is the Output?
+
+```
+(3, 1)
+['item;count;price']
+```
+
+`read_csv` splits each line on commas, and this file has none. Each line becomes one value, so the table has three rows and a single column named `item;count;price`.
+
+---
+
+## Other Separators: `sep`
 
 ```python
-import os
 import pandas as pd
 
-path = os.path.join("data", "sale.csv")
-try:
-    sales = pd.read_csv(path)
-    print(sales)
-except FileNotFoundError as error:
-    print(error)
+inventory = pd.read_csv("inventory.txt", sep=";")
+print(inventory)
 ```
 
 ```
-[Errno 2] No such file or directory: 'data/sale.csv'
+     item  count  price
+0  coffee     12    3.0
+1   bagel     30    2.5
+2  muffin      8    2.8
 ```
 
-`read_csv` raises the same [`FileNotFoundError`](10-exceptions-and-files.html#24) as `open`.
+`sep` names the character between the values, as [`split`](06-strings-and-format-strings.html#86) took one. `sep="\t"` reads a file split by tabs.
+
+---
+
+## Skipping Comments: `comment`
+
+<div class="cols">
+<div>
+
+```
+# Temperatures from the roof sensor
+# One reading every hour
+hour,temp
+9,61.2
+10,63.0
+# sensor reset here
+11,64.5
+12,66.1  # warmest
+```
+
+</div>
+<div>
+
+```python
+import pandas as pd
+
+readings = pd.read_csv("readings.csv",
+                       comment="#")
+print(readings)
+```
+
+```
+   hour  temp
+0     9  61.2
+1    10  63.0
+2    11  64.5
+3    12  66.1
+```
+
+</div>
+</div>
+
+`comment="#"` skips everything from `#` to the end of the line, as Python does with its own comments. Without it, `read_csv` raises a `ParserError` on the first line.
 
 ---
 
@@ -695,6 +791,9 @@ date
 
 ## Rows by Label: `loc`
 
+<div class="cols">
+<div>
+
 ```python
 import os
 import pandas as pd
@@ -703,15 +802,22 @@ path = os.path.join("data", "sales.csv")
 sales = pd.read_csv(path, index_col="date")
 
 print(sales.loc["2023-01-03"])
-print(sales.loc["2023-01-03", "quantity"])   # 4
+print(sales.loc["2023-01-03", "quantity"])
 ```
+
+</div>
+<div>
 
 ```
 product     P-01
 price       9.85
 quantity       4
 Name: 2023-01-03, dtype: object
+4
 ```
+
+</div>
+</div>
 
 `loc` finds a row by its label and gives it back as a Series, named by that label. `loc[row, column]` reads one value.
 
@@ -948,7 +1054,7 @@ print(sales[big])
 3    P-02  2023-01-04  10.60         3
 ```
 
-`big` is a Series of `True` and `False`, one for each row. The table keeps the rows marked `True`, as [a Series did](#9).
+`big` is a Series of `True` and `False`, one for each row. The table keeps the rows marked `True`, as [a Series did](#10).
 
 ---
 
@@ -1261,7 +1367,7 @@ print(sales.sort_values("revenue", ascending=False).head(3))
 3    P-02  2023-01-04  10.60         3    31.80
 ```
 
-`sort_values` sorts the rows by one column, smallest first, as [`sort_index`](#38) sorts by label. `ascending=False` flips it, and `head(3)` keeps the top three.
+`sort_values` sorts the rows by one column, smallest first, as [`sort_index`](#41) sorts by label. `ascending=False` flips it, and `head(3)` keeps the top three.
 
 ---
 
@@ -1304,7 +1410,7 @@ print(sales)
 4    P-01         1
 ```
 
-`drop` gives back a new table without the listed columns. To skip columns from the start, read with [`usecols`](#28).
+`drop` gives back a new table without the listed columns.
 
 ---
 
@@ -1460,22 +1566,153 @@ scores.to_csv("curved.csv")
 
 ---
 
-## Summary
+## Counting and Pivot Tables
 
-<style scoped>
-ul { font-size: 0.75em; }
-</style>
+---
 
-- A **Series** is a column of labeled values; math and comparisons run on every value
-- A **DataFrame** is a table of named Series; `scores["score"]` picks one column
-- `read_csv` reads a file; `header=None`, `names`, and `usecols` change how it reads
-- `head`, `shape`, `dtypes`, and `describe` give a first look; `NaN` marks missing values
-- The index labels the rows: `index_col` or `set_index` sets it, `reset_index` undoes it
-- `loc` reads rows by label, with slices that include the end; `iloc` reads by position
-- `sales[condition]` keeps the matching rows and their labels; join conditions with `&` and `|`
-- `sales["revenue"] = ...` adds or replaces a column; `.str` runs string methods on one
-- `sort_values`, `sort_index`, `dropna`, and `drop` give back a new table
-- `to_csv` writes a table with its labels, unless `index=False`
+## Counting Values: `value_counts`
+
+```python
+import os
+import pandas as pd
+
+sales = pd.read_csv(os.path.join("data", "sales.csv"))
+print(sales["product"].value_counts())
+```
+
+```
+product
+P-01    3
+P-02    2
+Name: count, dtype: int64
+```
+
+`value_counts` counts how often each value appears, most common first, which took [a dictionary and a loop](12-dictionaries.html#24). The labels are the values, so `idxmax` and `loc` work on it. `value_counts(normalize=True)` gives fractions instead: `0.6` and `0.4`.
+
+---
+
+## Problem: What Is the Output?
+
+```python
+import os
+import pandas as pd
+
+products = pd.read_csv(os.path.join("data", "products.csv"))
+
+pricey = products[products["price"] > 6]
+print(pricey["division"].value_counts())
+print(products["product-id"].str[0].value_counts().idxmax())
+```
+
+---
+
+## Solution: What Is the Output?
+
+```
+division
+divb    4
+diva    2
+Name: count, dtype: int64
+P
+```
+
+Six products cost more than 6, and four of them are in `divb`. `.str[0]` takes the first letter of each id, and `P` appears six times to `Q`'s two.
+
+---
+
+## Pivot Tables: `pivot_table`
+
+```python
+import os
+import pandas as pd
+
+sales = pd.read_csv(os.path.join("data", "sales.csv"))
+print(sales.pivot_table(index="product", values="quantity", aggfunc="sum"))
+```
+
+```
+         quantity
+product          
+P-01           10
+P-02            5
+```
+
+A **pivot table** makes one row for each value in the `index` column and combines the `values` of the rows that share it with `aggfunc`. Without `aggfunc`, it takes the `mean`, so P-01 would be `3.333333`.
+
+---
+
+## Pivot Table Columns
+
+```python
+import os
+import pandas as pd
+
+sales = pd.read_csv(os.path.join("data", "sales.csv"))
+print(sales.pivot_table(index="date", columns="product",
+                        values="quantity", aggfunc="sum", fill_value=0))
+```
+
+```
+product     P-01  P-02
+date                  
+2023-01-01     5     0
+2023-01-02     0     2
+2023-01-03     4     0
+2023-01-04     0     3
+2023-01-05     1     0
+```
+
+`columns` makes one column for each product. No P-02 sold on January 1st, so that cell would be `NaN`; `fill_value=0` fills it with `0` instead.
+
+---
+
+## Your Own `aggfunc`: `lambda`
+
+```python
+import os
+import pandas as pd
+
+sales = pd.read_csv(os.path.join("data", "sales.csv"))
+print(sales.pivot_table(index="product", values="quantity",
+                        aggfunc=lambda q: q.max() - q.min()))
+```
+
+```
+         quantity
+product          
+P-01            4
+P-02            1
+```
+
+`aggfunc` takes any function, so a [`lambda`](#8) works too. `pivot_table` calls it once per product, with that product's quantities as a Series, so `q.max() - q.min()` is the spread.
+
+---
+
+## Problem: Upgrade Prices
+
+Read `data/products.csv` and print the average price in each division, with the upgrades (ids ending in `x`) in one column and the rest in another.
+
+```
+upgrade    False  True 
+division               
+diva       6.000   6.45
+divb      10.875  11.35
+```
+
+---
+
+## Solution: Upgrade Prices
+
+```python
+import os
+import pandas as pd
+
+products = pd.read_csv(os.path.join("data", "products.csv"))
+products["upgrade"] = products["product-id"].str.endswith("x")
+print(products.pivot_table(index="division", columns="upgrade", values="price"))
+```
+
+The table has no `upgrade` column, so add one first: `.str.endswith` marks each row `True` or `False`. `aggfunc` is left out, so each cell is the `mean`.
 
 ---
 
