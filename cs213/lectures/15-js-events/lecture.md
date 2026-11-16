@@ -324,54 +324,6 @@ An arrow inside the loop works too, but makes a new function for each button. Wi
 
 ---
 
-## Global Coordinates
-
-<center>
-
-![w:600](examples/diagrams/global-coordinates.svg)
-
-</center>
-
-A **global coordinate** is a position measured from the origin, (0, 0). P is 7 right and 4 up from the origin, so it is at (7, 4).
-
----
-
-## Relative Coordinates
-
-<center>
-
-![w:600](examples/diagrams/global-relative.svg)
-
-</center>
-
-A **relative coordinate** is a position measured from some other point. To get one, subtract that point: relative to A, P is at (7 - 5, 4 - 5), or (2, -1).
-
----
-
-## Coordinates on a Page
-
-<center>
-
-![w:600](examples/diagrams/coordinate-system.svg)
-
-</center>
-
-Coordinates start at (0, 0) in the top-left corner and reach their largest values in the bottom-right corner.
-
----
-
-## Relative Coordinates on a Page
-
-<center>
-
-![w:600](examples/diagrams/relative-coordinates.svg)
-
-</center>
-
-The box's top-left corner is at (176, 72). Relative to that corner, the point is at (276 - 176, 152 - 72), or (100, 80).
-
----
-
 ## Mouse Events
 
 <div class="small-table">
@@ -436,6 +388,54 @@ dblclick
 
 ---
 
+## Global Coordinates
+
+<center>
+
+![w:600](examples/diagrams/global-coordinates.svg)
+
+</center>
+
+A **global coordinate** is a position measured from the origin, (0, 0). P is 7 right and 4 up from the origin, so it is at (7, 4).
+
+---
+
+## Relative Coordinates
+
+<center>
+
+![w:600](examples/diagrams/global-relative.svg)
+
+</center>
+
+A **relative coordinate** is a position measured from some other point. To get one, subtract that point: relative to A, P is at (7 - 5, 4 - 5), or (2, -1).
+
+---
+
+## Coordinates on a Page
+
+<center>
+
+![w:600](examples/diagrams/coordinate-system.svg)
+
+</center>
+
+Coordinates start at (0, 0) in the top-left corner and reach their largest values in the bottom-right corner.
+
+---
+
+## Relative Coordinates on a Page
+
+<center>
+
+![w:600](examples/diagrams/relative-coordinates.svg)
+
+</center>
+
+The box's top-left corner is at (176, 72). Relative to that corner, the point is at (276 - 176, 152 - 72), or (100, 80).
+
+---
+
 ## Where the Mouse Is
 
 <div class="small-code">
@@ -457,24 +457,6 @@ box.addEventListener("mousemove", (event) => {
 </center>
 
 [`offsetX`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/offsetX) and `offsetY` count from the element's top-left corner, and [`clientX`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/clientX) and `clientY` from the browser window's.
-
----
-
-## `mouseenter` or `:hover`?
-
-```css
-#box:hover {
-  outline: 3px solid orange;
-}
-```
-
-```js
-box.addEventListener("mouseenter", () => {
-  box.textContent = "Hello";
-});
-```
-
-A look that changes on hover goes in the CSS, with [`:hover`](../03-css-intro/lecture.html#100). When code has to run, like changing the box's text, listen for `mouseenter` and `mouseleave`.
 
 ---
 
@@ -512,6 +494,24 @@ document.getElementById("box").addEventListener("mousemove", (event) => {
 ```
 
 `clientX` and `clientY` count from the window's top-left corner, and `offsetX` and `offsetY` from the box's. The body's default 8px margin puts the box's corner at (8, 8).
+
+---
+
+## `mouseenter` or `:hover`?
+
+```css
+#box:hover {
+  outline: 3px solid orange;
+}
+```
+
+```js
+box.addEventListener("mouseenter", () => {
+  box.textContent = "Hello";
+});
+```
+
+A look that changes on hover goes in the CSS, with [`:hover`](../03-css-intro/lecture.html#100). When code has to run, like changing the box's text, listen for `mouseenter` and `mouseleave`.
 
 ---
 
