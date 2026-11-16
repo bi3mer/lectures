@@ -85,10 +85,15 @@ Run it from the folder that holds `app.py`, the [current working directory](11-o
 ## Running from VS Code: `launch.json`
 
 <style scoped>
-pre { font-size: 0.75em; }
+pre { font-size: 0.55em; }
 </style>
 
-Save this as `.vscode/launch.json` in your project folder:
+Save this as `.vscode/launch.json` in your project folder. Only the `"python"` line differs:
+
+<div class="cols">
+<div>
+
+**Mac**
 
 ```json
 {
@@ -107,6 +112,32 @@ Save this as `.vscode/launch.json` in your project folder:
   ]
 }
 ```
+
+</div>
+<div>
+
+**Windows**
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Streamlit: current file",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "streamlit",
+      "python": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": ["run", "${file}"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true
+    }
+  ]
+}
+```
+
+</div>
+</div>
 
 ---
 
