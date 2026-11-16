@@ -10,7 +10,7 @@ Colan Biemer
 
 ---
 
-## Sales by Product, Again
+## Total Sales, Again
 
 <div class="cols">
 <div>
@@ -18,19 +18,17 @@ Colan Biemer
 ```python
 import os
 
-totals = {}
+total = 0
 path = os.path.join("data", "sales.csv")
 with open(path, "r") as f:
     f.readline()
     for line in f:
         fields = line.strip().split(",")
-        product = fields[0]
-        units = int(fields[3])
-        if product not in totals:
-            totals[product] = 0
-        totals[product] += units
+        price = float(fields[2])
+        quantity = int(fields[3])
+        total += price * quantity
 
-print(totals)
+print(f"Total: ${total:.2f}")
 ```
 
 </div>
@@ -42,13 +40,14 @@ import pandas as pd
 
 path = os.path.join("data", "sales.csv")
 sales = pd.read_csv(path)
-print(sales.groupby("product")["quantity"].sum())
+total = (sales["price"] * sales["quantity"]).sum()
+print(f"Total: ${total:.2f}")
 ```
 
 </div>
 </div>
 
-Both add up the units of [each product](12-dictionaries.html#28). By the end of today, the right side will make sense.
+Both print the [total of every sale](10-exceptions-and-files.html#31), `Total: $151.90`. By the end of today, the right side will make sense.
 
 ---
 
@@ -224,7 +223,7 @@ print(len(prices[prices > 2.60]))
 
 ---
 
-## Problem: Slow Days (you)
+## Problem: Slow Days
 
 ```python
 import pandas as pd
@@ -245,7 +244,7 @@ Lowest: Fri
 
 ---
 
-## Solution: Slow Days (you)
+## Solution: Slow Days
 
 ```python
 import pandas as pd
@@ -272,10 +271,49 @@ import pandas as pd
 
 scores = pd.DataFrame({
     "name": ["Ada", "Grace", "Alan"],
+    "major": ["CS", "Math", "CS"],
     "score": [90, 85, 77],
 })
 print(scores)
 ```
+
+```
+    name major  score
+0    Ada    CS     90
+1  Grace  Math     85
+2   Alan    CS     77
+```
+
+A **DataFrame** is a table: named columns that are each a Series, sharing one index that labels the rows. Each key in the [dictionary of lists](13-records-and-sets.html#8) becomes a column.
+
+---
+
+## Picking Columns
+
+```python
+import pandas as pd
+
+scores = pd.DataFrame({
+    "name": ["Ada", "Grace", "Alan"],
+    "major": ["CS", "Math", "CS"],
+    "score": [90, 85, 77],
+})
+print(scores["score"])
+print(scores[["name", "score"]])
+```
+
+<div class="cols">
+<div>
+
+```
+0    90
+1    85
+2    77
+Name: score, dtype: int64
+```
+
+</div>
+<div>
 
 ```
     name  score
@@ -284,7 +322,38 @@ print(scores)
 2   Alan     77
 ```
 
-A **DataFrame** is a table: rows with an index, and named columns that are each a Series. Each key in the [dictionary of lists](13-records-and-sets.html#8) becomes a column.
+</div>
+</div>
+
+One name gives a Series, so `scores["score"].mean()` works. A list of names gives a smaller DataFrame: the inner brackets make the list, and the outer brackets pick the columns.
+
+---
+
+## A Column That Is Not There
+
+```python
+import pandas as pd
+
+scores = pd.DataFrame({
+    "name": ["Ada", "Grace", "Alan"],
+    "major": ["CS", "Math", "CS"],
+    "score": [90, 85, 77],
+})
+try:
+    print(scores["Score"])
+except KeyError as error:
+    print(f"No column {error}")
+```
+
+```
+No column 'Score'
+```
+
+Column names are keys, so a missing one raises a [`KeyError`](12-dictionaries.html#7). Capital letters count: `"Score"` is not `"score"`.
+
+---
+
+## Reading CSV Files
 
 ---
 
@@ -307,7 +376,7 @@ print(sales)
 4    P-01  2023-01-05   9.95         1
 ```
 
-`read_csv` takes the column names from the first line and makes a row from each line after it, with no [`readline`, `split`, or `float`](10-exceptions-and-files.html#31).
+`read_csv` takes the column names from the first line and makes a row from each line after it, with no [`readline`, `split`, or `float`](10-exceptions-and-files.html#31). The 0 to 4 on the left are labels that pandas adds.
 
 ---
 
@@ -421,7 +490,80 @@ print(prices["price"].mean())   # 3.075
 4   juice    4.0
 ```
 
-`read_csv` turns `n/a` into **`NaN`**, "not a number," which marks a missing value. `mean` skips it and averages the other four.
+`read_csv` turns `n/a`, `NA`, and empty fields into **`NaN`**, "not a number," which marks a missing value. `mean` skips it and averages the other four.
+
+---
+
+## Problem: What Is the Output?
+
+```python
+import os
+import pandas as pd
+
+measures = pd.read_csv(os.path.join("data", "measures.txt"))
+print(measures)
+print(len(measures))
+```
+
+`measures.txt` holds `10.1`, `9.9`, and `9.8`, one per line.
+
+---
+
+## Solution: What Is the Output?
+
+```
+   10.1
+0   9.9
+1   9.8
+2
+```
+
+`read_csv` takes the first line as the column names, so `10.1` names the column and two rows are left. The `.txt` ending does not matter.
+
+---
+
+## A File with No Header Line
+
+```python
+import os
+import pandas as pd
+
+path = os.path.join("data", "measures.txt")
+measures = pd.read_csv(path, header=None, names=["measure"])
+print(measures)
+print(measures["measure"].sum())   # 29.8
+```
+
+```
+   measure
+0     10.1
+1      9.9
+2      9.8
+```
+
+`header=None` says the first line is data, not column names. `names` names the columns; without it, they are numbered from 0.
+
+---
+
+## Reading Some Columns: `usecols`
+
+```python
+import os
+import pandas as pd
+
+path = os.path.join("data", "sales.csv")
+sales = pd.read_csv(path, usecols=["product", "quantity"])
+print(sales.head(3))
+```
+
+```
+  product  quantity
+0    P-01         5
+1    P-02         2
+2    P-01         4
+```
+
+`usecols` reads only the listed columns and skips the rest. They keep the file's order, whatever the order of the list.
 
 ---
 
@@ -447,7 +589,7 @@ except FileNotFoundError as error:
 
 ---
 
-## Problem: Score Report (us)
+## Problem: Score Report
 
 ```python
 # Read data/scores.csv and print how many students there are,
@@ -479,12 +621,9 @@ Lowest: 68
 </div>
 </div>
 
-- Which column holds the numbers?
-- Which methods from the Series slides apply?
-
 ---
 
-## Solution: Score Report (us)
+## Solution: Score Report
 
 ```python
 import os
@@ -502,11 +641,11 @@ print(f"Lowest: {scores['score'].min()}")
 
 ---
 
-## Selecting Rows and Columns
+## The Index
 
 ---
 
-## Picking Columns
+## The Index of a Table
 
 ```python
 import os
@@ -514,103 +653,43 @@ import pandas as pd
 
 sales = pd.read_csv(os.path.join("data", "sales.csv"))
 
-print(sales["price"])
-print(sales[["product", "quantity"]])
+print(sales.index)
+print(list(sales.index))
+print(sales.columns)
 ```
 
-<div class="cols">
-<div>
-
 ```
-0     9.95
-1    10.50
-2     9.85
-3    10.60
-4     9.95
-Name: price, dtype: float64
+RangeIndex(start=0, stop=5, step=1)
+[0, 1, 2, 3, 4]
+Index(['product', 'date', 'price', 'quantity'], dtype='str')
 ```
 
-</div>
-<div>
-
-```
-  product  quantity
-0    P-01         5
-1    P-02         2
-2    P-01         4
-3    P-02         3
-4    P-01         1
-```
-
-</div>
-</div>
-
-One name gives a Series. A list of names gives a smaller DataFrame: the inner brackets make the list, and the outer brackets pick the columns.
+A table's index holds its row labels, as `columns` holds its column names. With no index in the file, `read_csv` makes a `RangeIndex`: 0 up to `stop`, not counting `stop`.
 
 ---
 
-## A Column That Is Not There
+## Choosing the Index: `index_col`
 
 ```python
 import os
 import pandas as pd
 
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-
-try:
-    print(sales["Price"])
-except KeyError as error:
-    print(f"No column {error}")
+path = os.path.join("data", "sales.csv")
+sales = pd.read_csv(path, index_col="date")
+print(sales)
 ```
 
 ```
-No column 'Price'
+           product  price  quantity
+date
+2023-01-01    P-01   9.95         5
+2023-01-02    P-02  10.50         2
+2023-01-03    P-01   9.85         4
+2023-01-04    P-02  10.60         3
+2023-01-05    P-01   9.95         1
 ```
 
-Column names are keys, so a missing one raises a [`KeyError`](12-dictionaries.html#7). Capital letters count: `"Price"` is not `"price"`.
-
----
-
-## Rows by Position: `iloc`
-
-<style scoped>
-.cols pre { font-size: 0.8em; }
-</style>
-
-```python
-import os
-import pandas as pd
-
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-
-print(sales.iloc[0])
-print(sales.iloc[1:3])
-```
-
-<div class="cols">
-<div>
-
-```
-product           P-01
-date        2023-01-01
-price             9.95
-quantity             5
-Name: 0, dtype: object
-```
-
-</div>
-<div>
-
-```
-  product        date  price  quantity
-1    P-02  2023-01-02  10.50         2
-2    P-01  2023-01-03   9.85         4
-```
-
-</div>
-</div>
-
-`iloc` counts rows by position, from 0, and [slices](09-changing-lists.html#3) like a list. One row comes back as a Series.
+`index_col="date"` makes the dates the row labels, and `date` is no longer a column. The second line, `date`, names the index.
 
 ---
 
@@ -620,18 +699,237 @@ Name: 0, dtype: object
 import os
 import pandas as pd
 
-scores = pd.read_csv(os.path.join("data", "scores.csv"))
-print(scores.loc[3, "name"])   # Linus
+path = os.path.join("data", "sales.csv")
+sales = pd.read_csv(path, index_col="date")
 
-by_name = scores.set_index("name")
-print(by_name.loc["Grace", "score"])   # 85
+print(sales.loc["2023-01-03"])
+print(sales.loc["2023-01-03", "quantity"])   # 4
 ```
 
-`loc[row, column]` reads one value by its labels, as `iloc[row, column]` does by positions. `set_index("name")` makes the names the labels, so a row can be found by name.
+```
+product     P-01
+price       9.85
+quantity       4
+Name: 2023-01-03, dtype: object
+```
+
+`loc` finds a row by its label and gives it back as a Series, named by that label. `loc[row, column]` reads one value.
+
+---
+
+## Rows by Position: `iloc`
+
+```python
+import os
+import pandas as pd
+
+path = os.path.join("data", "sales.csv")
+sales = pd.read_csv(path, index_col="date")
+
+print(sales.iloc[0, 0])    # P-01
+print(sales.iloc[-1, 2])   # 1
+print(sales.iloc[1:3])
+```
+
+```
+           product  price  quantity
+date
+2023-01-02    P-02  10.50         2
+2023-01-03    P-01   9.85         4
+```
+
+`iloc` counts positions from 0, whatever the labels, and [slices](09-changing-lists.html#3) like a list. `date` is the index, so `product` is column 0.
+
+---
+
+## Slicing by Label
+
+```python
+import os
+import pandas as pd
+
+path = os.path.join("data", "sales.csv")
+sales = pd.read_csv(path, index_col="date")
+
+print(sales.loc["2023-01-02":"2023-01-04"])
+print(sales.iloc[1:4])   # the same three rows
+```
+
+```
+           product  price  quantity
+date
+2023-01-02    P-02  10.50         2
+2023-01-03    P-01   9.85         4
+2023-01-04    P-02  10.60         3
+```
+
+A `loc` slice includes its end label. An `iloc` slice stops before its end position, as a list slice does.
+
+---
+
+## Sorting by Label: `sort_index`
+
+```python
+import os
+import pandas as pd
+
+path = os.path.join("data", "scores.csv")
+scores = pd.read_csv(path, index_col="name")
+print(len(scores.loc["Alan":"Grace"]))   # 0
+
+scores = scores.sort_index()
+print(scores.loc["Alan":"Grace"])
+```
+
+```
+         score
+name
+Alan        77
+Barbara     68
+Grace       85
+```
+
+Alan comes after Grace in the file, so the slice finds no rows. `sort_index` sorts the rows by label.
+
+---
+
+## Labels Can Repeat
+
+```python
+import os
+import pandas as pd
+
+path = os.path.join("data", "sales.csv")
+sales = pd.read_csv(path, index_col="product")
+print(sales.loc["P-02"])
+```
+
+```
+               date  price  quantity
+product
+P-02     2023-01-02   10.5         2
+P-02     2023-01-04   10.6         3
+```
+
+Unlike dictionary keys, index labels can repeat. `loc` gives back every row with the label, as a table.
+
+---
+
+## `set_index` and `reset_index`
+
+```python
+import pandas as pd
+
+scores = pd.DataFrame({
+    "name": ["Ada", "Grace", "Alan"],
+    "score": [90, 85, 77],
+})
+scores = scores.set_index("name")
+print(scores)
+print(scores.reset_index())
+```
+
+<div class="cols">
+<div>
+
+```
+       score
+name
+Ada       90
+Grace     85
+Alan      77
+```
+
+</div>
+<div>
+
+```
+    name  score
+0    Ada     90
+1  Grace     85
+2   Alan     77
+```
+
+</div>
+</div>
+
+`set_index` moves a column into the index, and `reset_index` moves it back out. Both give back a new table.
+
+---
+
+## Problem: What Is the Output?
+
+```python
+import os
+import pandas as pd
+
+path = os.path.join("data", "scores.csv")
+scores = pd.read_csv(path, index_col="name")
+
+print(scores.loc["Alan", "score"])
+print(scores.iloc[1, 0])
+print(len(scores.loc["Grace":"Linus"]))
+print(scores.sort_index().iloc[-1, 0])
+```
+
+`scores.csv` lists Ada 90, Grace 85, Alan 77, Linus 100, and Barbara 68, in that order.
+
+---
+
+## Solution: What Is the Output?
+
+```
+77
+85
+3
+100
+```
+
+`name` is the index, so `score` is column 0. The slice runs from Grace to Linus in file order and includes Linus. Sorted by name, Linus comes last.
+
+---
+
+## Problem: One Product's Sales
+
+```python
+# Read data/sales.csv with the products as the index. Print
+# every P-01 sale, then the total quantity of P-01.
+```
+
+```
+               date  price  quantity
+product
+P-01     2023-01-01   9.95         5
+P-01     2023-01-03   9.85         4
+P-01     2023-01-05   9.95         1
+Total quantity: 10
+```
+
+---
+
+## Solution: One Product's Sales
+
+```python
+import os
+import pandas as pd
+
+path = os.path.join("data", "sales.csv")
+sales = pd.read_csv(path, index_col="product")
+
+p01 = sales.loc["P-01"]
+print(p01)
+print(f"Total quantity: {p01['quantity'].sum()}")
+```
+
+`P-01` labels three rows, so `loc` gives back a table. Its `quantity` column is a Series, and `sum` adds it up.
 
 ---
 
 ## Filtering Rows
+
+---
+
+## Filtering a Table
 
 ```python
 import os
@@ -651,6 +949,31 @@ print(sales[big])
 ```
 
 `big` is a Series of `True` and `False`, one for each row. The table keeps the rows marked `True`, as [a Series did](#9).
+
+---
+
+## Filtering Keeps the Labels
+
+```python
+import os
+import pandas as pd
+
+sales = pd.read_csv(os.path.join("data", "sales.csv"))
+big = sales[sales["quantity"] > 2]
+print(list(big.index))   # [0, 2, 3]
+
+big = big.reset_index(drop=True)
+print(big)
+```
+
+```
+  product        date  price  quantity
+0    P-01  2023-01-01   9.95         5
+1    P-01  2023-01-03   9.85         4
+2    P-02  2023-01-04  10.60         3
+```
+
+Filtered rows keep their labels, so `big` has no row `1`. `drop=True` throws the old labels away instead of making them a column.
 
 ---
 
@@ -774,11 +1097,11 @@ print(divb.iloc[0, 0])
 P-010
 ```
 
-`divb` keeps its old index, 4 to 7, but `iloc[0, 0]` counts by position: the first row and the first column.
+`divb` keeps its old labels, 4 to 7, but `iloc[0, 0]` counts by position: the first row and the first column.
 
 ---
 
-## Problem: Top Student (us)
+## Problem: Top Student
 
 ```python
 # Read data/scores.csv. Print the student with the highest score,
@@ -790,31 +1113,29 @@ Top: Linus (100)
 At or above average: ['Ada', 'Grace', 'Linus']
 ```
 
-- Which method gives the label of the highest score?
-- How do we keep only some rows, then only the names?
-
 ---
 
-## Solution: Top Student (us)
+## Solution: Top Student
 
 ```python
 import os
 import pandas as pd
 
-scores = pd.read_csv(os.path.join("data", "scores.csv"))
+path = os.path.join("data", "scores.csv")
+scores = pd.read_csv(path, index_col="name")
 
 best = scores["score"].idxmax()
-print(f"Top: {scores.loc[best, 'name']} ({scores.loc[best, 'score']})")
+print(f"Top: {best} ({scores.loc[best, 'score']})")
 
 above = scores[scores["score"] >= scores["score"].mean()]
-print(f"At or above average: {list(above['name'])}")
+print(f"At or above average: {list(above.index)}")
 ```
 
-`idxmax` gives the row's label, `3`, and `loc` reads that row's name and score. `list` turns the `name` column into a list.
+With the names as the index, `idxmax` gives back a name, and `above.index` holds the names of the rows that passed.
 
 ---
 
-## Problem: Pricey Products (you)
+## Problem: Pricey Products
 
 ```python
 # Read data/products.csv and print the product-id and price
@@ -829,12 +1150,9 @@ print(f"At or above average: {list(above['name'])}")
 7     Q-011x  11.95
 ```
 
-- How do we keep only some rows?
-- How do we keep only two columns?
-
 ---
 
-## Solution: Pricey Products (you)
+## Solution: Pricey Products
 
 ```python
 import os
@@ -943,7 +1261,7 @@ print(sales.sort_values("revenue", ascending=False).head(3))
 3    P-02  2023-01-04  10.60         3    31.80
 ```
 
-`sort_values` sorts the rows by one column, smallest first. `ascending=False` flips it, and `head(3)` keeps the top three.
+`sort_values` sorts the rows by one column, smallest first, as [`sort_index`](#38) sorts by label. `ascending=False` flips it, and `head(3)` keeps the top three.
 
 ---
 
@@ -962,33 +1280,31 @@ sales = sales.sort_values("quantity")
 print(list(sales["quantity"]))   # [1, 2, 3, 4, 5]
 ```
 
-Assigning to a column changes the table. Methods such as `sort_values`, `dropna`, and `head` leave it alone, as [`sorted`](09-changing-lists.html#25) left a list alone, so assign the result to keep it.
+Assigning to a column changes the table. Methods such as `sort_values`, `dropna`, and `set_index` leave it alone, as [`sorted`](09-changing-lists.html#25) left a list alone, so assign the result to keep it.
 
 ---
 
-## Dropping and Renaming Columns
+## Dropping Columns
 
 ```python
 import os
 import pandas as pd
 
 sales = pd.read_csv(os.path.join("data", "sales.csv"))
-
-sales = sales.drop(columns=["date"])
-sales = sales.rename(columns={"quantity": "units"})
+sales = sales.drop(columns=["date", "price"])
 print(sales)
 ```
 
 ```
-  product  price  units
-0    P-01   9.95      5
-1    P-02  10.50      2
-2    P-01   9.85      4
-3    P-02  10.60      3
-4    P-01   9.95      1
+  product  quantity
+0    P-01         5
+1    P-02         2
+2    P-01         4
+3    P-02         3
+4    P-01         1
 ```
 
-`drop` removes the listed columns, and `rename` maps each old name to a new one.
+`drop` gives back a new table without the listed columns. To skip columns from the start, read with [`usecols`](#28).
 
 ---
 
@@ -1012,11 +1328,33 @@ P-02,10.6,3
 P-01,9.95,1
 ```
 
-`to_csv` writes the table. Without `index=False`, each row starts with its label: `0,P-01,9.95,5`.
+`to_csv` writes the table to a file. Without `index=False`, each line starts with its row label: `0,P-01,9.95,5`.
 
 ---
 
-## Problem: Raise the Prices (us)
+## The Index in a File
+
+```python
+import os
+import pandas as pd
+
+sales = pd.read_csv(os.path.join("data", "sales.csv"))
+sales.to_csv("copy.csv")
+
+copy = pd.read_csv("copy.csv")
+print(list(copy.columns))
+# ['Unnamed: 0', 'product', 'date', 'price', 'quantity']
+
+copy = pd.read_csv("copy.csv", index_col=0)
+print(list(copy.columns))
+# ['product', 'date', 'price', 'quantity']
+```
+
+The labels went into the file as a first column with no name, which reads back as `Unnamed: 0`. `index_col=0` makes that first column the index again.
+
+---
+
+## Problem: Raise the Prices
 
 ```python
 # Copy prices.csv (left) to new_prices.csv (right) with every
@@ -1049,11 +1387,11 @@ juice,4.4
 </div>
 </div>
 
-[We wrote this](10-exceptions-and-files.html#38) with two files open and a `try`. Which three pandas steps replace it?
+[We wrote this](10-exceptions-and-files.html#38) with two files open and a `try`.
 
 ---
 
-## Solution: Raise the Prices (us)
+## Solution: Raise the Prices
 
 ```python
 import os
@@ -1069,7 +1407,7 @@ prices.to_csv("new_prices.csv", index=False)
 
 ---
 
-## Problem: Curve the Scores (you)
+## Problem: Curve the Scores
 
 ```python
 # Copy scores.csv (left) to curved.csv (right) with a new
@@ -1105,321 +1443,43 @@ Barbara,68,73
 
 ---
 
-## Solution: Curve the Scores (you)
+## Solution: Curve the Scores
 
 ```python
 import os
 import pandas as pd
 
-scores = pd.read_csv(os.path.join("data", "scores.csv"))
+path = os.path.join("data", "scores.csv")
+scores = pd.read_csv(path, index_col="name")
 scores["curved"] = scores["score"] + 5
 scores = scores.sort_values("curved", ascending=False)
-scores.to_csv("curved.csv", index=False)
+scores.to_csv("curved.csv")
 ```
 
-`sort_values` gives back a new table, so assign it before writing. `index=False` keeps the row labels out of the file.
-
----
-
-## Grouping
-
----
-
-## Counting: `value_counts`
-
-```python
-import os
-import pandas as pd
-
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-print(sales["product"].value_counts())
-```
-
-```
-product
-P-01    3
-P-02    2
-Name: count, dtype: int64
-```
-
-`value_counts` counts how many times each value appears, which took [a dictionary and a loop](12-dictionaries.html#24). The most common comes first.
-
----
-
-## `groupby`
-
-```python
-import os
-import pandas as pd
-
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-print(sales.groupby("product")["quantity"].sum())
-```
-
-```
-product
-P-01    10
-P-02     5
-Name: quantity, dtype: int64
-```
-
-`groupby("product")` makes one group of rows per product. `["quantity"]` picks the column to add up, and `sum` adds each group's values into a Series indexed by product.
-
----
-
-## How `groupby` Works
-
-<div class="cols">
-<div>
-
-```
-product  quantity
-P-01            5
-P-02            2
-P-01            4
-P-02            3
-P-01            1
-```
-
-</div>
-<div>
-
-```
-P-01: 5, 4, 1  ->  10
-P-02: 2, 3     ->   5
-```
-
-</div>
-</div>
-
-Split the rows by product, sum each group's quantities, then combine the sums into one Series. The [slide that opened today](#2) does the same with a dictionary.
-
----
-
-## Other Summaries
-
-```python
-import os
-import pandas as pd
-
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-
-print(sales.groupby("product")["price"].mean())
-print(sales.groupby("product")["quantity"].agg(["sum", "mean", "max"]))
-```
-
-<div class="cols">
-<div>
-
-```
-product
-P-01     9.916667
-P-02    10.550000
-Name: price, dtype: float64
-```
-
-</div>
-<div>
-
-```
-         sum      mean  max
-product
-P-01      10  3.333333    5
-P-02       5  2.500000    3
-```
-
-</div>
-</div>
-
-`sum`, `mean`, `min`, `max`, and `count` all work after `groupby`. `agg` takes a list of them and gives back one column for each.
-
----
-
-## Grouping Several Columns
-
-```python
-import os
-import pandas as pd
-
-sales = pd.read_csv(os.path.join("data", "sales.csv"))
-sales["revenue"] = sales["price"] * sales["quantity"]
-
-totals = sales.groupby("product")[["quantity", "revenue"]].sum()
-print(totals)
-print(totals.loc["P-01", "revenue"])   # 99.1
-```
-
-```
-         quantity  revenue
-product
-P-01           10     99.1
-P-02            5     52.8
-```
-
-[A list of columns](#26) gives back a DataFrame indexed by product, with the same numbers as the [`totals` dictionary](12-dictionaries.html#30).
-
----
-
-## Problem: Price by Division (us)
-
-```python
-# Read data/products.csv. For each division, print how many
-# products it has and its lowest and highest prices.
-```
-
-```
-          count    min    max
-division
-diva          4   5.50   6.95
-divb          4  10.25  11.95
-```
-
-- Which column do we group by?
-- Which column do we summarize, and with what?
-
----
-
-## Solution: Price by Division (us)
-
-```python
-import os
-import pandas as pd
-
-products = pd.read_csv(os.path.join("data", "products.csv"))
-by_division = products.groupby("division")["price"]
-print(by_division.agg(["count", "min", "max"]))
-```
-
-`count` counts each group's rows. One `agg` gives all three summaries.
-
----
-
-## Problem: Priciest by Division (you)
-
-```python
-# Read data/products.csv. Print the highest price in each
-# division, then the division with the priciest product.
-```
-
-```
-division
-diva     6.95
-divb    11.95
-Name: price, dtype: float64
-Priciest: divb
-```
-
-- Which column do we group by, and which do we summarize?
-- The result is a Series. Which method gives its label?
-
----
-
-## Solution: Priciest by Division (you)
-
-```python
-import os
-import pandas as pd
-
-products = pd.read_csv(os.path.join("data", "products.csv"))
-
-highest = products.groupby("division")["price"].max()
-print(highest)
-print(f"Priciest: {highest.idxmax()}")
-```
-
-`groupby` gives back a Series indexed by division, so `idxmax` gives the division, as it gave the day [on a Series](#8).
-
----
-
-## Many Files: `pd.concat`
-
-```python
-import os
-import pandas as pd
-
-folder = os.path.join("data", "months")
-frames = []
-for name in sorted(os.listdir(folder)):
-    if name.endswith(".csv"):
-        frames.append(pd.read_csv(os.path.join(folder, name)))
-
-sales = pd.concat(frames, ignore_index=True)
-print(len(sales))   # 8
-```
-
-`pd.concat` stacks a list of tables into one. `ignore_index=True` numbers the rows 0 to 7, in place of 0 to 2, 0 to 1, and 0 to 2.
-
----
-
-## Problem: Total of Every Month (us)
-
-```python
-# Stack the files in data/months, then print each month's
-# revenue and the total of all of them.
-```
-
-```
-month
-2023-01     90.65
-2023-02     72.20
-2023-03    112.70
-Name: revenue, dtype: float64
-All months: $275.55
-```
-
-[We did this with loops](11-os-module.html#32). Each date starts with its month, like `2023-01`.
-
-- How do we get the month out of every date?
-- What do we group by?
-
----
-
-## Solution: Total of Every Month (us)
-
-<style scoped>
-pre { font-size: 0.75em; }
-</style>
-
-```python
-import os
-import pandas as pd
-
-folder = os.path.join("data", "months")
-frames = []
-for name in sorted(os.listdir(folder)):
-    if name.endswith(".csv"):
-        frames.append(pd.read_csv(os.path.join(folder, name)))
-sales = pd.concat(frames, ignore_index=True)
-
-sales["revenue"] = sales["price"] * sales["quantity"]
-sales["month"] = sales["date"].str[:7]
-print(sales.groupby("month")["revenue"].sum())
-print(f"All months: ${sales['revenue'].sum():.2f}")
-```
-
-`.str[:7]` [slices every date](#35) to its first seven characters, the month.
+`name` is the index, so `to_csv` writes the names as the first column, under the header `name`. `sort_values` gives back a new table, so assign it before writing.
 
 ---
 
 ## Summary
 
 <style scoped>
-ul { font-size: 0.8em; }
+ul { font-size: 0.75em; }
 </style>
 
-- A **Series** is one column of values with an index; math and comparisons run on every value
-- A **DataFrame** is a table of named columns, each a Series; `pd.read_csv` reads one from a file
-- `head`, `tail`, `shape`, `dtypes`, and `describe` give a first look; `NaN` marks a missing value
-- `sales["price"]` picks a column, `sales[["product", "price"]]` several, `iloc` rows by position, and `loc` by label
-- `sales[condition]` keeps the rows where the condition is `True`; join conditions with `&` and `|`, each in parentheses
-- `sales["revenue"] = ...` adds or replaces a column; `.str` runs string methods on a column
-- `sort_values`, `dropna`, `drop`, and `rename` give back a new table, so assign the result
-- `value_counts` counts, and `groupby(...)[...].sum()` adds up each group
-- `pd.concat` stacks tables; `to_csv(..., index=False)` writes one
+- A **Series** is a column of labeled values; math and comparisons run on every value
+- A **DataFrame** is a table of named Series; `scores["score"]` picks one column
+- `read_csv` reads a file; `header=None`, `names`, and `usecols` change how it reads
+- `head`, `shape`, `dtypes`, and `describe` give a first look; `NaN` marks missing values
+- The index labels the rows: `index_col` or `set_index` sets it, `reset_index` undoes it
+- `loc` reads rows by label, with slices that include the end; `iloc` reads by position
+- `sales[condition]` keeps the matching rows and their labels; join conditions with `&` and `|`
+- `sales["revenue"] = ...` adds or replaces a column; `.str` runs string methods on one
+- `sort_values`, `sort_index`, `dropna`, and `drop` give back a new table
+- `to_csv` writes a table with its labels, unless `index=False`
 
 ---
 
 ## Next Up: Visualization
 
 - Charts from DataFrames
-- The [10 minutes to pandas](https://pandas.pydata.org/docs/user_guide/10min.html) guide covers more of the library
+- The [10 minutes to pandas](https://pandas.pydata.org/docs/user_guide/10min.html) guide is a great resource
