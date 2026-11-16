@@ -9,6 +9,8 @@ paginate: true
 /* Shrinks a code block or table that would crowd the slide. */
 .small-code pre { font-size: 0.75em; }
 .small-table table { font-size: 0.7em; }
+/* HTML on the left, the JavaScript that uses it on the right. */
+.pair { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: start; }
 /* The theme draws a .demo as a white panel whose 12px edge is a shadow, so the margins keep
    that edge clear of the caption above and the slide's sides. */
 .demo { margin: 20px 12px 28px; color-scheme: light; }
@@ -41,7 +43,7 @@ Every page so far has called our code from an [event attribute](../13-js-forms-d
 
 ## Events
 
-An **event** is a message the browser emits when something happens (e.g. mouse press, key press, page loaded, etc.). We are going to only cover a few, but there are [many events](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Events).
+An **event** is a message the browser emits when something happens (e.g. a mouse press, a key press, or the page loading). We are going to cover only a few, but there are [many events](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Events).
 
 ---
 
@@ -55,11 +57,10 @@ A **listener** is a function subscribed to one event on one element, like clicks
 
 ```html
 <button id="hello" type="button">Say hello</button>
-<p id="message"></p>
 ```
 
 ```js
-const hello = document.getElementById("hello")
+const hello = document.getElementById("hello");
 hello.addEventListener("click", (event) => {
   alert("Hello!");
 });
@@ -73,18 +74,16 @@ hello.addEventListener("click", (event) => {
 
 ```html
 <button id="hello" type="button">Say hello</button>
-<p id="message"></p>
 ```
 
 ```js
-function sayHello() { 
-  alert("Hello!"); 
+function sayHello() {
+  alert("Hello!");
 }
 
-const hello = document.getElementById("hello")
+const hello = document.getElementById("hello");
 hello.addEventListener("click", sayHello());
 ```
-
 
 What happens when the page loads and we click **Say hello**?
 
@@ -104,7 +103,7 @@ What happens when the page loads and we click **Say hello**?
 
 ## Answer: Calling the Listener
 
-**B.** `sayHello()` runs as the line runs, and gives back `undefined`. That's what gets passed, so nothing listens for clicks, and the browser shows no error.
+**B.** `sayHello()` runs when the line runs, so it alerts once at load and gives back `undefined`. That's what gets passed, so nothing listens for clicks, and the browser shows no error.
 
 ```js
 hello.addEventListener("click", sayHello);
@@ -135,12 +134,14 @@ hello.addEventListener("click", sayHello);
 ```
 
 ```js
-document.getElementById("fade").addEventListener("click", (event) => {
+const fade = document.getElementById("fade");
+
+fade.addEventListener("click", () => {
   // fill in here
 });
-````
+```
 
-Fill in the code so that when the button is pressed, it's opacity is reduced by `0.05`. 
+Fill in the code so that when the button is pressed, its opacity is reduced by `0.05`.
 
 ---
 
@@ -157,6 +158,8 @@ fade.addEventListener("click", () => {
 <p class="caption">Try it</p>
 <div class="demo"><button type="button" style="opacity: 1" onclick="this.style.opacity -= 0.05">Fade</button> <button type="button" onclick="this.previousElementSibling.style.opacity = 1">Reset</button></div>
 
+Without `style="opacity: 1"`, `fade.style.opacity` starts as `""`, so the first click sets it to `-0.05` and the button vanishes.
+
 ---
 
 ## `removeEventListener`
@@ -164,10 +167,10 @@ fade.addEventListener("click", () => {
 <!-- prettier-ignore -->
 ```js
 hello.addEventListener("click", sayHello);
-hello.removeEventListener("click", sayHello);         // does nothing now
+hello.removeEventListener("click", sayHello);         // clicks do nothing
 
 hello.addEventListener("click", () => sayHello());
-hello.removeEventListener("click", () => sayHello()); // still says hello
+hello.removeEventListener("click", () => sayHello()); // clicks still say hello
 ```
 
 [`removeEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener) needs the same function that's listening. [Functions are references](../11-js-arrays/lecture.html#30), and each arrow we write makes a new one, so the second arrow isn't the one listening.
@@ -194,7 +197,9 @@ The browser calls each listener with an [**event object**](https://developer.moz
 
 ---
 
-## `event.target`
+## Predict: Which Name?
+
+<div class="pair small-code">
 
 ```html
 <ul>
@@ -213,13 +218,33 @@ for (const item of document.querySelectorAll("li")) {
 }
 ```
 
-<p class="caption">Console, after clicking Grace</p>
+</div>
+
+We click **Grace**. What does the console show?
+
+<div class="choices">
+
+**A.** `Ada`
+
+**B.** `Grace`
+
+**C.** `Ada`, then `Grace`
+
+**D.** Nothing
+
+</div>
+
+---
+
+## Answer: Which Name?
+
+<p class="caption">Console</p>
 
 ```text
 Grace
 ```
 
-`showName` is one function for every `<li>`. It has no `item`, so `event.target` tells it which one was clicked.
+**B.** The loop ran once, at load, to add a listener to each `<li>`. `showName` has no `item`, so `event.target` tells it which `<li>` was clicked.
 
 ---
 
@@ -523,7 +548,7 @@ The element with **focus** is the one that gets typed keys: the box we clicked i
 </center>
 </div>
 
-[`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key) is what the key types, or its name, and [`code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code) is which key it is on the keyboard. `shiftKey`, `ctrlKey`, `altKey`, and `metaKey` (⌘ on a Mac) say which are held.
+[`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key) is what the key types, or its name, and [`code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code) is which key it is on the keyboard. `shiftKey`, `ctrlKey`, `altKey`, and `metaKey` (⌘ on a Mac) are `true` while held.
 
 ---
 
@@ -538,6 +563,27 @@ document.addEventListener("keydown", (event) => {
 ```
 
 A **default action** is what the browser does on its own after an event, like scrolling on Space, opening a clicked link, or reloading on submit. [`preventDefault()`](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault) stops it.
+
+---
+
+## Keyboard Shortcuts
+
+```js
+document.addEventListener("keydown", (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key === "s") {
+    event.preventDefault();
+    console.log("Saved");
+  }
+});
+```
+
+<p class="caption">Console, after Ctrl + S, or ⌘ + S on a Mac</p>
+
+```text
+Saved
+```
+
+Without `preventDefault()`, the browser also opens its own Save dialog. Mac shortcuts use ⌘, so we check `metaKey` too.
 
 ---
 
@@ -759,7 +805,7 @@ showWidth();
 window.addEventListener("resize", showWidth);
 ```
 
-`showWidth()` fills the paragraph at load, and `resize` gets [`showWidth` with no `()`](#6), so it runs again on each change.
+`showWidth()` fills the paragraph at load, and `resize` gets [`showWidth` with no `()`](#7), so it runs again on each change.
 
 ---
 
@@ -837,7 +883,50 @@ document.getElementById("name").addEventListener("input", (event) => {
 });
 ```
 
-This [greets as we type](../13-js-forms-dom/lecture.html#50) like before, with no `oninput` in the HTML. `event.target.value` is what the box holds.
+This [greets as we type](../13-js-forms-dom/lecture.html#50), like before, with no `oninput` in the HTML. `event.target.value` is what the box holds.
+
+---
+
+## Predict: Leaving the Box
+
+```html
+<input id="name" />
+```
+
+```js
+const name = document.getElementById("name");
+name.addEventListener("input", () => console.log("input"));
+name.addEventListener("change", () => console.log("change"));
+```
+
+We type `Ada` in the box, then press Tab. How many lines print?
+
+<div class="choices">
+
+**A.** `1`
+
+**B.** `3`
+
+**C.** `4`
+
+**D.** `6`
+
+</div>
+
+---
+
+## Answer: Leaving the Box
+
+<p class="caption">Console</p>
+
+```text
+input
+input
+input
+change
+```
+
+**C.** `input` fires on each keystroke. `change` fires once, when we leave the box with a new value.
 
 ---
 
