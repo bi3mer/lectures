@@ -56,7 +56,7 @@ Both add up the units of [each product](12-dictionaries.html#28). By the end of 
 ```python
 import pandas as pd
 
-print(pd.__version__)   # 3.1.0
+print(pd.__version__)   # 3.1.1
 ```
 
 **pandas** is a library for tables of data. [Streamlit installed it](14-streamlit.html#5); if it is missing, run `python3 -m pip install pandas` (Mac) or `py -m pip install pandas` (Windows). `as pd` names the module `pd`.
@@ -276,7 +276,7 @@ print(scores)
     name  score
 0    Ada     90
 1  Grace     85
-2    Alan     77
+2   Alan     77
 ```
 
 A **DataFrame** is a table: rows with an index, and columns with names. Each column is a Series. It is built from a [dictionary of lists](13-records-and-sets.html#8).
@@ -302,7 +302,7 @@ print(sales)
 4    P-01  2023-01-05   9.95         1
 ```
 
-`read_csv` uses the first line for the column names and splits every other line into a row. No `readline`, `split`, or `float`, as in [Total Sales](10-exceptions-and-files.html#31).
+`read_csv` takes the column names from the first line and makes a row from each line after it, with no [`readline`, `split`, or `float`](10-exceptions-and-files.html#31).
 
 ---
 
@@ -392,7 +392,7 @@ min     9.85000  1.000000
 max    10.60000  5.000000
 ```
 
-`describe` summarizes each number column. `50%` is the median: half the values are below it.
+`describe` summarizes each number column. `50%` is the median, the middle value.
 
 ---
 
@@ -568,6 +568,10 @@ Column names are keys, so a missing one raises a [`KeyError`](12-dictionaries.ht
 
 ## Rows by Position: `iloc`
 
+<style scoped>
+.cols pre { font-size: 0.8em; }
+</style>
+
 ```python
 import os
 import pandas as pd
@@ -578,16 +582,28 @@ print(sales.iloc[0])
 print(sales.iloc[1:3])
 ```
 
+<div class="cols">
+<div>
+
 ```
 product           P-01
 date        2023-01-01
 price             9.95
 quantity             5
 Name: 0, dtype: object
+```
+
+</div>
+<div>
+
+```
   product        date  price  quantity
 1    P-02  2023-01-02  10.50         2
 2    P-01  2023-01-03   9.85         4
 ```
+
+</div>
+</div>
 
 `iloc` counts rows by position, from 0, and [slices](09-changing-lists.html#3) like a list. One row comes back as a Series.
 
@@ -600,7 +616,7 @@ import os
 import pandas as pd
 
 scores = pd.read_csv(os.path.join("data", "scores.csv"))
-print(scores.loc[3, "name"])     # Linus
+print(scores.loc[3, "name"])   # Linus
 
 by_name = scores.set_index("name")
 print(by_name.loc["Grace", "score"])   # 85
@@ -967,7 +983,7 @@ print(sales)
 4    P-01   9.95      1
 ```
 
-`drop(columns=...)` takes a list of names to remove. `rename` takes a dictionary from each old name to its new one.
+`drop` removes the listed columns, and `rename` maps each old name to a new one.
 
 ---
 
@@ -991,7 +1007,7 @@ P-02,10.6,3
 P-01,9.95,1
 ```
 
-`to_csv` writes the table. Without `index=False`, every line starts with its row label: `0,P-01,9.95,5`.
+`to_csv` writes the table. Without `index=False`, each row starts with its label: `0,P-01,9.95,5`.
 
 ---
 
@@ -1187,18 +1203,30 @@ print(sales.groupby("product")["price"].mean())
 print(sales.groupby("product")["quantity"].agg(["sum", "mean", "max"]))
 ```
 
+<div class="cols">
+<div>
+
 ```
 product
 P-01     9.916667
 P-02    10.550000
 Name: price, dtype: float64
+```
+
+</div>
+<div>
+
+```
          sum      mean  max
 product
 P-01      10  3.333333    5
 P-02       5  2.500000    3
 ```
 
-Any Series method works after `groupby`: `sum`, `mean`, `min`, `max`, `count`. `agg` takes a list of them and gives back one column for each.
+</div>
+</div>
+
+`sum`, `mean`, `min`, `max`, and `count` all work after `groupby`. `agg` takes a list of them and gives back one column for each.
 
 ---
 
@@ -1223,7 +1251,7 @@ P-01           10     99.1
 P-02            5     52.8
 ```
 
-A list of columns gives back a DataFrame indexed by product: the [`totals` dictionary](12-dictionaries.html#30) from two lectures ago.
+A list of columns gives back a DataFrame indexed by product, with the same numbers as the [`totals` dictionary](12-dictionaries.html#30).
 
 ---
 
@@ -1408,4 +1436,4 @@ ul { font-size: 0.8em; }
 ## Next Up: Visualization
 
 - Charts from DataFrames
-- [pandas's 10 minutes to pandas guide](https://pandas.pydata.org/docs/user_guide/10min.html) covers more of the library
+- The [10 minutes to pandas](https://pandas.pydata.org/docs/user_guide/10min.html) guide covers more of the library

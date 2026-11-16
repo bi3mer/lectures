@@ -12,7 +12,7 @@ Every file the lectures read.
 
 <p class="download-all"><a class="download" href="../data.zip" download><svg><use href="#download-icon" /></svg> Download every file (data.zip)</a></p>
 
-Unzip `data.zip` next to your program. It makes the `data` folder from [Files for Today](../lectures/11-os-module.html#5), with `months` inside.
+Unzip `data.zip` next to your program. It makes the `data` folder from [Files for Today](../lectures/11-os-module.html#4), with `months` inside.
 
 To look at one file, click its name. To download just that file, click the arrow beside it.
 
