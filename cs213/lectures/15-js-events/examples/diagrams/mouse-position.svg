@@ -19,7 +19,7 @@
 
   <!-- The box, inside the window -->
   <rect x="200" y="96" width="392" height="140" rx="6" fill="#1e293b" stroke="#facc15" stroke-width="2.5" />
-  <text x="214" y="224" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" font-weight="bold" fill="#facc15">box</text>
+  <text x="214" y="224" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" font-weight="bold" fill="#facc15">div#box</text>
 
   <!-- A dashed line from each corner to the mouse -->
   <path d="M24 24 L300 176" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="8 6" />

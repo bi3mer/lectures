@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Relative coordinates on a page</title>
+  <desc>A large box, the browser window, held a smaller box toward its bottom right. The smaller box's top-left corner was at (176, 72) from the window. A point inside the smaller box was 276 right and 152 down from the window's corner, shown by a dashed blue line, and 100 right and 80 down from the box's corner, shown by a dashed yellow line. So the point was at (276, 152) from the window and (100, 80) from the box.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="640" height="280" rx="18" fill="#0f1b2d" />
+  <rect width="640" height="280" rx="18" fill="url(#grid)" />
+
+  <!-- Drawn at 1:1, so page (x, y) is drawn at (x + 24, y + 24).
+       Blue is measured from the window, and yellow from the box. -->
+
+  <!-- The window, and the box inside it -->
+  <rect x="24" y="24" width="592" height="232" fill="none" stroke="#64748b" stroke-width="2" />
+  <rect x="200" y="96" width="392" height="140" fill="#1e293b" stroke="#64748b" stroke-width="2" />
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" font-weight="bold">
+    <text x="40" y="240" fill="#38bdf8">window</text>
+    <text x="574" y="224" fill="#facc15" text-anchor="end">box</text>
+  </g>
+
+  <!-- Blue: from the window's corner, 276 right, then 152 down.
+       Yellow: from the box's corner, 80 down, then 100 right.
+       The two meet only at the point. -->
+  <path d="M24 24 H300 V176" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="8 6" />
+  <path d="M200 96 V176 H300" fill="none" stroke="#facc15" stroke-width="2.5" stroke-dasharray="8 6" />
+  <circle cx="24" cy="24" r="7" fill="#38bdf8" />
+  <circle cx="200" cy="96" r="7" fill="#facc15" />
+  <circle cx="300" cy="176" r="8" fill="#e2e8f0" />
+
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="17">
+    <!-- How far each leg goes -->
+    <text x="162" y="46" fill="#38bdf8" text-anchor="middle">276</text>
+    <text x="310" y="66" fill="#38bdf8">152</text>
+    <text x="190" y="142" fill="#facc15" text-anchor="end">80</text>
+    <text x="250" y="200" fill="#facc15" text-anchor="middle">100</text>
+
+    <!-- Where the box's corner is, and where the point is from each corner -->
+    <text x="190" y="88" fill="#e2e8f0" text-anchor="end">(176, 72)</text>
+    <text x="318" y="168" fill="#38bdf8">(276, 152) from the window</text>
+    <text x="318" y="194" fill="#facc15">(100, 80) from the box</text>
+  </g>
+</svg>

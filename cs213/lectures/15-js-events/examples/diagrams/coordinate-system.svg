@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Coordinates on a page</title>
+  <desc>A browser window 1024 pixels wide and 768 tall had a coordinate at each corner: (0, 0) at the top left, (1024, 0) at the top right, (0, 768) at the bottom left, and (1024, 768) at the bottom right. A point sat at (276, 152): dashed lines showed it was 276 pixels right of the left edge and 152 pixels down from the top.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="640" height="420" rx="18" fill="#0f1b2d" />
+  <rect width="640" height="420" rx="18" fill="url(#grid)" />
+
+  <!-- The window, 1024 by 768, drawn at 0.43 scale -->
+  <rect x="100" y="40" width="440" height="330" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+  <text x="116" y="354" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="20" font-weight="bold" fill="#38bdf8">window</text>
+
+  <!-- A point, and how far it is from the left and top edges -->
+  <path d="M219 40 V105" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="8 6" />
+  <path d="M100 105 H219" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="8 6" />
+  <circle cx="219" cy="105" r="8" fill="#e2e8f0" />
+
+  <!-- A dot on each corner -->
+  <g fill="#38bdf8">
+    <circle cx="100" cy="40" r="7" />
+    <circle cx="540" cy="40" r="7" />
+    <circle cx="100" cy="370" r="7" />
+    <circle cx="540" cy="370" r="7" />
+  </g>
+
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="18" text-anchor="middle">
+    <g fill="#38bdf8">
+      <text x="100" y="26">(0, 0)</text>
+      <text x="540" y="26">(1024, 0)</text>
+      <text x="100" y="400">(0, 768)</text>
+      <text x="540" y="400">(1024, 768)</text>
+    </g>
+    <g fill="#e2e8f0">
+      <text x="219" y="26">276</text>
+      <text x="74" y="111">152</text>
+      <text x="290" y="100">(276, 152)</text>
+    </g>
+  </g>
+</svg>

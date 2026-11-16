@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Global and relative coordinates</title>
+  <desc>A math graph had its origin, (0, 0), at the bottom left, with x growing right and y growing up. Point A was at (5, 5). Point P was at (7, 4) from the origin, shown by a dashed blue line from the origin, and at (2, -1) from A, shown by a dashed yellow line from A.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#24395a" stroke-width="1" />
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <!-- Background: dark navy with a grid, one square per unit -->
+  <rect width="640" height="320" rx="18" fill="#0f1b2d" />
+  <rect width="640" height="320" rx="18" fill="url(#grid)" />
+
+  <!-- The axes: x grows right, y grows up -->
+  <path d="M80 280 H612" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)" />
+  <path d="M80 280 V28" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)" />
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="22" font-weight="bold" fill="#94a3b8">
+    <text x="596" y="306">x</text>
+    <text x="54" y="44">y</text>
+  </g>
+
+  <!-- Blue is measured from the origin, and yellow from A. -->
+  <path d="M80 280 L360 120" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="8 6" />
+  <path d="M280 80 L360 120" stroke="#facc15" stroke-width="2.5" stroke-dasharray="8 6" />
+  <circle cx="80" cy="280" r="7" fill="#38bdf8" />
+  <circle cx="280" cy="80" r="7" fill="#facc15" />
+  <circle cx="360" cy="120" r="8" fill="#e2e8f0" />
+
+  <g font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="17">
+    <text x="14" y="306" fill="#38bdf8">(0, 0)</text>
+    <text x="190" y="70" fill="#facc15">A (5, 5)</text>
+    <text x="380" y="112" fill="#38bdf8">P (7, 4) from (0, 0)</text>
+    <text x="380" y="138" fill="#facc15">P (2, -1) from A</text>
+  </g>
+</svg>

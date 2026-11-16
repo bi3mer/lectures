@@ -24,7 +24,7 @@ Colan Biemer
 
 ---
 
-## Calling Our Code, So Far
+## HTML to Call JavaScript Functions
 
 ```html
 <button type="button" onclick="sayHello()">Say hello</button>
@@ -70,7 +70,7 @@ hello.addEventListener("click", (event) => {
 
 ---
 
-## Predict: Calling the Listener
+## Predict
 
 ```html
 <button id="hello" type="button">Say hello</button>
@@ -101,7 +101,7 @@ What happens when the page loads and we click **Say hello**?
 
 ---
 
-## Answer: Calling the Listener
+## Predict: B
 
 **B.** `sayHello()` runs when the line runs, so it alerts once at load and gives back `undefined`. That's what gets passed, so nothing listens for clicks, and the browser shows no error.
 
@@ -265,8 +265,6 @@ Grace
 3
 ```
 
-- Where should `count` live?
-
 ---
 
 ## Solution: Click Counter
@@ -326,6 +324,54 @@ An arrow inside the loop works too, but makes a new function for each button. Wi
 
 ---
 
+## Global Coordinates
+
+<center>
+
+![w:600](examples/diagrams/global-coordinates.svg)
+
+</center>
+
+A **global coordinate** is a position measured from the origin, (0, 0). P is 7 right and 4 up from the origin, so it is at (7, 4).
+
+---
+
+## Relative Coordinates
+
+<center>
+
+![w:600](examples/diagrams/global-relative.svg)
+
+</center>
+
+A **relative coordinate** is a position measured from some other point. To get one, subtract that point: relative to A, P is at (7 - 5, 4 - 5), or (2, -1).
+
+---
+
+## Coordinates on a Page
+
+<center>
+
+![w:600](examples/diagrams/coordinate-system.svg)
+
+</center>
+
+Coordinates start at (0, 0) in the top-left corner and reach their largest values in the bottom-right corner.
+
+---
+
+## Relative Coordinates on a Page
+
+<center>
+
+![w:600](examples/diagrams/relative-coordinates.svg)
+
+</center>
+
+The box's top-left corner is at (176, 72). Relative to that corner, the point is at (276 - 176, 152 - 72), or (100, 80).
+
+---
+
 ## Mouse Events
 
 <div class="small-table">
@@ -350,7 +396,12 @@ A click is a `mousedown` and then a `mouseup`, both on the same element.
 
 ## Predict: A Double Click
 
+```html
+<button id="hello" type="button">Say hello</button>
+```
+
 ```js
+const hello = document.getElementById("hello");
 hello.addEventListener("click", () => console.log("click"));
 hello.addEventListener("dblclick", () => console.log("dblclick"));
 ```
@@ -399,9 +450,13 @@ box.addEventListener("mousemove", (event) => {
 
 </div>
 
-![w:500 A large box, the browser window, held a smaller box toward its bottom right. The mouse was a dot inside the smaller box. A dashed blue line ran from the window's top-left corner to the mouse, labeled clientX: 276, clientY: 152. A dashed yellow line ran from the smaller box's top-left corner to the mouse, labeled offsetX: 100, offsetY: 80.](examples/diagrams/mouse-position.svg)
+<center>
 
-Both are in pixels. [`offsetX`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/offsetX) and `offsetY` count from the target's top-left corner, and [`clientX`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/clientX) and `clientY` from the window's.
+![w:500](examples/diagrams/mouse-position.svg)
+
+</center>
+
+[`offsetX`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/offsetX) and `offsetY` count from the element's top-left corner, and [`clientX`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/clientX) and `clientY` from the browser window's.
 
 ---
 
@@ -427,20 +482,21 @@ A look that changes on hover goes in the CSS, with [`:hover`](../03-css-intro/le
 
 ```html
 <div id="box" style="height: 200px; background: lightblue"></div>
-<p id="where"></p>
+<p>Global: <span id="global"></span></p>
+<p>Relative: <span id="relative"></span></p>
 ```
 
 ```js
-// As the mouse moves over the box, show where it is, like 40, 120.
+// As the mouse moves over the box, show where the mouse is,
+// globally and relatively
 ```
 
 <p class="caption">Page</p>
 
 ```text
-40, 120
+Global: 48, 128
+Relative: 40, 120
 ```
-
-- Which pair of properties counts from the box?
 
 ---
 
@@ -448,12 +504,14 @@ A look that changes on hover goes in the CSS, with [`:hover`](../03-css-intro/le
 
 ```js
 document.getElementById("box").addEventListener("mousemove", (event) => {
-  document.getElementById("where").textContent =
+  document.getElementById("global").textContent =
+    `${event.clientX}, ${event.clientY}`;
+  document.getElementById("relative").textContent =
     `${event.offsetX}, ${event.offsetY}`;
 });
 ```
 
-`offsetX` and `offsetY` count from the box's top-left corner.
+`clientX` and `clientY` count from the window's top-left corner, and `offsetX` and `offsetY` from the box's. The body's default 8px margin puts the box's corner at (8, 8).
 
 ---
 
