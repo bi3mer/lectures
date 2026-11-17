@@ -160,7 +160,7 @@ document.getElementById("signup").addEventListener("submit", (event) => {
 });
 ```
 
-On a submit, the browser checks every control. If one fails, it shows the first one's message and stops, so [`submit`](../15-js-events/lecture.html#59) never fires. `novalidate` on the `<form>` turns the checks off.
+On a submit, the browser checks every control. If one fails, it shows the first one's message and stops, so [`submit`](../15-js-events/lecture.html#60) never fires. `novalidate` on the `<form>` turns the checks off.
 
 How do we show which boxes fail?
 

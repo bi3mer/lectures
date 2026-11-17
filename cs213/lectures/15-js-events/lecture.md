@@ -584,11 +584,27 @@ up: a
 
 </div>
 
-The element with **focus** is the one that gets typed keys: the box we clicked into, or `body` when none has it. Holding a key repeats `keydown`.
+Holding a key repeats `keydown`.
 
 ---
 
-## `event.key`
+## One Key per Event
+
+<p class="caption">Console, the same listeners, holding <code>a</code> and then pressing <code>b</code></p>
+
+```text
+down: a
+down: a
+down: b
+up: b
+up: a
+```
+
+Each event names one key in `event.key`. Nothing in the event says that `a` is still held, so a program that needs it must remember the `keydown` itself.
+
+---
+
+## `event.key` and `event.code`
 
 <div class="small-table">
 <center>
@@ -606,7 +622,7 @@ The element with **focus** is the one that gets typed keys: the box we clicked i
 </center>
 </div>
 
-[`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key) is what the key types, or its name, and [`code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code) is which key it is on the keyboard. `shiftKey`, `ctrlKey`, `altKey`, and `metaKey` (⌘ on a Mac) are `true` while held.
+[`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key) is what the key types, or its name, and [`code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code) is which key it is on the keyboard (e.g. `"Shift"` can be `"ShiftLeft"`).
 
 ---
 
@@ -630,7 +646,7 @@ A **default action** is what the browser does on its own after an event, like sc
 document.addEventListener("keydown", (event) => {
   if ((event.ctrlKey || event.metaKey) && event.key === "s") {
     event.preventDefault();
-    console.log("Saved");
+    console.log("Save Prevented");
   }
 });
 ```
@@ -638,10 +654,63 @@ document.addEventListener("keydown", (event) => {
 <p class="caption">Console, after Ctrl + S, or ⌘ + S on a Mac</p>
 
 ```text
-Saved
+Save Prevented
 ```
 
-Without `preventDefault()`, the browser also opens its own Save dialog. Mac shortcuts use ⌘, so we check `metaKey` too.
+Without `preventDefault()`, the browser also opens its own Save dialog. `event.metaKey` is for the mac default of `command`.
+
+---
+
+## Keys on an Element
+
+```html
+<input id="name" name="name" />
+```
+
+```js
+const box = document.getElementById("name");
+
+box.addEventListener("keydown", (event) => {
+  console.log(`box: ${event.key}`);
+});
+```
+
+<p class="caption">Console, typing <code>h</code> in the name box</p>
+
+```text
+box: h
+```
+
+A key event goes to the element with **focus**: the box we clicked into, or `body` when none has it.
+
+---
+
+## Keys on an Element and `document`
+
+<div class="small-code">
+
+```js
+const box = document.getElementById("name");
+
+box.addEventListener("keydown", (event) => {
+  console.log(`box: ${event.key}`);
+});
+
+document.addEventListener("keydown", (event) => {
+  console.log(`document: ${event.key}`);
+});
+```
+
+<p class="caption">Console, typing <code>h</code> in the name box</p>
+
+```text
+box: h
+document: h
+```
+
+</div>
+
+The key went to the box, but `document` hears it too.
 
 ---
 
@@ -667,112 +736,103 @@ Without `preventDefault()`, the browser also opens its own Save dialog. Mac shor
 input#name -> form#signup -> main -> body -> html -> document -> window
 ```
 
-After the listeners on its target run, an event **bubbles**: it goes up the [DOM tree](../13-js-forms-dom/lecture.html#29), running the listeners on everything above it. `event.target` still names where it started.
+After the listeners on its target run, the event **bubbles**: it goes up the [DOM tree](../13-js-forms-dom/lecture.html#29), running the listeners on everything above it. `event.target` still names where it started.
 
 ---
 
-## Predict: Typing a Shortcut
+## `stopPropagation`
+
+<div class="small-code">
 
 ```js
+box.addEventListener("keydown", (event) => {
+  event.stopPropagation();
+  console.log(`box: ${event.key}`);
+});
+
 document.addEventListener("keydown", (event) => {
-  if (event.key === "h") {
-    console.log("Hello");
+  console.log(`document: ${event.key}`);
+});
+```
+
+<p class="caption">Console, typing <code>h</code> in the name box</p>
+
+```text
+box: h
+```
+
+</div>
+
+[`stopPropagation()`](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation) stops the bubbling, but the box still gets its `h`. (Generally speaking, let the event bubble up.)
+
+---
+
+## Problem: Last Keys
+
+```html
+<p id="keys"></p>
+```
+
+```js
+// Show every key pressed anywhere on the page, newest first.
+```
+
+<p class="caption">Page, after typing <code>a</code>, <code>b</code>, Enter</p>
+
+```text
+Enter,b,a
+```
+
+- Which element should we listen on?
+- What is different about the first key?
+
+---
+
+## Solution: Last Keys
+
+```js
+const keys = document.getElementById("keys");
+
+document.addEventListener("keydown", (event) => {
+  if (keys.textContent === "") {
+    keys.textContent = event.key;
+  } else {
+    keys.textContent = `${event.key},${keys.textContent}`;
   }
 });
 ```
 
-We type `hi` in the name box. What does the console show, and what does the box say?
-
-<div class="choices">
-
-**A.** Nothing, `hi`
-
-**B.** `Hello`, `hi`
-
-**C.** `Hello`, `i`
-
-**D.** Nothing, `i`
-
-</div>
-
----
-
-## Answer: Typing a Shortcut
-
-**B.** The `h` bubbles up from the box to `document`, which logs `Hello`. Nothing stopped the default action, so the box still gets its `h`. A listener can skip keys typed in a box:
-
-```js
-if (event.target.nodeName === "INPUT") {
-  return;
-}
-```
-
-[`nodeName`](../13-js-forms-dom/lecture.html#37) is the tag in capitals, and [`return`](../08-js-intro/lecture.html#98) ends the listener before the shortcuts.
-
----
-
-## Problem: Last Key
-
-```html
-<p id="key">Press a key</p>
-```
-
-```js
-// Show the last key pressed anywhere on the page.
-```
-
-<p class="caption">Page</p>
-
-```text
-Enter
-```
-
-- Which element should we listen on?
-
----
-
-## Solution: Last Key
-
-```js
-document.addEventListener("keydown", (event) => {
-  document.getElementById("key").textContent = event.key;
-});
-```
-
-Listening on `document` hears keys from the whole page.
+Listening on `document` hears keys from the whole page. The new key goes in front of the old `textContent`, and the first key gets no comma after it.
 
 ---
 
 ## Problem: Escape Clears
 
-```html
-<input id="note" />
-```
+Change our [Last Keys](#43) code so that pressing Escape (`event.key` is `"Escape"`) clears the paragraph instead.
+
+<p class="caption">Page, after typing <code>a</code>, <code>b</code>, Escape, <code>c</code></p>
 
 ```text
-when a key goes down in the note box
-  if the key is Escape
-    empty the box
+c
 ```
-
-<p class="caption">Page, after typing Ada and pressing Escape</p>
-<div class="demo"><input /></div>
 
 ---
 
 ## Solution: Escape Clears
 
 ```js
-const note = document.getElementById("note");
-
-note.addEventListener("keydown", (event) => {
+document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    note.value = "";
+    keys.textContent = "";
+  } else if (keys.textContent === "") {
+    keys.textContent = event.key;
+  } else {
+    keys.textContent = `${event.key},${keys.textContent}`;
   }
 });
 ```
 
-The listener is on the box, so Escape anywhere else on the page does nothing.
+Escape is checked first, so it never gets added to the paragraph.
 
 ---
 
@@ -785,18 +845,16 @@ The listener is on the box, so Escape anywhere else on the page does nothing.
 <div class="small-table">
 <center>
 
-| Event              | Fires when                                                     |
-| ------------------ | -------------------------------------------------------------- |
-| `load`             | the page and everything on it, like its images, have loaded    |
-| `DOMContentLoaded` | the HTML has been read, so every element exists                |
-| `resize`           | the window changes size                                        |
-| `scroll`           | the page scrolls, and `window.scrollY` says how far down it is |
-| `beforeunload`     | the page is about to close or reload                           |
+| Event    | Fires when                                                     |
+| -------- | -------------------------------------------------------------- |
+| `load`   | the page and everything on it, like its images, have loaded    |
+| `resize` | the window changes size                                        |
+| `scroll` | the page scrolls, and `window.scrollY` says how far down it is |
 
 </center>
 </div>
 
-These go on `window`, except `DOMContentLoaded`, which goes on `document`. A script in `<head>` runs [before the body exists](../13-js-forms-dom/lecture.html#32), so it can wait for `DOMContentLoaded`.
+Listen for these on `window`. `document.addEventListener("load", () => {...})` never calls its function, because `document` never gets the `"load"` event.
 
 ---
 
@@ -820,85 +878,78 @@ window.addEventListener("resize", () => {
 
 ---
 
-## `beforeunload`
+## `load`
+
+```html
+<head>
+  <script>
+    window.addEventListener("load", () => {
+      document.getElementById("title").textContent = "Ready";
+    });
+  </script>
+</head>
+<body>
+  <h1 id="title">Loading</h1>
+  <img src="big-photo.jpg" />
+</body>
+```
+
+A script in `<head>` runs [before the body exists](../13-js-forms-dom/lecture.html#32), so it waits for `load`. But `load` also waits for every image, so the title says Loading until the photo arrives.
+
+---
+
+## `DOMContentLoaded`
+
+```html
+<head>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("title").textContent = "Ready";
+    });
+  </script>
+</head>
+<body>
+  <h1 id="title">Loading</h1>
+  <img src="big-photo.jpg" />
+</body>
+```
+
+`DOMContentLoaded` fires once the HTML has been read, without waiting for images, so the title changes right away. It fires on `document`.
+
+---
+
+## Problem: Back to Top
+
+```html
+<a id="back" href="#" hidden>Back to top</a>
+```
 
 ```js
-window.addEventListener("beforeunload", (event) => {
-  event.preventDefault();
+// Show the link once the page has scrolled more than 300 pixels down,
+// and hide it again above that.
+```
+
+<p class="caption">Page, scrolled 500 pixels down</p>
+
+```text
+Back to top
+```
+
+`window.scrollY` lets you access how far the user has scrolled downwards.
+
+---
+
+## Solution: Back to Top
+
+```js
+const back = document.getElementById("back");
+
+window.addEventListener("scroll", () => {
+  back.hidden = window.scrollY <= 300;
 });
 ```
 
-For [`beforeunload`](https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event), `preventDefault()` makes the browser ask before the page closes or reloads. The browser writes the question, and asks only once we've clicked or typed on the page.
-
----
-
-## Problem: Window Size
-
-```html
-<p id="size"></p>
-```
-
-```js
-// Show the window's width at load, and again each time it changes size.
-```
-
-<p class="caption">Page</p>
-
-```text
-1024
-```
-
-- How can the same code run at load and on every `resize`?
-
----
-
-## Solution: Window Size
-
-```js
-function showWidth() {
-  document.getElementById("size").textContent = window.innerWidth;
-}
-
-showWidth();
-window.addEventListener("resize", showWidth);
-```
-
-`showWidth()` fills the paragraph at load, and `resize` gets [`showWidth` with no `()`](#7), so it runs again on each change.
-
----
-
-## Problem: Unsaved Note
-
-```html
-<textarea id="note"></textarea>
-```
-
-```text
-when the page is about to close or reload
-  if the note is not empty
-    make the browser ask first
-```
-
-<p class="caption">Chrome, after typing and reloading</p>
-
-```text
-Reload site?
-Changes that you made may not be saved.
-```
-
----
-
-## Solution: Unsaved Note
-
-```js
-window.addEventListener("beforeunload", (event) => {
-  if (document.getElementById("note").value !== "") {
-    event.preventDefault();
-  }
-});
-```
-
-The `if` lets an empty note close without asking. Type something, then reload to test it.
+The link starts [`hidden`](../13-js-forms-dom/lecture.html#40), and `scroll` shows it past 300 pixels. Its `href="#"` takes the page back to the top.
 
 ---
 
@@ -957,7 +1008,7 @@ name.addEventListener("input", () => console.log("input"));
 name.addEventListener("change", () => console.log("change"));
 ```
 
-We type `Ada` in the box, then press Tab. How many lines print?
+We type `Grace` in the box, then press Tab. How many lines print?
 
 <div class="choices">
 
@@ -981,10 +1032,12 @@ We type `Ada` in the box, then press Tab. How many lines print?
 input
 input
 input
+input
+input
 change
 ```
 
-**C.** `input` fires on each keystroke. `change` fires once, when we leave the box with a new value.
+**D.** `input` fires on each keystroke. `change` fires once, when we leave the box with a new value.
 
 ---
 
