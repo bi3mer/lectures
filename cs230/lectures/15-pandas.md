@@ -10,47 +10,6 @@ Colan Biemer
 
 ---
 
-## Total Sales, Again
-
-<div class="cols">
-<div>
-
-```python
-import os
-
-total = 0
-path = os.path.join("data", "sales.csv")
-with open(path, "r") as f:
-    f.readline()
-    for line in f:
-        fields = line.strip().split(",")
-        price = float(fields[2])
-        quantity = int(fields[3])
-        total += price * quantity
-
-print(f"Total: ${total:.2f}")
-```
-
-</div>
-<div>
-
-```python
-import os
-import pandas as pd
-
-path = os.path.join("data", "sales.csv")
-sales = pd.read_csv(path)
-total = (sales["price"] * sales["quantity"]).sum()
-print(f"Total: ${total:.2f}")
-```
-
-</div>
-</div>
-
-Both print the [total of every sale](10-exceptions-and-files.html#31), `Total: $151.90`. By the end of today, the right side will make sense.
-
----
-
 ## `import pandas as pd`
 
 ```python
