@@ -82,71 +82,11 @@ Run it from the folder that holds `app.py`, the [current working directory](11-o
 
 ---
 
-## Running from VS Code: `launch.json`
+## Running from VS Code: Streamlit Runner
 
-<style scoped>
-pre { font-size: 0.55em; }
-</style>
-
-Save this as `.vscode/launch.json` in your project folder. Only the `"python"` line differs:
-
-<div class="cols">
-<div>
-
-**Mac**
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Streamlit: current file",
-      "type": "debugpy",
-      "request": "launch",
-      "module": "streamlit",
-      "python": "${workspaceFolder}/.venv/bin/python",
-      "args": ["run", "${file}"],
-      "cwd": "${workspaceFolder}",
-      "justMyCode": true
-    }
-  ]
-}
-```
-
-</div>
-<div>
-
-**Windows**
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Streamlit: current file",
-      "type": "debugpy",
-      "request": "launch",
-      "module": "streamlit",
-      "python": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
-      "args": ["run", "${file}"],
-      "cwd": "${workspaceFolder}",
-      "justMyCode": true
-    }
-  ]
-}
-```
-
-</div>
-</div>
-
----
-
-## Running from VS Code: Starting the App
-
-Two options:
-
-1. Open `app.py` and press **F5** (**Run > Start Debugging**). The run arrow ignores this file and opens no page.
-2. Alternatively, use the debug window (**CMD + shift + d** on mac and **CTRL + shift + d** on windows). Select "Streamlit: current file" on the left dropdown, and then press the left green play button.
+1. Open the Extensions view: **Cmd+Shift+X** (Mac) or **Ctrl+Shift+X** (Windows)
+2. Search for [Streamlit Runner](https://marketplace.visualstudio.com/items?itemName=joshrmosier.streamlit-runner) and press **Install**
+3. Right-click `app.py` and press **Run with streamlit**
 
 ---
 
@@ -481,3 +421,71 @@ ul { font-size: 0.85em; }
 
 - [Tables with pandas](15-pandas.html)
 - [Streamlit's documentation](https://docs.streamlit.io) lists every widget
+
+---
+
+## Appendix: Running from VS Code with `launch.json`
+
+<style scoped>
+pre { font-size: 0.55em; }
+</style>
+
+Save this as `.vscode/launch.json` in your project folder. Only the `"python"` line differs:
+
+<div class="cols">
+<div>
+
+**Mac**
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Streamlit: current file",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "streamlit",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": ["run", "${file}"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true
+    }
+  ]
+}
+```
+
+</div>
+<div>
+
+**Windows**
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Streamlit: current file",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "streamlit",
+      "python": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": ["run", "${file}"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true
+    }
+  ]
+}
+```
+
+</div>
+</div>
+
+---
+
+## Appendix: Starting the App with `launch.json`
+
+Two options:
+
+1. Open `app.py` and press **F5** (**Run > Start Debugging**). The run arrow ignores this file and opens no page.
+2. Alternatively, use the debug window (**CMD + shift + d** on mac and **CTRL + shift + d** on windows). Select "Streamlit: current file" on the left dropdown, and then press the left green play button.
