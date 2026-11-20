@@ -107,7 +107,7 @@ mkdir -p "$out"
 rsync -a \
   --exclude='.git/' --exclude='.github/' --exclude="$out/" \
   --exclude='node_modules/' --exclude='templates/' \
-  --exclude='*.md' --exclude='build.sh' --exclude='.gitignore' \
+  --exclude='*.md' --exclude='build.sh' --exclude='dev.sh' --exclude='.gitignore' \
   ./ "$out/"
 
 # Put the analytics tag just before a built page's </head>.
@@ -218,7 +218,7 @@ fi
 
 slides=()
 pages=()
-for md in "${targets[@]}"; do
+for md in ${targets[@]+"${targets[@]}"}; do
   # A deck starts with front matter that turns Marp on.
   if head -n 10 "$md" | grep -q '^marp: true'; then
     slides+=("$md")
@@ -241,10 +241,10 @@ fi
 # other files after a failure, then exits non-zero.
 {
   if (( pdf )); then
-    for md in "${slides[@]}"; do printf 'pdf\0%s\0' "$md"; done
+    for md in ${slides[@]+"${slides[@]}"}; do printf 'pdf\0%s\0' "$md"; done
   fi
-  for md in "${slides[@]}"; do printf 'slides\0%s\0' "$md"; done
-  for md in "${pages[@]}"; do printf 'page\0%s\0' "$md"; done
+  for md in ${slides[@]+"${slides[@]}"}; do printf 'slides\0%s\0' "$md"; done
+  for md in ${pages[@]+"${pages[@]}"}; do printf 'page\0%s\0' "$md"; done
 } | xargs -0 -n 2 -P "$workers" bash -c 'set -euo pipefail; build_one "$@"' _ || {
   echo "error: build failed, see the errors above" >&2
   exit 1

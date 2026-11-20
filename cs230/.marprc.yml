@@ -1,3 +1,7 @@
 # Marp CLI reads this when it runs from this directory,
 # e.g. `npx @marp-team/marp-cli --server .`
 themeSet: ../themes
+# Let every HTML tag through, like build.sh's --html. Without it, Marp keeps only its
+# allowlist (div, p, span, and the like), so a demo's <label>, <input>, and <button>
+# show up as text.
+html: true
