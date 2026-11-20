@@ -4,9 +4,69 @@ theme: lecture
 paginate: true
 ---
 
-# Charts with pandas
+# Visualization
 
 Colan Biemer
+
+---
+
+## What We Can Draw
+
+<div class="cols">
+<div>
+
+<img src="../images/viz-overview-line.png" width="360">
+
+`kind="line"`
+
+</div>
+<div>
+
+<img src="../images/viz-overview-bar.png" width="360">
+
+`kind="bar"`
+
+</div>
+<div>
+
+<img src="../images/viz-overview-pie.png" width="360">
+
+`kind="pie"`
+
+</div>
+</div>
+
+Each chart is one call to `plot` on a table.
+
+---
+
+## What Else We Can Draw
+
+<div class="cols">
+<div>
+
+<img src="../images/viz-overview-hist.png" width="360">
+
+`kind="hist"`
+
+</div>
+<div>
+
+<img src="../images/viz-overview-box.png" width="360">
+
+`kind="box"`
+
+</div>
+<div>
+
+<img src="../images/viz-overview-scatter.png" width="360">
+
+`kind="scatter"`
+
+</div>
+</div>
+
+The pandas [chart guide](https://pandas.pydata.org/docs/user_guide/visualization.html) shows more, such as area and hexbin charts.
 
 ---
 
@@ -185,31 +245,6 @@ A line from Sat to Sun to Thur would claim a trend from one day to the next. A b
 
 ---
 
-## Sideways Bars: `kind="barh"`
-
-<div class="cols">
-<div>
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-counts = tips["day"].value_counts()
-
-counts.plot(kind="barh")
-plt.show()
-```
-
-</div>
-<div>
-
-<img src="../images/viz-barh.png" width="460">
-
-</div>
-</div>
-
-The bar chart turns the day names on their side to fit them along the bottom. `barh` draws the bars across, so the names sit flat down the side, with room for long ones.
-
----
-
 ## Pie Charts: `kind="pie"`
 
 <div class="cols">
@@ -293,32 +328,6 @@ A **histogram** counts the values that fall in each range, called a **bin**, ins
 
 ---
 
-## Box Charts: `kind="box"`
-
-<div class="cols">
-<div>
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-tips.plot(kind="box", column="total_bill",
-          by="day")
-plt.show()
-```
-
-</div>
-<div>
-
-<img src="../images/viz-box.png" width="440">
-
-</div>
-</div>
-
-- The histogram spread out every bill; `by="day"` draws one box for each day, sorted by name, to compare them
-- The box runs from the `25%` to the `75%` of [`describe`](15-pandas.html#23), with a line at the median
-- The whiskers reach the farthest values within 1.5 box-lengths of the box, and circles mark the values past them
-
----
-
 ## Scatter Charts: `kind="scatter"`
 
 <div class="cols">
@@ -339,27 +348,7 @@ plt.show()
 </div>
 </div>
 
-A box chart compares one number across groups. A scatter chart compares two numbers, with a dot for each row at its `x` and `y`. The dots rise to the right: bigger bills tend to get bigger tips.
-
----
-
-## Problem: Find the Bug
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-tips.plot(kind="scatter", x="total_bill")
-plt.show()
-```
-
----
-
-## Solution: Find the Bug
-
-```
-ValueError: scatter requires an x and y column
-```
-
-A dot needs two numbers, so a scatter chart needs both `x` and `y`. A line chart falls back on the index when we leave `x` out, as January's line did, but a scatter chart has nothing to fall back on.
+A histogram spreads out one number. A scatter chart compares two numbers, with a dot for each row at its `x` and `y`. The dots rise to the right: bigger bills tend to get bigger tips.
 
 ---
 
@@ -376,7 +365,7 @@ Name the `kind` of chart for each question.
 
 ## Solution: Which Kind?
 
-1. `hist`: it counts how many tips fall in each range. `box` works too
+1. `hist`: it counts how many tips fall in each range
 2. `scatter`, with `size` as `x` and `tip` as `y`
 3. `bar`, or `pie`, since there are only two groups
 4. `line`, the default, since the years run in order
@@ -455,101 +444,6 @@ A [pivot table](15-pandas.html#70) makes one row for each group, adding up the t
 
 ---
 
-## Problem: Find the Bug
-
-<div class="cols">
-<div>
-
-```python
-flights = pd.read_csv(url + "flights.csv")
-ends = flights[flights["year"].isin([1949, 1960])]
-by_month = ends.pivot_table(
-    index="month", columns="year",
-    values="passengers")
-
-by_month.plot()
-plt.show()
-```
-
-</div>
-<div>
-
-<img src="../images/viz-month-bug.png" width="440">
-
-</div>
-</div>
-
-The yearly line hides the months. We want to compare each month of 1949 with the same month of 1960.
-
----
-
-## Solution: Find the Bug
-
-<div class="cols">
-<div>
-
-```python
-flights = pd.read_csv(url + "flights.csv")
-ends = flights[flights["year"].isin([1949, 1960])]
-by_month = ends.pivot_table(
-    index="month", columns="year",
-    values="passengers")
-months = flights["month"].unique()
-by_month = by_month.loc[months]
-
-by_month.plot()
-plt.show()
-```
-
-</div>
-<div>
-
-<img src="../images/viz-month-fix.png" width="440">
-
-</div>
-</div>
-
-`pivot_table` sorts its index, so the months run April, August, December. `unique` gives the months in the order they first appear, January to December, and `loc` with a list of labels gives the rows in the list's order.
-
----
-
-## Putting Days in Order
-
-<div class="cols">
-<div>
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-counts = tips["day"].value_counts()
-week = ["Thur", "Fri", "Sat", "Sun"]
-counts = counts.loc[week]
-print(counts)
-
-counts.plot(kind="bar")
-plt.show()
-```
-
-```
-day
-Thur    62
-Fri     19
-Sat     87
-Sun     76
-Name: count, dtype: int64
-```
-
-</div>
-<div>
-
-<img src="../images/viz-day-order.png" width="440">
-
-</div>
-</div>
-
-The days ran by count in the bar chart and by name in the box chart. `unique` gives Sun, Sat, Thur, Fri, the order they first appear in `tips`, so we write the week's order ourselves.
-
----
-
 ## A Bar for Each Column
 
 <div class="cols">
@@ -576,7 +470,7 @@ plt.show()
 </div>
 </div>
 
-The months chart drew a line for each column of its table. A bar chart gives each column its own bars, side by side in each group, and a name in the legend. `stacked=True` piles them into one bar instead.
+A bar chart gives each column its own bars, side by side in each group, and a name in the legend. `pivot_table` sorts the days by name, so `loc` with a list of labels puts them in the week's order.
 
 ---
 
@@ -671,114 +565,6 @@ plt.show()
 
 ---
 
-## Grid and Markers
-
-<div class="cols">
-<div>
-
-```python
-flights = pd.read_csv(url + "flights.csv")
-yearly = flights.pivot_table(
-    index="year", values="passengers",
-    aggfunc="sum")
-
-yearly.plot(legend=False, grid=True,
-            marker="o",
-            title="Passengers per Year",
-            xlabel="Year",
-            ylabel="Passengers (thousands)")
-plt.show()
-```
-
-</div>
-<div>
-
-<img src="../images/viz-legend.png" width="460">
-
-</div>
-</div>
-
-The top of a bar is easy to read, but a line hides where its points are. `marker="o"` puts a dot on each year, and `grid=True` adds lines to read them by: passengers passed 4 million in 1957.
-
----
-
-## Changing the Chart: Axes
-
-<div class="cols">
-<div>
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-bills = tips["total_bill"]
-
-ax = bills.plot(kind="hist", bins=10)
-ax.set_title("The Average Bill Is About $20")
-ax.set_xlabel("Total bill ($)")
-ax.axvline(bills.mean(), color="red")
-plt.show()
-```
-
-</div>
-<div>
-
-<img src="../images/viz-axes.png" width="460">
-
-</div>
-</div>
-
-`plot` has no keyword for a line at the average. It returns the chart it drew, a Matplotlib **Axes**, whose methods change the chart after it is drawn: `axvline` adds a line up and down, here at the average bill.
-
----
-
-## Problem: Find the Bug
-
-<div class="cols">
-<div>
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-bills = tips["total_bill"]
-
-ax = bills.plot(kind="hist", bins=10)
-ax.set_title("Most Bills Are $10 to $25")
-ax.set_xlabel("Total bill ($)")
-ax.axvline(bills.mean(), color="red")
-plt.show()
-```
-
-</div>
-<div>
-
-<img src="../images/viz-axes-bug.png" width="460">
-
-</div>
-</div>
-
-We want the title to say where most bills fall. Read the title on the chart.
-
----
-
-## Solution: Find the Bug
-
-<div class="cols">
-<div>
-
-```python
-ax.set_title(r"Most Bills Are \$10 to \$25")
-```
-
-</div>
-<div>
-
-<img src="../images/viz-axes-fix.png" width="460">
-
-</div>
-</div>
-
-Matplotlib reads text between two `$` as LaTeX math, as [`st.latex`](14-streamlit.html#18) did, so `Total bill ($)`, with one `$`, was safe. `\$` writes a plain dollar sign, and the [`r`](14-streamlit.html#17) keeps Python from reading the backslash.
-
----
-
 ## Two Charts Side by Side: `subplots`
 
 ```python
@@ -792,7 +578,7 @@ plt.show()
 
 <img src="../images/viz-subplots.png" width="700">
 
-One Axes holds one chart. `subplots(1, 2)` makes a **figure**, the whole window, with 1 row of 2 Axes. `ax` tells `plot` which one to draw on, and `tight_layout` keeps their labels from overlapping.
+`plot` draws on a Matplotlib **Axes**, which holds one chart. `subplots(1, 2)` makes a **figure**, the whole window, with 1 row of 2 Axes. `ax` tells `plot` which one to draw on, and `tight_layout` keeps their labels from overlapping.
 
 ---
 
@@ -805,32 +591,6 @@ plt.savefig("tips.png")
 ```
 
 A chart in a window is gone once we close it. `savefig` writes it to a file, to put in a report or a web page. The ending picks the format: `.png`, `.jpg`, `.svg`, or `.pdf`.
-
----
-
-## Problem: Find the Bug
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-tips.plot(kind="scatter", x="total_bill", y="tip")
-plt.show()
-plt.savefig("tips.png")
-```
-
-The chart opens in a window, but `tips.png` is blank.
-
----
-
-## Solution: Find the Bug
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-tips.plot(kind="scatter", x="total_bill", y="tip")
-plt.savefig("tips.png")
-plt.show()
-```
-
-Closing the window throws the chart away, so `savefig` then saves a new, empty figure. Save first, then show.
 
 ---
 

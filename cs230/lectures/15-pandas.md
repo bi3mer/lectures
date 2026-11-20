@@ -1474,5 +1474,5 @@ The table has no `upgrade` column, so add one first: `.str.endswith` marks each 
 
 ## Next Up: Visualization
 
-- Charts from DataFrames
+- [Visualization](16-visualization.html)
 - The [10 minutes to pandas](https://pandas.pydata.org/docs/user_guide/10min.html) guide is a great resource
