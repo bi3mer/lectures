@@ -10,63 +10,43 @@ Colan Biemer
 
 ---
 
-## What We Can Draw
+## Examples
 
-<div class="cols">
+<div class="cols" style="text-align: center">
 <div>
 
-<img src="../images/viz-overview-line.png" width="360">
-
-`kind="line"`
-
-</div>
-<div>
-
-<img src="../images/viz-overview-bar.png" width="360">
-
-`kind="bar"`
+<img src="../images/viz-overview-line.png" height="240">
 
 </div>
 <div>
 
-<img src="../images/viz-overview-pie.png" width="360">
-
-`kind="pie"`
-
-</div>
-</div>
-
-Each chart is one call to `plot` on a table.
-
----
-
-## What Else We Can Draw
-
-<div class="cols">
-<div>
-
-<img src="../images/viz-overview-hist.png" width="360">
-
-`kind="hist"`
+<img src="../images/viz-overview-bar.png" height="240">
 
 </div>
 <div>
 
-<img src="../images/viz-overview-box.png" width="360">
+<img src="../images/viz-overview-pie.png" height="240">
 
-`kind="box"`
+</div>
+</div>
+
+<div class="cols" style="text-align: center">
+<div>
+
+<img src="../images/viz-overview-scatter.png" height="240">
 
 </div>
 <div>
 
-<img src="../images/viz-overview-scatter.png" width="360">
+<img src="../images/viz-overview-area.png" height="240">
 
-`kind="scatter"`
+</div>
+<div>
+
+<img src="../images/viz-overview-hexbin.png" height="240">
 
 </div>
 </div>
-
-The pandas [chart guide](https://pandas.pydata.org/docs/user_guide/visualization.html) shows more, such as area and hexbin charts.
 
 ---
 
@@ -77,11 +57,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 ```
 
-pandas draws its charts with **Matplotlib**, a library for charts. Install it once from the terminal with `python3 -m pip install matplotlib` (Mac) or `py -m pip install matplotlib` (Windows). `pyplot` is the part of Matplotlib that shows charts, named `plt` by custom.
-
----
-
-## A First Chart
+pandas draws its charts with **Matplotlib**, a library for charts. Install it the way you [installed Streamlit in VS Code](14-streamlit.html#6), searching for `matplotlib` in place of `streamlit`.
 
 ---
 
@@ -109,7 +85,7 @@ plt.show()
 </div>
 </div>
 
-`plot` draws a line chart of the values, with the index along the bottom. `plt.show()` opens the chart in a window, and the program waits until we close it.
+`plot` asks Matplotlib to draw a line chart of the values, with the index along the bottom. `plt.show()` opens the chart in a window, and the program waits until we close it.
 
 ---
 
@@ -118,10 +94,9 @@ plt.show()
 ```python
 import pandas as pd
 
-url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/"
-flights = pd.read_csv(url + "flights.csv")
-print(flights.head(3))
-print(flights.shape)
+flights_url = "https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/visualization/flights.csv"
+df = pd.read_csv(flights_url)
+print(df.head(3))
 ```
 
 ```
@@ -129,21 +104,47 @@ print(flights.shape)
 0  1949   January         112
 1  1949  February         118
 2  1949     March         132
-(144, 3)
 ```
 
-`read_csv` takes a web address as well as a file name, so there is nothing to download. `flights` counts an airline's passengers, in thousands, every month from 1949 to 1960. From here on, the slides leave out `url` and the two `import` lines.
+`read_csv` takes a web address as well as a file name, so there is nothing to download. [`flights.csv`](https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/visualization/flights.csv) counts an airline's passengers, in thousands, every month from 1949 to 1960.<sup>1</sup>
+
+<div class="footnote">1. The slides going forward leave out <code>flights_url</code> and the two <code>import</code> lines for <code>pandas</code> and <code>matplotlib</code>.</div>
 
 ---
 
-## Plotting a DataFrame: `x` and `y`
+## Plotting a DataFrame
 
 <div class="cols">
 <div>
 
 ```python
-flights = pd.read_csv(url + "flights.csv")
-january = flights[flights["month"] == "January"]
+df = pd.read_csv(flights_url)
+january = df[df["month"] == "January"]
+
+january.plot()
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-df-line-noxy.png" width="480">
+
+</div>
+</div>
+
+By default, `plot` draws every number column of a DataFrame as a line, with the index along the bottom.
+
+---
+
+## Choosing Columns: `x` and `y`
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(flights_url)
+january = df[df["month"] == "January"]
 
 january.plot(x="year", y="passengers")
 plt.show()
@@ -157,66 +158,186 @@ plt.show()
 </div>
 </div>
 
-A Series has one column of values to draw, but a table has several. `x` names the column along the bottom and `y` the column to draw. The legend names the line `passengers`, after its column.
+`x` names the column along the bottom, and `y` names the column to draw.
 
 ---
 
-## Problem: What Is Drawn?
-
-```python
-flights = pd.read_csv(url + "flights.csv")
-january = flights[flights["month"] == "January"]
-
-january.plot()
-plt.show()
-```
-
-What is along the bottom? How many lines are there?
-
----
-
-## Solution: What Is Drawn?
+## Two Months, Two Charts
 
 <div class="cols">
 <div>
 
-<img src="../images/viz-df-line-noxy.png" width="480">
+```python
+df = pd.read_csv(flights_url)
+january = df[df["month"] == "January"]
+february = df[df["month"] == "February"]
+
+january.plot(x="year", y="passengers")
+february.plot(x="year", y="passengers")
+plt.show()
+```
 
 </div>
 <div>
 
-With no `x`, the index is along the bottom: the labels January kept from `flights`, 0, 12, 24, and on up to 132.
-
-With no `y`, every number column gets a line. `year` runs flat near 1950 and squashes `passengers` down to the bottom. `month` holds strings, so it is left out.
+<img src="../images/viz-two-charts-1.png" width="260">
+<img src="../images/viz-two-charts-2.png" width="260">
 
 </div>
 </div>
 
----
-
-## Kinds of Charts
+Each `plot` on a DataFrame starts a new chart, so `plt.show()` opens two windows with one line each.
 
 ---
 
-## A Second Table: `tips`
+## Axes
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-print(tips.head())
-print(tips.shape)
+df = pd.read_csv(flights_url)
+january = df[df["month"] == "January"]
+
+ax = january.plot(x="year", y="passengers")
+print(type(ax))
 ```
 
 ```
-   total_bill   tip     sex smoker  day    time  size
-0       16.99  1.01  Female     No  Sun  Dinner     2
-1       10.34  1.66    Male     No  Sun  Dinner     3
-2       21.01  3.50    Male     No  Sun  Dinner     3
-3       23.68  3.31    Male     No  Sun  Dinner     2
-4       24.59  3.61  Female     No  Sun  Dinner     4
-(244, 7)
+<class 'matplotlib.axes._axes.Axes'>
 ```
 
-Each row of `tips` is one table at a restaurant: the bill, the tip, the day, the meal, and the size of the party. Unlike the months of `flights`, the rows have no order for a line to follow.
+An **Axes** is one chart. `plot` returns the Axes it drew on, so we can store the result in a variable.
+
+---
+
+## Two Lines on One Chart: `ax`
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(flights_url)
+january = df[df["month"] == "January"]
+february = df[df["month"] == "February"]
+
+ax = january.plot(x="year", y="passengers")
+february.plot(x="year", y="passengers", ax=ax)
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-two-lines.png" width="480">
+
+</div>
+</div>
+
+Passing `ax=ax` tells `plot` to draw February on January's Axes instead of starting a new chart.
+
+---
+
+## Naming Lines: `label`
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(flights_url)
+january = df[df["month"] == "January"]
+february = df[df["month"] == "February"]
+
+ax = january.plot(x="year", y="passengers",
+                  label="January")
+february.plot(x="year", y="passengers",
+              label="February", ax=ax)
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-df-two-months.png" width="480">
+
+</div>
+</div>
+
+`label` gives each line its own name in the legend, in place of its column name.
+
+---
+
+## Yearly Totals
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(flights_url)
+yearly = df.pivot_table(
+    index="year", values="passengers",
+    aggfunc="sum")
+
+yearly.plot()
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-yearly.png" width="440">
+
+</div>
+</div>
+
+The [pivot table](15-pandas.html#71) adds up the twelve months of each year. Its index is the years, so the years are along the bottom with no `x`.
+
+---
+
+## Adding a Title
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(flights_url)
+yearly = df.pivot_table(
+    index="year", values="passengers",
+    aggfunc="sum")
+
+yearly.plot(title="Passengers per Year")
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-yearly-title.png" width="440">
+
+</div>
+</div>
+
+`title` puts a name above the chart.
+
+---
+
+## A Second Table: `weather.csv`
+
+```python
+weather_url = "https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/visualization/weather.csv"
+df = pd.read_csv(weather_url)
+print(df.head())
+print(df.shape)
+```
+
+```
+         date  precipitation  temp_max  temp_min  wind  weather
+0  2012-01-01            0.0      12.8       5.0   4.7  drizzle
+1  2012-01-02           10.9      10.6       2.8   4.5     rain
+2  2012-01-03            0.8      11.7       7.2   2.3     rain
+3  2012-01-04           20.3      12.2       5.6   4.7     rain
+4  2012-01-05            1.3       8.9       2.8   6.1     rain
+(1461, 6)
+```
+
+Each row of [`weather.csv`](https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/visualization/weather.csv) is one day in Seattle from 2012 to 2015: the rain in millimeters, the high and low in °C, the wind, and the kind of weather. Later slides leave out `weather_url` too.
 
 ---
 
@@ -226,8 +347,8 @@ Each row of `tips` is one table at a restaurant: the bill, the tip, the day, the
 <div>
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-counts = tips["day"].value_counts()
+df = pd.read_csv(weather_url)
+counts = df["weather"].value_counts()
 
 counts.plot(kind="bar")
 plt.show()
@@ -241,7 +362,7 @@ plt.show()
 </div>
 </div>
 
-A line from Sat to Sun to Thur would claim a trend from one day to the next. A bar chart draws each group on its own, here the [`value_counts`](15-pandas.html#69) of each day. `kind` picks the chart, and `plot` without it draws a line.
+`kind` picks the chart, and `plot` without it draws a line. Each bar is one kind's count from [`value_counts`](15-pandas.html#69).
 
 ---
 
@@ -251,8 +372,8 @@ A line from Sat to Sun to Thur would claim a trend from one day to the next. A b
 <div>
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-counts = tips["time"].value_counts()
+df = pd.read_csv(weather_url)
+counts = df["weather"].value_counts()
 
 counts.plot(kind="pie")
 plt.show()
@@ -266,40 +387,32 @@ plt.show()
 </div>
 </div>
 
-Bars compare the days with each other. Every table ate dinner or lunch, so a pie shows each meal's share of the whole instead. With more than a few groups, the slices are hard to compare.
+`kind="pie"` draws the same `counts` as slices. What happens if we count a number column, like `temp_max`?
 
 ---
 
-## Problem: How Many Bars?
+## Counting the Highs
+
+<div class="cols">
+<div>
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-counts = tips["total_bill"].value_counts()
+df = pd.read_csv(weather_url)
+counts = df["temp_max"].value_counts()
 
 counts.plot(kind="bar")
 plt.show()
 ```
 
-We want to see how big the bills are, as the bar chart showed how busy each day is. How many bars are there, and how tall are they?
-
----
-
-## Solution: How Many Bars?
-
-<div class="cols">
-<div>
-
-<img src="../images/viz-bill-counts.png" width="480">
-
 </div>
 <div>
 
-229 bars, one for each different bill, with their labels piled on top of each other.
-
-Nearly every bar is 1 tall: only 14 bills appear more than once. Few bills are exactly equal, so counting equal values says nothing about how big they are.
+<img src="../images/viz-high-counts.png" width="480">
 
 </div>
 </div>
+
+Each of the 67 bars is one different high, most common first, so the temperatures along the bottom jump around: 11.1, 14.4, 10.0, 12.8. How do we count the days in each range of temperatures?
 
 ---
 
@@ -309,22 +422,44 @@ Nearly every bar is 1 tall: only 14 bills appear more than once. Few bills are e
 <div>
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-bills = tips["total_bill"]
+df = pd.read_csv(weather_url)
+highs = df["temp_max"]
 
-bills.plot(kind="hist", bins=10)
+highs.plot(kind="hist", bins=10)
 plt.show()
 ```
 
 </div>
 <div>
 
-<img src="../images/viz-hist.png" width="460">
+A **histogram** counts the values that fall in each range, called a **bin**, instead of the values that are equal. `bins` sets how many ranges of the same width there are.
 
 </div>
 </div>
 
-A **histogram** counts the values that fall in each range, called a **bin**, instead of the values that are equal. `bins=10` splits the bills into ten ranges of the same width. Most bills are between $10 and $25.
+<div class="cols" style="text-align: center">
+<div>
+
+<img src="../images/viz-hist-5.png" height="190">
+
+`bins=5`
+
+</div>
+<div>
+
+<img src="../images/viz-hist.png" height="190">
+
+`bins=10`
+
+</div>
+<div>
+
+<img src="../images/viz-hist-20.png" height="190">
+
+`bins=20`
+
+</div>
+</div>
 
 ---
 
@@ -334,9 +469,9 @@ A **histogram** counts the values that fall in each range, called a **bin**, ins
 <div>
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-tips.plot(kind="scatter", x="total_bill",
-          y="tip")
+df = pd.read_csv(weather_url)
+df.plot(kind="scatter", x="temp_min",
+        y="temp_max")
 plt.show()
 ```
 
@@ -348,99 +483,7 @@ plt.show()
 </div>
 </div>
 
-A histogram spreads out one number. A scatter chart compares two numbers, with a dot for each row at its `x` and `y`. The dots rise to the right: bigger bills tend to get bigger tips.
-
----
-
-## Problem: Which Kind?
-
-Name the `kind` of chart for each question.
-
-1. How are the tips spread out? Are most near $3?
-2. Do bigger parties leave bigger tips?
-3. How many tables ate dinner, and how many ate lunch?
-4. How did the passengers in `flights` change from year to year?
-
----
-
-## Solution: Which Kind?
-
-1. `hist`: it counts how many tips fall in each range
-2. `scatter`, with `size` as `x` and `tip` as `y`
-3. `bar`, or `pie`, since there are only two groups
-4. `line`, the default, since the years run in order
-
----
-
-## Preparing the Data
-
----
-
-## Problem: What Is Drawn?
-
-```python
-flights = pd.read_csv(url + "flights.csv")
-
-flights.plot(x="year", y="passengers")
-plt.show()
-```
-
-This is the line for question 4, drawn from all of `flights`. How many points are drawn above each year?
-
----
-
-## Solution: What Is Drawn?
-
-<div class="cols">
-<div>
-
-<img src="../images/viz-flights-zigzag.png" width="480">
-
-</div>
-<div>
-
-Twelve: `flights` has a row for each month, so the line runs up and down through the months of a year before it moves on to the next.
-
-A line by year needs one row for each year, holding that year's total.
-
-</div>
-</div>
-
----
-
-## A Line for Each Year
-
-<div class="cols">
-<div>
-
-```python
-flights = pd.read_csv(url + "flights.csv")
-yearly = flights.pivot_table(
-    index="year", values="passengers",
-    aggfunc="sum")
-print(yearly.head(3))
-
-yearly.plot()
-plt.show()
-```
-
-```
-      passengers
-year
-1949        1520
-1950        1676
-1951        2042
-```
-
-</div>
-<div>
-
-<img src="../images/viz-yearly.png" width="440">
-
-</div>
-</div>
-
-A [pivot table](15-pandas.html#70) makes one row for each group, adding up the twelve months of each year. Its index is the years, so the years are along the bottom with no `x`.
+A **scatter chart** draws a dot for each row, at its `x` and `y`. How warm is each kind of weather, on average?
 
 ---
 
@@ -450,15 +493,12 @@ A [pivot table](15-pandas.html#70) makes one row for each group, adding up the t
 <div>
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-totals = tips.pivot_table(
-    index="day", columns="time",
-    values="total_bill", aggfunc="sum",
-    fill_value=0)
-week = ["Thur", "Fri", "Sat", "Sun"]
-totals = totals.loc[week]
+df = pd.read_csv(weather_url)
+temps = df.pivot_table(
+    index="weather",
+    values=["temp_min", "temp_max"])
 
-totals.plot(kind="bar")
+temps.plot(kind="bar")
 plt.show()
 ```
 
@@ -470,177 +510,269 @@ plt.show()
 </div>
 </div>
 
-A bar chart gives each column its own bars, side by side in each group, and a name in the legend. `pivot_table` sorts the days by name, so `loc` with a list of labels puts them in the week's order.
+[`pivot_table` takes the `mean`](15-pandas.html#71) when no `aggfunc` is given.
 
 ---
 
-## Problem: Tips by Party Size
-
-Question 2 asked whether bigger parties leave bigger tips, but a scatter chart stacks the dots in six columns. Read `tips.csv` from the web and draw the average tip for each party size as a bar chart.
-
-<img src="../images/viz-size-problem.png" width="440">
-
----
-
-## Solution: Tips by Party Size
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-by_size = tips.pivot_table(index="size", values="tip")
-
-by_size.plot(kind="bar")
-plt.show()
-```
-
-`pivot_table` takes the `mean` with no `aggfunc`. The sizes are numbers, so sorting the index puts them in order and `loc` is not needed.
-
-The chart answers the question, but it names things after columns, `size` along the bottom and `tip` in the legend, its labels lie on their side, and nothing says what the bars are.
-
----
-
-## Refining a Chart
-
----
-
-## Titles and Labels
+## Axis Labels: `xlabel` and `ylabel`
 
 <div class="cols">
 <div>
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-by_size = tips.pivot_table(index="size",
-                           values="tip")
+df = pd.read_csv(weather_url)
+temps = df.pivot_table(
+    index="weather",
+    values=["temp_min", "temp_max"])
 
-by_size.plot(kind="bar",
-             title="Bigger Parties Tip More",
-             xlabel="Party size",
-             ylabel="Average tip ($)")
+temps.plot(kind="bar", xlabel="Weather",
+           ylabel="Celsius")
 plt.show()
 ```
 
 </div>
 <div>
 
-<img src="../images/viz-size-labels.png" width="460">
+<img src="../images/viz-pivot-labels.png" width="440">
 
 </div>
 </div>
 
-A title that says what the chart shows tells the reader what to look for, and `xlabel` and `ylabel` replace the column names. The legend and the sideways labels are still there.
+`xlabel` names the axis along the bottom, and `ylabel` names the axis up the side.
 
 ---
 
-## Legend, Rotation, Color, and Size
+## Rotation, Color, and Size
 
 <div class="cols">
 <div>
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-by_size = tips.pivot_table(index="size",
-                           values="tip")
+df = pd.read_csv(weather_url)
+temps = df.pivot_table(
+    index="weather",
+    values=["temp_min", "temp_max"])
 
-by_size.plot(kind="bar", legend=False,
-             rot=0, color="seagreen",
-             figsize=(8, 4),
-             title="Bigger Parties Tip More",
-             xlabel="Party size",
-             ylabel="Average tip ($)")
+temps.plot(kind="bar", xlabel="Weather",
+           ylabel="Celsius", rot=0,
+           color=["tomato", "steelblue"],
+           figsize=(8, 4))
 plt.show()
 ```
 
 </div>
 <div>
 
-<img src="../images/viz-size-style.png" width="480">
+<img src="../images/viz-weather-style.png" width="480">
 
 </div>
 </div>
 
-- `legend=False`: one set of bars needs no name, since the title gives it
 - `rot`: how many degrees to turn the labels along the bottom; `0` keeps them flat
-- `color`: a [color name](https://matplotlib.org/stable/gallery/color/named_colors.html) or a code like `"#2e8b57"`
+- `color`: a [color name](https://matplotlib.org/stable/gallery/color/named_colors.html) or a code like `"#2e8b57"`; a list gives each column its own, in order
 - `figsize`: the width and height, in inches, as a tuple
+
+---
+
+## Renaming the Legend: `ax.legend`
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(weather_url)
+temps = df.pivot_table(
+    index="weather",
+    values=["temp_min", "temp_max"])
+
+ax = temps.plot(kind="bar", xlabel="Weather",
+                ylabel="Celsius", rot=0,
+                color=["tomato", "steelblue"],
+                figsize=(8, 4),
+                title="Seattle Temperatures")
+ax.legend(["Max temperature",
+           "Min temperature"])
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-legend-names.png" width="480">
+
+</div>
+</div>
+
+`ax.legend` names the columns in the table's order: `temp_max`, then `temp_min`. Without `y`, a list given to `label` is ignored. How do we put the highs and the lows side by side?
 
 ---
 
 ## Two Charts Side by Side: `subplots`
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
+df = pd.read_csv(weather_url)
 fig, (left, right) = plt.subplots(1, 2, figsize=(10, 4))
-tips["total_bill"].plot(kind="hist", bins=10, ax=left, title="Bills")
-tips["tip"].plot(kind="hist", bins=10, ax=right, title="Tips")
-fig.tight_layout()
+df["temp_max"].plot(kind="hist", bins=10, ax=left, title="Highs")
+df["temp_min"].plot(kind="hist", bins=10, ax=right, title="Lows")
 plt.show()
 ```
 
-<img src="../images/viz-subplots.png" width="700">
+<div class="cols">
+<div>
 
-`plot` draws on a Matplotlib **Axes**, which holds one chart. `subplots(1, 2)` makes a **figure**, the whole window, with 1 row of 2 Axes. `ax` tells `plot` which one to draw on, and `tight_layout` keeps their labels from overlapping.
+<img src="../images/viz-subplots.png" width="560">
+
+</div>
+<div>
+
+`subplots(1, 2)` returns a **figure**, the whole window, and its 1 row of 2 Axes, which `(left, right)` [unpacks](09-changing-lists.html#39). `ax` picks the Axes to draw on, [as it did for February](16-visualization.html#10).
+
+</div>
+</div>
 
 ---
 
-## Saving a Chart: `savefig`
+## Stacking Charts: `subplots(2, 1)`
+
+<div class="cols">
+<div>
 
 ```python
-tips = pd.read_csv(url + "tips.csv")
-tips.plot(kind="scatter", x="total_bill", y="tip")
-plt.savefig("tips.png")
-```
-
-A chart in a window is gone once we close it. `savefig` writes it to a file, to put in a report or a web page. The ending picks the format: `.png`, `.jpg`, `.svg`, or `.pdf`.
-
----
-
-## Problem: Smokers' Tips
-
-Do smokers tip more? Read `tips.csv` from the web and draw this chart. Each day has two bars: the average tip from smokers and from non-smokers.
-
-<img src="../images/viz-refine-problem.png" width="480">
-
----
-
-## Solution: Smokers' Tips
-
-```python
-tips = pd.read_csv(url + "tips.csv")
-smokers = tips.pivot_table(index="day", columns="smoker", values="tip")
-smokers = smokers.loc[["Thur", "Fri", "Sat", "Sun"]]
-
-smokers.plot(kind="bar", rot=0, title="Average Tip by Day",
-             xlabel="", ylabel="Tip ($)")
+df = pd.read_csv(weather_url)
+fig, (top, bottom) = plt.subplots(
+    2, 1, figsize=(6, 8))
+df["temp_max"].plot(kind="hist", bins=10,
+                    ax=top, title="Highs")
+df["temp_min"].plot(kind="hist", bins=10,
+                    ax=bottom, title="Lows")
 plt.show()
 ```
 
-`columns="smoker"` gives the `No` and `Yes` bars, and this time the legend stays to name them. `loc` puts the days in order, `rot=0` keeps their names flat, and `xlabel=""` drops `day`, which the title already says.
+`subplots(2, 1)` makes 2 rows of 1 Axes, and `figsize=(6, 8)` makes the figure taller than it is wide.
+
+</div>
+<div>
+
+<img src="../images/viz-subplots-stacked.png" height="420">
+
+</div>
+</div>
 
 ---
 
-## Charts in Streamlit
+## A Grid of Charts: `subplots(2, 2)`
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(weather_url)
+fig, axes = plt.subplots(
+    2, 2, figsize=(11, 8))
+df["temp_max"].plot(
+    kind="hist", ax=axes[0][0], title="Highs")
+df["temp_min"].plot(
+    kind="hist", ax=axes[0][1], title="Lows")
+df["wind"].plot(
+    kind="hist", ax=axes[1][0], title="Wind")
+df["precipitation"].plot(
+    kind="hist", ax=axes[1][1], title="Rain")
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-subplots-grid.png" height="380">
+
+</div>
+</div>
+
+`subplots(2, 2)` returns its 4 Axes as 2 rows of 2, so `axes[1][0]` is [row 1, column 0](09-changing-lists.html#30): the bottom left.
 
 ---
 
-## `st.pyplot`
+## Charts in Streamlit: `st.pyplot`
 
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
 
-url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/"
-tips = pd.read_csv(url + "tips.csv")
-week = ["Thur", "Fri", "Sat", "Sun"]
+weather_url = "https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/visualization/weather.csv"
+df = pd.read_csv(weather_url)
 
-split = st.selectbox("Split each day by", ["smoker", "sex", "time"])
-means = tips.pivot_table(index="day", columns=split, values="tip")
+column = st.selectbox("Column", ["temp_max", "temp_min", "wind", "precipitation"])
 fig, ax = plt.subplots()
-means.loc[week].plot(kind="bar", rot=0, ylabel="Tip ($)", ax=ax)
+df[column].plot(kind="hist", bins=10, ax=ax, title=column)
 st.pyplot(fig)
 ```
 
-Smokers' Tips split each day by `smoker`, and this app lets the reader pick the split. [Streamlit](14-streamlit.html) shows the figure from `subplots` on the page with `st.pyplot`, in place of `plt.show()`. Picking a new split reruns the script and redraws the chart.
+`st.pyplot` shows a figure from `subplots` on a [Streamlit](14-streamlit.html) page, in place of `plt.show()`. Picking a new column reruns the script and redraws the histogram.
+
+---
+
+## Saving a Chart: `savefig`
+
+```python
+df = pd.read_csv(weather_url)
+df.plot(kind="scatter", x="temp_min", y="temp_max")
+plt.savefig("temps.png")
+```
+
+`savefig` writes the chart to a file, and the extension (`.png`, `.jpg`, `.svg`, or `.pdf`) picks the format. Call it before `plt.show()`; after the window closes, `savefig` saves a blank image.
+
+---
+
+## Problem: Windy Weather
+
+<div class="cols">
+<div>
+
+Which kind of weather is the windiest? Read `weather.csv` from the web and draw a bar chart of the average wind for each kind, with:
+
+- a title of your choice
+- a color other than the default blue
+- no legend: set `legend` to `False`
+- flat names along the bottom: set `rot` to `0`
+- "Average wind" up the side, and no label along the bottom: set `xlabel` to `""`
+
+</div>
+<div style="text-align: center">
+
+<img src="../images/viz-refine-norot.png" width="440">
+
+The default chart, for comparison
+
+</div>
+</div>
+
+---
+
+## Solution: Windy Weather
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(weather_url)
+wind = df.pivot_table(index="weather",
+                      values="wind")
+
+wind.plot(kind="bar", rot=0, legend=False,
+          color="seagreen",
+          title="Snow Days Are the Windiest",
+          xlabel="", ylabel="Average wind")
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-refine-solution.png" width="440">
+
+</div>
+</div>
 
 ---
 
