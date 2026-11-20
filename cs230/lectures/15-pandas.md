@@ -625,7 +625,7 @@ hour,temp
 import pandas as pd
 
 df = pd.read_csv("readings.csv",
-                       comment="#")
+                 comment="#")
 print(df)
 ```
 
@@ -640,7 +640,7 @@ print(df)
 </div>
 </div>
 
-`comment="#"` skips everything from `#` to the end of the line, as Python does with its own comments. Without it, `read_csv` raises a `ParserError` on the first line.
+`comment="#"` skips everything from `#` to the end of the line, as Python does with its own comments. Without it, the first line becomes a one-column header, and `read_csv` raises a `ParserError` at `hour,temp`, which has two fields.
 
 ---
 
@@ -803,7 +803,7 @@ Name: 2023-01-03, dtype: object
 </div>
 </div>
 
-With the dates as the index, the labels are dates, so `loc` takes a date. The row is named by its label, `2023-01-03`.
+With `date` as the index, the labels are the dates, read as strings, so `loc` takes a string like `"2023-01-03"`. The row is named by its label.
 
 ---
 
@@ -846,8 +846,6 @@ date
 
 `iloc` counts positions from 0, whatever the labels, and [slices](09-changing-lists.html#3) like a list. `date` is the index, so `product` is column 0.
 
-
-
 ---
 
 ## Sorting by Label: `sort_index`
@@ -871,7 +869,6 @@ Linus      100
 ```
 
 `sort_index` sorts the rows by label, so the names are now in alphabetical order.
-
 
 ---
 
@@ -916,15 +913,15 @@ print(df.sort_index().iloc[-1, 0])
 100
 ```
 
-`name` is the index, so `score` is column 0. The slice runs from Grace to Linus in file order and includes Linus. Sorted by name, Linus comes last.
+`name` is the index, so `score` is column 0. `iloc` counts in file order, so row 1 is Grace. Sorted by name, Linus comes last.
 
 ---
 
 ## Problem: One Product's Sales
 
 ```python
-# Read data/sales.csv. Print every P-01 sale, then the
-# total quantity of P-01.
+# Read data/sales.csv with the products as the index. Print
+# every P-01 sale, then the total quantity of P-01.
 ```
 
 ```
@@ -940,9 +937,6 @@ Total quantity: 10
 
 ## Solution: One Product's Sales
 
-<div class="cols">
-<div>
-
 ```python
 path = os.path.join("data", "sales.csv")
 df = pd.read_csv(path, index_col="product")
@@ -952,22 +946,7 @@ print(p01)
 print(f"Total quantity: {p01.quantity.sum()}")
 ```
 
-</div>
-<div>
-
-```python
-path = os.path.join("data", "sales.csv")
-df = pd.read_csv(path)
-
-p01 = df[df["product"] == "P-01"]
-print(p01)
-print(f"Total quantity: {p01.quantity.sum()}")
-```
-
-</div>
-</div>
-
-`p01.quantity` works like `p01['quantity']`, but we can't use `df.product`, because [`product`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.product.html) is already a DataFrame method.
+`p01.quantity` works like `p01["quantity"]`, but we can't use `df.product`, because [`product`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.product.html) is already a DataFrame method.
 
 ---
 
@@ -989,7 +968,7 @@ print(df[df["quantity"] > 2])
 3    P-02  2023-01-04  10.60         3
 ```
 
-`df["quantity"] > 2` is a Series of `True` and `False`, one for each row. The table keeps the rows marked `True`, as [a Series did](#9).
+`df["quantity"] > 2` is a Series of `True` and `False`, one for each row. The table keeps the rows marked `True`, as [a Series did](#9). `df[df["product"] == "P-01"]` finds the P-01 sales without `index_col`.
 
 ---
 
@@ -1295,7 +1274,7 @@ df.to_csv(os.path.join("data", "new_sales.csv"))
 
 ```python
 df = pd.read_csv(os.path.join("data", "sales.csv"))
-## modifications...
+# modifications...
 df.to_csv(os.path.join("data", "new_sales.csv"), index=False)
 ```
 
@@ -1431,7 +1410,7 @@ P-02            5
 ```python
 df = pd.read_csv(os.path.join("data", "sales.csv"))
 print(df.pivot_table(index="date", columns="product",
-                        values="quantity", aggfunc="sum", fill_value=0))
+                     values="quantity", aggfunc="sum", fill_value=0))
 ```
 
 ```
@@ -1454,7 +1433,7 @@ date
 ```python
 df = pd.read_csv(os.path.join("data", "sales.csv"))
 print(df.pivot_table(index="product", values="quantity",
-                        aggfunc=lambda q: q.max() - q.min()))
+                     aggfunc=lambda q: q.max() - q.min()))
 ```
 
 ```
