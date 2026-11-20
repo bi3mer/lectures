@@ -101,8 +101,8 @@ Hopper handed out pieces of wire about 30 cm (11.8 inches) long, the distance li
 # Where They Fit in Lecture 16
 
 - **[Validation](lecture.html#2).** Babbage's memoir (1864) has the line: "On two occasions I have been asked, 'Pray, Mr. Babbage, if you put into the machine wrong figures, will the right answers come out?'" A machine cannot fix bad input, which is why forms check it before it gets that far. The slide's bad email is already `ada@school`.
-- **The Predict slides.** Note G's swapped V4 and V5 went unnoticed because nobody could run the program. The Predict slides make the same point about patterns: test them on input that should fail as well as input that should pass.
-- **[Checking an Email](lecture.html#31).** Hopper wanted programs to read like English, and `/^[^ @]+@[^ @]+\.[^ @]+$/` reads like the opposite. The table under the regex, which spells out each piece in words, is the kind of explanation she argued for.
+- **[The Predict slide](lecture.html#22).** Note G's swapped V4 and V5 went unnoticed because nobody could run the program. The Predict slide makes the same point about patterns: test them on input that should fail as well as input that should pass.
+- **[Checking an Email](lecture.html#25).** Hopper wanted programs to read like English, and `/^[^ @]+@[^ @]+\.[^ @]+$/` reads like the opposite. The table under the regex, which spells out each piece in words, is the kind of explanation she argued for.
 
 # Sources
 

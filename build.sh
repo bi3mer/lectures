@@ -125,11 +125,13 @@ done
 # data/ folder inside it: Finder unzips data.zip into a folder named data, and
 # Windows' Extract All suggests one, so either way students get one data folder.
 # A data/ folder inside would give them data/data/ on Windows. The data page's
-# Markdown stays out.
+# Markdown stays out, and so does cs230/data/visualization: the visualization
+# deck reads those files from GitHub, and the os module deck lists the zip's
+# folders by name.
 for dir in */data; do
   [[ -d "$dir" ]] || continue
   rm -f "$out/$dir.zip"
-  (cd "$dir" && zip -q -r -X "$repo/$out/$dir.zip" . -x '*.md' '*.DS_Store')
+  (cd "$dir" && zip -q -r -X "$repo/$out/$dir.zip" . -x '*.md' '*.DS_Store' 'visualization/*')
 done
 
 is_skipped() {
