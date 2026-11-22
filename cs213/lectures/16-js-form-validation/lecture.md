@@ -27,8 +27,6 @@ Colan Biemer
 table { font-size: 0.75em; }
 </style>
 
-[Say Hello](../15-js-events/lecture.html#61) greets an empty box with `Hello, `. A form submits whatever is typed, like these:
-
 <center>
 
 | Box   | Typed        | What's wrong         |

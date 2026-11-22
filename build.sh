@@ -3,21 +3,18 @@
 #
 # Every file is copied over as is, except Markdown:
 #   - a file whose front matter says `marp: true` becomes a slide deck (Marp),
-#     plus a PDF of the deck for students to download
+#     plus a plain Markdown copy of the deck for students to download
 #   - any other Markdown file becomes a web page (pandoc, templates/page.html)
 # Either way, foo.md becomes foo.html next to where foo.md was, so links like
-# `lectures/03-css-intro/lecture.html` in the index pages work. A deck's PDF
-# is foo.pdf.
+# `lectures/03-css-intro/lecture.html` in the index pages work. A deck's
+# Markdown copy is foo.md, which templates/deck-to-markdown.lua makes.
 #
 # A course's data folder also becomes a zip next to it (cs230/data/ becomes
 # cs230/data.zip), so students can download every data file at once.
 #
-# Needs pandoc, Node, zip, and Chrome or Chromium, which Marp prints the PDFs with.
-# If Marp can't find the browser, point CHROME_PATH at it. Run it from anywhere:
+# Needs pandoc, Node, and zip. Run it from anywhere:
 #   ./build.sh                              rebuild the whole site from scratch
 #   ./build.sh cs230/string-cheatsheet.md   rebuild only the named files
-#   ./build.sh --no-pdf [files]             either one, without the decks' PDFs,
-#                                           which take the longest to make
 #
 # Files build 4 at a time. Set JOBS to change that, e.g. JOBS=1 ./build.sh.
 set -euo pipefail
@@ -26,13 +23,8 @@ repo=$(cd "$(dirname "$0")" && pwd)
 
 # Named files, as paths from the repo root. Resolve them before the cd below,
 # so paths relative to wherever the script was run from still work.
-pdf=1
 targets=()
 for arg in "$@"; do
-  if [[ "$arg" == --no-pdf ]]; then
-    pdf=0
-    continue
-  fi
   if [[ "$arg" != *.md || ! -f "$arg" ]]; then
     echo "error: $arg is not a Markdown file" >&2
     exit 1
@@ -148,23 +140,23 @@ build_one() {
   local kind=$1 md=$2
   local html="$out/${md%.md}.html"
 
-  if [[ "$kind" == pdf ]]; then
-    echo "pdf     $md"
-    # The PDF uses the black-and-white theme (themes/lecture-print.css) in
-    # place of the deck's own.
-    #
-    # --base-url makes a link like `08-lists.html#27` in the PDF open the live
-    # site. Without it, the link points at the file on the computer that ran
-    # the build. Relative image paths resolve against the same URL, so the
-    # PDF's images come from the last deploy, not from this checkout: a new or
-    # changed image shows up in the PDF one deploy late, and a build with no
-    # network gets broken-image icons.
-    local log
-    if ! log=$(run_marp --no-stdin --no-config-file --html --theme-set themes --theme lecture-print --pdf --base-url "$site/$(dirname "$md")/" -o "${html%.html}.pdf" "$md" 2>&1); then
-      echo "error: marp failed to make a PDF of $md" >&2
-      echo "$log" >&2
+  if [[ "$kind" == markdown ]]; then
+    echo "md      $md"
+    # A plain Markdown copy of the deck, with no HTML in it. The awk cuts off
+    # the front matter, and the filter's comments list the other changes.
+    # Pandoc's YAML reading stays off: it would take a `---` slide break with
+    # text right under it for the start of more front matter.
+    awk 'NR == 1 && /^---$/ { fm = 1; next } fm && /^---$/ { fm = 0; next } !fm' "$md" |
+      pandoc \
+        --from gfm-yaml_metadata_block \
+        --to gfm-raw_html \
+        --wrap=none \
+        --lua-filter templates/deck-to-markdown.lua \
+        --metadata page="$site/${md%.md}.html" \
+        --output "$out/$md" || {
+      echo "error: pandoc failed to make a Markdown copy of $md" >&2
       return 1
-    fi
+    }
     return 0
   fi
 
@@ -239,21 +231,15 @@ if (( ${#slides[@]} > 0 )); then
   }
 fi
 
-# PDFs and then decks go first since they take longest. xargs finishes the
-# other files after a failure, then exits non-zero.
+# Decks go first since they take longest. xargs finishes the other files
+# after a failure, then exits non-zero.
 {
-  if (( pdf )); then
-    for md in ${slides[@]+"${slides[@]}"}; do printf 'pdf\0%s\0' "$md"; done
-  fi
   for md in ${slides[@]+"${slides[@]}"}; do printf 'slides\0%s\0' "$md"; done
+  for md in ${slides[@]+"${slides[@]}"}; do printf 'markdown\0%s\0' "$md"; done
   for md in ${pages[@]+"${pages[@]}"}; do printf 'page\0%s\0' "$md"; done
 } | xargs -0 -n 2 -P "$workers" bash -c 'set -euo pipefail; build_one "$@"' _ || {
   echo "error: build failed, see the errors above" >&2
   exit 1
 }
 
-if (( pdf )); then
-  echo "built ${#slides[@]} slide decks (each with a PDF) and ${#pages[@]} pages into $out/"
-else
-  echo "built ${#slides[@]} slide decks (no PDFs) and ${#pages[@]} pages into $out/"
-fi
+echo "built ${#slides[@]} slide decks (each with a Markdown copy) and ${#pages[@]} pages into $out/"

@@ -39,7 +39,7 @@ scores = [90, 85, 77, 100, 68]
 </center>
 <br/>
 
-`scores` holds all five scores, in order. Square brackets go around the values, with commas between them. Each value is an **item**. The textbook also calls them **elements**.
+`scores` holds all five scores, in order. Square brackets go around the values, with commas between them. Each value is an **item**. (You may also here the term **element** used to refer to the same idea.)
 
 ---
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Serve the site from _site/ and rebuild it as files change, with the browser
-# reloading on its own after each rebuild. A dev version of build.sh: no PDFs.
+# reloading on its own after each rebuild.
 #
 #   ./dev.sh          build the site if _site/ is missing, then watch
 #   ./dev.sh --fresh  rebuild the whole site first, e.g. after a git pull
@@ -8,7 +8,7 @@
 # Then open http://localhost:3000. Stop it with Ctrl-C.
 #
 # What a change rebuilds:
-#   - a Markdown file: that file, through ./build.sh --no-pdf
+#   - a Markdown file: that file, through ./build.sh
 #   - anything in themes/: every deck, since each one embeds its theme
 #   - any other file (images, data, CSS): copied into _site/ as is
 # A draft in build.sh's skip list gets built when you save it. That only
@@ -24,7 +24,7 @@ out=_site
 port=${PORT:-3000}
 
 if [[ "${1:-}" == --fresh || ! -d "$out" ]]; then
-  ./build.sh --no-pdf || echo "warning: the first build had errors, watching anyway" >&2
+  ./build.sh || echo "warning: the first build had errors, watching anyway" >&2
 fi
 
 # Every slide deck, as paths from the repo root.
@@ -66,7 +66,7 @@ rebuild() {
 
   # build.sh copies the other files too, so a Markdown build covers assets.
   if (( ${#mds[@]} > 0 )); then
-    ./build.sh --no-pdf "${mds[@]}" || echo "error: rebuild failed, fix it and save again" >&2
+    ./build.sh "${mds[@]}" || echo "error: rebuild failed, fix it and save again" >&2
   elif (( assets )); then
     echo "copy    other files"
     sync_assets
