@@ -778,5 +778,5 @@ plt.show()
 
 ## Next Up: Pandas for Data Preparation
 
-- Cleaning messy data before we chart it
+- [Pandas for Data Preparation](17-data-preparation.html)
 - The pandas [chart guide](https://pandas.pydata.org/docs/user_guide/visualization.html) shows every `kind`
