@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign Up</title>
+    <style>
+      :root {
+        --bg: #064f6e;
+        --text: #f5ecc2;
+        --accent: #f99d1b;
+        --secondary: #a8c1cc;
+        --rule: #38728b;
+        --card: #032837;
+        color-scheme: dark;
+      }
+
+      body {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 16px;
+        font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+      }
+
+      h1 {
+        border-bottom: 4px solid var(--accent);
+        padding-bottom: 8px;
+      }
+
+      form {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 12px 16px;
+        align-items: center;
+      }
+
+      #password-hint,
+      button {
+        grid-column: 2;
+      }
+
+      #password-hint {
+        margin: 0;
+      }
+
+      input {
+        font: inherit;
+        padding: 6px 8px;
+        border: 2px solid var(--rule);
+        border-radius: 4px;
+        background-color: var(--card);
+        color: var(--text);
+      }
+
+      input:user-invalid {
+        border-color: tomato;
+      }
+
+      input:user-valid {
+        border-color: seagreen;
+      }
+
+      button {
+        justify-self: start;
+        font: inherit;
+        font-weight: bold;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        background-color: var(--accent);
+        color: var(--card);
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sign Up</h1>
+
+    <form id="signup">
+      <label for="username">Username</label>
+      <input id="username" required minlength="3" maxlength="12" />
+
+      <label for="email">Email</label>
+      <input id="email" type="email" required />
+
+      <label for="age">Age</label>
+      <input id="age" type="number" min="13" max="120" required />
+
+      <label for="password1">Password</label>
+      <input id="password1" type="password" required minlength="8" />
+      <p id="password-hint" style="color: red"></p>
+
+      <label for="password2">Password again</label>
+      <input id="password2" type="password" required />
+
+      <button>Sign Up</button>
+    </form>
+
+    <script src="signup.js"></script>
+  </body>
+</html>

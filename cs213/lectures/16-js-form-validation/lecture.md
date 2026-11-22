@@ -22,6 +22,12 @@ Colan Biemer
 
 ---
 
+## What We Are Making
+
+[A sign-up form](examples/index.html) that checks every box before it submits.
+
+---
+
 ## Validation
 
 <style scoped>
@@ -132,7 +138,9 @@ Again, there is an easier way!
 <p class="caption">Page</p>
 <form class="demo signup" onsubmit="return false"><label for="demo8-username">Username</label> <input id="demo8-username" required minlength="3" maxlength="12" /> <button>Sign Up</button></form>
 
-[`maxlength`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/maxlength) stops typing at 12 characters, and [`minlength`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/minlength) fails a value under 3. Both pass an empty box, unless it's also `required`.
+- [`minlength`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/minlength) requires a minimum length of input.
+- [`maxlength`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/maxlength) requires a max length and prevents extra input.
+- Without `required`, an empty box still submits.
 
 ---
 
@@ -222,8 +230,8 @@ A `number` box also fails `13.5`, since it steps by 1 from `min`.
 
 <!-- prettier-ignore -->
 ```html
-<label for="password">Password</label>
-<input id="password" type="password" />
+<label for="password1">Password</label>
+<input id="password1" type="password" />
 ```
 
 ```text
@@ -236,12 +244,8 @@ make it required, with at least 8 characters
 ## Solution: Password
 
 ```html
-<input id="password" type="password" required minlength="8" />
+<input id="password1" type="password" required minlength="8" />
 ```
-
-The `:user-invalid` rule already covers every box, so `cat` turns red once we leave it.
-
-How can JavaScript tell which rule a box failed?
 
 ---
 
@@ -289,16 +293,7 @@ table { margin: 0 auto; }
 ## Problem: Password Hint
 
 ```html
-<p id="password-hint"></p>
-```
-
-```text
-add the paragraph under Password
-when something is typed in Password
-  if it is too short
-    show "Use at least 8 characters" in the paragraph
-  otherwise
-    empty the paragraph
+<p id="password-hint" style="color: red"></p>
 ```
 
 <p class="caption">Page, after typing cat in Password</p>
@@ -307,16 +302,18 @@ when something is typed in Password
 Use at least 8 characters
 ```
 
+Put the paragraph below Password. Then, on each `input` in Password, show "Use at least 8 characters" in the hint while `validity.tooShort` is true, and empty it otherwise.
+
 ---
 
 ## Solution: Password Hint
 
 ```js
-const password = document.getElementById("password");
+const password1 = document.getElementById("password1");
 const hint = document.getElementById("password-hint");
 
-password.addEventListener("input", () => {
-  if (password.validity.tooShort) {
+password1.addEventListener("input", () => {
+  if (password1.validity.tooShort) {
     hint.textContent = "Use at least 8 characters";
   } else {
     hint.textContent = "";
@@ -413,16 +410,14 @@ document.getElementById("username").addEventListener("input", (event) => {
 });
 ```
 
-Without the `else`, fixing `ada lovelace` to `adalovelace` still fails, since the old message stays set.
-
 ---
 
 ## Problem: Confirm Password
 
 <!-- prettier-ignore -->
 ```html
-<label for="again">Password again</label>
-<input id="again" type="password" required />
+<label for="password2">Password again</label>
+<input id="password2" type="password" required />
 ```
 
 Add Password again under the hint. On each input in it, set the message "Passwords don't match" while it differs from Password, and clear it otherwise.
@@ -438,27 +433,27 @@ Passwords don't match
 ## Solution: Confirm Password
 
 ```js
-const again = document.getElementById("again");
+const password2 = document.getElementById("password2");
 
-again.addEventListener("input", () => {
-  if (again.value !== document.getElementById("password").value) {
-    again.setCustomValidity("Passwords don't match");
+password2.addEventListener("input", () => {
+  if (password2.value !== document.getElementById("password1").value) {
+    password2.setCustomValidity("Passwords don't match");
   } else {
-    again.setCustomValidity("");
+    password2.setCustomValidity("");
   }
 });
 ```
 
-Only `again` listens, so changing the password box afterward doesn't recheck the match.
+Only `password2` listens, so changing the password box afterward doesn't recheck the match.
 
 ---
 
 ## `customError`
 
 ```js
-again.addEventListener("change", () => {
-  console.log(again.validity.customError);
-  console.log(again.validity.valid);
+password2.addEventListener("change", () => {
+  console.log(password2.validity.customError);
+  console.log(password2.validity.valid);
 });
 ```
 
@@ -469,19 +464,19 @@ true
 false
 ```
 
-A `setCustomValidity` message turns on the [`customError`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/customError) check in [`validity`](lecture.html#16), so `valid` is `false` like any other failed check.
+A `setCustomValidity` message turns on the [`customError`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/customError) check in [`validity`](lecture.html#17), so `valid` is `false` like any other failed check.
 
 ---
 
-## Predict: Can the Server Trust It?
+## Can the Server Trust Submitted Form Data?
 
 When the form submits, does the server always get valid data?
 
 ---
 
-## Answer: Can the Server Trust It?
+## No
 
-No. Anyone can delete `required` in DevTools, or send data to the server without a browser. Checks in the browser help the person typing, but the server has to check everything again.
+Anyone can change the webpage in DevTools or send data the server without a browser. Checks in the browser help the user, but the server has to validate everything.
 
 ---
 
