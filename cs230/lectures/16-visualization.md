@@ -483,7 +483,7 @@ plt.show()
 </div>
 </div>
 
-A **scatter chart** draws a dot for each row, at its `x` and `y`. How warm is each kind of weather, on average?
+A **scatter chart** draws a dot for each row, at its `x` and `y`.
 
 ---
 
@@ -542,7 +542,64 @@ plt.show()
 
 ---
 
-## Rotation, Color, and Size
+## Rotating Labels: `rot`
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(weather_url)
+temps = df.pivot_table(
+    index="weather",
+    values=["temp_min", "temp_max"])
+
+temps.plot(kind="bar", xlabel="Weather",
+           ylabel="Celsius", rot=0)
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-weather-rot.png" width="440">
+
+</div>
+</div>
+
+`rot` is how many degrees to turn the labels along the bottom. `0` keeps them flat.
+
+---
+
+## Colors: `color`
+
+<div class="cols">
+<div>
+
+```python
+df = pd.read_csv(weather_url)
+temps = df.pivot_table(
+    index="weather",
+    values=["temp_min", "temp_max"])
+
+temps.plot(kind="bar", xlabel="Weather",
+           ylabel="Celsius", rot=0,
+           color=["tomato", "steelblue"])
+plt.show()
+```
+
+</div>
+<div>
+
+<img src="../images/viz-weather-color.png" width="440">
+
+</div>
+</div>
+
+A `color` is a [color name](https://matplotlib.org/stable/gallery/color/named_colors.html) or a code like `"#2e8b57"`. A list gives each column its own, in order.
+
+---
+
+## Size: `figsize`
 
 <div class="cols">
 <div>
@@ -568,9 +625,7 @@ plt.show()
 </div>
 </div>
 
-- `rot`: how many degrees to turn the labels along the bottom; `0` keeps them flat
-- `color`: a [color name](https://matplotlib.org/stable/gallery/color/named_colors.html) or a code like `"#2e8b57"`; a list gives each column its own, in order
-- `figsize`: the width and height, in inches, as a tuple
+`figsize` is the width and height, in inches, as a tuple.
 
 ---
 
@@ -735,7 +790,7 @@ Which kind of weather is the windiest? Read `weather.csv` from the web and draw 
 - a color other than the default blue
 - no legend: set `legend` to `False`
 - flat names along the bottom: set `rot` to `0`
-- "Average wind" up the side, and no label along the bottom: set `xlabel` to `""`
+- "Average wind" up the side; set `xlabel` to `""`
 
 </div>
 <div style="text-align: center">
