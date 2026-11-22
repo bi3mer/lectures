@@ -249,6 +249,25 @@ plt.show()'''
 
 # ----- Refining a Chart
 
+snips["weather-rot"] = '''df = pd.read_csv(weather_url)
+temps = df.pivot_table(
+    index="weather",
+    values=["temp_min", "temp_max"])
+
+temps.plot(kind="bar", xlabel="Weather",
+           ylabel="Celsius", rot=0)
+plt.show()'''
+
+snips["weather-color"] = '''df = pd.read_csv(weather_url)
+temps = df.pivot_table(
+    index="weather",
+    values=["temp_min", "temp_max"])
+
+temps.plot(kind="bar", xlabel="Weather",
+           ylabel="Celsius", rot=0,
+           color=["tomato", "steelblue"])
+plt.show()'''
+
 snips["weather-style"] = '''df = pd.read_csv(weather_url)
 temps = df.pivot_table(
     index="weather",
