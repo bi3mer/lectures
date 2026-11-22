@@ -1771,3 +1771,51 @@ date,precipitation,temp_max,temp_min,wind,weather
 ```
 
 </details>
+
+## The `data/preparation` Folder
+
+From [Pandas for Data Preparation](../lectures/17-data-preparation.html), which reads these files from the course's GitHub repository. They are not in `data.zip`. The café and its orders are made up, with mistakes put in on purpose for the deck to find and fix.
+
+<details>
+<summary><code>customers.csv</code><a class="download" href="preparation/customers.csv" download title="Download customers.csv" aria-label="Download customers.csv"><svg><use href="#download-icon" /></svg></a></summary>
+
+```
+customer,name,email
+C01,  ada lovelace,ada@example.com
+C02,GRACE HOPPER,grace@example.com
+C03,Alan Turing ,alan.example.com
+C04,barbara liskov,barbara@example.com
+C06,Linus Torvalds,linus@example.com
+```
+
+</details>
+
+<details>
+<summary><code>monthly.csv</code><a class="download" href="preparation/monthly.csv" download title="Download monthly.csv" aria-label="Download monthly.csv"><svg><use href="#download-icon" /></svg></a></summary>
+
+```
+item,Sep,Oct,Nov
+coffee,410,385,442
+tea,120,135,160
+cocoa,40,95,180
+```
+
+</details>
+
+<details>
+<summary><code>orders.csv</code><a class="download" href="preparation/orders.csv" download title="Download orders.csv" aria-label="Download orders.csv"><svg><use href="#download-icon" /></svg></a></summary>
+
+```
+order_id,date,customer,item,size,quantity,price,total
+1001,2026-09-01,C01,coffee,small,2,3.00,6.00
+1002,2026-09-01,C02,Tea,medium,1,2.75,2.75
+1003,2026-09-02,C03, latte ,large,1,$4.75,4.75
+1004,2026-09-02,C01,coffee,Large,-1,3.50,-3.50
+1005,2026-09-31,C04,cocoa,small,two,2.50,5.00
+1006,2026-09-03,C02,latte,med,1,4.25,4.25
+1006,2026-09-03,C02,latte,med,1,4.25,4.25
+1007,2062-09-04,C05,COFFEE,,2,3.25,6.50
+1008,2026-09-04,C03,tea,medium,20,2.75,5.50
+```
+
+</details>
