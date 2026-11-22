@@ -14,8 +14,6 @@ paginate: true
 /* The sign-up form so far: one label and box per row, with the button under the boxes. */
 .signup { display: grid; grid-template-columns: max-content 16em; gap: 8px 16px; align-items: center; }
 .signup button { grid-column: 2; justify-self: start; }
-/* Answer choices for the Predict slide, all on one line. */
-.choices { display: flex; gap: 48px; }
 </style>
 
 # Form Validation
@@ -58,7 +56,7 @@ table { font-size: 0.75em; }
 <p class="caption">Page</p>
 <form class="demo signup" onsubmit="return false"><label for="demo3-username">Username</label> <input id="demo3-username" /> <button>Sign Up</button></form>
 
-Our sign-up form starts with one box. Click **Sign Up** with Username empty, and the form still sends.
+Our sign-up form starts with one box. Click **Sign Up** with Username empty, and the form still submits.
 
 How do we stop it?
 
@@ -149,7 +147,9 @@ Again, there is an easier way!
 <p class="caption">Page</p>
 <form class="demo signup" onsubmit="return false"><label for="demo9-username">Username</label> <input id="demo9-username" required minlength="3" maxlength="12" /> <label for="demo9-email">Email</label> <input id="demo9-email" type="email" required /> <button>Sign Up</button></form>
 
-An [`email` box](../13-js-forms-dom/lecture.html#6) fails without a name, an `@`, and a domain, but the domain needs no dot, so `ada@school` passes. A `number` box fails outside its [`min` and `max`](../13-js-forms-dom/lecture.html#8).
+An [`email` box](../13-js-forms-dom/lecture.html#6) needs text on both sides of an `@`, so `hello` fails, but the domain needs no dot, so `ada@school` passes. A `number` box fails outside its [`min` and `max`](../13-js-forms-dom/lecture.html#8).
+
+Can a failing box look different before we click **Sign Up**?
 
 ---
 
@@ -214,7 +214,7 @@ allow 13 to 120
 <input id="age" type="number" min="13" max="120" required />
 ```
 
-An age is an amount, so a `number` box with `min` and `max` fits.
+A `number` box also fails `13.5`, since it steps by 1 from `min`.
 
 ---
 
@@ -239,7 +239,92 @@ make it required, with at least 8 characters
 <input id="password" type="password" required minlength="8" />
 ```
 
-The `:user-invalid` rule already covers every box, so a short password turns red once we leave it.
+The `:user-invalid` rule already covers every box, so `cat` turns red once we leave it.
+
+How can JavaScript tell which rule a box failed?
+
+---
+
+## `validity`
+
+```js
+const username = document.getElementById("username");
+
+username.addEventListener("change", () => {
+  console.log(username.validity.valueMissing);
+  console.log(username.validity.tooShort);
+  console.log(username.validity.valid);
+});
+```
+
+<p class="caption">Console, after typing ad in Username and leaving it</p>
+
+```text
+false
+true
+false
+```
+
+Each control has a [`validity`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) object with one `true` or `false` for each check, so JavaScript can tell which rule failed.
+
+---
+
+## The Checks in `validity`
+
+<style scoped>
+table { margin: 0 auto; }
+</style>
+
+| Property         | `true` when the value is                |
+| ---------------- | --------------------------------------- |
+| `valueMissing`   | empty, with `required`                  |
+| `tooShort`       | shorter than `minlength`                |
+| `tooLong`        | longer than `maxlength`                 |
+| `typeMismatch`   | not an email address, in an `email` box |
+| `rangeUnderflow` | below `min`                             |
+| `rangeOverflow`  | above `max`                             |
+
+---
+
+## Problem: Password Hint
+
+```html
+<p id="password-hint"></p>
+```
+
+```text
+add the paragraph under Password
+when something is typed in Password
+  if it is too short
+    show "Use at least 8 characters" in the paragraph
+  otherwise
+    empty the paragraph
+```
+
+<p class="caption">Page, after typing cat in Password</p>
+
+```text
+Use at least 8 characters
+```
+
+---
+
+## Solution: Password Hint
+
+```js
+const password = document.getElementById("password");
+const hint = document.getElementById("password-hint");
+
+password.addEventListener("input", () => {
+  if (password.validity.tooShort) {
+    hint.textContent = "Use at least 8 characters";
+  } else {
+    hint.textContent = "";
+  }
+});
+```
+
+The hint goes away at the eighth character, before we ever click **Sign Up**.
 
 ---
 
@@ -249,50 +334,86 @@ The `:user-invalid` rule already covers every box, so a short password turns red
 
 ## `setCustomValidity`
 
-<!-- prettier-ignore -->
 ```js
-const email = document.getElementById("email");
-email.setCustomValidity("Use your school email"); // fails, with this message
-email.setCustomValidity("");                      // its own checks decide again
+// fails, with this message
+username.setCustomValidity("Use only letters and numbers");
+
+// its own checks decide again
+username.setCustomValidity("");
 ```
 
-[`setCustomValidity`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setCustomValidity) lets JavaScript fail a control: any message but `""` makes it fail, with that message. It's for rules HTML can't say, like a username that's taken, or two boxes that must match.
+[`setCustomValidity`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setCustomValidity) lets JavaScript fail a control: any message but `""` makes it fail, with that message. It's for rules our attributes can't say, like a username of only letters and numbers, or two boxes that must match.
 
 ---
 
-## Problem: Taken Username
+## A Message Blocks Submitting
 
 ```js
-// On each input, fail a username in ["ada", "grace", "alan"]
-// with "That username is taken".
+username.setCustomValidity("Use only letters and numbers");
+
+form.addEventListener("submit", () => {
+  console.log("submitted");
+});
 ```
 
-<p class="caption">Page, after typing ada in Username and clicking Sign Up</p>
+<p class="caption">Page, after clicking Sign Up</p>
 
 ```text
-That username is taken
+Use only letters and numbers
 ```
 
-- [Arrays have `includes`](../11-js-arrays/lecture.html#21).
-- What happens without the `else`?
+<p class="caption">Console</p>
+
+```text
+
+```
+
+While a message is set, **Sign Up** stops just as it does for an empty `required` box, so the `submit` listener never runs.
 
 ---
 
-## Solution: Taken Username
+## Problem: Username Characters
 
 ```js
-const taken = ["ada", "grace", "alan"];
+const allowed = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+// On each input, if a character of the lowercased username
+// is not in allowed, fail it with "Use only letters and numbers".
+// Otherwise, clear its message.
+```
+
+<p class="caption">Page, after typing ada lovelace in Username and clicking Sign Up</p>
+
+```text
+Use only letters and numbers
+```
+
+Hint: A [string has `includes`](../12-js-math-dates-strings/lecture.html#36), and `for (const char of "ada")` visits `a`, `d`, then `a`.
+
+---
+
+## Solution: Username Characters
+
+```js
+const allowed = "abcdefghijklmnopqrstuvwxyz0123456789";
 
 document.getElementById("username").addEventListener("input", (event) => {
-  if (taken.includes(event.target.value)) {
-    event.target.setCustomValidity("That username is taken");
+  let valid = true;
+  for (const char of event.target.value.toLowerCase()) {
+    if (!allowed.includes(char)) {
+      valid = false;
+      break;
+    }
+  }
+  if (!valid) {
+    event.target.setCustomValidity("Use only letters and numbers");
   } else {
     event.target.setCustomValidity("");
   }
 });
 ```
 
-Without the `else`, the message set at `ada` never clears, so **Username** fails even after we type `ada99`.
+Without the `else`, fixing `ada lovelace` to `adalovelace` still fails, since the old message stays set.
 
 ---
 
@@ -304,15 +425,7 @@ Without the `else`, the message set at `ada` never clears, so **Username** fails
 <input id="again" type="password" required />
 ```
 
-```text
-add Password again under Password
-
-when something is typed in the again box
-  if its value is different from the password box's
-    set its message to "Passwords don't match"
-  else
-    clear its message
-```
+Add Password again under the hint. On each input in it, set the message "Passwords don't match" while it differs from Password, and clear it otherwise.
 
 <p class="caption">Page, after typing two different passwords and clicking Sign Up</p>
 
@@ -336,15 +449,39 @@ again.addEventListener("input", () => {
 });
 ```
 
-Only `again` listens, so changing the password box afterward doesn't check the match again.
-
-Can we trust all of this?
+Only `again` listens, so changing the password box afterward doesn't recheck the match.
 
 ---
 
-## Checking Again on the Server
+## `customError`
 
-Anyone can open DevTools, delete `required`, and submit, or send the form's data without the page at all. Checks in the browser help the person typing, but the server has to check everything again.
+```js
+again.addEventListener("change", () => {
+  console.log(again.validity.customError);
+  console.log(again.validity.valid);
+});
+```
+
+<p class="caption">Console, after typing two different passwords and leaving the Password again box</p>
+
+```text
+true
+false
+```
+
+A `setCustomValidity` message turns on the [`customError`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/customError) check in [`validity`](lecture.html#16), so `valid` is `false` like any other failed check.
+
+---
+
+## Predict: Can the Server Trust It?
+
+When the form submits, does the server always get valid data?
+
+---
+
+## Answer: Can the Server Trust It?
+
+No. Anyone can delete `required` in DevTools, or send data to the server without a browser. Checks in the browser help the person typing, but the server has to check everything again.
 
 ---
 
