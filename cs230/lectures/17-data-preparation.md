@@ -10,7 +10,7 @@ Colan Biemer
 
 ---
 
-## Problem: What Is Wrong?
+## What Is Wrong?
 
 ```python
 import pandas as pd
@@ -33,23 +33,21 @@ print(df)
 8      1008  2026-09-04      C03      tea  medium       20   2.75   5.50
 ```
 
-[`orders.csv`](https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/preparation/orders.csv) holds a café's first week of orders.<sup>1</sup>
-
-<div class="footnote">1. The slides going forward leave out <code>orders_url</code> and the <code>import</code> line.</div>
+<div class="footnote">The slides going forward leave out <code>orders_url</code> and the <code>import</code> line.</div>
 
 ---
 
-## Solution: What Is Wrong?
+## A Lot
 
 - [Numbers](#4): `quantity` holds `two`, and order 1004 is for `-1` drinks
 - [Dates](#14): September 31 does not exist, and 2062 has not happened yet
 - [Strings](#23): `Tea`, `" latte "`, and `COFFEE` add stray capitals and spaces to drink names, and one price is `$4.75`
-- [Categories](#33): the sizes include `Large`, `med`, and a blank
-- [Key Fields](#43): order 1006 appears twice
-- [Consistency](#50): 20 teas at 2.75 each do not cost 5.50
-- [Missing Rows](#55): customer C05 has no row in a second file
+- [Categories](#35): the sizes include `Large`, `med`, and a blank
+- [Key Fields](#45): order 1006 appears twice
+- [Consistency](#52): 20 teas at 2.75 each do not cost 5.50
+- [Missing Rows](#57): customer C05 has no row in a file we read later
 
-**Data preparation** is finding and fixing problems like these before we use a table.
+**Data preparation** is finding and fixing problems like these before we use a table
 
 ---
 
@@ -116,7 +114,7 @@ print(df[["order_id", "quantity"]])
 8      1008      20.0
 ```
 
-`errors="coerce"` turns each value it cannot read into [`NaN`](15-pandas.html#24). The column becomes `float64`, since `NaN` is a float.
+`errors="coerce"` turns each value it cannot read into [`NaN`](15-pandas.html#24). The column becomes `float64`, since `NaN` is a float. `price` has to [lose its `$`](#26) first, or `$4.75` would become `NaN`.
 
 ---
 
@@ -158,7 +156,7 @@ print(df[df["quantity"] < 1])
 3      1004  2026-09-02      C01  coffee  Large      -1.0  3.50   -3.5
 ```
 
-Every quantity is a number now, but no one orders fewer than one drink. A [filter](15-pandas.html#47) finds the rows with values that cannot happen.
+Every quantity is a number or `NaN` now, but no one orders fewer than one drink. A [filter](15-pandas.html#47) finds the rows with values that cannot happen.
 
 ---
 
@@ -184,7 +182,7 @@ print(df[["order_id", "quantity"]])
 8      1008      20.0
 ```
 
-[`loc[rows, column]`](15-pandas.html#36) takes a Series of `True` and `False` for the rows, so this sets each quantity under 1 to missing. Two sets of brackets, `df["quantity"][...] = None`, change a copy and leave `df` alone.
+[`loc[rows, column]`](15-pandas.html#36) takes a Series of `True` and `False` for the rows, so this sets each quantity under 1 to missing, and `None` is stored as `NaN`. Two sets of brackets, `df["quantity"][...] = None`, change a copy and leave `df` alone.
 
 ---
 
@@ -235,7 +233,7 @@ good = quantity[(quantity >= 1) & (quantity <= 10)]
 print(f"Drinks sold: {good.sum()}")
 ```
 
-`NaN` fails every comparison, so `two` drops out along with `-1` and `20`. Order 1006 counts twice, which [Key Fields](#43) fixes.
+`NaN` fails every comparison, so `two` drops out along with `-1` and `20`. Order 1006 counts twice, which [Key Fields](#45) fixes.
 
 ---
 
@@ -280,7 +278,7 @@ print(df[["order_id", "date"]])
 8      1008 2026-09-04
 ```
 
-**`NaT`**, "not a time," marks a missing date, as `NaN` marks a missing number. `isna` counts both.
+**`NaT`**, "not a time," marks a missing date, as `NaN` marks a missing number. `isna` marks both.
 
 ---
 
@@ -306,7 +304,7 @@ print(df[["order_id", "date", "day"]])
 8      1008 2026-09-04     Friday
 ```
 
-`.dt` runs a date method on every value, as [`.str`](15-pandas.html#55) runs a string method. `.dt.year`, `.dt.month`, and `.dt.day` give the parts as numbers.
+`.dt` runs a date method on every value, as [`.str`](15-pandas.html#55) runs a string method. `.dt.year`, `.dt.month`, and `.dt.day` give the parts as numbers, with no parentheses.
 
 ---
 
@@ -351,7 +349,7 @@ dtype: str
 1
 ```
 
-2026 is not a leap year, so it has no February 29, and `coerce` gives `NaT`. 2028 is a leap year.
+2026 is not a leap year, so it has no February 29, and `coerce` gives `NaT`, whose day name is `NaN`. 2028 is a leap year.
 
 ---
 
@@ -448,6 +446,37 @@ print(df[["order_id", "price"]])
 
 ---
 
+## Problem: Drink Prices
+
+```python
+# Read orders.csv from the web and print the highest price
+# of each drink.
+```
+
+```
+        price
+item         
+cocoa    2.50
+coffee   3.50
+latte    4.75
+tea      2.75
+```
+
+---
+
+## Solution: Drink Prices
+
+```python
+df = pd.read_csv(orders_url)
+df["item"] = df["item"].str.strip().str.lower()
+df["price"] = pd.to_numeric(df["price"].str.replace("$", ""))
+print(df.pivot_table(index="item", values="price", aggfunc="max"))
+```
+
+Without `strip` and `lower`, `Tea`, `" latte "`, and `COFFEE` would each get a row of their own in the [pivot table](15-pandas.html#71).
+
+---
+
 ## A Second File: `customers.csv`
 
 ```python
@@ -509,7 +538,7 @@ print(customers[["first", "last"]])
 4    Linus  Torvalds
 ```
 
-`expand=True` puts each piece of the [`split`](06-strings-and-format-strings.html#86) in its own column, and assigning to a list of two names adds both columns.
+`expand=True` puts each piece of the [`split`](06-strings-and-format-strings.html#86) in its own column, numbered from 0, and assigning to a list of two names adds both columns.
 
 ---
 
@@ -526,38 +555,33 @@ print(customers[~has_at])
 2      C03  Alan Turing   alan.example.com
 ```
 
-`.str.contains` marks each value that has the text anywhere in it, as [`in`](06-strings-and-format-strings.html#53) does for one string.
+`.str.contains` marks each value that has the text anywhere in it, as [`in`](06-strings-and-format-strings.html#53) does for one string. It reads symbols like `$` and `.` as a pattern, so add `regex=False` to look for one of those.
 
 ---
 
-## Problem: Drink Prices
+## Problem: What Is the Output?
 
 ```python
-# Read orders.csv from the web and print the highest price
-# of each drink.
-```
+names = pd.Series([" mary jackson", "KATHERINE JOHNSON "])
+names = names.str.strip().str.title()
+parts = names.str.split(" ", expand=True)
 
-```
-        price
-item         
-cocoa    2.50
-coffee   3.50
-latte    4.75
-tea      2.75
+print(list(names))
+print(list(parts[1]))
+print(list(names.str.contains("john")))
 ```
 
 ---
 
-## Solution: Drink Prices
+## Solution: What Is the Output?
 
-```python
-df = pd.read_csv(orders_url)
-df["item"] = df["item"].str.strip().str.lower()
-df["price"] = pd.to_numeric(df["price"].str.replace("$", ""))
-print(df.pivot_table(index="item", values="price", aggfunc="max"))
+```
+['Mary Jackson', 'Katherine Johnson']
+['Jackson', 'Johnson']
+[False, False]
 ```
 
-Without `strip` and `lower`, `Tea`, `" latte "`, and `COFFEE` would each get a row of their own in the [pivot table](15-pandas.html#71).
+`expand=True` numbers the columns from 0, so `parts[1]` holds the last names. Capital letters count for `contains`, as they do for `in`, so `Johnson` does not have `john` in it.
 
 ---
 
@@ -577,7 +601,7 @@ print(df["size"].cat.categories)
 Index(['Large', 'large', 'med', 'medium', 'small'], dtype='str')
 ```
 
-A **category** column can hold only the values in its list of **categories**. `astype("category")` makes that list from every different value in the column, `Large` and `med` included.
+A size should be one of three values. A **category** column can hold only the values in its list of **categories**, and `astype("category")` makes that list from every different value in the column, `Large` and `med` included.
 
 ---
 
@@ -668,7 +692,7 @@ large     2
 Name: count, dtype: int64
 ```
 
-The café's register leaves `size` blank for a medium, so order 1007 belongs in [the last filter](#37). `fillna` puts one value in place of every `NaN`, and in a category column that value must be one of the categories, or pandas raises a `TypeError`.
+The café's register leaves `size` blank for a medium, so order 1007 belongs in [the last filter](#39). `fillna` puts one value in place of every `NaN`, and in a category column that value must be one of the categories, or pandas raises a `TypeError`.
 
 ---
 
@@ -849,7 +873,7 @@ print(df[df["total"] != expected])
 8      1008  2026-09-04      C03    tea  medium      20.0   2.75    5.5
 ```
 
-`round(2)` keeps float math like `3 * 1.10`, which gives `3.3000000000000003`, from counting as a mismatch. `NaN` equals nothing, so order 1005 shows up too.
+`round(2)` keeps float math like `3 * 1.10`, which gives `3.3000000000000003`, from counting as a mismatch. `NaN` equals nothing, so order 1005 shows up too. Order 1004 does not, since `-1 * 3.50` is its total, so this check cannot replace the [range check](#9).
 
 ---
 
@@ -876,16 +900,17 @@ print(df[["order_id", "quantity", "price", "total"]])
 8      1008      20.0   2.75   5.50
 ```
 
-Given a Series, [`fillna`](#38) fills each missing value from the same row, so order 1005's quantity is `5.00 / 2.50`.
+Given a Series, [`fillna`](#40) fills each missing value from the same row, so order 1005's quantity is `5.00 / 2.50`.
 
 ---
 
 ## Problem: Fix the Quantities
 
 ```python
-# Order 1008's total is right, and its quantity is a typo. For
-# every order whose total is not quantity times price, set the
-# quantity to total divided by price.
+# Read orders.csv from the web. Order 1008's total is right, and
+# its quantity is a typo. For every order whose total is not
+# quantity times price, set the quantity to total divided by
+# price. Print each order's id, quantity, price, and total.
 ```
 
 ```
@@ -915,7 +940,7 @@ df.loc[wrong, "quantity"] = df["total"] / df["price"]
 print(df[["order_id", "quantity", "price", "total"]])
 ```
 
-[`loc`](#10) changes only the rows marked in `wrong`, so order 1005 gets the fix that `fillna` gave it. Order 1008 sold 2 teas; [Drinks Sold](#13) skipped it as 20.
+[`loc`](#10) changes only the rows marked in `wrong`: order 1005, whose `NaN` equals nothing, and order 1008, which sold 2 teas and which [Drinks Sold](#13) skipped as 20. Order 1004 keeps its `-1`.
 
 ---
 
@@ -990,7 +1015,7 @@ fans = customers[customers["customer"].isin(lattes["customer"])]
 print(fans["email"])
 ```
 
-Without `strip`, order 1003's `" latte "` would not match, and Alan would be left out. His email still has no `@`, as [`.str.contains`](#30) found.
+Without `strip`, order 1003's `" latte "` would not match, and Alan would be left out. His email still has no `@`, as [`.str.contains`](#32) found.
 
 ---
 
@@ -1013,7 +1038,7 @@ print(df)
 2   cocoa   40   95  180
 ```
 
-The values in [`monthly.csv`](https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/preparation/monthly.csv) are clean, but the table is **wide**: each row holds several values of one kind, drinks sold, in a column for each month. A **long** table holds one value in each row, with the month in a column of its own.
+The values in [`monthly.csv`](https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/preparation/monthly.csv) are clean, but the table is **wide**: each row holds several values of one kind, drinks sold, in a column for each month. A **long** table holds one value in each row, with the month in a column of its own. Later slides leave out `monthly_url`.
 
 ---
 
@@ -1084,7 +1109,7 @@ sales.pivot(index="item", columns="month", values="sold")
 ValueError: Index contains duplicate entries, cannot reshape
 ```
 
-`pivot` needs each item and month pair once, as if the pair were a [key field](#44). [`pivot_table`](15-pandas.html#71) with `aggfunc="sum"` adds up the two October rows instead.
+`pivot` needs each item and month pair once, as if the pair were a [key field](#46). [`pivot_table`](15-pandas.html#71) with `aggfunc="sum"` adds up the two October rows instead.
 
 ---
 
