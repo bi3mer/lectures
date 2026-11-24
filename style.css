@@ -1,7 +1,32 @@
 /* The course sites' stylesheet, shared by every index page. The colors match the slides. */
 
+/* The gutters match bi3mer.github.io: the space on each side of the page, and how wide the
+   column between them gets. */
+:root {
+  --gutter: 1rem;
+  --measure: 46rem;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 2rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  :root {
+    --measure: 52rem;
+  }
+}
+
+/* Keeps the column from shifting between pages with and without a scrollbar. */
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
+  padding-inline: var(--gutter);
   background-color: #064f6e;
   color: #f5ecc2;
   font-family: system-ui, sans-serif;
@@ -15,9 +40,9 @@ a {
 header,
 main,
 footer {
-  max-width: 1100px;
+  max-width: var(--measure);
   margin: 0 auto;
-  padding: 16px;
+  padding: 16px 0;
 }
 
 header {
@@ -76,12 +101,7 @@ nav a {
   margin: 8px 0 0;
 }
 
-/* Handouts and cheat sheets, built from Markdown by build.sh. A narrower column reads better
-   than the index pages' full width. */
-main.doc {
-  max-width: 800px;
-}
-
+/* Handouts and cheat sheets, built from Markdown by build.sh. */
 .doc h1 {
   border-bottom: 4px solid #f99d1b;
   padding-bottom: 8px;
