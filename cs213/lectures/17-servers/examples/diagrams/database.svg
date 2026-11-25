@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 330" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Where the data lives</title>
+  <desc>The browser asks the server for a list of classes. The server looks them up in the database, builds a page, and sends it back. The browser never talks to the database.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1180" height="330" rx="18" fill="#0f1b2d" />
+  <rect width="1180" height="330" rx="18" fill="url(#grid)" />
+  <text x="150" y="44" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" font-weight="bold" fill="#e2e8f0" text-anchor="middle">Client</text>
+  <text x="590" y="44" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" font-weight="bold" fill="#e2e8f0" text-anchor="middle">Server</text>
+  <text x="1030" y="44" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="24" font-weight="bold" fill="#e2e8f0" text-anchor="middle">Database</text>
+  <rect x="30" y="66" width="240" height="160" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="3" />
+  <path d="M30 102 v-24 a12 12 0 0 1 12 -12 h216 a12 12 0 0 1 12 12 v24 z" fill="#dfe6ee" stroke="#94a3b8" stroke-width="3" />
+  <circle cx="50" cy="84" r="6" fill="#ff5f57" />
+  <circle cx="68" cy="84" r="6" fill="#febc2e" />
+  <circle cx="86" cy="84" r="6" fill="#28c840" />
+  <rect x="104" y="74" width="150" height="20" rx="10" fill="#fff" />
+  <rect x="54" y="126" width="180" height="12" rx="6" fill="#cbd5e1" />
+  <rect x="54" y="148" width="153" height="12" rx="6" fill="#cbd5e1" />
+  <rect x="54" y="170" width="117" height="12" rx="6" fill="#cbd5e1" />
+  <rect x="510" y="70" width="160" height="46" rx="8" fill="#334155" stroke="#64748b" stroke-width="2" />
+  <circle cx="530" cy="93" r="6" fill="#22c55e" /><circle cx="550" cy="93" r="6" fill="#38bdf8" />
+  <rect x="574" y="89" width="76" height="8" rx="4" fill="#1e293b" />
+  <rect x="510" y="124" width="160" height="46" rx="8" fill="#334155" stroke="#64748b" stroke-width="2" />
+  <circle cx="530" cy="147" r="6" fill="#22c55e" /><circle cx="550" cy="147" r="6" fill="#38bdf8" />
+  <rect x="574" y="143" width="76" height="8" rx="4" fill="#1e293b" />
+  <rect x="510" y="178" width="160" height="46" rx="8" fill="#334155" stroke="#64748b" stroke-width="2" />
+  <circle cx="530" cy="201" r="6" fill="#22c55e" /><circle cx="550" cy="201" r="6" fill="#38bdf8" />
+  <rect x="574" y="197" width="76" height="8" rx="4" fill="#1e293b" />
+  <path d="M955 86 v110 a75 20 0 0 0 150 0 v-110" fill="#334155" stroke="#64748b" stroke-width="2" />
+  <ellipse cx="1030" cy="86" rx="75" ry="20" fill="#475569" stroke="#64748b" stroke-width="2" />
+  <line x1="290" y1="112" x2="490" y2="112" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <text x="390" y="96" font-size="20" fill="#7dd3fc" text-anchor="middle">My classes?</text>
+  <line x1="690" y1="112" x2="935" y2="112" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <text x="812" y="96" font-size="20" fill="#7dd3fc" text-anchor="middle">Classes for Ada?</text>
+  <line x1="935" y1="192" x2="690" y2="192" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <text x="812" y="176" font-size="20" fill="#7dd3fc" text-anchor="middle">3 classes</text>
+  <line x1="490" y1="192" x2="290" y2="192" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <text x="390" y="176" font-size="20" fill="#7dd3fc" text-anchor="middle">A page</text>
+  <text x="150" y="276" font-size="20" fill="#e2e8f0" text-anchor="middle">shows the page</text>
+  <text x="590" y="276" font-size="20" fill="#e2e8f0" text-anchor="middle">checks who is asking,</text>
+  <text x="590" y="302" font-size="20" fill="#e2e8f0" text-anchor="middle">then builds the page</text>
+  <text x="1030" y="276" font-size="20" fill="#e2e8f0" text-anchor="middle">stores everything</text>
+
+</svg>

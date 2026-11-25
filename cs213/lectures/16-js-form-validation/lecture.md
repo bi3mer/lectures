@@ -480,6 +480,6 @@ Anyone can change the webpage in DevTools or send data the server without a brow
 
 ---
 
-## Next Up: Creating a Web API / TypeScript
+## Next Up: What Is a Server?
 
-[Creating a Web API / TypeScript](../17-js-web-api-typescript/lecture.html)
+[What Is a Server?](../17-servers/lecture.html)

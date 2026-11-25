@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 380" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Sharing the work</title>
+  <desc>Many browsers send requests to a load balancer, which passes each request to one of three servers.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1180" height="380" rx="18" fill="#0f1b2d" />
+  <rect width="1180" height="380" rx="18" fill="url(#grid)" />
+  <rect x="40" y="30" width="130" height="66" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="3" />
+  <path d="M40 66 v-24 a12 12 0 0 1 12 -12 h106 a12 12 0 0 1 12 12 v24 z" fill="#dfe6ee" stroke="#94a3b8" stroke-width="3" />
+  <circle cx="60" cy="48" r="6" fill="#ff5f57" />
+  <circle cx="78" cy="48" r="6" fill="#febc2e" />
+  <circle cx="96" cy="48" r="6" fill="#28c840" />
+  <rect x="114" y="38" width="40" height="20" rx="10" fill="#fff" />
+  <line x1="186" y1="63" x2="452" y2="170" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="40" y="116" width="130" height="66" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="3" />
+  <path d="M40 152 v-24 a12 12 0 0 1 12 -12 h106 a12 12 0 0 1 12 12 v24 z" fill="#dfe6ee" stroke="#94a3b8" stroke-width="3" />
+  <circle cx="60" cy="134" r="6" fill="#ff5f57" />
+  <circle cx="78" cy="134" r="6" fill="#febc2e" />
+  <circle cx="96" cy="134" r="6" fill="#28c840" />
+  <rect x="114" y="124" width="40" height="20" rx="10" fill="#fff" />
+  <line x1="186" y1="149" x2="452" y2="170" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="40" y="202" width="130" height="66" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="3" />
+  <path d="M40 238 v-24 a12 12 0 0 1 12 -12 h106 a12 12 0 0 1 12 12 v24 z" fill="#dfe6ee" stroke="#94a3b8" stroke-width="3" />
+  <circle cx="60" cy="220" r="6" fill="#ff5f57" />
+  <circle cx="78" cy="220" r="6" fill="#febc2e" />
+  <circle cx="96" cy="220" r="6" fill="#28c840" />
+  <rect x="114" y="210" width="40" height="20" rx="10" fill="#fff" />
+  <line x1="186" y1="235" x2="452" y2="200" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="40" y="288" width="130" height="66" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="3" />
+  <path d="M40 324 v-24 a12 12 0 0 1 12 -12 h106 a12 12 0 0 1 12 12 v24 z" fill="#dfe6ee" stroke="#94a3b8" stroke-width="3" />
+  <circle cx="60" cy="306" r="6" fill="#ff5f57" />
+  <circle cx="78" cy="306" r="6" fill="#febc2e" />
+  <circle cx="96" cy="306" r="6" fill="#28c840" />
+  <rect x="114" y="296" width="40" height="20" rx="10" fill="#fff" />
+  <line x1="186" y1="321" x2="452" y2="200" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="470" y="130" width="210" height="110" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="3" />
+  <text x="575.0" y="165" font-size="21" fill="#7dd3fc" text-anchor="middle" font-weight="bold">load balancer</text>
+  <text x="575.0" y="192" font-size="19" fill="#e2e8f0" text-anchor="middle">picks a server</text>
+  <text x="575.0" y="218" font-size="19" fill="#e2e8f0" text-anchor="middle">for each request</text>
+  <rect x="920" y="50" width="200" height="60" rx="8" fill="#334155" stroke="#64748b" stroke-width="2" /><circle cx="946" cy="80" r="7" fill="#22c55e" />
+  <text x="1030" y="87" font-size="20" fill="#e2e8f0" text-anchor="middle">server 1</text>
+  <line x1="690" y1="185" x2="900" y2="80" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="920" y="168" width="200" height="60" rx="8" fill="#334155" stroke="#64748b" stroke-width="2" /><circle cx="946" cy="198" r="7" fill="#22c55e" />
+  <text x="1030" y="205" font-size="20" fill="#e2e8f0" text-anchor="middle">server 2</text>
+  <line x1="690" y1="185" x2="900" y2="198" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="920" y="286" width="200" height="60" rx="8" fill="#334155" stroke="#64748b" stroke-width="2" /><circle cx="946" cy="316" r="7" fill="#22c55e" />
+  <text x="1030" y="323" font-size="20" fill="#e2e8f0" text-anchor="middle">server 3</text>
+  <line x1="690" y1="185" x2="900" y2="316" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+
+</svg>

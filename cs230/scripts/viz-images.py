@@ -1,13 +1,13 @@
-"""Draw the chart images for lectures/16-visualization.md.
+"""Draw the chart images for lectures/16-visualization.md and, in the
+prep- snippets, lectures/17-data-preparation.md.
 
 Each snippet is the code on its slide, run as is, except that plt.show()
 saves the chart to images/viz-<name>.png instead of opening a window.
 A snippet that opens more than one window saves one image for each, as
 viz-<name>-1.png, viz-<name>-2.png, and so on.
 Every snippet starts with the lines the slides leave out: the two imports,
-flights_url, and weather_url. The snippets read those URLs, as the slides
-do, but the script reads the copies in data/visualization instead, so it
-works offline and before a new file is pushed.
+and the four URLs in HEAD. The snippets read those URLs, as the slides
+do, but the script reads the copies in data instead, so it works offline and before a new file is pushed.
 
 Needs pandas and matplotlib. Run it from anywhere:
     python3 viz-images.py               draw every image
@@ -32,10 +32,12 @@ HEAD = '''import pandas as pd
 import matplotlib.pyplot as plt
 flights_url = "https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/visualization/flights.csv"
 weather_url = "https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/visualization/weather.csv"
+orders_url = "https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/preparation/orders.csv"
+monthly_url = "https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/preparation/monthly.csv"
 '''
 
-RAW = "https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/visualization/"
-DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "visualization")
+RAW = "https://raw.githubusercontent.com/bi3mer/lectures/main/cs230/data/"
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
 
 # Read each file once, however many snippets read it, from the local copy
 # of any file the slides read from the course repository.
@@ -338,6 +340,58 @@ wind = df.pivot_table(index="weather",
                       values="wind")
 
 wind.plot(kind="bar")
+plt.show()'''
+
+# ----- 17: Pandas for Data Preparation
+
+snips["prep-missing"] = '''df = pd.read_csv(orders_url)
+df["quantity"] = pd.to_numeric(
+    df["quantity"], errors="coerce")
+df["price"] = pd.to_numeric(
+    df["price"], errors="coerce")
+
+numbers = df[["quantity", "price", "total"]]
+missing = numbers.isna().sum()
+missing.plot(kind="bar", rot=0,
+             ylabel="Missing values")
+plt.show()'''
+
+snips["prep-days"] = '''df = pd.read_csv(orders_url)
+df["date"] = pd.to_datetime(df["date"], errors="coerce")
+september = df[df["date"].between("2026-09-01", "2026-09-30")]
+
+counts = september["date"].dt.day_name().value_counts()
+counts.plot(kind="bar", rot=0, xlabel="", ylabel="Orders")
+plt.show()'''
+
+snips["prep-items"] = '''df = pd.read_csv(orders_url)
+counts = df["item"].value_counts()
+
+counts.plot(kind="bar", rot=0)
+plt.show()'''
+
+snips["prep-sizes"] = '''df = pd.read_csv(orders_url)
+df["size"] = df["size"].str.lower()
+df["size"] = df["size"].replace("med", "medium")
+sizes = pd.CategoricalDtype(
+    ["small", "medium", "large"], ordered=True)
+df["size"] = df["size"].astype(sizes).fillna("medium")
+
+counts = df["size"].value_counts().sort_index()
+counts.plot(kind="bar", rot=0)
+plt.show()'''
+
+snips["prep-months"] = '''df = pd.read_csv(monthly_url)
+long = df.melt(id_vars="item", var_name="month",
+               value_name="sold")
+months = pd.CategoricalDtype(
+    ["Sep", "Oct", "Nov"], ordered=True)
+long["month"] = long["month"].astype(months)
+
+wide = long.pivot_table(
+    index="month", columns="item",
+    values="sold", aggfunc="sum")
+wide.plot()
 plt.show()'''
 
 

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 250" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>What the compiler does</title>
+  <desc>We write TypeScript. The compiler checks it and reports mistakes, then takes the types out. What is left is JavaScript, which the browser runs.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1180" height="250" rx="18" fill="#0f1b2d" />
+  <rect width="1180" height="250" rx="18" fill="url(#grid)" />
+  <rect x="30" y="80" width="220" height="120" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="3" />
+  <text x="140.0" y="133" font-size="23" fill="#7dd3fc" text-anchor="middle" font-weight="bold">TypeScript</text>
+  <text x="140.0" y="162" font-size="21" fill="#e2e8f0" text-anchor="middle">we write this</text>
+  <line x1="258" y1="140" x2="328" y2="140" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="336" y="80" width="220" height="120" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="3" />
+  <text x="446.0" y="133" font-size="23" fill="#7dd3fc" text-anchor="middle" font-weight="bold">1. check</text>
+  <text x="446.0" y="162" font-size="21" fill="#e2e8f0" text-anchor="middle">reports mistakes</text>
+  <line x1="564" y1="140" x2="634" y2="140" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="642" y="80" width="220" height="120" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="3" />
+  <text x="752.0" y="133" font-size="23" fill="#7dd3fc" text-anchor="middle" font-weight="bold">2. remove</text>
+  <text x="752.0" y="162" font-size="21" fill="#e2e8f0" text-anchor="middle">takes the types out</text>
+  <line x1="870" y1="140" x2="930" y2="140" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="938" y="80" width="212" height="120" rx="10" fill="#1e293b" stroke="#facc15" stroke-width="3" />
+  <text x="1044.0" y="118" font-size="23" fill="#7dd3fc" text-anchor="middle" font-weight="bold">JavaScript</text>
+  <text x="1044.0" y="147" font-size="21" fill="#e2e8f0" text-anchor="middle">the browser</text>
+  <text x="1044.0" y="177" font-size="21" fill="#e2e8f0" text-anchor="middle">runs this</text>
+  <text x="599" y="50" font-size="22" fill="#7dd3fc" text-anchor="middle" font-weight="bold">the TypeScript compiler</text>
+  <rect x="318" y="64" width="562" height="152" rx="14" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="10 8" />
+
+</svg>

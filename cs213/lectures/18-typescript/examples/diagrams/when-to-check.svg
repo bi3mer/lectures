@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 250" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Two times to check</title>
+  <desc>We write the code. A static check happens before running, at our desk. A dynamic check happens while running, on anyone&#8217;s computer.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#38bdf8" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#1c2e4a" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background: dark navy with a faint grid -->
+  <rect width="1180" height="250" rx="18" fill="#0f1b2d" />
+  <rect width="1180" height="250" rx="18" fill="url(#grid)" />
+  <rect x="30" y="90" width="250" height="120" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="3" />
+  <text x="155.0" y="158" font-size="22" fill="#e2e8f0" text-anchor="middle">we write the code</text>
+  <line x1="288" y1="150" x2="348" y2="150" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="356" y="90" width="250" height="120" rx="10" fill="#1e293b" stroke="#f99d1b" stroke-width="3" />
+  <text x="481.0" y="143" font-size="23" fill="#7dd3fc" text-anchor="middle" font-weight="bold">before running</text>
+  <text x="481.0" y="172" font-size="21" fill="#e2e8f0" text-anchor="middle">static: check here</text>
+  <line x1="614" y1="150" x2="674" y2="150" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="682" y="90" width="250" height="120" rx="10" fill="#1e293b" stroke="#f99d1b" stroke-width="3" />
+  <text x="807.0" y="143" font-size="23" fill="#7dd3fc" text-anchor="middle" font-weight="bold">while running</text>
+  <text x="807.0" y="172" font-size="21" fill="#e2e8f0" text-anchor="middle">dynamic: check here</text>
+  <line x1="940" y1="150" x2="984" y2="150" stroke="#38bdf8" stroke-width="4" marker-end="url(#head)" />
+  <rect x="992" y="90" width="160" height="120" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="3" />
+  <text x="1072.0" y="142" font-size="22" fill="#e2e8f0" text-anchor="middle">someone</text>
+  <text x="1072.0" y="173" font-size="22" fill="#e2e8f0" text-anchor="middle">uses it</text>
+  <text x="155" y="60" font-size="20" fill="#e2e8f0" text-anchor="middle">our desk</text>
+  <text x="481" y="60" font-size="20" fill="#e2e8f0" text-anchor="middle">our desk</text>
+  <text x="807" y="60" font-size="20" fill="#e2e8f0" text-anchor="middle">anyone&#8217;s computer</text>
+  <text x="1072" y="60" font-size="20" fill="#e2e8f0" text-anchor="middle">anyone&#8217;s computer</text>
+
+</svg>
