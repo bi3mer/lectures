@@ -282,7 +282,7 @@ The types are like scaffolding: there while we build, and gone when it opens.
 
 ## Predict: A Server's Answer
 
-Our TypeScript says a player's points are a number. The compiler finds no mistakes. Then, with the page running, a [server](../17-servers/lecture.html#17) sends us the points as the text "600", and we add 1.
+Our TypeScript says a player's points are a number. The compiler finds no mistakes. Then, with the page running, a [server](../17-servers/lecture.html#28) sends us the points as the text "600", and we add 1.
 
 What happens?
 

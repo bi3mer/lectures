@@ -725,7 +725,7 @@ console.log(minutes.padStart(2, "0"));         // TypeError
 
 `padStart(length, pad)` adds `pad` to the front of a string until it is `length` characters long. With no `pad`, it adds spaces. A string that is already long enough comes back unchanged. [A number has no `padStart`](#33), so it needs [`String()`](../08-js-intro/lecture.html#75) first.
 
-There is also a [`padEnd`](cheatsheet.html#padding-and-repeating-padstart-padend-and-repeat), which adds to the end.
+There is also a `padEnd`, which adds to the end.
 
 How do we repeat a string?
 

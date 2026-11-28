@@ -92,13 +92,69 @@ nav a {
   }
 }
 
+/* Cards like the ones on bi3mer.github.io/posts. The title link is stretched over the whole
+   card, so a click anywhere opens the slides. The other links (Markdown, Demo) sit above it so
+   they still open their own pages. Coming-soon cards have no link, so they don't light up. */
 .chapter {
+  position: relative;
   background-color: #032837;
+  border: 1px solid #38728b;
+  border-radius: 4px;
   padding: 16px;
+}
+
+.chapter:has(h3 a):hover {
+  border-color: #f99d1b;
+}
+
+.chapter h3 a {
+  text-decoration: none;
+}
+
+.chapter h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.chapter p a {
+  position: relative;
+  z-index: 1;
 }
 
 .chapter p {
   margin: 8px 0 0;
+}
+
+/* The HTML/MD switch on the right of a section heading (cs213/index.html). The pressed side is
+   orange with dark text, the other is plain. */
+h2:has(.format-toggle) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.format-toggle {
+  display: inline-flex;
+  border: 1px solid #38728b;
+  border-radius: 4px;
+  overflow: hidden;
+  font-size: 0.8125rem;
+}
+
+.format-toggle button {
+  background-color: #032837;
+  color: #a8c1cc;
+  border: 0;
+  padding: 4px 10px;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.format-toggle button[aria-pressed="true"] {
+  background-color: #f99d1b;
+  color: #032837;
 }
 
 /* Handouts and cheat sheets, built from Markdown by build.sh. */
